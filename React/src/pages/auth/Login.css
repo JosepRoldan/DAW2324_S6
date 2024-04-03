@@ -1,0 +1,35 @@
+.background-login{
+    /* background: linear-gradient(90deg, rgba(0,230,197,1) 0%, rgba(184,67,196,1) 100%); */
+    /* background: linear-gradient(90deg, rgba(0,230,197,1) 0%, #fff 100%); */
+    /* background: linear-gradient(30deg, #061F41 0%, #fff 100%); */
+    /* background-color: #061F41; */
+    background-color: #E9ECEF;
+}
+
+
+.white-color{
+    color: white;
+  }
+  
+  .primary-color{
+    color: #061F41;
+  }
+  
+
+#button{
+    background-color: #061F41;
+    color: white;
+  }
+
+  #button:hover{
+    background-color: #00E6CE;
+    color: #061F41;
+  }
+
+#login-icon{
+    color: white;
+}  
+
+.error{
+  color: red;
+}

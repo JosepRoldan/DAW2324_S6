@@ -1,0 +1,22 @@
+    .popup-inner h2 {
+    margin-top: 0;
+    }
+    
+    .popup-inner label {
+    display: block;
+    margin-bottom: 10px;
+    }
+    
+    .popup-inner input {
+    width: 100%;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    }
+
+.labels{
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 0px !important;
+}
