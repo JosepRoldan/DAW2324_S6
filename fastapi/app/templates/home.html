@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Estat del servei</title>
+</head>
+
+<body>
+    <h1>Estat del servei</h1>
+
+    <h2>Picanova</h2>
+    {% if ping_picanova_result.status_code == 200 %}
+    <p>✅El servei de Picanova funciona correctament.✅</p>
+    {% else %}
+    <p>🔴El servei de Picanova no està en marxa.🔴</p>
+    {% endif %}
+
+    <h2>BigJPG</h2>
+    {% if ping_big_jpg_result.status_code == 200 %}
+    <p>✅El servei de BigJPG funciona correctament.✅</p>
+    {% else %}
+    <p>🔴El servei de BigJPG no està en marxa.🔴</p>
+    {% endif %}
+</body>
+
+</html>
