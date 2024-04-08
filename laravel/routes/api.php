@@ -46,10 +46,14 @@ Route::middleware('auth:sanctum')->group(function () {
     // SETTINGS
     Route::resource('/settings', SettingController::class);
     // CUSTOMERS
-    Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');
-    Route::post('/customers/create', [CustomerController::class, 'store'])->name('customers.store');
-    Route::put('/customers/{id}', [CustomerController::class, 'update'])->name('customers.update');
-    Route::delete('/customers/{id}', [CustomerController::class, 'destroy'])->name('customers.destroy');
+
+    // TO-DO 
+    // Fix this: Unable to prepare route [sign_up] for serialization. Another route has already been assigned name [customers.store].
+
+    // Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');
+    // Route::post('/customers/create', [CustomerController::class, 'store'])->name('customers.store');
+    // Route::put('/customers/{id}', [CustomerController::class, 'update'])->name('customers.update');
+    // Route::delete('/customers/{id}', [CustomerController::class, 'destroy'])->name('customers.destroy');
 
     Route::get('/users', [UserController::class, 'index']);
 
