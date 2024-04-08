@@ -1,0 +1,23 @@
+
+  .btn {
+    flex: 1 1 auto;
+    text-align: center;
+    color:white;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background: linear-gradient(90deg, var(--c1, #eee), var(--c2, #c026d3) 51%, var(--c1, #00e6ce)) var(--x, 0)/ 200%;
+    text-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+    box-shadow: 0 0 20px #eee;
+    border-radius: 10px;
+   }
+  
+  .btn:hover { --x: 100%; }
+  
+  .btn-1 {
+    --c1: #00e6ce;
+    --c2: #c026d3;
+  }
+
+  input{
+    line-height: 200%;
+  }
