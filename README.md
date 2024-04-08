@@ -37,3 +37,22 @@ In the laravel shell:
 - php artisan migrate:fresh --seed
 + php artisan db:seed --class=DatabaseSeeder
 ```
+
+# URLs
+
+**Backoffice**
+```
+http://localhost:3000/
+```
+**Public Shop**
+```
+http://localhost:8000/
+```
+**PHPMyAdmin**
+```
+http://localhost:8080/
+```
+**FastAPI**
+```
+http://localhost:8003/docs/
+```
