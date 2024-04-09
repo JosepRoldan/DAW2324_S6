@@ -87,6 +87,25 @@ class ProductController extends Controller
             return response()->json(['message' => 'Product benefits margins updated successfully.']);
         }
 
-        return response()->json(['message' => 'No valid update field provided.'], 400);
+        if ($request->has('ENG_description')) {
+            $fieldsToUpdate['ENG_description'] = $request->ENG_description;
+        }
+        if ($request->has('CAT_description')) {
+            $fieldsToUpdate['CAT_description'] = $request->CAT_description;
+        }
+        if ($request->has('ESP_description')) {
+            $fieldsToUpdate['ESP_description'] = $request->ESP_description;
+        }
+
+        if ($request->has('priority')) {
+            $fieldsToUpdate['priority'] = $request->priority;
+        }
+
+        if (!empty($fieldsToUpdate)) {
+            $product->update($fieldsToUpdate);
+            return response()->json(['message' => 'Product updated successfully.']);
+        } else {
+            return response()->json(['message' => 'No valid update field provided.'], 400);
+        }
     }
 }

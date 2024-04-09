@@ -19,24 +19,24 @@ import translationCA from "/src/locales/cat/translation.json";
 import translationES from "/src/locales/esp/translation.json";
 
 const resources = {
-  eng: {
-    translation: translationEN,
-  },
-  cat: {
-    translation: translationCA,
-  },
-  esp: {
-    translation: translationES,
-  },
+    eng: {
+        translation: translationEN,
+    },
+    cat: {
+        translation: translationCA,
+    },
+    esp: {
+        translation: translationES,
+    },
 };
 
 i18n.use(initReactI18next).init({
-  resources,
-  lng: "eng",
-  fallbackLng: "eng",
-  interpolation: {
-    escapeValue: false,
-  },
+    resources,
+    lng: "eng",
+    fallbackLng: "eng",
+    interpolation: {
+        escapeValue: false,
+    },
 });
 
 const steps = [
@@ -125,6 +125,11 @@ export default function ProductsPage() {
     };
 
     const colDefs = useMemo(() => [
+        {
+            field: 'priority',
+            headerName: 'Priority',
+            editable: defaultColDef.editable,
+        },
         {
             cellRenderer: ImageCellRenderer,
             field: 'thumb',

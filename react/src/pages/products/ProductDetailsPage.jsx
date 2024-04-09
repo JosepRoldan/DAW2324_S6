@@ -45,9 +45,51 @@ const ProductDetailsPage = () => {
         images: [],
         isLoading: true,
         error: null,
+        ENG_description: '',
+        CAT_description: '',
+        ESP_description: '',
     });
 
     const token = localStorage.getItem('token');
+
+    const saveDescription = async (language) => {
+        const descriptionId = `${language}_description`;
+        const descriptionValue = document.getElementById(descriptionId).value;
+
+        if (!descriptionValue) {
+            alert('Please enter a description.');
+            return;
+        }
+
+        try {
+            const headers = new Headers({
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+                'Authorization': `Bearer ${token}`,
+            });
+            const body = JSON.stringify({
+                [descriptionId]: descriptionValue,
+            });
+
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/products/${productId}`, {
+                method: 'PUT',
+                headers: headers,
+                body: body,
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log('Description updated successfully.');
+            } else {
+                const errorData = await response.json();
+                console.log(`Error: ${errorData.message}`);
+            }
+        } catch (error) {
+            // Manejo de errores de red
+            alert(`Error: ${error.message}`);
+        }
+    };
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -68,6 +110,9 @@ const ProductDetailsPage = () => {
                     details: data.product_details || [],
                     images: data.product_images || [],
                     isLoading: false,
+                    ENG_description: data.ENG_description || '',
+                    CAT_description: data.CAT_description || '',
+                    ESP_description: data.ESP_description || '',
                 });
             } catch (error) {
                 setProductData({ ...productData, error, isLoading: false });
@@ -78,6 +123,13 @@ const ProductDetailsPage = () => {
     }, [productId]);
 
     const { product, details, images, isLoading, error } = productData;
+
+    const handleDescriptionChange = (language, value) => {
+        setProductData({
+            ...productData,
+            [`${language}_description`]: value,
+        });
+    };
 
     const defaultColDef = {
         flex: 1,
@@ -135,7 +187,13 @@ const ProductDetailsPage = () => {
                 <div className="flex justify-between mb-4">
                     <div className="w-1/3 pr-2">
                         <label htmlFor="ENG_description" className="block text-sm font-medium text-gray-700">Product Description (English)</label>
-                        <textarea id="ENG_description" className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm" placeholder="Enter product description in English"></textarea>
+                        <textarea
+                            id="ENG_description"
+                            className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm"
+                            placeholder="Enter product description in English"
+                            value={productData.ENG_description}
+                            onChange={(e) => handleDescriptionChange('ENG', e.target.value)}
+                        ></textarea>
                         <button className="mt-2 w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => saveDescription('ENG')}>
                             Save English Description
                         </button>
@@ -143,7 +201,13 @@ const ProductDetailsPage = () => {
 
                     <div className="w-1/3 px-2">
                         <label htmlFor="CAT_description" className="block text-sm font-medium text-gray-700">Descripció del Producte (Català)</label>
-                        <textarea id="CAT_description" className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm" placeholder="Introduïu la descripció del producte en català"></textarea>
+                        <textarea
+                            id="CAT_description"
+                            className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm"
+                            placeholder="Afegeixi la descripció del producte en Català"
+                            value={productData.CAT_description}
+                            onChange={(e) => handleDescriptionChange('CAT', e.target.value)}
+                        ></textarea>
                         <button className="mt-2 w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => saveDescription('CAT')}>
                             Desar Descripció en Català
                         </button>
@@ -151,7 +215,13 @@ const ProductDetailsPage = () => {
 
                     <div className="w-1/3 pl-2">
                         <label htmlFor="ESP_description" className="block text-sm font-medium text-gray-700">Descripción del Producto (Español)</label>
-                        <textarea id="ESP_description" className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm" placeholder="Introduzca la descripción del producto en español"></textarea>
+                        <textarea
+                            id="ESP_description"
+                            className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm"
+                            placeholder="Introduzca la descripción del producto en español"
+                            value={productData.ESP_description}
+                            onChange={(e) => handleDescriptionChange('ESP', e.target.value)}
+                        ></textarea>
                         <button className="mt-2 w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => saveDescription('ESP')}>
                             Guardar Descripción en Español
                         </button>
