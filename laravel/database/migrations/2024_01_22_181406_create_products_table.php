@@ -19,6 +19,10 @@ return new class extends Migration
             $table->integer('dpi');
             $table->string('type');
             $table->boolean('is_active')->default(false);
+            $table->string('ENG_description')->nullable();
+            $table->string('CAT_description')->nullable();
+            $table->string('ESP_description')->nullable();
+            $table->integer('priority')->nullable()->unique();
             $table->timestamps();
         });
     }

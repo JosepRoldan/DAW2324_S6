@@ -16,6 +16,10 @@ class Product extends Model
         'dpi',
         'type',
         'is_active',
+        'ENG_description',
+        'CAT_description',
+        'ESP_description',
+        'priority',
     ];
 
     protected $appends = ['thumb'];
