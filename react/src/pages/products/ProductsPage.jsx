@@ -183,11 +183,15 @@ export default function ProductsPage() {
 
     return (
         <AppLayout Page={"Products"} Steps={steps}>
-            <div className="flex justify-end">
+            <div className="flex items-center justify-end mb-3">
+                {/* Botón de Acciones Masivas */}
+                <a href="/products-massive-actions" className="inline-block mr-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    Massive actions
+                </a>
                 <ButtonToggle onToggle={toggleEditable} />
                 {/* <ButtonFetchProductsAPI /> */}
             </div>
-            <div className="ag-theme-quartz" style={{ width: '100%', height: '80vh' }}>
+            <div className="ag-theme-quartz" style={{ width: '100%', height: '75vh' }}>
                 {isLoading
                     ? <Spinner message='Loading Products...' />
                     : (
