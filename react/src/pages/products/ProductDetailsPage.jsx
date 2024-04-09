@@ -11,24 +11,24 @@ import translationCA from "/src/locales/cat/translation.json";
 import translationES from "/src/locales/esp/translation.json";
 
 const resources = {
-  eng: {
-    translation: translationEN,
-  },
-  cat: {
-    translation: translationCA,
-  },
-  esp: {
-    translation: translationES,
-  },
+    eng: {
+        translation: translationEN,
+    },
+    cat: {
+        translation: translationCA,
+    },
+    esp: {
+        translation: translationES,
+    },
 };
 
 i18n.use(initReactI18next).init({
-  resources,
-  lng: "eng",
-  fallbackLng: "eng",
-  interpolation: {
-    escapeValue: false,
-  },
+    resources,
+    lng: "eng",
+    fallbackLng: "eng",
+    interpolation: {
+        escapeValue: false,
+    },
 });
 
 const steps = [
@@ -132,6 +132,32 @@ const ProductDetailsPage = () => {
     return (
         <AppLayout Page={"Product Details"} Steps={steps}>
             <div style={{ height: '80vh', width: '100%', overflowY: 'auto' }}>
+                <div className="flex justify-between mb-4">
+                    <div className="w-1/3 pr-2">
+                        <label htmlFor="ENG_description" className="block text-sm font-medium text-gray-700">Product Description (English)</label>
+                        <textarea id="ENG_description" className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm" placeholder="Enter product description in English"></textarea>
+                        <button className="mt-2 w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => saveDescription('ENG')}>
+                            Save English Description
+                        </button>
+                    </div>
+
+                    <div className="w-1/3 px-2">
+                        <label htmlFor="CAT_description" className="block text-sm font-medium text-gray-700">Descripció del Producte (Català)</label>
+                        <textarea id="CAT_description" className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm" placeholder="Introduïu la descripció del producte en català"></textarea>
+                        <button className="mt-2 w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => saveDescription('CAT')}>
+                            Desar Descripció en Català
+                        </button>
+                    </div>
+
+                    <div className="w-1/3 pl-2">
+                        <label htmlFor="ESP_description" className="block text-sm font-medium text-gray-700">Descripción del Producto (Español)</label>
+                        <textarea id="ESP_description" className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm" placeholder="Introduzca la descripción del producto en español"></textarea>
+                        <button className="mt-2 w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => saveDescription('ESP')}>
+                            Guardar Descripción en Español
+                        </button>
+                    </div>
+                </div>
+
                 <div className="ag-theme-quartz" style={{ height: '80vh', width: '100%' }}>
                     {isLoading
                         ? <Spinner message='Loading Product...' />
