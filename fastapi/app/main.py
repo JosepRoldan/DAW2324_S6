@@ -12,10 +12,7 @@ import openai
 from openai import OpenAI
 from sqlalchemy.orm import Session
 # IMPORTS FROM OUR FILES
-# from app.images import router as images_router
-# from app.security import router as security_router
 from app.database import SessionLocal, engine
-# from app.crud import create_country
 from app.picanova.products_picanova import fetch_products_from_api, insert_products
 from app.openai.generate_images import guardar_imagen,eliminar_imagen
 from app.tokenAuth import create_token, get_current_user, verify_credentials
@@ -23,9 +20,7 @@ from app.models.order_models import ShippingDetails, Item, CreateOrderRequest
 from app.models.bigjpg_models import BigJpgRequest
 from app.models.openai_models import BigJpgRequest,infoImatge,infoEdit
 from app.models.country_model import Country
-
 from app.security import get_api_key
-
 
 app = FastAPI()
 
@@ -61,9 +56,6 @@ def login(username: str = Form(...), password: str = Form(...)):
     data = {"sub": username}
     access_token = create_token(data)
     return {"access_token": access_token, "token_type": "bearer"}
-
-# app.include_router(security_router)
-# app.include_router(images_router)
 
 @app.get("/products")
 async def get_and_insert_products(current_user: dict = Depends(get_current_user)):
@@ -106,14 +98,6 @@ def create_bigjpg_task(request: BigJpgRequest):
     else:
         raise HTTPException(status_code=response.status_code, detail="Error en la solicitud a BigJPG")
 
-
-# @app.put("/country/{country_code}", response_model=Country)
-# def update_country(country_code: str, db: Session = Depends(get_db)):
-#     new_country = create_country(db, country_code=country_code)
-#     if new_country:
-#         return new_country
-#     else:
-#         raise HTTPException(status_code=404, detail="No se pudo crear el país")
 
 @app.post("/editarImage")
 async def editar_imagen(infoEdit: infoEdit, 
