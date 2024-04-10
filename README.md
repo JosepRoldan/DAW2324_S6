@@ -26,9 +26,25 @@ cd /react
 cp .env.example .env
 ```
 
+# Go to the `fastapi` folder:
+```
+cd /fastapi
+cp .env.example .env
+```
+
 # Starting the services:
 ```
 docker-compose up --build
+```
+
+# If migrations on laravel are not working:
+Open the mysql shell:
+```
+mysql -u root -p
+```
+And paste this:
+```
+SET GLOBAL log_bin_trust_function_creators = 1;
 ```
 
 # Seed the database:
