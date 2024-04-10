@@ -2,7 +2,6 @@ __pycache__/
 .env
 node_modules
 laravel/package-lock.json
-laravel/package.json
 laravel/postcss.config.js
 laravel/tailwind.config.js
 .vscode/
