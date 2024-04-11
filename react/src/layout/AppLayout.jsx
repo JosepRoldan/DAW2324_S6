@@ -53,19 +53,13 @@ function classNames(...classes) {
 export default function AppLayout({ children, Page, Steps }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const user = localStorage.getItem("user");
-  const idRole = localStorage.getItem("idRole");
-  const userId = localStorage.getItem("userId");
 
-  let data, role;
+  var dataJSON = JSON.parse(localStorage.getItem("user"));
+  
+  const user = dataJSON.user;
+  const role = dataJSON.idRole;
+  const userId = dataJSON.id;
 
-  if (user) {
-    data = JSON.parse(user);
-    role = JSON.parse(idRole);
-  } else {
-    data = "";
-    role = "";
-  }
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   let navigation = [];
@@ -161,6 +155,7 @@ export default function AppLayout({ children, Page, Steps }) {
       navigation[i].current = true;
     }
   }
+  
   //This code snippet defines a function
   //handleNavigation that makes a POST request to a logout
   //endpoint when the action parameter is 'Sign out'. It then removes the token
@@ -406,7 +401,7 @@ export default function AppLayout({ children, Page, Steps }) {
                         className="ml-4 text-sm font-semibold leading-6 text-gray-900"
                         aria-hidden="true"
                       >
-                        {data}
+                        {user}
                       </span>
                       <ChevronDownIcon
                         className="ml-2 h-5 w-5 text-gray-400"

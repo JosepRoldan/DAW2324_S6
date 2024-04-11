@@ -43,9 +43,7 @@ export const DashboardPage = () => {
 
   useEffect(() => {
     getBenefits();
-    getProducts();
     getOrders();
-    getCustomers();
   }, []);
 
   /**
@@ -67,48 +65,7 @@ export const DashboardPage = () => {
     }
   };
 
-  /**
-   * Asynchronous function to fetch customers from the API and update the state with the response data.
-   *
-   * @param None
-   * @return None
-   */
-  const getCustomers = async () => {
-    try {
-      const url = `${import.meta.env.VITE_API_URL}/customers`;
-      const response = await axios.get(url, {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      });
-      if (response.status === 200) {
-        setCustomers(response.data);
-      }
-    } catch (error) {
-      console.error("Error fetching customers:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
-  /**
-   * Fetches products from the API and sets the products state if the response is successful, otherwise logs an error.
-   *
-   * @return {void}
-   */
-  const getProducts = async () => {
-    try {
-      const url = `${import.meta.env.VITE_API_URL}/products`;
-      const response = await axios.get(url, {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      });
-      if (response.status === 200) {
-        setProducts(response.data);
-      }
-    } catch (error) {
-      console.error("Error fetching products:", error);
-    }
-  };
   /**
    * Asynchronous function to retrieve orders from the API and handle the response or error.
    *
@@ -126,6 +83,8 @@ export const DashboardPage = () => {
       }
     } catch (error) {
       console.error("Error fetching orders:", error);
+    }finally{
+      setLoading(false);
     }
   };
 
@@ -137,275 +96,126 @@ export const DashboardPage = () => {
             <div className="loader"></div>
           </div>
         )}
-        {/* SECTION BENEFITS / CUSTOMERS */}
-        <div className="flex">
-          <div className="relative flex max-w-[600px] h-[350px] w-full flex-col rounded-[10px] border-[1px] border-gray-200 bg-white bg-clip-border shadow-md shadow-[#F3F3F3] dark:border-[#ffffff33] dark:!bg-navy-800 dark:text-white dark:shadow-none">
-            <div className="headerContainer">
-              <h4 className="text-lg font-bold text-primaryColor columns-3">
-                {"Benefits"}
-              </h4>
-              <div
-                className="buttonCreate"
-                style={{
-                  padding: "0px",
-                  paddingLeft: "5px",
-                  width: "90px",
-                  marginLeft: "220px",
-                }}
-              >
-                <Link to="/benefits">{t("◉ See more")}</Link>
-              </div>
+
+    <div className="container mx-w-6xl mx-auto py-4">
+        <div className="flex flex-col space-y-8">
+            <div className="grid grid-cols-1 md:grid-cols-4 xl:grid-cols-5 px-4 xl:p-0 gap-y-4 md:gap-6">
+                <div className="md:col-span-2 xl:col-span-3 bg-white p-6 rounded-2xl border border-gray-50">
+                    <div className="flex flex-col space-y-6 md:h-full md:justify-between">
+                        <div className="flex justify-between">
+                            <span className="text-xs text-gray-500 font-semibold uppercase tracking-wider">
+                                Admin Account
+                            </span>
+                            <span className="text-xs text-gray-500 font-semibold uppercase tracking-wider">
+                                Available Funds
+                            </span>
+                        </div>
+                        <div className="flex gap-2 md:gap-4 justify-between items-center">
+                            <div className="flex flex-col space-y-4">
+                            </div>
+                            <h2 className="text-lg md:text-xl xl:text-3xl text-gray-700 font-black tracking-wider">
+                                <span className="md:text-xl">€</span>
+                                92,817.45
+                            </h2>
+                        </div>
+                        <div className="flex gap-2 md:gap-4">
+                            <a href="#"
+                                className="bg-blue-600 px-5 py-3 w-full text-center md:w-auto rounded-lg text-white text-xs tracking-wider font-semibold hover:bg-blue-800">
+                                See more
+                            </a>
+                            <a href="#"
+                                className="bg-blue-50 px-5 py-3 w-full text-center md:w-auto rounded-lg text-blue-600 text-xs tracking-wider font-semibold hover:bg-blue-600 hover:text-white">
+                                Check latest transactions
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    className="col-span-2 p-6 rounded-2xl bg-gradient-to-r from-blue-500 to-blue-800 flex flex-col justify-between">
+                    <div className="flex flex-col space-y-2">
+                        <h2 className="text-white font-bold text-lg">Overview of your account</h2>
+                        <p className="text-gray-100 text-sm md:text-base leading-tight max-w-sm">
+                           This dashboard provides a quick and easy way to see what's going on in your account. It also includes specialized areas with more detailed information.
+                        </p>
+                    </div>
+                    <div className="flex justify-between items-end">
+                    </div>
+                </div>
+
             </div>
-            <div className="scrollit relative flex max-w-[600px] h-[350px] w-full flex-col rounded-[10px] border-[1px] border-gray-200 bg-softGray bg-clip-border shadow-md shadow-[#F3F3F3] dark:border-[#ffffff33] dark:!bg-navy-800 dark:text-white dark:shadow-none">
-              <table className="table divide-y divide-gray-200">
-                <thead className="bg-gray-100">
-                  <tr>
-                    <th
-                      scope="col"
-                      className="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
-                    >
-                      {t("Month")}
-                    </th>
-                    <th
-                      scope="col"
-                      className="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
-                    >
-                      {t("Income")}
-                    </th>
-                    <th
-                      scope="col"
-                      className="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
-                    >
-                      {t("Expenses")}
-                    </th>
-                    <th
-                      scope="col"
-                      className="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
-                    >
-                      {t("Profit")}
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y">
-                  {benefits.map((benefit, i) => (
-                    <tr key={benefit.id}>
-                      <td className="py-4 px-6 text-sm font-medium text-gray-900">
-                        {benefit.month}
-                      </td>
-                      <td className="py-4 px-6 text-sm font-medium text-gray-900">
-                        {benefit.income} €
-                      </td>
-                      <td className="py-4 px-6 text-sm font-medium text-gray-900">
-                        -{benefit.expense} €
-                      </td>
-                      <td className="py-4 px-6 text-sm font-medium text-gray-900">
-                        {benefit.profit}€
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 px-4 xl:p-0 gap-4 xl:gap-6">
+                <div className="col-span-1 md:col-span-2 lg:col-span-4 flex justify-between">
+                    <h2 className="text-xs md:text-sm text-gray-700 font-bold tracking-wide md:tracking-wider">
+                        General Overview of company profit</h2>
+                </div>
+                <div className="bg-white p-6 rounded-xl border border-gray-50">
+                    <div className="flex justify-between items-start">
+                        <div className="flex flex-col">
+                            <p className="text-xs text-gray-600 tracking-wide">Daily Profit</p>
+                            <h3 className="mt-1 text-lg text-blue-500 font-bold">$ 818</h3>
+                        </div>
+                        <div className="bg-blue-500 p-2 md:p-1 xl:p-2 rounded-md">
+                        </div>
+                    </div>
+                </div>
+                <div className="bg-white p-6 rounded-xl border border-gray-50">
+                    <div className="flex justify-between items-start">
+                        <div className="flex flex-col">
+                            <p className="text-xs text-gray-600 tracking-wide">Weekly Profit</p>
+                            <h3 className="mt-1 text-lg text-green-500 font-bold">$ 8,918</h3>
+                        </div>
+                        <div className="bg-green-500 p-2 md:p-1 xl:p-2 rounded-md">
+                        </div>
+                    </div>
+                </div>
+                <div className="bg-white p-6 rounded-xl border border-gray-50">
+                    <div className="flex justify-between items-start">
+                        <div className="flex flex-col">
+                            <p className="text-xs text-gray-600 tracking-wide">Monthly Profit</p>
+                            <h3 className="mt-1 text-lg text-yellow-500 font-bold">$ 1,223</h3>
+                        </div>
+                        <div className="bg-yellow-500 p-2 md:p-1 xl:p-2 rounded-md">
+                        </div>
+                    </div>
+                </div>
+                <div className="bg-white p-6 rounded-xl border border-gray-50">
+                    <div className="flex justify-between items-start">
+                        <div className="flex flex-col">
+                            <p className="text-xs text-gray-600 tracking-wide">Yearly Profit</p>
+                            <h3 className="mt-1 text-lg text-indigo-500 font-bold">$ 5,918</h3>
+                        </div>
+                        <div className="bg-indigo-500 p-2 md:p-1 xl:p-2 rounded-md">
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-          <div className="relative flex max-w-[620px] h-[350px] w-full flex-col ml-4 rounded-[10px] border-[1px] border-gray-200 bg-white bg-clip-border shadow-md shadow-[#F3F3F3] dark:border-[#ffffff33] dark:!bg-navy-800 dark:text-white dark:shadow-none">
-            <div className="headerContainer">
-              <h4 className="text-lg font-bold text-primaryColor columns-3">
-                {"Customers"}
-              </h4>
-              <div
-                className="buttonCreate"
-                style={{
-                  padding: "0px",
-                  paddingLeft: "5px",
-                  width: "90px",
-                  marginLeft: "190px",
-                }}
-              >
-                <Link to="/customers">{t("◉ See more")}</Link>
-              </div>
+            <div className="grid grid-cols-1 md:grid-cols-5 items-start px-4 xl:p-0 gap-y-4 md:gap-6">
+                <div className="col-span-3 bg-white p-6 rounded-xl border border-gray-50 flex flex-col space-y-6">
+                    <div className="flex justify-between items-center">
+                        <h2 className="text-sm text-gray-600 font-bold tracking-wide">Latest Transactions</h2>
+                        <a href="#"
+                            className="px-4 py-2 text-xs bg-blue-100 text-blue-500 rounded uppercase tracking-wider font-semibold hover:bg-blue-300">More</a>
+                    </div>
+                    <ul className="divide-y-2 divide-gray-100 overflow-x-auto w-full">
+                        <li className="py-3 flex justify-between text-sm text-gray-500 font-semibold">
+                            <p className="px-4 font-semibold">Today</p>
+                            <p className="px-4 text-gray-600">McDonald</p>
+                            <p className="px-4 tracking-wider">Cash</p>
+                            <p className="px-4 text-blue-600">Food</p>
+                            <p className="md:text-base text-gray-800 flex items-center gap-2">
+                                16.90
+                                <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </p>
+                        </li>
+                    </ul>
+                </div>
             </div>
-            <div className="scrollit relative flex max-w-[620px] h-[350px] w-full flex-col rounded-[10px] border-[1px] border-gray-200 bg-softGray bg-clip-border shadow-md shadow-[#F3F3F3] dark:border-[#ffffff33] dark:!bg-navy-800 dark:text-white dark:shadow-none">
-              <table className="table divide-y divide-gray-200">
-                <thead className="bg-gray-100">
-                  <tr>
-                    <th
-                      scope="col"
-                      className="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
-                    >
-                      {t("Name")}
-                    </th>
-                    <th
-                      scope="col"
-                      className="py-3 px-6 text-xs w-60 font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
-                    >
-                      {t("Email")}
-                    </th>
-                    <th
-                      scope="col"
-                      className="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
-                    >
-                      {t("Username")}
-                    </th>
-                    <th
-                      scope="col"
-                      className="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
-                    >
-                      {t("PostalCode")}
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y">
-                  {customers.map((customer, i) => (
-                    <tr key={customer.id}>
-                      <td className="py-4 px-6 text-sm font-medium text-gray-900">
-                        {customer.name}
-                      </td>
-                      <td className="py-4 px-6 text-sm font-medium text-gray-900">
-                        {customer.mail}
-                      </td>
-                      <td className="py-4 px-6 text-sm font-medium text-gray-900">
-                        {customer.surname}
-                      </td>
-                      <td className="py-4 px-6 text-sm font-medium text-gray-900">
-                        {customer.postcode}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
         </div>
-        {/* SECTION PRODUCTS / ORDERS */}
-        <div className="flex mt-10 mb-10">
-          <div className="relative flex max-w-[600px] h-[350px] w-full flex-col rounded-[10px] border-[1px] border-gray-200 bg-white bg-clip-border shadow-md shadow-[#F3F3F3] dark:border-[#ffffff33] dark:!bg-navy-800 dark:text-white dark:shadow-none">
-            <div className="headerContainer">
-              <h4 className="text-lg font-bold text-primaryColor columns-3">
-                {"Products"}
-              </h4>
-              <div
-                className="buttonCreate"
-                style={{
-                  padding: "0px",
-                  paddingLeft: "5px",
-                  width: "90px",
-                  marginLeft: "210px",
-                }}
-              >
-                <Link to="/products">{t("◉ See more")}</Link>
-              </div>
-            </div>
-            <div className="scrollit relative flex max-w-[600px] h-[350px] w-full flex-col rounded-[10px] border-[1px] border-gray-200 bg-softGray bg-clip-border shadow-md shadow-[#F3F3F3] dark:border-[#ffffff33] dark:!bg-navy-800 dark:text-white dark:shadow-none">
-              <table className="table divide-y divide-gray-200">
-                <thead className="bg-gray-100">
-                  <tr>
-                    <th
-                      scope="col"
-                      className="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
-                    >
-                      {t("Name")}
-                    </th>
-                    <th
-                      scope="col"
-                      className="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
-                    >
-                      {t("SKU")}
-                    </th>
-                    <th
-                      scope="col"
-                      className="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
-                    >
-                      {t("DPI")}
-                    </th>
-                    <th
-                      scope="col"
-                      className="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
-                    >
-                      {t("Type")}
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y">
-                  {products.map((product, i) => (
-                    <tr key={product.id}>
-                      <td className="py-4 px-6 text-sm font-medium text-gray-900">
-                        {product.name}
-                      </td>
-                      <td className="py-4 px-6 text-sm font-medium text-gray-900">
-                        {product.sku}
-                      </td>
-                      <td className="py-4 px-6 text-sm font-medium text-gray-900">
-                        {product.dpi}
-                      </td>
-                      <td className="py-4 px-6 text-sm font-medium text-gray-900">
-                        {product.dpi}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <div className="relative flex max-w-[620px] h-[350px] w-full flex-col ml-4 rounded-[10px] border-[1px] border-gray-200 bg-white bg-clip-border shadow-md shadow-[#F3F3F3] dark:border-[#ffffff33] dark:!bg-navy-800 dark:text-white dark:shadow-none">
-            <div className="headerContainer">
-              <h4 className="text-lg font-bold text-primaryColor columns-3">
-                {"Orders"}
-              </h4>
-              <div
-                className="buttonCreate"
-                style={{
-                  padding: "0px",
-                  paddingLeft: "5px",
-                  width: "90px",
-                  marginLeft: "280px",
-                }}
-              >
-                <Link to="/orders">{t("◉ See more")}</Link>
-              </div>
-            </div>
-            <div className="scrollit relative flex max-w-[620px] h-[350px] w-full flex-col rounded-[10px] border-[1px] border-gray-200 bg-softGray bg-clip-border shadow-md shadow-[#F3F3F3] dark:border-[#ffffff33] dark:!bg-navy-800 dark:text-white dark:shadow-none">
-              <table className="table divide-y divide-gray-200">
-                <thead className="bg-gray-100">
-                  <tr>
-                    <th
-                      scope="col"
-                      className="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
-                    >
-                      {t("Orderd ID")}
-                    </th>
-                    <th
-                      scope="col"
-                      className="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
-                    >
-                      {t("Customer ID")}
-                    </th>
-                    <th
-                      scope="col"
-                      className="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
-                    >
-                      {t("Status")}
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y">
-                  {orders.map((orders, i) => (
-                    <tr key={orders.id}>
-                      <td className="py-4 px-6 text-sm font-medium text-gray-900">
-                        {orders.idOrderPicanova}
-                      </td>
-                      <td className="py-4 px-6 text-sm font-medium text-gray-900">
-                        {orders.idCustomer}
-                      </td>
-                      <td className="py-4 px-6 text-sm font-medium text-gray-900">
-                        {orders.orderStatus}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
+    </div>
       </div>
     </AppLayout>
   );
