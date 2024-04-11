@@ -31,6 +31,11 @@ i18n.use(initReactI18next).init({
     },
 });
 
+const steps = [
+    { name: 'Products', href: '/products', current: false },
+    { name: 'Product Details', href: '/', current: true },
+]
+
 const ProductDetailsPage = () => {
     const { t } = useTranslation();
     const { productId } = useParams();
