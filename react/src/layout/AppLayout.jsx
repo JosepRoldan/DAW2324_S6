@@ -24,6 +24,7 @@ import LanguageSwitcher from "../components/LanguageSwitcher";
 import translationEN from "/src/locales/eng/translation.json";
 import translationCA from "/src/locales/cat/translation.json";
 import translationES from "/src/locales/esp/translation.json";
+import { Outlet } from 'react-router-dom';
 
 const resources = {
   eng: {
@@ -206,6 +207,7 @@ export default function AppLayout({ children, Page, Steps }) {
   return (
     <>
       <div>
+
         <Transition.Root show={sidebarOpen} as={Fragment}>
           <Dialog
             as="div"
@@ -459,7 +461,7 @@ export default function AppLayout({ children, Page, Steps }) {
                 window.location.href.includes("/dashboard") == false && (
                   <Breadcrumb steps={Steps} />
                 )}
-              {children}
+              <Outlet />
             </div>
           </main>
 

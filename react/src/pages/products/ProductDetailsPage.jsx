@@ -31,11 +31,6 @@ i18n.use(initReactI18next).init({
     },
 });
 
-const steps = [
-    { name: 'Products', href: '/products', current: false },
-    { name: 'Product Details', href: '/', current: true },
-]
-
 const ProductDetailsPage = () => {
     const { t } = useTranslation();
     const { productId } = useParams();
@@ -182,7 +177,7 @@ const ProductDetailsPage = () => {
     }
 
     return (
-        <AppLayout Page={"Product Details"} Steps={steps}>
+        <>
             <div style={{ height: '80vh', width: '100%', overflowY: 'auto' }}>
                 <div className="flex justify-between mb-4">
                     <div className="w-1/3 pr-2">
@@ -245,7 +240,7 @@ const ProductDetailsPage = () => {
                         )}
                 </div>
             </div>
-        </AppLayout>
+        </>
     );
 };
 

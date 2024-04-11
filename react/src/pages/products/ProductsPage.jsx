@@ -2,7 +2,6 @@ import React, { useEffect, useState, useMemo } from 'react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
 import { AgGridReact } from 'ag-grid-react';
-import AppLayout from '../../layout/AppLayout';
 import ButtonFetchProductsAPI from '../../components/ButtonFetchProductsAPI';
 import ButtonToggle from '../../components/ButtonToggle';
 import { PriceRangeCellRenderer } from '../../components/tables/products/cellRenderers/PriceRangeCellRenderer';
@@ -38,10 +37,6 @@ i18n.use(initReactI18next).init({
         escapeValue: false,
     },
 });
-
-const steps = [
-    { name: 'Products', href: '/products', current: true },
-]
 
 export default function ProductsPage() {
     const { t } = useTranslation();
@@ -182,7 +177,7 @@ export default function ProductsPage() {
     ], [isEditable]);
 
     return (
-        <AppLayout Page={"Products"} Steps={steps}>
+        <>
             <div className="flex justify-end">
                 <ButtonToggle onToggle={toggleEditable} />
                 {/* <ButtonFetchProductsAPI /> */}
@@ -205,6 +200,6 @@ export default function ProductsPage() {
                         </>
                     )}
             </div>
-        </AppLayout>
+        </>
     );
 };
