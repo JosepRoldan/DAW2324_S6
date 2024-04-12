@@ -1,8 +1,9 @@
 import "./CreateForm.css";
 import React, { useState } from "react";
-import {Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import "../sectionTable/alert.scss";
+
 /**
  * Function for creating a form.
  *
@@ -10,7 +11,6 @@ import "../sectionTable/alert.scss";
  * @return {JSX.Element} the form component
  */
 const CreateForm = ({ section }) => {
-  //Declaramos variables
   const [month, setMonth] = useState("");
   const [income, setIncome] = useState("");
   const [expense, setExpense] = useState("");
@@ -23,9 +23,6 @@ const CreateForm = ({ section }) => {
   const token = localStorage.getItem("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-  /**
-   * Function to validate the input values for month, income, and expense.
-   */
   const validate = () => {
     let isValid = true;
     const newErrors = {};
@@ -34,33 +31,51 @@ const CreateForm = ({ section }) => {
       isValid = false;
       newErrors.month = "Month is required";
     }
-    
-   if (month.trim() !== 'January' && month.trim() !== 'February' && month.trim() !== 'March' && month.trim() !== 'April' && month.trim() !== 'June' && month.trim() !== 'July' && month.trim() !== 'August' && month.trim() !== 'September' && month.trim() !== 'October' && month.trim() !== 'November' && month.trim() !== 'December') {
-        isValid = false;
-        newErrors.month = "Month must be valid";
+
+    if (
+      month.trim() !== "January" &&
+      month.trim() !== "February" &&
+      month.trim() !== "March" &&
+      month.trim() !== "April" &&
+      month.trim() !== "June" &&
+      month.trim() !== "July" &&
+      month.trim() !== "August" &&
+      month.trim() !== "September" &&
+      month.trim() !== "October" &&
+      month.trim() !== "November" &&
+      month.trim() !== "December"
+    ) {
+      isValid = false;
+      newErrors.month = "Month must be valid";
     }
-   
-    if (isNaN(parseFloat(income)) || !isFinite(income) || parseFloat(income) <= 0) {
+
+    if (
+      isNaN(parseFloat(income)) ||
+      !isFinite(income) ||
+      parseFloat(income) <= 0
+    ) {
       isValid = false;
       newErrors.income = "Income must be a number greater than 0";
     }
-    if (isNaN(parseFloat(expense)) || !isFinite(expense) || parseFloat(expense) <= 0) {
+    if (
+      isNaN(parseFloat(expense)) ||
+      !isFinite(expense) ||
+      parseFloat(expense) <= 0
+    ) {
       isValid = false;
       newErrors.expense = "Expense must be a number greater than 0";
     }
-
 
     if (isNaN(parseInt(year)) || !isFinite(year) || parseInt(year) <= 0) {
       isValid = false;
       newErrors.year = "Year must be a number greater than 0";
     }
 
-    if(isValid){
+    if (isValid) {
       handleCreate(month, income, expense, profit, year);
-    }else{
+    } else {
       setErrors(newErrors);
     }
-  
   };
 
   /**
@@ -70,18 +85,18 @@ const CreateForm = ({ section }) => {
   const handleCreate = async (month, income, expense, profit, year) => {
     setAlert(false);
     console.log(month, income, expense, profit, year);
-    const url =`${import.meta.env.VITE_API_URL}/createBenefit`;
+    const url = `${import.meta.env.VITE_API_URL}/createBenefit`;
     await axios({
       method: "POST",
       url: url,
-      data: { month, income, expense, profit, year},
+      data: { month, income, expense, profit, year },
     })
       .then(function (response) {
         if (response.status === 200) {
           console.log("Data inserted correctly");
         }
 
-        if(response.status === 409) {
+        if (response.status === 409) {
           console.log("Year already exists");
           setAlert(false);
         }
@@ -101,112 +116,104 @@ const CreateForm = ({ section }) => {
   };
 
   return (
-    <div className="popup">
-    <div className="popup-inner">
-      {alert && (
-        <main>
-          <section>
-            <div className="alert alert-2-success">
-              <h3 className="alert-title">Success</h3>
-              <p className="alert-content">Data inserted correctly</p>
+    <div class="bg-gray-100 flex items-center justify-left">
+      <div class="bg-white p-8 rounded-lg shadow-lg w-full">
+        <div class="flex items-center space-x-2 mb-6">
+          <h1 class="text-xl font-semibold">Create form for Profit</h1>
+        </div>
+        <p class="text-sm text-gray-600 mb-6">Insert the following data:</p>
+        <form id="changePasswordForm" class="space-y-6">
+          <div class="date-selector">
+            <div class="month-selector">
+              <label for="countries" class="text-sm font-medium text-gray-900">
+                Month
+              </label>
+              <select
+                id="countries"
+                class="bg-white-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+              >
+                <option selected>Select a month</option>
+                <option value="JA">January</option>
+                <option value="FE">February</option>
+                <option value="MA">March</option>
+                <option value="AP">April</option>
+                <option value="JU">June</option>
+                <option value="JU">July</option>
+                <option value="AU">August</option>
+                <option value="SE">September</option>
+                <option value="OC">October</option>
+                <option value="NO">November</option>
+                <option value="DE">December</option>
+              </select>
             </div>
-          </section>
-        </main>
-      )}
-      <div className="flex items-center space-x-5">
-        <div className="h-14 w-14 bg-yellow-200 rounded-full flex flex-shrink-0 justify-center items-center text-yellow-500 text-2xl font-mono">
-          i
-        </div>
-        <div className="block pl-2 font-semibold text-xl self-start text-gray-700">
-          <h2 className="leading-relaxed">Form Creation</h2>
-          <p className="text-sm text-gray-500 font-normal leading-relaxed">
-            Create a form for Benefits
-          </p>
-        </div>
-      </div>
-      <div className="divide-y divide-gray-200">
-        <div className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-          <div className="flex flex-col">
-            {errors.month && (
-              <div id="month-error" className="error" role="alert">
-                {errors.month}
-              </div>
-            )}
-            <label htmlFor="month" className="labels">Month</label>
-            <input
-              type="text"
-              id="month"
-              className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
-              placeholder="Month"
-              value={month}
-              onChange={(e) => setMonth(e.target.value)}
-            />
-            {errors.income && (
-              <div id="income-error" className="error" role="alert">
-                {errors.income}
-              </div>
-            )}
-            <label htmlFor="income" className="labels">Income</label>
-            <input
-              type="number"
-              id="income"
-              className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
-              placeholder="5000.00"
-              value={income}
-              onChange={(e) => setIncome(e.target.value)}
-            />
-            {errors.expense && (
-              <div id="expense-error" className="error" role="alert">
-                {errors.expense}
-              </div>
-            )}
-            <label htmlFor="expense" className="labels">Expense</label>
-            <input
-              type="number"
-              id="expense"
-              className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
-              placeholder="3000.00"
-              value={expense}
-              onChange={(e) => setExpense(e.target.value)}
-            />
-            <label htmlFor="year" className="labels">Year</label>
-            <input
-              type="number"
-              id="year"
-              className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
-              placeholder="2024"
-              value={year}
-              onChange={(e) => setYear(e.target.value)}
-            />
-            <label htmlFor="profit" className="labels">Profit</label>
-            <input
-              type="number"
-              id="profit"
-              className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
-              placeholder="1500.500"
-              value={profit}
-              onChange={(e) => setProfit(e.target.value)}
-              disabled
-            />
+            <div class="year-selector">
+              <label for="year" class="text-sm font-medium text-gray-900">
+                Year
+              </label>
+              <input
+                type="text"
+                id="year"
+                class="year-input form-input block border w-full border-gray-300 rounded-md shadow-sm"
+                required
+              />
+            </div>
           </div>
-        </div>
-        <div className="pt-4 flex items-center space-x-4">
-          <Link
-            to="/benefits"
-            className="buttonDelete flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none"
-          >
-            Cancel
-          </Link>
-          <button
-            className="buttonCreate flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none"
-            onClick={() => validate()}
-          >
-            Create
-          </button>
-        </div>
+          <div class="date-selector">
+            <div className="month-selector">
+              <label
+                for="income"
+                class="text-sm font-medium text-gray-700 block mb-2"
+              >
+                Income
+              </label>
+              <input
+                type="text"
+                id="income"
+                class="income-input form-input block border w-full border-gray-300 rounded-md shadow-sm"
+                required
+              />
+            </div>
+            <div className="year-selector">
+              <label
+                for="expenses"
+                class="text-sm font-medium text-gray-700 flex mb-2"
+              >
+                Expenses
+              </label>
+              <input
+                type="text"
+                id="expenses"
+                class="income-input form-input block border w-full border-gray-300 rounded-md shadow-sm"
+                required
+              />
+            </div>
+          </div>
+          <div id="passwordCriteria" class="text-sm space-y-2">
+            <p class="text-red-500">Weak password. Must contain:</p>
+            <ul class="list-disc pl-5 space-y-1">
+              <li>At least 1 uppercase</li>
+              <li>At least 1 number</li>
+              <li>At least 8 characters</li>
+            </ul>
+          </div>
+          <div class="flex justify-between">
+            <button
+              type="button"
+              onclick="discardChanges()"
+              class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 focus:outline-none focus:ring focus:border-blue-300"
+            >
+              Discard
+            </button>
+            <button
+              type="submit"
+              class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring focus:border-blue-300"
+            >
+              Apply Changes
+            </button>
+          </div>
+        </form>
       </div>
     </div>
-  </div>
   );
 };
 

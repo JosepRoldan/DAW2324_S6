@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import "./SectionTable.css";
 import { Link } from "react-router-dom";
 import axios from "axios";
-
 /**
  * Renders a section table with benefits data and a chart.
  *
@@ -46,11 +45,8 @@ function SectionTable({ SectionName }) {
     setIsOpen(!isOpen);
   };
 
-  const handleInputChange = (event) => {
-    setSearchTerm(event.value.toLowerCase());
-    console.log(searchTerm);
-  };
 
+  
   /**
    * Hides the tooltip by resetting its content and position, and closing it.
    */
@@ -162,6 +158,7 @@ function SectionTable({ SectionName }) {
    */
   const handleYearClick = (year) => {
     getBenefitsByYear(year);
+    toggleDropdown(); 
   }
 
 
@@ -295,7 +292,6 @@ function SectionTable({ SectionName }) {
           </svg>
         </button>
         <div id="dropdown-menu" className={`z-10 absolute left-0 mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 p-1 space-y-1 ${isOpen ? '' : 'hidden'}`}>
-          <input id="search-input" onChange={handleInputChange} value={searchTerm} className="block w-full px-4 py-2 text-gray-800 border rounded-md  border-gray-300 focus:outline-none" type="text" placeholder="Search years" autoComplete="off" />
           {years.map((year, i) => (
             <a key={i} onClick={() => handleYearClick(year)} className="block px-4 py-2 text-gray-700 hover:bg-gray-100 active:bg-blue-100 cursor-pointer rounded-md">{year}</a>
           ))}
@@ -487,6 +483,8 @@ function SectionTable({ SectionName }) {
         </div>
       </div>
     </div>
+
+   
   );
 }
 
