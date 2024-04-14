@@ -39,9 +39,13 @@ export default function ShoppingOrder() {
                     <section>
                         <h2 className="uppercase tracking-wide text-lg font-semibold text-gray-700 my-2">Shipping & Billing Information</h2>
                         <fieldset className="mb-3 bg-white shadow-lg rounded text-gray-600">
-                            <label className="flex border-b border-gray-200 h-12 py-3 items-center">
+                            <label className="inline-flex w-2/4 border-gray-200 py-3">
                                 <span className="text-right px-2">Name</span>
                                 <input name="name" className="focus:outline-none px-3" placeholder="Try Odinsson" required=""/>
+                            </label>
+                            <label className="xl:w-1/4 xl:inline-flex py-3 items-center flex xl:border-none border-t border-gray-200 py-3">
+                                <span className="text-right px-2">Surname</span>
+                                <input name="surname" className="focus:outline-none px-3" placeholder="Try Odinsson" required=""/>
                             </label>
                             <label className="flex border-b border-gray-200 h-12 py-3 items-center">
                                 <span className="text-right px-2">Email</span>
@@ -60,7 +64,7 @@ export default function ShoppingOrder() {
                                 <input name="state" className="focus:outline-none px-3" placeholder="CA"/>
                             </label>
                             <label className="xl:w-1/4 xl:inline-flex py-3 items-center flex xl:border-none border-t border-gray-200 py-3">
-                                <span className="text-right px-2 xl:px-0 xl:text-none">ZIP</span>
+                                <span className="text-right px-2 xl:px-1 xl:text-none">ZIP</span>
                                 <input name="postal_code" className="focus:outline-none px-3" placeholder="98603"/>
                             </label>
                             <label className="flex border-t border-gray-200 h-12 py-3 items-center select relative">
