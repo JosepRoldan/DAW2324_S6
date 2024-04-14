@@ -2,7 +2,6 @@
 @section('title', 'Shipping')
 
 @section('content')
-  <div id = "shoppingOrder"></div>
     <section>
         <div class=" text-center mb-10 m-5">
             <ul class=" align-middle steps">
@@ -38,5 +37,6 @@
         }
     </style>
 </head>
-    
+<div id = "shoppingOrder"></div>
+
 @endsection
