@@ -6,6 +6,8 @@ import {useForm} from '../hook_Login_Register.js';
 
 
 export default function Register() {
+    const [successMessage, setSuccessMessage] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
     const handleRedirect = () => {
         window.location.href = '/login';
       };
@@ -15,6 +17,8 @@ export default function Register() {
         mail: '',
         password: ''
     });
+   
+    
 
    return (  <>
         <Toaster richColors position="top-center"  />

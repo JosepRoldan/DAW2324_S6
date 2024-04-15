@@ -22,7 +22,7 @@ class RegisterController extends Controller
 
         $rules = [
             'username' => 'required|unique:customers',
-            'password' => 'required',
+            'password' => 'required|min:8',
             'mail' => 'required|email|unique:customers',
         ];
 
@@ -41,6 +41,8 @@ class RegisterController extends Controller
             ($request->has(!'username') || $request->has(!'mail') || $request->has(!'password'))
         ) {
             return response()->json(null, 400);
+        }elseif ($validator->fails() || strlen($request->input('password')) < 8) {
+            return response()->json(null, 411);
         }
 
 
@@ -57,7 +59,7 @@ class RegisterController extends Controller
         Session::put('token', $token);
 
         // Redirige a una página de confirmación o a donde sea apropiado
-        return redirect()->to('/home');
+        return redirect()->to('Inicio');
     }
 
     public function login(Request $request){

@@ -32,14 +32,14 @@ export default function Login() {
               body: JSON.stringify(formData)
           });
             if (response.status === 401) {
-                toast.error("El correo electrónico o la contraseña son incorrectos.");
+                toast.error("El nombre de usuario o correo electrónico ya están en uso o hay campos sin rellenar.");
+            }else if(response.status === 411){
+                toast.error("Las contraseña no cumple los requisitos minimos.");
             }else if (response.status === 200) {
-                toast.success("¡Inicio de sesión exitoso!");
+                toast.success("Se ha registrado correctamente!");
                 setTimeout(function() {
                     window.location.href = 'Inicio';
                 }, 2000); // 2000 milisegundos = 2 segundos
-            }else if (response.status === 404) {
-                toast.error("¡Introduce los datos de inicio!");
             }
        
       } catch (error) {

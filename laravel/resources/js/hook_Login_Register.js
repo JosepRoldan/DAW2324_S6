@@ -25,7 +25,7 @@ export function useForm(initialState) {
       } else if (response.status === 200) {
           toast.success("Se ha registrado correctamente!");
           setTimeout(function() {
-              window.location.href = 'inicio';
+              window.location.href = 'Inicio';
           }, 2000); // 2000 milisegundos = 2 segundos
       }
 
