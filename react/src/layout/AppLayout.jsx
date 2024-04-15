@@ -2,7 +2,7 @@ import { Menu } from "@headlessui/react";
 import { CalendarIcon, ChartPieIcon, DocumentDuplicateIcon, HomeIcon, UserGroupIcon, UsersIcon, CogIcon } from "@heroicons/react/24/outline";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { Breadcrumb } from "../components/Breadcrumb";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import UserwayWidget from "../components/userwayWidget/UserWayWidget";
 import { useTranslation } from "react-i18next";
@@ -158,8 +158,8 @@ export default function AppLayout({ children }) {
                   <ul role="list" className="-mx-2 space-y-1">
                     {navigation.map((item) => (
                       <li key={item.name}>
-                        <a
-                          href={item.href}
+                        <Link
+                          to={item.href}
                           className={classNames(
                             item.current
                               ? "bg-gray-800 text-white"
@@ -172,7 +172,7 @@ export default function AppLayout({ children }) {
                             aria-hidden="true"
                           />
                           {item.name}
-                        </a>
+                        </Link>
                       </li>
                     ))}
                   </ul>
