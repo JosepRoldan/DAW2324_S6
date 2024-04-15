@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->string('address')->nullable();
             $table->string('postcode')->nullable();
+            $table->string('city')->nullable();
             $table->string('idCountry')->nullable();
             $table->boolean('is_validated')->default(false);
             $table->timestamps();
