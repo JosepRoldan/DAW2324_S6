@@ -14,11 +14,13 @@ return new class extends Migration
             Schema::create('orderDetails', function (Blueprint $table) {
                 $table->id();
                 $table->foreignId('idOrder')->references('id')->on('orders')->nullable(false);
-                $table->foreignId('idProduct')->references('id')->on('products')->nullable(false);
+                $table->foreignId('idPproduct')->references('id')->on('products')->nullable(false);
                 $table->foreignId('idGI')->references('idGI')->on('generatedImages')->nullable(false);
-                $table->integer('variant')->nullable(false);
+                $table->string('productName')->nullable(false);
+                $table->string('productDetails', 250)->nullable(false);
                 $table->integer('quantity')->nullable(false);
                 $table->decimal('priceEach', 6, 2)->nullable(false);
+                $table->decimal('totalPrice',6,2)->nullable(false);
                 $table->decimal('shippingPrice', 6, 2)->nullable(true);
             });
         }
