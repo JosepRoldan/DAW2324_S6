@@ -17,6 +17,7 @@ import translationEN from "/src/locales/eng/translation.json";
 import translationCA from "/src/locales/cat/translation.json";
 import translationES from "/src/locales/esp/translation.json";
 import { usePage } from '../../contexts/PageContext';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const resources = {
     eng: {
@@ -40,7 +41,7 @@ i18n.use(initReactI18next).init({
 });
 
 export default function ProductsPage() {
-
+    const navigate = useNavigate();
     const { setPage, setSteps } = usePage();
 
     useEffect(() => {
@@ -188,9 +189,12 @@ export default function ProductsPage() {
     return (
         <>
             <div className="flex items-center justify-end mb-3">
-                <a href="/products-massive-actions" className="inline-block mr-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    Massive actions
-                </a>
+                <button
+                    type="button" onClick={() => navigate("/products-massive-actions")}
+                    className="bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-full transition duration-300 mr-2"
+                >
+                    {t("Massive actions")}
+                </button>
                 <ButtonToggle onToggle={toggleEditable} />
                 {/* <ButtonFetchProductsAPI /> */}
             </div>
