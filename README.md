@@ -1,6 +1,6 @@
 # Before start
 ```
-cd /laravel
+cd laravel/
 composer install
 composer update
 cp .env.example .env
@@ -22,13 +22,36 @@ SANCTUM_STATEFUL_DOMAINS=http://localhost:8080,http://127.0.0.1:8080,http://loca
 
 # Go to the `React` folder:
 ```
-cd /react
+cd react/
+cp .env.example .env
+```
+
+# Go to the `fastapi` folder:
+```
+cd fastapi/
 cp .env.example .env
 ```
 
 # Starting the services:
 ```
 docker-compose up --build
+```
+
+# 👀Public shop developers should also:
+```
+cd laravel/
+npm install
+npm run dev
+```
+
+# If migrations on laravel are not working:
+Open the mysql shell, paste this:
+```
+mysql -u root -p
+```
+And paste this:
+```
+SET GLOBAL log_bin_trust_function_creators = 1;
 ```
 
 # Seed the database:

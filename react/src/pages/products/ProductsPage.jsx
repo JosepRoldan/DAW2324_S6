@@ -2,7 +2,6 @@ import React, { useEffect, useState, useMemo } from 'react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
 import { AgGridReact } from 'ag-grid-react';
-import AppLayout from '../../layout/AppLayout';
 import ButtonFetchProductsAPI from '../../components/ButtonFetchProductsAPI';
 import ButtonToggle from '../../components/ButtonToggle';
 import { PriceRangeCellRenderer } from '../../components/tables/products/cellRenderers/PriceRangeCellRenderer';
@@ -17,6 +16,7 @@ import { initReactI18next } from "react-i18next";
 import translationEN from "/src/locales/eng/translation.json";
 import translationCA from "/src/locales/cat/translation.json";
 import translationES from "/src/locales/esp/translation.json";
+import { usePage } from '../../contexts/PageContext';
 
 const resources = {
     eng: {
@@ -39,11 +39,15 @@ i18n.use(initReactI18next).init({
     },
 });
 
-const steps = [
-    { name: 'Products', href: '/products', current: true },
-]
-
 export default function ProductsPage() {
+
+    const { setPage, setSteps } = usePage();
+
+    useEffect(() => {
+        setPage("Products");
+        setSteps([{ name: 'Products', href: '/products', current: true }]);
+    }, [setPage, setSteps]);
+
     const { t } = useTranslation();
 
     const [rowData, setRowData] = useState([]);
@@ -182,12 +186,8 @@ export default function ProductsPage() {
     ], [isEditable]);
 
     return (
-        <AppLayout Page={"Products"} Steps={steps}>
-            <div className="flex items-center justify-end mb-3">
-                {/* Botón de Acciones Masivas */}
-                <a href="/products-massive-actions" className="inline-block mr-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    Massive actions
-                </a>
+        <>
+            <div className="flex justify-end">
                 <ButtonToggle onToggle={toggleEditable} />
                 {/* <ButtonFetchProductsAPI /> */}
             </div>
@@ -209,6 +209,6 @@ export default function ProductsPage() {
                         </>
                     )}
             </div>
-        </AppLayout>
+        </>
     );
 };

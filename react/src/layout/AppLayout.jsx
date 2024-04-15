@@ -24,6 +24,8 @@ import LanguageSwitcher from "../components/LanguageSwitcher";
 import translationEN from "/src/locales/eng/translation.json";
 import translationCA from "/src/locales/cat/translation.json";
 import translationES from "/src/locales/esp/translation.json";
+import { Outlet } from 'react-router-dom';
+import { usePage } from "../contexts/PageContext";
 
 const resources = {
   eng: {
@@ -50,7 +52,8 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function AppLayout({ children, Page, Steps }) {
+export default function AppLayout({ children }) {
+  const { page, steps } = usePage();
   const { t } = useTranslation();
   const navigate = useNavigate();
   const user = localStorage.getItem("user");
@@ -206,6 +209,7 @@ export default function AppLayout({ children, Page, Steps }) {
   return (
     <>
       <div>
+
         <Transition.Root show={sidebarOpen} as={Fragment}>
           <Dialog
             as="div"
@@ -385,7 +389,7 @@ export default function AppLayout({ children, Page, Steps }) {
               </div>
               <div className="relative flex flex-1 my-auto">
                 <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
-                  {Page}
+                  {page}
                 </h2>
               </div>
               <div className="flex items-center gap-x-10 lg:gap-x-6">
@@ -455,11 +459,12 @@ export default function AppLayout({ children, Page, Steps }) {
           </div>
           <main className="bg-gray-100 py-5 h-screen overflow-y-auto">
             <div className="px-4 sm:px-6 lg:px-8">
-              {window.location.href.includes("/benefits") == false &&
+              {/* {window.location.href.includes("/benefits") == false &&
                 window.location.href.includes("/dashboard") == false && (
                   <Breadcrumb steps={Steps} />
-                )}
-              {children}
+                )} */}
+              <Breadcrumb steps={steps} />
+              <Outlet />
             </div>
           </main>
 
