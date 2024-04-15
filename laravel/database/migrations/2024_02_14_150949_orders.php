@@ -11,12 +11,13 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('number_order');
             $table->foreignId('idCustomers')->references('idCustomers')->on('customers');
-            $table->string('name',50);
-            $table->string('surname', 60);
+            $table->string('name',100);
             $table->string('address',100);
+            $table->decimal('totalPrice');
             $table->timestamp('datetime');
-            $table->enum('orderStatus', ['Pending', 'Accepted', 'Processing', 'Sent', 'Delivered'])->default('Pending');
+            $table->enum('orderStatus', ['PreOrder', 'InProgress', 'Sent', 'Delivered','Canceled'])->default('PreOrder');
         });
     }
 
