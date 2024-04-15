@@ -49,11 +49,11 @@ export const Router = () => {
 
   return (
     <Routes>
-      <Route element={<AppLayout />}>
       // ROOT
-        <Route path="/" element={<Login />} />
+      <Route path="/" element={<Login />} />
       // 404
-        <Route path="/*" element={<PageNotFound />} />
+      <Route path="/*" element={<PageNotFound />} />
+      <Route element={<AppLayout />}>
       // DASHBOARD
         <Route path="/dashboard" element={<DashboardPage />} />
       // SETTINGS
@@ -65,10 +65,8 @@ export const Router = () => {
         <Route strict path="/customers/:customerId" element={<CustomersShow />} />
         <Route path="/customers/:customerId/edit" element={<CustomersEdit />} />
       // PRODUCTS
-        {/* <Route element={<AppLayout Steps={productSteps}></AppLayout>}> */}
         <Route path="products" element={<ProductsPage />} />
         <Route path="products/:productId" element={<ProductDetailsPage />} />
-        {/* </Route > */}
       // BENEFITS
         <Route path="/benefits" element={<BenefitsPage></BenefitsPage>} />
         <Route
