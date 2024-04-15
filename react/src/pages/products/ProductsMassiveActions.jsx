@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import ButtonToggle from '../../components/ButtonToggle';
 import Spinner from '../../components/Spinner';
+import { PriceRangeCellRenderer } from '../../components/tables/products/cellRenderers/PriceRangeCellRenderer';
+import { SalesPriceCellRenderer } from '../../components/tables/products/cellRenderers/SalesPriceCellRenderer';
 import { usePage } from '../../contexts/PageContext';
 
 export default function ProductsMassiveActions() {
@@ -58,6 +60,13 @@ export default function ProductsMassiveActions() {
 
     const isSelected = (id) => selectedProducts.has(id);
 
+    function benefitsMarginValueGetter(params) {
+        if (params.data.product_details && params.data.product_details.length > 0) {
+            return params.data.product_details[0].benefits_margin + " %";
+        }
+        return null;
+    }
+
     return (
         <>
             <div className="flex items-center justify-end mb-3">
@@ -102,9 +111,9 @@ export default function ProductsMassiveActions() {
                                             </td>
                                             <td className="px-4 py-2 border border-gray-300">{product.name}</td>
                                             <td className="px-4 py-2 border border-gray-300">{product.is_active ? 'Yes' : 'No'}</td>
-                                            <td className="px-4 py-2 border border-gray-300">Price Range</td>
-                                            <td className="px-4 py-2 border border-gray-300">{product.benefits_margin} %</td>
-                                            <td className="px-4 py-2 border border-gray-300">Sales Price</td>
+                                            <td className="px-4 py-2 border border-gray-300"><PriceRangeCellRenderer data={product} /></td>
+                                            <td className="px-4 py-2 border border-gray-300">{benefitsMarginValueGetter({ data: product })}</td>
+                                            <td className="px-4 py-2 border border-gray-300"><SalesPriceCellRenderer data={product} /></td>
                                         </tr>
                                     ))}
                                 </tbody>
