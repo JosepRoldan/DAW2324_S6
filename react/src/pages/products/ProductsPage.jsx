@@ -41,15 +41,15 @@ i18n.use(initReactI18next).init({
 });
 
 export default function ProductsPage() {
-    const navigate = useNavigate();
+    const { t } = useTranslation();
     const { setPage, setSteps } = usePage();
 
-    useEffect(() => {
-        setPage("Products");
-        setSteps([{ name: 'Products', href: '/products', current: true }]);
-    }, [setPage, setSteps]);
+    const navigate = useNavigate();
 
-    const { t } = useTranslation();
+    useEffect(() => {
+        setPage(t("Products"));
+        setSteps([{ name: t("Products"), href: '/products', current: true }]);
+    }, [setPage, setSteps, navigate]);
 
     const [rowData, setRowData] = useState([]);
 

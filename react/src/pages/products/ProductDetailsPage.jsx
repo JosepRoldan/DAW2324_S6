@@ -33,14 +33,15 @@ i18n.use(initReactI18next).init({
 });
 
 const ProductDetailsPage = () => {
+    const { t } = useTranslation();
     const { setPage, setSteps } = usePage();
 
     useEffect(() => {
-        setPage("Product Details");
-        setSteps([{ name: 'Products', href: '/products' }, { name: "Product Details", href: `/products/${productId}`, current: true }]);
+        setPage(t("Product Details"));
+        setSteps([{ name: t('Products'), href: '/products' }, { name: t("Product Details"), href: `/products/${productId}`, current: true }]);
     }, [setPage, setSteps]);
 
-    const { t } = useTranslation();
+
     const { productId } = useParams();
     const [productData, setProductData] = useState({
         product: null,

@@ -130,7 +130,7 @@ export const DashboardPage = () => {
   };
 
   return (
-    <AppLayout Page={"Home"}>
+    <>
       <div className="flex flex-col h-[100vh] divContainer">
         {loading && (
           <div className="loader-container">
@@ -407,7 +407,7 @@ export const DashboardPage = () => {
           </div>
         </div>
       </div>
-    </AppLayout>
+    </>
   );
 };
 
