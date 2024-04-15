@@ -11,34 +11,9 @@ import { ProductIsActiveCellRenderer } from '../../components/tables/products/ce
 import { updateProductDetails } from '../../api/updateProductDetails';
 import Spinner from '../../components/Spinner';
 import { useTranslation } from "react-i18next";
-import i18n from "i18next";
-import { initReactI18next } from "react-i18next";
-import translationEN from "/src/locales/eng/translation.json";
-import translationCA from "/src/locales/cat/translation.json";
-import translationES from "/src/locales/esp/translation.json";
 import { usePage } from '../../contexts/PageContext';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-const resources = {
-    eng: {
-        translation: translationEN,
-    },
-    cat: {
-        translation: translationCA,
-    },
-    esp: {
-        translation: translationES,
-    },
-};
-
-i18n.use(initReactI18next).init({
-    resources,
-    lng: "eng",
-    fallbackLng: "eng",
-    interpolation: {
-        escapeValue: false,
-    },
-});
 
 export default function ProductsPage() {
     const { t } = useTranslation();
