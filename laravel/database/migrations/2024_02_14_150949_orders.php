@@ -14,12 +14,8 @@ return new class extends Migration
             $table->foreignId('idCustomers')->references('idCustomers')->on('customers');
             $table->string('name',50);
             $table->string('surname', 60);
+            $table->string('address',100);
             $table->timestamp('datetime');
-            $table->string('address', 50);            
-            $table->string('country', 40);
-            $table->string('city', 40);
-            $table->string('postcode',6);
-            $table->string('state', 50);
             $table->enum('orderStatus', ['Pending', 'Accepted', 'Processing', 'Sent', 'Delivered'])->default('Pending');
         });
     }
