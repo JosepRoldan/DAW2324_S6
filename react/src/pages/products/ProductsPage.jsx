@@ -17,6 +17,7 @@ import translationEN from "/src/locales/eng/translation.json";
 import translationCA from "/src/locales/cat/translation.json";
 import translationES from "/src/locales/esp/translation.json";
 import { usePage } from '../../contexts/PageContext';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const resources = {
     eng: {
@@ -40,15 +41,15 @@ i18n.use(initReactI18next).init({
 });
 
 export default function ProductsPage() {
-
+    const { t } = useTranslation();
     const { setPage, setSteps } = usePage();
 
-    useEffect(() => {
-        setPage("Products");
-        setSteps([{ name: 'Products', href: '/products', current: true }]);
-    }, [setPage, setSteps]);
+    const navigate = useNavigate();
 
-    const { t } = useTranslation();
+    useEffect(() => {
+        setPage(t("Products"));
+        setSteps([{ name: t("Products"), href: '/products', current: true }]);
+    }, [setPage, setSteps, navigate]);
 
     const [rowData, setRowData] = useState([]);
 
@@ -187,11 +188,17 @@ export default function ProductsPage() {
 
     return (
         <>
-            <div className="flex justify-end">
+            <div className="flex items-center justify-end mb-3">
+                <button
+                    type="button" onClick={() => navigate("/products-massive-actions")}
+                    className="bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-full transition duration-300 mr-2"
+                >
+                    {t("Massive actions")}
+                </button>
                 <ButtonToggle onToggle={toggleEditable} />
                 {/* <ButtonFetchProductsAPI /> */}
             </div>
-            <div className="ag-theme-quartz" style={{ width: '100%', height: '80vh' }}>
+            <div className="ag-theme-quartz" style={{ width: '100%', height: '75vh' }}>
                 {isLoading
                     ? <Spinner message='Loading Products...' />
                     : (

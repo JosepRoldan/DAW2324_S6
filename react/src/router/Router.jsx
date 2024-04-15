@@ -25,6 +25,7 @@ import SettingForm from "../pages/setting/SettingForm";
 import OrdersPage from "../pages/orders/OrdersPage";
 import OrderDetailsPage from "../pages/orders/OrderDetailsPage";
 import AppLayout from "../layout/AppLayout";
+import ProductsMassiveActions from "../pages/products/ProductsMassiveActions";
 
 export const Router = () => {
   const navigate = useNavigate();
@@ -66,6 +67,7 @@ export const Router = () => {
         <Route path="/customers/:customerId/edit" element={<CustomersEdit />} />
       // PRODUCTS
         <Route path="products" element={<ProductsPage />} />
+        <Route path="/products-massive-actions" element={<ProductsMassiveActions />} />
         <Route path="products/:productId" element={<ProductDetailsPage />} />
       // BENEFITS
         <Route path="/benefits" element={<BenefitsPage></BenefitsPage>} />
