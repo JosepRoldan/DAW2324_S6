@@ -16,7 +16,7 @@ import { initReactI18next } from "react-i18next";
 import translationEN from "/src/locales/eng/translation.json";
 import translationCA from "/src/locales/cat/translation.json";
 import translationES from "/src/locales/esp/translation.json";
-import { Breadcrumb } from '../../components/Breadcrumb';
+import { usePage } from '../../contexts/PageContext';
 
 const resources = {
     eng: {
@@ -40,6 +40,14 @@ i18n.use(initReactI18next).init({
 });
 
 export default function ProductsPage() {
+
+    const { setPage, setSteps } = usePage();
+
+    useEffect(() => {
+        setPage("Products");
+        setSteps([{ name: 'Products', href: '/products', current: true }]);
+    }, [setPage, setSteps]);
+
     const { t } = useTranslation();
 
     const [rowData, setRowData] = useState([]);
@@ -177,15 +185,8 @@ export default function ProductsPage() {
         }
     ], [isEditable]);
 
-    const breadcrumbSteps = {
-        "/products": [
-            { name: 'Products', href: '/products' }
-        ]
-    };
-
     return (
         <>
-            <Breadcrumb steps={breadcrumbSteps["/products"]} />
             <div className="flex justify-end">
                 <ButtonToggle onToggle={toggleEditable} />
                 {/* <ButtonFetchProductsAPI /> */}
