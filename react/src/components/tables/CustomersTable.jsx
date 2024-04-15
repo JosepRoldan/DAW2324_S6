@@ -41,9 +41,9 @@ export const CustomersTable = ({ customers }) => {
     { field: 'name', headerName: 'Name', filter: true },
     { field: 'mail', headerName: 'Email', filter: true },
     { field: 'username', headerName: 'Username', filter: true },
-    { field: 'postcode', headerName: 'PostalCode', filter: true },
+    // { field: 'postcode', headerName: 'PostalCode', filter: true },
     { field: 'is_validated', headerName: 'Validated', filter: true },
-    { field: 'customerStatus', headerName: 'Status', filter: true },
+    // { field: 'customerStatus', headerName: 'Status', filter: true },
     // { field: 'phone', headerName: 'Phone' },
     // { field: 'address', headerName: 'Address' },
     { headerName: 'Show', cellRenderer: showCustomer }
@@ -60,7 +60,7 @@ export const CustomersTable = ({ customers }) => {
             </div>
           </div>
           : <div className="align-middle overflow-x-auto shadow overflow-hidden sm:rounded-lg">
-            <div className="ag-theme-quartz" style={{ width: 'auto', height: '80vh' }}>
+            <div className="ag-theme-quartz" style={{ width: 'auto', height: '70vh' }}>
               <AgGridReact
                 rowData={customers}
                 columnDefs={colDefs}

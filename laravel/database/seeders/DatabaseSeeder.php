@@ -15,8 +15,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RoleSeeder::class,
             UserSeeder::class,
-            // TO-DO customer seeder not working, needs fix
-            // CustomerSeeder::class,
+            CustomerSeeder::class,
         ]);
     }
 }

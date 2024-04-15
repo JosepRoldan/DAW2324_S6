@@ -19,6 +19,6 @@ class Client extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'surname','username', 'mail', 'phone', 'address','postcode' // Agrega aquí los demás campos de tu tabla clients si es necesario
+        'name', 'surname', 'username', 'mail', 'phone', 'address', 'postcode' // Agrega aquí los demás campos de tu tabla clients si es necesario
     ];
 }

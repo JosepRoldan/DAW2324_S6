@@ -12,21 +12,21 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('customers', function (Blueprint $table) {
-            $table->id('idCustomers');
+            $table->id();
             $table->string('name')->nullable();
             $table->string('surname')->nullable();
             $table->string('username')->unique();
             $table->string('password');
             $table->string('mail')->unique();
-            $table->integer('phone')->nullable();
+            $table->string('phone')->nullable();
             $table->string('address')->nullable();
-            $table->integer('postcode')->nullable();
-            $table->string('country')->nullable();
+            $table->string('postcode')->nullable();
+            $table->string('idCountry')->nullable();
+            $table->boolean('is_validated')->default(false);
+            $table->timestamps();
             $table->timestamp('membershipDate')->nullable();
-            // $table->timestamps();
-            $table->boolean('isvalidated')->default(false);
             $table->enum('customerStatus', ['Active', 'Inactive', 'Banned', 'Deleted'])->default('Inactive');
-        });    
+        });
     }
 
     /**
