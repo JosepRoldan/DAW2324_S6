@@ -1,9 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import AppLayout from '../../layout/AppLayout';
 import ButtonToggle from '../../components/ButtonToggle';
 import Spinner from '../../components/Spinner';
+import { usePage } from '../../contexts/PageContext';
 
 export default function ProductsMassiveActions() {
+    const { setPage, setSteps } = usePage();
+
+    useEffect(() => {
+        setPage("Products Massive Actions");
+        setSteps([{ name: 'Products', href: '/products' },
+        { name: 'Products Massive Actions', href: '/products-massive-actions', current: true }
+        ]);
+    }, [setPage, setSteps]);
+
     const [rowData, setRowData] = useState([]);
     const [selectedProducts, setSelectedProducts] = useState(new Set());
     const [isLoading, setIsLoading] = useState(true);
@@ -50,8 +59,7 @@ export default function ProductsMassiveActions() {
     const isSelected = (id) => selectedProducts.has(id);
 
     return (
-        < AppLayout Page={"Products"} Steps={[{ name: 'Products', href: '/products', current: true }]} >
-
+        <>
             <div className="flex items-center justify-end mb-3">
                 <ButtonToggle onToggle={() => { }} />
             </div>
@@ -104,8 +112,7 @@ export default function ProductsMassiveActions() {
                         </div>
                     )}
             </div>
-
-        </AppLayout >
+        </>
     );
 
 

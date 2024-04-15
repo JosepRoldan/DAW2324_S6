@@ -187,7 +187,10 @@ export default function ProductsPage() {
 
     return (
         <>
-            <div className="flex justify-end">
+            <div className="flex items-center justify-end mb-3">
+                <a href="/products-massive-actions" className="inline-block mr-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    Massive actions
+                </a>
                 <ButtonToggle onToggle={toggleEditable} />
                 {/* <ButtonFetchProductsAPI /> */}
             </div>
