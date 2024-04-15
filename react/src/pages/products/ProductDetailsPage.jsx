@@ -9,6 +9,7 @@ import { initReactI18next } from "react-i18next";
 import translationEN from "/src/locales/eng/translation.json";
 import translationCA from "/src/locales/cat/translation.json";
 import translationES from "/src/locales/esp/translation.json";
+import { Breadcrumb } from '../../components/Breadcrumb';
 
 const resources = {
     eng: {
@@ -30,11 +31,6 @@ i18n.use(initReactI18next).init({
         escapeValue: false,
     },
 });
-
-const steps = [
-    { name: 'Products', href: '/products', current: false },
-    { name: 'Product Details', href: '/', current: true },
-]
 
 const ProductDetailsPage = () => {
     const { t } = useTranslation();
@@ -181,8 +177,14 @@ const ProductDetailsPage = () => {
         return <div>Error: {error.message}</div>;
     }
 
+    const breadcrumbSteps = [
+        { name: 'Products', href: '/products' },
+        { name: `Product #${productId}`, href: `/products/${productId}`, current: true }
+    ];
+
     return (
         <>
+            <Breadcrumb steps={breadcrumbSteps} />
             <div style={{ height: '80vh', width: '100%', overflowY: 'auto' }}>
                 <div className="flex justify-between mb-4">
                     <div className="w-1/3 pr-2">

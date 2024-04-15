@@ -16,6 +16,7 @@ import { initReactI18next } from "react-i18next";
 import translationEN from "/src/locales/eng/translation.json";
 import translationCA from "/src/locales/cat/translation.json";
 import translationES from "/src/locales/esp/translation.json";
+import { Breadcrumb } from '../../components/Breadcrumb';
 
 const resources = {
     eng: {
@@ -176,8 +177,15 @@ export default function ProductsPage() {
         }
     ], [isEditable]);
 
+    const breadcrumbSteps = {
+        "/products": [
+            { name: 'Products', href: '/products' }
+        ]
+    };
+
     return (
         <>
+            <Breadcrumb steps={breadcrumbSteps["/products"]} />
             <div className="flex justify-end">
                 <ButtonToggle onToggle={toggleEditable} />
                 {/* <ButtonFetchProductsAPI /> */}

@@ -1,9 +1,8 @@
-import React from 'react'
-import { ChevronRightIcon, HomeIcon } from '@heroicons/react/20/solid'
+import React from 'react';
+import { ChevronRightIcon, HomeIcon } from '@heroicons/react/20/solid';
 import { useNavigate } from 'react-router-dom';
 
 export const Breadcrumb = ({ steps = [] }) => {
-  const navigate = useNavigate();
   return (
     <nav className="flex" aria-label="Breadcrumb">
       <ol role="list" className="flex items-center space-x-4">
@@ -31,5 +30,5 @@ export const Breadcrumb = ({ steps = [] }) => {
         ))}
       </ol>
     </nav>
-  )
-}
+  );
+};
