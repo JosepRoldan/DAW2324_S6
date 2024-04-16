@@ -6,7 +6,7 @@ import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import UserwayWidget from "../components/userwayWidget/UserWayWidget";
 import { useTranslation } from "react-i18next";
-import i18n from "i18next";
+import i18n, { loadLanguages } from "i18next";
 import { initReactI18next } from "react-i18next";
 import LanguageSwitcher from "../components/LanguageSwitcher";
 import translationEN from "/src/locales/eng/translation.json";
@@ -44,19 +44,13 @@ export default function AppLayout({ children }) {
   const { page, steps } = usePage();
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const user = localStorage.getItem("user");
-  const idRole = localStorage.getItem("idRole");
-  const userId = localStorage.getItem("userId");
 
-  let data, role;
+  var dataJSON = JSON.parse(localStorage.getItem("user"));
 
-  if (user) {
-    data = JSON.parse(user);
-    role = JSON.parse(idRole);
-  } else {
-    data = "";
-    role = "";
-  }
+  const user = dataJSON.user;
+  const role = dataJSON.idRole;
+  const userId = dataJSON.id;
+
 
   let navigation = [];
 
@@ -97,7 +91,7 @@ export default function AppLayout({ children }) {
     if (navigation[i].current == true) {
       navigation[i].current = false;
     }
-    if (window.location.href.includes(navigation[i].href)) {
+    if (window.location.href.includes(navigation[i].to)) {
       navigation[i].current = true;
     }
   }
@@ -119,6 +113,7 @@ export default function AppLayout({ children }) {
         .then(function (response) {
           if (response.status === 200) {
             localStorage.removeItem("token");
+            localStorage.removeItem("user");
             navigate("/");
           }
         })
@@ -129,6 +124,10 @@ export default function AppLayout({ children }) {
     } else if (action === "My profile") {
       navigate(`/users/profile/${userId}`);
     }
+  };
+
+  const handleNavigateTo = (to) => {
+    navigate(to);
   };
 
   const userNavigation = [
@@ -161,10 +160,8 @@ export default function AppLayout({ children }) {
                         <Link
                           to={item.href}
                           className={classNames(
-                            item.current
-                              ? "bg-gray-800 text-white"
-                              : "text-gray-400 hover:text-white hover:bg-gray-800",
-                            "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
+                            item.current ? "bg-gray-800 text-white" : "text-gray-400 hover:text-white hover:bg-gray-800",
+                            "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold select-none cursor-pointer"
                           )}
                         >
                           <item.icon
@@ -178,6 +175,8 @@ export default function AppLayout({ children }) {
                   </ul>
                 </li>
               </ul>
+              <div id="userway-widget-container"><UserwayWidget /></div>
+
             </nav>
           </div>
         </div>
@@ -201,7 +200,7 @@ export default function AppLayout({ children }) {
                         className="ml-4 text-sm font-semibold leading-6 text-gray-900"
                         aria-hidden="true"
                       >
-                        {data}
+                        {user}
                       </span>
                       <ChevronDownIcon
                         className="ml-2 h-5 w-5 text-gray-400"
@@ -244,8 +243,6 @@ export default function AppLayout({ children }) {
               <Outlet />
             </div>
           </main>
-
-          <UserwayWidget />
         </div>
       </div>
     </>
