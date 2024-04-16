@@ -107,35 +107,35 @@ export default function ProductsPage() {
     const colDefs = useMemo(() => [
         {
             field: 'priority',
-            headerName: 'Priority',
+            headerName: t('Priority'),
             editable: defaultColDef.editable,
         },
         {
             cellRenderer: ImageCellRenderer,
             field: 'thumb',
-            headerName: 'Image',
+            headerName: t('Image'),
             editable: false,
         },
         {
             field: 'name',
-            headerName: 'Product Name',
+            headerName: t('Product Name'),
             editable: false,
         },
         {
             cellRenderer: ProductIsActiveCellRenderer,
             field: 'is_active',
-            headerName: 'Active',
+            headerName: t('Active'),
             cellEditor: 'agCheckboxCellEditor',
             editable: defaultColDef.editable,
         },
         {
             cellRenderer: PriceRangeCellRenderer,
-            headerName: 'Price Range',
+            headerName: t('Price Range'),
             editable: false,
         },
         {
             field: 'benefits_margin',
-            headerName: "Benefits Margin",
+            headerName: t("Benefits Margin"),
             valueGetter: benefitsMarginValueGetter,
             valueSetter: (params) => {
                 if (params.data.product_details && params.data.product_details.length > 0) {
@@ -151,15 +151,15 @@ export default function ProductsPage() {
         },
         {
             cellRenderer: SalesPriceCellRenderer,
-            headerName: 'Sales Price',
+            headerName: t('Sales Price'),
             editable: false,
         },
         {
             cellRenderer: EditProductCellRenderer,
-            headerName: 'Actions',
+            headerName: t('Actions'),
             editable: false,
         }
-    ], [isEditable]);
+    ], [isEditable, t]);
 
     return (
         <>
