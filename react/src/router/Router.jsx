@@ -40,7 +40,7 @@ export const Router = () => {
   };
 
   useEffect(() => {
-    checkRoute();
+    // checkRoute();
   }, []);
 
   const productSteps = [

@@ -5,7 +5,7 @@ import SectionTable from '../../components/sectionTable/SectionTable'
 //Pantalla que mostrara la pagina de beneficios y chart
 export const BenefitsPage = () => {
     return (
-        <AppLayout Page={"Benefits"}>
+        <AppLayout Page={"Profit"}>
             <SectionTable SectionName={"Benefits"}></SectionTable>
         </AppLayout>
     )

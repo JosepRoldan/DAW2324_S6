@@ -29,6 +29,7 @@ cp .env.example .env
 # Go to the `fastapi` folder:
 ```
 cd fastapi/
+cd app/
 cp .env.example .env
 ```
 

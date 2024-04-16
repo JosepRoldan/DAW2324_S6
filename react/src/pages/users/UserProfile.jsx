@@ -1,4 +1,4 @@
-import { useNavigate, useLocation, useParams } from 'react-router-dom';
+import AppLayout from '../../layout/AppLayout';
 import React, { useState, useEffect } from 'react';
 import Spinner from '../../components/Spinner';
 import { usePage } from '../../contexts/PageContext';
@@ -7,6 +7,10 @@ import { useTranslation } from "react-i18next";
 
 const token = localStorage.getItem('token');
 
+const steps = [
+  { name: 'Users', href: '/users', current: false },
+  { name: 'User Profile', href: '/users/profile', current: true },
+];
 
 export const UserProfile = () => {
   const { userId } = useParams(); // Obtener el ID de usuario de la URL
@@ -74,7 +78,7 @@ export const UserProfile = () => {
                         type="text"
                         name="name"
                         id="name"
-                        value={user.data.name}
+                        value={user.name}
                         disabled
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 bg-gray-100 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
@@ -90,7 +94,7 @@ export const UserProfile = () => {
                         type="text"
                         name="surname"
                         id="surname"
-                        value={user.data.surname}
+                        value={user.surname}
                         disabled
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 bg-gray-100 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
@@ -106,7 +110,7 @@ export const UserProfile = () => {
                         id="email"
                         name="email"
                         type="email"
-                        value={user.data.email}
+                        value={user.email}
                         disabled
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 bg-gray-100 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
@@ -120,7 +124,7 @@ export const UserProfile = () => {
           <div className="px-4 py-4 sm:px-6 flex justify-between items-center">
             {/* Botón para regresar */}
             <button type="button" onClick={() => window.history.back()}
-              className="inline-flex justify-center rounded-md bg-indigo-400 px-3 py-2 text-md font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900">
+              className="inline-flex justify-center rounded-full bg-blue-900 px-3 py-2 text-md font-semibold text-white shadow-sm hover:bg-blue-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900">
               Go Back
             </button>
           </div>
