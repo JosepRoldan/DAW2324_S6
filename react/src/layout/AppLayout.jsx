@@ -44,19 +44,13 @@ export default function AppLayout({ children }) {
   const { page, steps } = usePage();
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const user = localStorage.getItem("user");
-  const idRole = localStorage.getItem("idRole");
-  const userId = localStorage.getItem("userId");
+ 
+  var dataJSON = JSON.parse(localStorage.getItem("user"));
+  
+  const user = dataJSON.user;
+  const role = dataJSON.idRole;
+  const userId = dataJSON.id;
 
-  let data, role;
-
-  if (user) {
-    data = JSON.parse(user);
-    role = JSON.parse(idRole);
-  } else {
-    data = "";
-    role = "";
-  }
 
   let navigation = [];
 
