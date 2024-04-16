@@ -52,7 +52,7 @@ export const CustomersShow = () => {
     surname = '-',
     address = '-',
     city = '-',
-    // created_at_formatted,
+    created_at_formatted,
     customerStatus = '-',
     is_validated = '-',
     mail = '-',
