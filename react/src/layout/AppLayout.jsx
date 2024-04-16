@@ -241,7 +241,7 @@ export default function AppLayout({ children }) {
             <div className="px-4 sm:px-6 lg:px-8">
               {window.location.href.includes("/profit") == false &&
                 window.location.href.includes("/dashboard") == false && (
-                  <Breadcrumb steps={Steps} />
+                  <Breadcrumb steps={steps} />
                 )}
               <Outlet />
             </div>
