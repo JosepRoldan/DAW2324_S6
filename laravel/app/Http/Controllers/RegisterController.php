@@ -22,7 +22,7 @@ class RegisterController extends Controller
 
         $rules = [
             'username' => 'required|unique:customers',
-            'password' => 'required|min:8',
+            'password' => ['required', 'regex:/^(?=.*[!@#$%^&*()\-_=+{};:,<.>]).{8,}$/'], // Al menos 8 caracteres y al menos un carácter especial
             'mail' => 'required|email|unique:customers',
         ];
 
@@ -66,6 +66,8 @@ class RegisterController extends Controller
         $email = $request->input('mail');
         $password = $request->input('password');
         $user = DB::table('customers')->where('mail', $email)->first();
+        // Añadir comprobación de si el usuario tiene la cuenta activada.
+        $verificacion = DB::table('customers')->where('mail', $email)->first();
         if ($user) {
             // Verificar la contraseña
             if (Hash::check($password, $user->password)) {

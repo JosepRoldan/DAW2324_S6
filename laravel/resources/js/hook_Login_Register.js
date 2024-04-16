@@ -22,10 +22,12 @@ export function useForm(initialState) {
       });
       if (response.status === 401) {
           toast.error("El nombre de usuario o correo electrónico ya están en uso o hay campos sin rellenar.");
+      }if (response.status === 411) {
+        toast.error("La contraseña debe tener un mínimo de 8 carácteres y carácteres especiales (!,@,#,$,%).");
       } else if (response.status === 200) {
           toast.success("Se ha registrado correctamente!");
           setTimeout(function() {
-              window.location.href = 'Inicio';
+              window.location.href = 'verification';
           }, 2000); // 2000 milisegundos = 2 segundos
       }
 

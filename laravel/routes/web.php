@@ -68,6 +68,8 @@ Route::get('/productscard', function () {
 });
 Route::get('/Inicio', function () {return view('inicio');});
 
+Route::get('/verificacion', function () {return view('verificacion');})->name('verification');
+
 Route::get('/product', function () {return view('product');});
 
 Route::get('/CustomerArea', function () {return view('clientArea');});
