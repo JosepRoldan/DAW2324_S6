@@ -1,33 +1,7 @@
 import React, { useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
-import AppLayout from '../../layout/AppLayout';
 import { useTranslation } from "react-i18next";
-import i18n from "i18next";
-import { initReactI18next } from "react-i18next";
-import translationEN from "/src/locales/eng/translation.json";
-import translationCA from "/src/locales/cat/translation.json";
-import translationES from "/src/locales/esp/translation.json";
-
-const resources = {
-  eng: {
-    translation: translationEN,
-  },
-  cat: {
-    translation: translationCA,
-  },
-  esp: {
-    translation: translationES,
-  },
-};
-
-i18n.use(initReactI18next).init({
-  resources,
-  lng: "eng",
-  fallbackLng: "eng",
-  interpolation: {
-    escapeValue: false,
-  },
-});
+import { usePage } from '../../contexts/PageContext';
 
 
 export const UsersShow = () => {
@@ -35,6 +9,8 @@ export const UsersShow = () => {
   const navigate = useNavigate();
 
   const { state } = useLocation();
+  const { setPage, setSteps } = usePage();
+
   const users = state?.users;
   const {
     id,
@@ -44,13 +20,15 @@ export const UsersShow = () => {
     user = '-'
   } = users;
 
-  const steps = [
-    { name: 'Users', href: '/users', current: true },
-    { name: `${name} ${surname}`, href: `/users/1`, current: true },
-  ]
+  
+
+  useEffect(() => {
+    setPage(t("Users"));
+    setSteps([{ name: t('Users'), href: '/users' }, { name: t("Show User"), href: '/users/1', current: true }]);
+}, [setPage, setSteps, navigate]);
 
   return (
-    <AppLayout Steps={steps}>
+    <>
       <div className="mt-6 mb-16 overflow-hidden bg-white shadow sm:rounded-lg">
         <div className="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
           <div className="-ml-4 -mt-2 flex flex-wrap items-center justify-between sm:flex-nowrap">
@@ -84,7 +62,7 @@ export const UsersShow = () => {
           </dl>
         </div>
       </div >
-    </AppLayout >
+    </>
   )
 }
 

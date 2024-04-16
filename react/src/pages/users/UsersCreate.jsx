@@ -1,44 +1,15 @@
-import AppLayout from '../../layout/AppLayout';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect,useState } from 'react';
 import { useTranslation } from "react-i18next";
-import i18n from "i18next";
-import { initReactI18next } from "react-i18next";
-import translationEN from "/src/locales/eng/translation.json";
-import translationCA from "/src/locales/cat/translation.json";
-import translationES from "/src/locales/esp/translation.json";
-
-const resources = {
-  eng: {
-    translation: translationEN,
-  },
-  cat: {
-    translation: translationCA,
-  },
-  esp: {
-    translation: translationES,
-  },
-};
-
-i18n.use(initReactI18next).init({
-  resources,
-  lng: "eng",
-  fallbackLng: "eng",
-  interpolation: {
-    escapeValue: false,
-  },
-});
+import { usePage } from '../../contexts/PageContext';
 
 const token = localStorage.getItem('token');
 
-const steps = [
-  { name: 'Users', href: '/users', current: false },
-  { name: 'Create User', href: '/users/create', current: true },
-]
 
 export const UsersCreate = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { setPage, setSteps } = usePage();
 
   const [formData, setFormData] = useState({
     name: '',
@@ -128,10 +99,15 @@ export const UsersCreate = () => {
 
   }
 
+  useEffect(() => {
+    setPage(t("Users"));
+    setSteps([{ name: t('Users'), href: '/users' }, { name: t("Create User"), href: '/users/create', current: true }]);
+
+}, [setPage, setSteps, navigate]);
 
   return (
 
-    <AppLayout Page={'Create User'} Steps={steps}>
+    <>
       <div className="pb-16 space-y-10 divide-y divide-gray-900/10">
         <form>
           <div className="grid grid-cols-1 gap-x-8 gap-y-8 pt-10 md:grid-cols-3">
@@ -275,7 +251,7 @@ export const UsersCreate = () => {
           </div>
         </form>
       </div>
-    </ AppLayout >
+    </ >
   )
 }
 

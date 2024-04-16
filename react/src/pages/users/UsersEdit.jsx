@@ -1,40 +1,10 @@
-import AppLayout from '../../layout/AppLayout';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useState } from 'react';
-
+import { useEffect,useState } from 'react';
 const token = localStorage.getItem('token');
 import { useTranslation } from "react-i18next";
-import i18n from "i18next";
-import { initReactI18next } from "react-i18next";
-import translationEN from "/src/locales/eng/translation.json";
-import translationCA from "/src/locales/cat/translation.json";
-import translationES from "/src/locales/esp/translation.json";
+import { usePage } from '../../contexts/PageContext';
 
-const resources = {
-  eng: {
-    translation: translationEN,
-  },
-  cat: {
-    translation: translationCA,
-  },
-  esp: {
-    translation: translationES,
-  },
-};
 
-i18n.use(initReactI18next).init({
-  resources,
-  lng: "eng",
-  fallbackLng: "eng",
-  interpolation: {
-    escapeValue: false,
-  },
-});
-
-const steps = [
-  { name: 'Users', href: '/users', current: false },
-  { name: 'Edit User', href: '/users/create', current: true },
-]
 
 
 export const UsersEdit = () => {
@@ -44,7 +14,9 @@ export const UsersEdit = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => setIsModalOpen(true);
   const hideModal = () => setIsModalOpen(false);
+  const { setPage, setSteps } = usePage();
 
+  
 
   const users = state?.users;
 
@@ -184,11 +156,14 @@ export const UsersEdit = () => {
     }
   };
 
-
+  useEffect(() => {
+    setPage(t("Users"));
+    setSteps([{ name: t('Users'), href: '/users' }, { name: t("Edit User"), href: '/users/create', current: true }]);
+}, [setPage, setSteps, navigate]);
 
   return (
 
-    <AppLayout Page={'Edit User'} Steps={steps}>
+    <>
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
           <div className="bg-white p-4 sm:p-6 lg:p-8 shadow-xl rounded-lg">
@@ -210,7 +185,7 @@ export const UsersEdit = () => {
               </button>
               <button
                 type="button"
-                className="inline-flex justify-center rounded-md border border-transparent px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-red-500"
+                className="inAppLayout Page={'Edit User'} Steps={steps}line-flex justify-center rounded-md border border-transparent px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-red-500"
                 onClick={() => { onDelete(userId); }}
               >
                 {t("Delete")}
@@ -495,7 +470,7 @@ export const UsersEdit = () => {
 
         </form>
       </div>
-    </ AppLayout >
+    </>
   )
 }
 
