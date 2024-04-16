@@ -91,7 +91,7 @@ export default function AppLayout({ children }) {
     if (navigation[i].current == true) {
       navigation[i].current = false;
     }
-    if (window.location.href.includes(navigation[i].to)) {
+    if (window.location.href.includes(navigation[i].href)) {
       navigation[i].current = true;
     }
   }
