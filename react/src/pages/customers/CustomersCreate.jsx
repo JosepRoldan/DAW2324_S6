@@ -38,40 +38,7 @@ const steps = [
 
 const token = localStorage.getItem('token');
 
-const validations = async (e) => {
 
-  // Validar que el nombre no esté vacío
-  if (formData.name.trim() === '') {
-    alert('Please enter a name.');
-    return;
-  }
-
-  // Validar que el email sea válido
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(formData.mail)) {
-    alert('Please enter a valid email.');
-    return;
-  }
-
-  // Validar que el teléfono contenga solo números y tenga una longitud entre 7 y 15 caracteres
-  const phoneRegex = /^[0-9]{7,15}$/;
-  if (!phoneRegex.test(formData.phone)) {
-    alert('Please enter a valid phone number (7-15 digits).');
-    return;
-  }
-
-  // Validar que la contraseña tenga al menos 6 caracteres
-  if (formData.newPassword.trim() !== '' && formData.newPassword.length < 6) {
-    alert('Password must be at least 6 characters long.');
-    return;
-  }
-
-  // Validar que las contraseñas coincidan
-  if (formData.newPassword !== formData.newPasswordConfirm) {
-    alert('Passwords do not match.');
-    return;
-  }
-};
 /**
  * Create a new customer with the provided information.
  *
@@ -98,6 +65,8 @@ export const CustomersCreate = () => {
     is_validated: false
   });
 
+  const [errors, setErrors] = useState({});
+
   /**
    * Updates the form data with the new value of the input field.
    *
@@ -107,8 +76,54 @@ export const CustomersCreate = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    setErrors({ ...errors, [name]: '' });
   }
 
+
+  const renderErrorForField = (fieldName) => {
+    if (errors[fieldName]) {
+      return (
+        <p key={fieldName} className="text-red-500 text-sm mt-1">
+          {errors[fieldName]}
+        </p>
+      );
+    }
+    return null;
+  };
+  // Aquí comienza el código de validación
+  const validations = () => {
+    const newErrors = {};
+
+    if (formData.name.trim() === '') {
+      newErrors.name = t("Please enter a name.");
+    }
+
+    if (formData.surname.trim() === '') {
+      newErrors.surname = t("Please enter a surname.");
+    }
+
+    if (formData.username.trim() === '') {
+      newErrors.username = t("Please enter a username.");
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.mail)) {
+      newErrors.mail = t("Please enter a valid email.");
+    }
+
+    if (formData.newPassword.trim() !== '' && formData.newPassword.length < 6) {
+      newErrors.password = t("Password must be at least 6 characters long.");
+    }
+
+    // Validar que las contraseñas coincidan
+    if (formData.newPassword !== formData.newPasswordConfirm) {
+      newErrors.passwordConfirm = t("Passwords must match");
+
+    }
+    setErrors(newErrors);
+
+    return Object.keys(newErrors).length === 0;
+  };
   /**
    * A function that handles form submission asynchronously.
    *
@@ -118,20 +133,24 @@ export const CustomersCreate = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    const url = `${import.meta.env.VITE_API_URL}/customers/create`;
-    const headers = {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      'Authorization': `Bearer ${token}`,
-    };
+    const validationPassed = validations(); // Ejecuta las validaciones
+    if (validationPassed) {
+      const url = `${import.meta.env.VITE_API_URL}/customers/create`;
+      const headers = {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        'Authorization': `Bearer ${token}`,
+      };
 
-    try {
-      const response = await axios.post(url, formData, { headers });
-      navigate('/customers');
-    } catch (error) {
-      console.error('Error:', error.response ? error.response.data : error.message);
-      // Manejar el error aquí
+      try {
+        const response = await axios.post(url, formData, { headers });
+        navigate('/customers');
+      } catch (error) {
+        console.error('Error:', error.response ? error.response.data : error.message);
+        // Manejar el error aquí
+      }
     }
+
   };
 
 
@@ -164,6 +183,8 @@ export const CustomersCreate = () => {
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
                     </div>
+                    {renderErrorForField('name')}
+
                   </div>
 
                   <div className="sm:col-span-4">
@@ -181,6 +202,8 @@ export const CustomersCreate = () => {
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
                     </div>
+                    {renderErrorForField('surname')}
+
                   </div>
 
                   <div className="sm:col-span-4">
@@ -198,6 +221,8 @@ export const CustomersCreate = () => {
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
                     </div>
+                    {renderErrorForField('mail')}
+
                   </div>
 
                   <div className="sm:col-span-2">
@@ -285,7 +310,7 @@ export const CustomersCreate = () => {
                 <div className="max-w-2xl space-y-10">
                   <div className="grid max-w-3xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
 
-                    <div className="sm:col-span-4">
+                    <div className="sm:col-span-3">
                       <label htmlFor="username" className="block text-sm font-medium leading-6 text-gray-900">
                         {t("Username")}
                       </label>
@@ -299,6 +324,8 @@ export const CustomersCreate = () => {
                           className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         />
                       </div>
+                      {renderErrorForField('username')}
+
                     </div>
 
 
@@ -316,6 +343,8 @@ export const CustomersCreate = () => {
                           className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         />
                       </div>
+                      {renderErrorForField('password')}
+
                     </div>
 
                     <div className="sm:col-span-3">
@@ -332,6 +361,8 @@ export const CustomersCreate = () => {
                           className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         />
                       </div>
+                      {renderErrorForField('passwordConfirm')}
+
                     </div>
                   </div>
 
