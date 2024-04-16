@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import "./SectionTable.css";
 import { Link } from "react-router-dom";
 import axios from "axios";
-
 /**
  * Renders a section table with benefits data and a chart.
  *
@@ -25,9 +24,9 @@ function SectionTable({ SectionName }) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [years, setYears] = useState([]);
-  const actualYear = new Date().getFullYear();
-  var year = useState('');
+  const [actualYear, setActualYear] = useState(new Date().getFullYear());
 
+  
 
   /**
    * Function to show a tooltip based on the event target.
@@ -46,11 +45,8 @@ function SectionTable({ SectionName }) {
     setIsOpen(!isOpen);
   };
 
-  const handleInputChange = (event) => {
-    setSearchTerm(event.value.toLowerCase());
-    console.log(searchTerm);
-  };
 
+  
   /**
    * Hides the tooltip by resetting its content and position, and closing it.
    */
@@ -162,6 +158,8 @@ function SectionTable({ SectionName }) {
    */
   const handleYearClick = (year) => {
     getBenefitsByYear(year);
+    setActualYear(year);
+    toggleDropdown(); 
   }
 
 
@@ -265,28 +263,6 @@ function SectionTable({ SectionName }) {
           <div className="loader"></div>
         </div>
       )}
-      {alertSucces && (
-        <main>
-          <section>
-            <div className="alert alert-2-success">
-              <h3 className="alert-title">Succes</h3>
-              <p className="alert-content">Data deleted correctly</p>
-            </div>
-          </section>
-        </main>
-      )}
-
-      {alertError && (
-        <main>
-          <section>
-            <div className="alert alert-1-warning">
-              <h3 className="alert-title">Error</h3>
-              <p className="alert-content">Something went wrong</p>
-            </div>
-          </section>
-        </main>
-      )}
-
       <div className="relative group mb-10">
         <button id="dropdown-button" onClick={toggleDropdown} className="inline-flex justify-center w-50 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-blue-500">
           <span className="mr-2">Select Year</span>
@@ -295,7 +271,6 @@ function SectionTable({ SectionName }) {
           </svg>
         </button>
         <div id="dropdown-menu" className={`z-10 absolute left-0 mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 p-1 space-y-1 ${isOpen ? '' : 'hidden'}`}>
-          <input id="search-input" onChange={handleInputChange} value={searchTerm} className="block w-full px-4 py-2 text-gray-800 border rounded-md  border-gray-300 focus:outline-none" type="text" placeholder="Search years" autoComplete="off" />
           {years.map((year, i) => (
             <a key={i} onClick={() => handleYearClick(year)} className="block px-4 py-2 text-gray-700 hover:bg-gray-100 active:bg-blue-100 cursor-pointer rounded-md">{year}</a>
           ))}
@@ -309,7 +284,7 @@ function SectionTable({ SectionName }) {
               Table
             </h4>
             <div className="buttonContainer">
-              <Link className="bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-full transition duration-300" to="/benefits=create" style={{ marginLeft: '130px' }}>
+              <Link className="bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-full transition duration-300" to="/profit=create" style={{ marginLeft: '130px' }}>
                 Create
               </Link>
             </div>
@@ -376,7 +351,7 @@ function SectionTable({ SectionName }) {
                     </td>
                     <td className="py-4 px-6 text-sm font-medium text-gray-900 flex">
 
-                      <Link to={`/benefits=edit/${benefit.id}`}>
+                      <Link to={`/profit=edit/${benefit.id}`}>
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           viewBox="0 0 20 20"
@@ -389,7 +364,6 @@ function SectionTable({ SectionName }) {
                       </Link>
                       <button
                         className="text-gray-900"
-                        //Si el usuario clica se elimina la fila
                         onClick={() => deleteBenefits(benefit.id)}
                       >
                         <svg
@@ -422,13 +396,13 @@ function SectionTable({ SectionName }) {
                   Chart
                 </h2>
                 <p className="mb-2 text-gray-600 text-sm">
-                  Monthly Benefits of Year 2024
+                  Monthly Profit of Year 2024
                 </p>
               </div>
               <div className="mb-4">
                 <div className="flex items-center">
-                  <div className="w-2 h-2 bg-violet mr-2 rounded-full"></div>
-                  <div className="text-sm text-gray-700">Benefits</div>
+                  <div className="w-2 h-2 bg-blue-900 hover:bg-blue-800 mr-2 rounded-full"></div>
+                  <div className="text-sm text-gray-700">Profit</div>
                 </div>
               </div>
             </div>
@@ -451,7 +425,7 @@ function SectionTable({ SectionName }) {
                   <div key={index} className="px-2 w-1/6">
                     <div
                       style={{ height: `${data / 20}px` }}
-                      className="transition ease-in duration-200 bg-violet hover:bg-blue-400 relative"
+                      className="transition ease-in duration-200 bg-blue-900 hover:bg-blue-800 relative"
                     >
                       <div className="text-center absolute top-0 left-0 right-0 -mt-6 text-gray-800 text-sm">
                         {data}
@@ -487,6 +461,8 @@ function SectionTable({ SectionName }) {
         </div>
       </div>
     </div>
+
+   
   );
 }
 

@@ -5,8 +5,6 @@ import axios from "axios";
 import "../sectionTable/alert.scss";
 
 const EditForm = () => {
-  const [alertSucces, setAlertSucces] = useState(false);
-  const [alertError, setAlertError] = useState(false);
   const [idBenefit, setId] = useState("");
   const [month, setMonth] = useState("");
   const [income, setIncome] = useState("");
@@ -126,105 +124,123 @@ const EditForm = () => {
   };
 
   return (
-    <div className="popup">
-      <div className="popup-inner">
-        {alertSucces && (
-          <main>
-            <section>
-              <div className="alert alert-2-success">
-                <h3 className="alert-title">Succes</h3>
-                <p className="alert-content">Data edited correctly</p>
-              </div>
-            </section>
-          </main>
-        )}
-
-    {alertError && (
-          <main>
-            <section>
-              <div className="alert alert-1-warning">
-                <h3 className="alert-title">Error</h3>
-                <p className="alert-content">Something went wrong</p>
-              </div>
-            </section>
-          </main>
-        )}
-
+    <div className="flex flex-col h-[100vh] divContainer">
     {loading && (
-        <div className="loader-container">
-          <div className="loader"></div>
+      <div className="loader-container">
+        <div className="loader"></div>
+      </div>
+    )}
+    <div className="bg-gray-100 flex items-center justify-left">
+    <div className="bg-white p-8 rounded-lg shadow-lg w-full">
+      <div className="flex items-center space-x-2 mb-6">
+        <h1 className="text-xl font-semibold">Update form for Profit</h1>
+      </div>
+      <p className="text-sm text-gray-600 mb-6">Modify the following data:</p>
+      <div className="space-y-6">
+        <div className="date-selector">
+          <div className="month-selector">
+            <label htmlFor="countries" className="text-sm font-medium text-gray-900">
+              Month
+            </label>
+            <select
+              id="countries"
+              className="bg-white-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+              onChange={(e) => setMonth(e.target.value)}
+            >
+              <option defaultValue>{month}</option>
+              <option value="January">January</option>
+              <option value="February">February</option>
+              <option value="March">March</option>
+              <option value="April">April</option>
+              <option value="June">June</option>
+              <option value="July">July</option>
+              <option value="August">August</option>
+              <option value="September">September</option>
+              <option value="October">October</option>
+              <option value="November">November</option>
+              <option value="December">December</option>
+            </select>
+          </div>
+          <div className="year-selector">
+            <label htmlFor="year" className="text-sm font-medium text-gray-900">
+              Year
+            </label>
+            <input
+              type="text"
+              id="year"
+              value={year}
+              onChange={(e) => setYear(e.target.value)}
+              className="year-input form-input block border w-full border-gray-300 rounded-md shadow-sm"
+              required
+            />
+          </div>
         </div>
-      )}
-        <div className="flex items-center space-x-5">
-          <div className="h-14 w-14 bg-yellow-200 rounded-full flex flex-shrink-0 justify-center items-center text-yellow-500 text-2xl font-mono">
-            i
+        <div className="date-selector">
+          <div className="month-selector">
+            <label
+              htmlFor="income"
+              className="text-sm font-medium text-gray-700 block mb-2"
+            >
+              Income
+            </label>
+            <input
+              type="text"
+              id="income"
+              value={income}
+              onChange={(e) => setIncome(e.target.value)}
+              className="income-input form-input block border w-full border-gray-300 rounded-md shadow-sm"
+              required
+            />
           </div>
-          <div className="block pl-2 font-semibold text-xl self-start text-gray-700">
-            <h2 className="leading-relaxed">Form Edition</h2>
-            <p className="text-sm text-gray-500 font-normal leading-relaxed">
-              Edit form for Benefits
-            </p>
+          <div className="year-selector">
+            <label
+              htmlFor="expenses"
+              className="text-sm font-medium text-gray-700 flex mb-2"
+            >
+              Expenses
+            </label>
+            <input
+              type="text"
+              id="expenses"
+              value={expense}
+              onChange={(e) => setExpense(e.target.value)}
+              className="income-input form-input block border w-full border-gray-300 rounded-md shadow-sm"
+              required
+            />
           </div>
         </div>
-        <div className="divide-y divide-gray-200">
-          <div className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-            <div className="flex flex-col">
-              <input
-                type="text"
-                className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
-                placeholder="Month"
-                value={month}
-                onChange={(e) => setMonth(e.target.value)}
-              />
-              <input
-                type="number"
-                className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
-                placeholder="Income"
-                value={income}
-                onChange={(e) => setIncome(e.target.value)}
-              />
-              <input
-                type="number"
-                className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
-                placeholder="Expense"
-                value={expense}
-                onChange={(e) => setExpense(e.target.value)}
-              />
-              <input
-                type="number"
-                className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
-                placeholder="Year"
-                value={year}
-                onChange={(e) => setExpense(e.target.value)}
-              />
-              <label className="labels">Profit</label>
-              <input
-                type="number"
-                className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
-                placeholder={profit}
-                onChange={(e) => setProfit(e.target.value)}
-                disabled
-              />
-            </div>
-          </div>
+        <div id="passwordCriteria" className="text-sm space-y-2">
+          <ul className="list-disc pl-5 space-y-1 text-red-500">
+          {errors.income && (
+              <li>{errors.income}</li>
+          )}
+          {errors.month && (
+             <li>{errors.month}</li>
+          )}
+           {errors.expense && (
+          <li>{errors.expense}</li>
+          )}
+          {errors.year && (
+            <li>{errors.year}</li>
+          )}
+          </ul>
           
-          <div className="pt-4 flex items-center space-x-4">
-            <Link
-              to="/benefits"
-              className="buttonDelete flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none"
-            >
-              Cancel
-            </Link>
-            <button
-              className="buttonCreate flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none"
-              onClick={() => validate()}
-            >
-              Update
-            </button>
-          </div>
+        </div>
+        <div className="flex justify-between">
+          <Link to={"/profit"} className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-full hover:bg-gray-300 focus:outline-none focus:ring focus:border-blue-300">
+          Discard
+          </Link>
+          <button
+            className="bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-full transition duration-300"
+            onClick={() => validate()}
+          >
+            Update
+          </button>
         </div>
       </div>
     </div>
+  </div>
+  </div>
   );
 };
 
