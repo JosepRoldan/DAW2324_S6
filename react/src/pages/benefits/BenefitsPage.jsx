@@ -1,7 +1,6 @@
 import React from 'react'
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import AppLayout from '../../layout/AppLayout'
 import SectionTable from '../../components/sectionTable/SectionTable'
 import { usePage } from '../../contexts/PageContext';
 import { useTranslation } from "react-i18next";

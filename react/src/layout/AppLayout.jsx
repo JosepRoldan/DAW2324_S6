@@ -57,10 +57,10 @@ export default function AppLayout({ children }) {
   switch (role) {
     case 1:
       navigation = [
-        { name: t("Home"), href: "/dashboard", icon: HomeIcon, current: true },
+        { name: t("Dashboard"), href: "/dashboard", icon: HomeIcon, current: true },
         { name: t("Products"), href: "/products", icon: CalendarIcon, current: false, },
         { name: t("Orders"), href: "/orders", icon: DocumentDuplicateIcon, current: false, },
-        { name: t("Benefits"), href: "/benefits", icon: ChartPieIcon, current: false, },
+        { name: t("Profit"), href: "/profit", icon: ChartPieIcon, current: false, },
         { name: t("Customers"), href: "/customers", icon: UserGroupIcon, current: false, },
         { name: t("Users"), href: "/users", icon: UsersIcon, current: false },
         { name: t("Settings"), href: "/settings", icon: CogIcon, current: false },
@@ -68,10 +68,10 @@ export default function AppLayout({ children }) {
       break;
     case 2:
       navigation = [
-        { name: "Home", href: "/dashboard", icon: HomeIcon, current: true },
+        { name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: true },
         { name: "Products", href: "/products", icon: CalendarIcon, current: false, },
         { name: "Orders", href: "/orders", icon: DocumentDuplicateIcon, current: false, },
-        { name: "Benefits", href: "/benefits", icon: ChartPieIcon, current: false, },
+        { name: "Profit", href: "/profit", icon: ChartPieIcon, current: false, },
         { name: "Customers", href: "/customers", icon: UserGroupIcon, current: false, },
       ];
       break;
