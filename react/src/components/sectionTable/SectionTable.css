@@ -104,4 +104,27 @@ table {
     100% { transform: rotate(360deg); }
   }
 
-  
+  .buttonDash {
+    background-color: #5857AA; 
+    padding: 12px 20px; 
+    width: 100%; 
+    text-align: center; 
+    border-radius: 0.5rem; 
+    color: white; 
+    font-size: 0.75rem; 
+    letter-spacing: 0.025em;
+    font-weight: 600;
+    transition: background-color 0.3s;
+}
+
+
+@media (min-width: 768px) { 
+    .buttonDash {
+        width: auto; 
+    }
+}
+
+.buttonDash:hover {
+    background-color: #061F41; 
+}
+
