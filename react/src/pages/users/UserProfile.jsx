@@ -1,21 +1,26 @@
-import AppLayout from '../../layout/AppLayout';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import Spinner from '../../components/Spinner';
+import { usePage } from '../../contexts/PageContext';
+import { useTranslation } from "react-i18next";
 
 
 const token = localStorage.getItem('token');
 
-const steps = [
-  { name: 'Users', href: '/users', current: false },
-  { name: 'User Profile', href: '/users/profile/${userId}', current: true },
-];
 
 export const UserProfile = () => {
   const { userId } = useParams(); // Obtener el ID de usuario de la URL
-
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [isLoading, setLoading] = useState(true);
+  const { setPage, setSteps } = usePage();
+  const { t } = useTranslation();
+
+
+  useEffect(() => {
+    setPage(t("Users"));
+    setSteps([{ name: t("User Profile"), href: '/users/profile/${userId}', current: true }]);
+}, [setPage, setSteps, navigate]);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -49,7 +54,7 @@ export const UserProfile = () => {
   }
 
   return (
-    <AppLayout Page={'User Profile'} Steps={steps}>
+    <>
       <div className="pb-16 space-y-10 divide-y divide-gray-900/10">
         <form>
           <div className="grid grid-cols-1 gap-x-8 gap-y-8 pt-10 md:grid-cols-3">
@@ -121,7 +126,7 @@ export const UserProfile = () => {
           </div>
         </form>
       </div>
-    </AppLayout>
+    </>
   );
 };
 
