@@ -23,8 +23,7 @@ return new class extends Migration
             $table->integer('postcode')->nullable();
             $table->string('country')->nullable();
             $table->timestamp('membershipDate')->nullable();
-            // $table->timestamps();
-            $table->boolean('isvalidated')->default(false);
+            // El usuario por defecto es Inactive, por lo que no puede usar las funcionalidades hasta verificarse.
             $table->enum('customerStatus', ['Active', 'Inactive', 'Banned', 'Deleted'])->default('Inactive');
         });    
     }

@@ -5,35 +5,31 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Customer;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Hash;
 
 
 class VerifyEmailToken extends Model
 {
-    protected $table = 'password_reset_tokens'; // Nombre de la tabla
+    protected $table = 'email_verify_tokens'; // Nombre de la tabla
     
     protected $fillable = ['mail', 'token', 'created_at', 'expires_at']; // Campos asignables
 
     public $timestamps = false; // No se crean campos de tiempo en la tabla
     
-    public function showResetForm(Request $request){
+    public function showVerifyForm(Request $request){
     // Recupera el token de la URL
         $token = $request->token;
         // Busca el token en la base de datos
-        $passwordResetToken = ResetPasswordToken::where('token', $token)->first();
+        $verifyEmailToken = ResetPasswordToken::where('token', $token)->first();
         // Verifica si el token existe y no ha expirado
-        if ($passwordResetToken && Carbon::now()->lt($passwordResetToken->expires_at)) {
+        if ($verifyEmailToken && Carbon::now()->lt($verifyEmailToken->expires_at)) {
             // El token es válido y no ha expirado, muestra la vista de restablecento de contraseña
-            $email = $passwordResetToken->mail;
-            Customer::where('mail', $email)->update([
-                //Esto es para cambiar la contraseña, y hashearla en la base de datos, sabe que dato hashear por el input del formulario.
-                'password' => Hash::make($request->input('nueva_contraseña'))
-            ]);
-            $passwordResetToken->delete();
-            return view('auth.passwords.reset', ['token' => $token]);
+            $email = $verifyEmailToken->mail;
+            Customer::where('mail', $email)->update(['customerStatus' => $request->input('Active')]);
+            $verifyEmailToken->delete();
+            return view('login', ['token' => $token]);
         } else {
             // El token no es válido o ha expirado, redirige o muestra un mensaje de error
-            return redirect()->route('error.route')->with('error', 'El token de restablecimiento de contraseña no es válido o ha expirado.');
+            return redirect()->route('error.verify')->with('error', 'El token de verificación no es válido o ha expirado.');
         }
     }
 
