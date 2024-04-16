@@ -19,8 +19,14 @@ class Customer extends Model
         return $this->hasMany(Order::class);
     }
 
-    public function shoppingCart()
+    /* public function shoppingCart()
     {
         return $this->hasOne(ShoppingCart::class);
+    } */
+
+    //per simplificar domes una sola direccio per client
+    public function addressDelivery () 
+    {
+        return $this->hasOne(AddressDelivery::class);
     }
 }
