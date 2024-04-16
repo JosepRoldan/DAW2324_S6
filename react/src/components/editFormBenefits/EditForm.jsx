@@ -5,8 +5,6 @@ import axios from "axios";
 import "../sectionTable/alert.scss";
 
 const EditForm = () => {
-  const [alertSucces, setAlertSucces] = useState(false);
-  const [alertError, setAlertError] = useState(false);
   const [idBenefit, setId] = useState("");
   const [month, setMonth] = useState("");
   const [income, setIncome] = useState("");
@@ -126,6 +124,12 @@ const EditForm = () => {
   };
 
   return (
+    <div className="flex flex-col h-[100vh] divContainer">
+    {loading && (
+      <div className="loader-container">
+        <div className="loader"></div>
+      </div>
+    )}
     <div className="bg-gray-100 flex items-center justify-left">
     <div className="bg-white p-8 rounded-lg shadow-lg w-full">
       <div className="flex items-center space-x-2 mb-6">
@@ -223,7 +227,7 @@ const EditForm = () => {
           
         </div>
         <div className="flex justify-between">
-          <Link to={"/benefits"} className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-full hover:bg-gray-300 focus:outline-none focus:ring focus:border-blue-300">
+          <Link to={"/profit"} className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-full hover:bg-gray-300 focus:outline-none focus:ring focus:border-blue-300">
           Discard
           </Link>
           <button
@@ -235,6 +239,7 @@ const EditForm = () => {
         </div>
       </div>
     </div>
+  </div>
   </div>
   );
 };

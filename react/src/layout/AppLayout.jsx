@@ -88,8 +88,8 @@ export default function AppLayout({ children, Page, Steps }) {
           current: false,
         },
         {
-          name: t("Benefits"),
-          href: "/benefits",
+          name: t("Profit"),
+          href: "/profit",
           icon: ChartPieIcon,
           current: false,
         },
@@ -118,8 +118,8 @@ export default function AppLayout({ children, Page, Steps }) {
           current: false,
         },
         {
-          name: "Benefits",
-          href: "/benefits",
+          name: "profit",
+          href: "/profit",
           icon: ChartPieIcon,
           current: false,
         },
@@ -307,7 +307,6 @@ export default function AppLayout({ children, Page, Steps }) {
             </div>
           </Dialog>
         </Transition.Root>
-
         {/* Static sidebar for desktop */}
         <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-56 lg:flex-col">
           {/* Sidebar component, swap this element with another sidebar if you like */}
@@ -354,6 +353,8 @@ export default function AppLayout({ children, Page, Steps }) {
                                     </a>
                                 </li> */}
               </ul>
+        <div id="userway-widget-container"><UserwayWidget/></div>
+
             </nav>
           </div>
         </div>
@@ -450,15 +451,14 @@ export default function AppLayout({ children, Page, Steps }) {
           </div>
           <main className="bg-gray-100 py-5 h-screen overflow-y-auto">
             <div className="px-4 sm:px-6 lg:px-8">
-              {window.location.href.includes("/benefits") == false &&
+              {window.location.href.includes("/profit") == false &&
                 window.location.href.includes("/dashboard") == false && (
+                  
                   <Breadcrumb steps={Steps} />
                 )}
               {children}
             </div>
           </main>
-
-          <UserwayWidget />
         </div>
       </div>
     </>

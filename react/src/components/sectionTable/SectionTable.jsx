@@ -305,7 +305,7 @@ function SectionTable({ SectionName }) {
               Table
             </h4>
             <div className="buttonContainer">
-              <Link className="bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-full transition duration-300" to="/benefits=create" style={{ marginLeft: '130px' }}>
+              <Link className="bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-full transition duration-300" to="/profit=create" style={{ marginLeft: '130px' }}>
                 Create
               </Link>
             </div>
@@ -372,7 +372,7 @@ function SectionTable({ SectionName }) {
                     </td>
                     <td className="py-4 px-6 text-sm font-medium text-gray-900 flex">
 
-                      <Link to={`/benefits=edit/${benefit.id}`}>
+                      <Link to={`/profit=edit/${benefit.id}`}>
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           viewBox="0 0 20 20"

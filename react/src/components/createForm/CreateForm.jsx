@@ -89,7 +89,7 @@ const CreateForm = ({ section }) => {
         setAlert(false);
       })
       .finally(function () {
-        navigate('/benefits');
+        navigate('/profit');
       });
   };
 
@@ -188,7 +188,7 @@ const CreateForm = ({ section }) => {
             
           </div>
           <div className="flex justify-between">
-            <Link to={"/benefits"} className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-full hover:bg-gray-300 focus:outline-none focus:ring focus:border-blue-300">
+            <Link to={"/profit"} className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-full hover:bg-gray-300 focus:outline-none focus:ring focus:border-blue-300">
             Discard
             </Link>
             <button

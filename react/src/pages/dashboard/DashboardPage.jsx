@@ -97,7 +97,7 @@ export const DashboardPage = () => {
   };
 
   return  (
-    <AppLayout Page={"Home"}>
+    <AppLayout Page={"Dashboard"}>
       <div className="flex flex-col h-[100vh] divContainer">
         {loading && (
           <div className="loader-container">
@@ -127,7 +127,7 @@ export const DashboardPage = () => {
                             </h2>
                         </div>
                         <div className="flex gap-2 md:gap-4">
-                            <Link to="/benefits"  className="buttonDash">
+                            <Link to="/profit"  className="buttonDash">
                                 See more
                             </Link>
                             <Link to={"/orders"}
