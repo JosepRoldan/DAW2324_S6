@@ -77,9 +77,13 @@ export const CustomersEdit = () => {
    * @param {object} e - The input change event object.
    * @return {void} This function does not return a value.
    */
+  const [errors, setErrors] = useState({});
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    // Clear the error when the user starts typing in the field
+    setErrors({ ...errors, [name]: '' });
   }
 
 
@@ -99,61 +103,60 @@ export const CustomersEdit = () => {
     }
   };
 
+  const renderErrorForField = (fieldName) => {
+    if (errors[fieldName]) {
+      return (
+        <p key={fieldName} className="text-red-500 text-sm mt-1">
+          {errors[fieldName]}
+        </p>
+      );
+    }
+    return null;
+  };
   // Aquí comienza el código de validación
   const validations = () => {
-    // Validar que el nombre no esté vacío
+    const newErrors = {};
+
     if (formData.name.trim() === '') {
-      alert('Please enter a name.');
-      return false;
+      newErrors.name = t("Please enter a name.");
     }
 
-    // Validar que el apellido no esté vacío
     if (formData.surname.trim() === '') {
-      alert('Please enter a surname.');
-      return false;
+      newErrors.surname = t("Please enter a surname.");
     }
 
-    // Validar que la ciudad no esté vacía
-    if (formData.city.trim() === '') {
-      alert('Please enter a city.');
-      return false;
+    if (formData.username.trim() === '') {
+      newErrors.username = t("Please enter a username.");
     }
 
-    // Validar que la dirección no esté vacía
-    if (formData.address.trim() === '') {
-      alert('Please enter an address.');
-      return false;
-    }
+    // if (formData.city.trim() === '') {
+    //   newErrors.city = t("Please enter a city.");
+    // }
 
-    // Validar el código postal
-    const postcodeRegex = /^[0-9]+$/;
-    if (!postcodeRegex.test(formData.postcode)) {
-      alert('Please enter a numeric Post Code.');
-      return false;
-    }
+    // if (formData.address.trim() === '') {
+    //   newErrors.address = t("Please enter an address.");
+    // }
 
-    // Validar el email
+    // const postcodeRegex = /^[0-9]+$/;
+    // if (!postcodeRegex.test(formData.postcode)) {
+    //   newErrors.postcode = t("Please enter a numeric Post Code.");
+    // }
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.mail)) {
-      alert('Please enter a valid email.');
-      return false;
+      newErrors.mail = t("Please enter a valid email.");
     }
 
-    // Validar el teléfono
-    const phoneRegex = /^[0-9]{7,15}$/;
-    if (!phoneRegex.test(formData.phone)) {
-      alert('Please enter a valid phone number (7-15 digits).');
-      return false;
-    }
+    // const phoneRegex = /^[0-9]{7,15}$/;
+    // if (!phoneRegex.test(formData.phone)) {
+    //   newErrors.phone = t("Please enter a valid phone number (7-15 digits).");
+    // }
 
-    // Si todas las validaciones pasan, ejecutar handleUpdate()
-    return true;
+    setErrors(newErrors);
+
+    return Object.keys(newErrors).length === 0;
   };
 
-
-  // Aquí termina el código de validación
-
-  // Si todas las validaciones pasan, enviar el formulario
   const handleUpdate = () => {
     const headers = {
       Accept: "application/json",
@@ -228,13 +231,14 @@ export const CustomersEdit = () => {
       <div className="pb-16 space-y-10 divide-y divide-gray-900/10">
         <form>
           <div className="grid grid-cols-1 gap-x-8 gap-y-8 pt-10 md:grid-cols-3">
+
             <div className="px-4 sm:px-0">
               <h2 className="text-base font-semibold leading-7 text-gray-900">{t("Personal Information")}</h2>
               <p className="mt-1 text-sm leading-6 text-gray-600">{t("Provide customers personal information.")}</p>
             </div>
-
             <div className="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2">
               <div className="px-4 py-6 sm:p-8">
+
                 <div className="grid max-w-3xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                   <div className="sm:col-span-2">
                     <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900">
@@ -250,6 +254,7 @@ export const CustomersEdit = () => {
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
                     </div>
+                    {renderErrorForField('name')}
                   </div>
 
                   <div className="sm:col-span-4">
@@ -267,6 +272,8 @@ export const CustomersEdit = () => {
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
                     </div>
+                    {renderErrorForField('surname')}
+
                   </div>
 
                   <div className="sm:col-span-4">
@@ -284,6 +291,8 @@ export const CustomersEdit = () => {
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
                     </div>
+                    {renderErrorForField('mail')}
+
                   </div>
 
                   <div className="sm:col-span-2">
@@ -385,6 +394,8 @@ export const CustomersEdit = () => {
                           className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         />
                       </div>
+                      {renderErrorForField('username')}
+
                     </div>
 
 
@@ -555,4 +566,3 @@ export const CustomersEdit = () => {
   );
 
 };
-
