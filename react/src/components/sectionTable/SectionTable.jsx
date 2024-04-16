@@ -24,9 +24,9 @@ function SectionTable({ SectionName }) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [years, setYears] = useState([]);
-  const actualYear = new Date().getFullYear();
-  var year = useState('');
+  const [actualYear, setActualYear] = useState(new Date().getFullYear());
 
+  
 
   /**
    * Function to show a tooltip based on the event target.
@@ -158,6 +158,7 @@ function SectionTable({ SectionName }) {
    */
   const handleYearClick = (year) => {
     getBenefitsByYear(year);
+    setActualYear(year);
     toggleDropdown(); 
   }
 
@@ -262,28 +263,6 @@ function SectionTable({ SectionName }) {
           <div className="loader"></div>
         </div>
       )}
-      {alertSucces && (
-        <main>
-          <section>
-            <div className="alert alert-2-success">
-              <h3 className="alert-title">Succes</h3>
-              <p className="alert-content">Data deleted correctly</p>
-            </div>
-          </section>
-        </main>
-      )}
-
-      {alertError && (
-        <main>
-          <section>
-            <div className="alert alert-1-warning">
-              <h3 className="alert-title">Error</h3>
-              <p className="alert-content">Something went wrong</p>
-            </div>
-          </section>
-        </main>
-      )}
-
       <div className="relative group mb-10">
         <button id="dropdown-button" onClick={toggleDropdown} className="inline-flex justify-center w-50 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-blue-500">
           <span className="mr-2">Select Year</span>
@@ -385,7 +364,6 @@ function SectionTable({ SectionName }) {
                       </Link>
                       <button
                         className="text-gray-900"
-                        //Si el usuario clica se elimina la fila
                         onClick={() => deleteBenefits(benefit.id)}
                       >
                         <svg
@@ -418,13 +396,13 @@ function SectionTable({ SectionName }) {
                   Chart
                 </h2>
                 <p className="mb-2 text-gray-600 text-sm">
-                  Monthly Benefits of Year 2024
+                  Monthly Profit of Year 2024
                 </p>
               </div>
               <div className="mb-4">
                 <div className="flex items-center">
-                  <div className="w-2 h-2 bg-violet mr-2 rounded-full"></div>
-                  <div className="text-sm text-gray-700">Benefits</div>
+                  <div className="w-2 h-2 bg-blue-900 hover:bg-blue-800 mr-2 rounded-full"></div>
+                  <div className="text-sm text-gray-700">Profit</div>
                 </div>
               </div>
             </div>
@@ -447,7 +425,7 @@ function SectionTable({ SectionName }) {
                   <div key={index} className="px-2 w-1/6">
                     <div
                       style={{ height: `${data / 20}px` }}
-                      className="transition ease-in duration-200 bg-violet hover:bg-blue-400 relative"
+                      className="transition ease-in duration-200 bg-blue-900 hover:bg-blue-800 relative"
                     >
                       <div className="text-center absolute top-0 left-0 right-0 -mt-6 text-gray-800 text-sm">
                         {data}

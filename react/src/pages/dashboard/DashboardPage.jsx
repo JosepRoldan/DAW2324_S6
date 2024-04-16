@@ -131,14 +131,14 @@ export const DashboardPage = () => {
                                 See more
                             </Link>
                             <Link to={"/orders"}
-                            className="bg-purple-50 px-5 py-3 w-full text-center md:w-auto rounded-lg text-purple-600 text-xs tracking-wider font-semibold hover:bg-purple-600 hover:text-white">
+                            className="bg-blue-50 px-5 py-3 w-full text-center md:w-auto rounded-lg text-blue-900 text-xs tracking-wider font-semibold hover:bg-blue-900 hover:text-white">
                                   Check latest orders
                             </Link>
                         </div>
                     </div>
                 </div>
                 <div
-                    className="col-span-2 p-6 rounded-2xl bg-gradient-to-r from-purple-500 to-purple-800 flex flex-col justify-between">
+                    className="col-span-2 p-6 rounded-2xl bg-gradient-to-r from-blue-900 to-blue-800 flex flex-col justify-between">
                     <div className="flex flex-col space-y-2">
                         <h2 className="text-white font-bold text-lg">Overview of your account</h2>
                         <p className="text-gray-100 text-sm md:text-base leading-tight max-w-sm">
@@ -159,9 +159,9 @@ export const DashboardPage = () => {
                     <div className="flex justify-between items-start">
                         <div className="flex flex-col">
                             <p className="text-xs text-gray-600 tracking-wide">Daily Profit</p>
-                            <h3 className="mt-1 text-lg text-purple-500 font-bold">€ {Math.round(totalProfit/365)}</h3>
+                            <h3 className="mt-1 text-lg text-blue-900 font-bold">€ {Math.round(totalProfit/365)}</h3>
                         </div>
-                        <div className="bg-purple-500 p-2 md:p-1 xl:p-2 rounded-md">
+                        <div className="bg-blue-900 p-2 md:p-1 xl:p-2 rounded-md">
                         </div>
                     </div>
                 </div>
@@ -201,7 +201,7 @@ export const DashboardPage = () => {
                 <div className="col-span-3 bg-white p-6 rounded-xl border border-gray-50 flex flex-col space-y-6">
                     <div className="flex justify-between items-center">
                         <h2 className="text-sm text-gray-600 font-bold tracking-wide">Latest Orders</h2>
-                        <Link to={"/orders"} className="px-4 py-2 text-xs bg-purple-100 text-purple-500 rounded uppercase tracking-wider font-semibold hover:bg-purple-300">More</Link>
+                        <Link to={"/orders"} className="px-4 py-2 text-xs bg-blue-100 text-blue-900 rounded uppercase tracking-wider font-semibold hover:bg-blue-300">More</Link>
                     </div>
                     <ul className="divide-y-2 divide-gray-100 overflow-x-auto w-full">
                       {orders.map((order) => (

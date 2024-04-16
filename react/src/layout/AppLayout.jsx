@@ -18,12 +18,13 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import UserwayWidget from "../components/userwayWidget/UserWayWidget";
 import { useTranslation } from "react-i18next";
-import i18n from "i18next";
+import i18n, { loadLanguages } from "i18next";
 import { initReactI18next } from "react-i18next";
 import LanguageSwitcher from "../components/LanguageSwitcher";
 import translationEN from "/src/locales/eng/translation.json";
 import translationCA from "/src/locales/cat/translation.json";
 import translationES from "/src/locales/esp/translation.json";
+
 
 const resources = {
   eng: {
@@ -67,59 +68,59 @@ export default function AppLayout({ children, Page, Steps }) {
   switch (role) {
     case 1:
       navigation = [
-        { name: t("Home"), href: "/dashboard", icon: HomeIcon, current: true },
-        { name: t("Users"), href: "/users", icon: UsersIcon, current: false },
+        { name: t("Dashboard"), to: "/dashboard", icon: HomeIcon, current: true },
+        { name: t("Users"), to: "/users", icon: UsersIcon, current: false },
         {
           name: t("Customers"),
-          href: "/customers",
+          to: "/customers",
           icon: UserGroupIcon,
           current: false,
         },
         {
           name: t("Products"),
-          href: "/products",
+          to: "/products",
           icon: CalendarIcon,
           current: false,
         },
         {
           name: t("Orders"),
-          href: "/orders",
+          to: "/orders",
           icon: DocumentDuplicateIcon,
           current: false,
         },
         {
           name: t("Profit"),
-          href: "/profit",
+          to: "/profit",
           icon: ChartPieIcon,
           current: false,
         },
-        { name: t("Settings"), href: "/settings", icon: CogIcon, current: false },
+        { name: t("Settings"), to: "/settings", icon: CogIcon, current: false },
       ];
       break;
     case 2:
       navigation = [
-        { name: "Home", href: "/dashboard", icon: HomeIcon, current: true },
+        { name: "Home", to: "/dashboard", icon: HomeIcon, current: true },
         {
           name: "Customers",
-          href: "/customers",
+          to: "/customers",
           icon: UserGroupIcon,
           current: false,
         },
         {
           name: "Products",
-          href: "/products",
+          to: "/products",
           icon: CalendarIcon,
           current: false,
         },
         {
           name: "Orders",
-          href: "/orders",
+          to: "/orders",
           icon: DocumentDuplicateIcon,
           current: false,
         },
         {
           name: "profit",
-          href: "/profit",
+          to: "/profit",
           icon: ChartPieIcon,
           current: false,
         },
@@ -127,16 +128,16 @@ export default function AppLayout({ children, Page, Steps }) {
       break;
     case 3:
       navigation = [
-        { name: "Home", href: "/dashboard", icon: HomeIcon, current: true },
+        { name: "Home", to: "/dashboard", icon: HomeIcon, current: true },
         {
           name: "Customers",
-          href: "/customers",
+          to: "/customers",
           icon: UserGroupIcon,
           current: false,
         },
         {
           name: "Orders",
-          href: "/orders",
+          to: "/orders",
           icon: DocumentDuplicateIcon,
           current: false,
         },
@@ -151,7 +152,7 @@ export default function AppLayout({ children, Page, Steps }) {
     if (navigation[i].current == true) {
       navigation[i].current = false;
     }
-    if (window.location.href.includes(navigation[i].href)) {
+    if (window.location.href.includes(navigation[i].to)) {
       navigation[i].current = true;
     }
   }
@@ -171,6 +172,7 @@ export default function AppLayout({ children, Page, Steps }) {
         .then(function (response) {
           if (response.status === 200) {
             localStorage.removeItem("token");
+            localStorage.removeItem("user");
             navigate("/");
           }
         })
@@ -183,6 +185,10 @@ export default function AppLayout({ children, Page, Steps }) {
     }
   };
 
+  const handleNavigateTo = (to) => {
+    navigate(to);
+  };
+  
   const userNavigation = [
     { name: "My profile", action: "My profile" },
     { name: "Sign out", action: "Sign out" },
@@ -269,12 +275,10 @@ export default function AppLayout({ children, Page, Steps }) {
                             {navigation.map((item) => (
                               <li key={item.name}>
                                 <a
-                                  href={item.href}
+                                  onClick={() => handleNavigateTo(item.to)}
                                   className={classNames(
-                                    item.current
-                                      ? "bg-gray-800 text-white"
-                                      : "text-gray-400 hover:text-white hover:bg-gray-800",
-                                    "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
+                                    item.current ? "bg-gray-800 text-white" : "text-gray-400 hover:text-white hover:bg-gray-800",
+                                    "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold select-none cursor-pointer"
                                   )}
                                 >
                                   <item.icon
@@ -289,7 +293,7 @@ export default function AppLayout({ children, Page, Steps }) {
                         </li>
                         <li className="mt-auto">
                           <a
-                            href="#"
+                            to="#"
                             className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 hover:bg-gray-800 hover:text-white"
                           >
                             <Cog6ToothIcon
@@ -325,12 +329,10 @@ export default function AppLayout({ children, Page, Steps }) {
                     {navigation.map((item) => (
                       <li key={item.name}>
                         <a
-                          href={item.href}
+                         onClick={() => handleNavigateTo(item.to)}
                           className={classNames(
-                            item.current
-                              ? "bg-gray-800 text-white"
-                              : "text-gray-400 hover:text-white hover:bg-gray-800",
-                            "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
+                            item.current ? "bg-gray-800 text-white" : "text-gray-400 hover:text-white hover:bg-gray-800",
+          "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold select-none cursor-pointer"
                           )}
                         >
                           <item.icon
@@ -345,7 +347,7 @@ export default function AppLayout({ children, Page, Steps }) {
                 </li>
                 {/* <li className="mt-auto">
                                     <a
-                                        href="#"
+                                        to="#"
                                         className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 hover:bg-gray-800 hover:text-white"
                                     >
                                         <Cog6ToothIcon className="h-6 w-6 shrink-0" aria-hidden="true" />
@@ -424,7 +426,7 @@ export default function AppLayout({ children, Page, Steps }) {
                         <Menu.Item key={item.name}>
                           {({ active }) => (
                             <a
-                              href={item.action}
+                              to={item.action}
                               onClick={(e) => {
                                 e.preventDefault();
                                 if (item.action === "My profile") {

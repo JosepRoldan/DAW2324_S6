@@ -66,7 +66,6 @@ const CreateForm = ({ section }) => {
    *
    */
   const handleCreate = async (month, income, expense, profit, year) => {
-    setAlert(false);
     console.log(month, income, expense, profit, year);
     const url = `${import.meta.env.VITE_API_URL}/createBenefit`;
     await axios({
@@ -81,12 +80,10 @@ const CreateForm = ({ section }) => {
 
         if (response.status === 409) {
           console.log("Year already exists");
-          setAlert(false);
         }
       })
       .catch(function (error) {
         console.error("Error:", error);
-        setAlert(false);
       })
       .finally(function () {
         navigate('/profit');
