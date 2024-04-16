@@ -145,12 +145,12 @@ const ProductDetailsPage = () => {
     }
 
     const detailColumnDefs = [
-        { field: 'name', headerName: 'Name', sortable: true, filter: true },
-        { field: 'format_width', headerName: 'Width (cm)', sortable: true, filter: true },
-        { field: 'format_height', headerName: 'Height (cm)', sortable: true, filter: true },
-        { field: 'formatted_price', headerName: 'Price', sortable: true, filter: true },
-        { valueGetter: benefitsMarginValueGetter, headerName: 'Benefits margin', sortable: true, filter: true },
-        { cellRenderer: SalesPriceCellRenderer, headerName: 'Sales price', sortable: true, filter: true },
+        { field: 'name', headerName: t('Name'), sortable: true, filter: true },
+        { field: 'format_width', headerName: t('Width (cm)'), sortable: true, filter: true },
+        { field: 'format_height', headerName: t('Height (cm)'), sortable: true, filter: true },
+        { field: 'formatted_price', headerName: t('Price'), sortable: true, filter: true },
+        { valueGetter: benefitsMarginValueGetter, headerName: t('Benefits Margin'), sortable: true, filter: true },
+        { cellRenderer: SalesPriceCellRenderer, headerName: t('Sales Price'), sortable: true, filter: true },
     ];
 
     if (error) {

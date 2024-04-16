@@ -1,5 +1,4 @@
 import AppLayout from '../../layout/AppLayout';
-import { useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import Spinner from '../../components/Spinner';
 
@@ -8,48 +7,18 @@ const token = localStorage.getItem('token');
 
 const steps = [
   { name: 'Users', href: '/users', current: false },
-  { name: 'User Profile', href: '/users/profile/${userId}', current: true },
+  { name: 'User Profile', href: '/users/profile', current: true },
 ];
 
 export const UserProfile = () => {
-  const { userId } = useParams(); // Obtener el ID de usuario de la URL
-
-  const [user, setUser] = useState(null);
-  const [isLoading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/users/${userId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (response.ok) {
-          const userData = await response.json();
-          setUser(userData);
-        } else {
-          console.error('Error fetching user data:', response.statusText);
-        }
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (userId) {
-      fetchUserData();
-    }
-  }, [userId]);
+  var jsonData = JSON.parse(localStorage.getItem("user"));
+  const [user, setUser] = useState(jsonData);
 
   if (!user) {
     return <Spinner message='Loading...' />;
   }
 
   return (
-    <AppLayout Page={'User Profile'} Steps={steps}>
       <div className="pb-16 space-y-10 divide-y divide-gray-900/10">
         <form>
           <div className="grid grid-cols-1 gap-x-8 gap-y-8 pt-10 md:grid-cols-3">
@@ -69,7 +38,7 @@ export const UserProfile = () => {
                         type="text"
                         name="name"
                         id="name"
-                        value={user.data.name}
+                        value={user.name}
                         disabled
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 bg-gray-100 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
@@ -85,7 +54,7 @@ export const UserProfile = () => {
                         type="text"
                         name="surname"
                         id="surname"
-                        value={user.data.surname}
+                        value={user.surname}
                         disabled
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 bg-gray-100 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
@@ -101,7 +70,7 @@ export const UserProfile = () => {
                         id="email"
                         name="email"
                         type="email"
-                        value={user.data.email}
+                        value={user.email}
                         disabled
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 bg-gray-100 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
@@ -121,7 +90,6 @@ export const UserProfile = () => {
           </div>
         </form>
       </div>
-    </AppLayout>
   );
 };
 

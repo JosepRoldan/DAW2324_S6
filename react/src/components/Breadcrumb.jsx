@@ -1,8 +1,10 @@
 import React from 'react';
 import { ChevronRightIcon, HomeIcon } from '@heroicons/react/20/solid';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from "react-i18next";
 
 export const Breadcrumb = ({ steps = [] }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const handleNavigation = (path) => {
@@ -29,7 +31,7 @@ export const Breadcrumb = ({ steps = [] }) => {
                 className="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700"
                 aria-current={page.current ? 'page' : undefined}
               >
-                {page.name}
+                {t(page.name)}
               </button>
             </div>
           </li>
