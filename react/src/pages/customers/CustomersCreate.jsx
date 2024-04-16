@@ -38,6 +38,40 @@ const steps = [
 
 const token = localStorage.getItem('token');
 
+const validations = async (e) => {
+
+  // Validar que el nombre no esté vacío
+  if (formData.name.trim() === '') {
+    alert('Please enter a name.');
+    return;
+  }
+
+  // Validar que el email sea válido
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(formData.mail)) {
+    alert('Please enter a valid email.');
+    return;
+  }
+
+  // Validar que el teléfono contenga solo números y tenga una longitud entre 7 y 15 caracteres
+  const phoneRegex = /^[0-9]{7,15}$/;
+  if (!phoneRegex.test(formData.phone)) {
+    alert('Please enter a valid phone number (7-15 digits).');
+    return;
+  }
+
+  // Validar que la contraseña tenga al menos 6 caracteres
+  if (formData.newPassword.trim() !== '' && formData.newPassword.length < 6) {
+    alert('Password must be at least 6 characters long.');
+    return;
+  }
+
+  // Validar que las contraseñas coincidan
+  if (formData.newPassword !== formData.newPasswordConfirm) {
+    alert('Passwords do not match.');
+    return;
+  }
+};
 /**
  * Create a new customer with the provided information.
  *
@@ -118,7 +152,7 @@ export const CustomersCreate = () => {
                 <div className="grid max-w-3xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                   <div className="sm:col-span-2">
                     <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900">
-                    {t("First name")}
+                      {t("First name")}
                     </label>
                     <div className="mt-2">
                       <input
@@ -134,7 +168,7 @@ export const CustomersCreate = () => {
 
                   <div className="sm:col-span-4">
                     <label htmlFor="surname" className="block text-sm font-medium leading-6 text-gray-900">
-                    {t("Last name")}
+                      {t("Last name")}
                     </label>
                     <div className="mt-2">
                       <input
@@ -151,7 +185,7 @@ export const CustomersCreate = () => {
 
                   <div className="sm:col-span-4">
                     <label htmlFor="mail" className="block text-sm font-medium leading-6 text-gray-900">
-                    {t("Email")}
+                      {t("Email")}
                     </label>
                     <div className="mt-2">
                       <input
@@ -168,7 +202,7 @@ export const CustomersCreate = () => {
 
                   <div className="sm:col-span-2">
                     <label htmlFor="phone" className="block text-sm font-medium leading-6 text-gray-900">
-                    {t("Phone")}
+                      {t("Phone")}
                     </label>
                     <div className="mt-2">
                       <input
@@ -185,7 +219,7 @@ export const CustomersCreate = () => {
 
                   <div className="col-span-full">
                     <label htmlFor="address" className="block text-sm font-medium leading-6 text-gray-900">
-                    {t("Street address")}
+                      {t("Street address")}
                     </label>
                     <div className="mt-2">
                       <input
@@ -202,7 +236,7 @@ export const CustomersCreate = () => {
 
                   <div className="sm:col-span-3 sm:col-start-1">
                     <label htmlFor="city" className="block text-sm font-medium leading-6 text-gray-900">
-                    {t("City")}
+                      {t("City")}
                     </label>
                     <div className="mt-2">
                       <input
@@ -217,9 +251,9 @@ export const CustomersCreate = () => {
                     </div>
                   </div>
 
-                  <div className="sm:col-span-2">
+                  <div className="sm:col-span-3">
                     <label htmlFor="postcode" className="block text-sm font-medium leading-6 text-gray-900">
-                    {t("ZIP / Postal code")}
+                      {t("ZIP / Postal code")}
                     </label>
                     <div className="mt-2">
                       <input
@@ -242,7 +276,7 @@ export const CustomersCreate = () => {
             <div className="px-4 sm:px-0">
               <h2 className="text-base font-semibold leading-7 text-gray-900">{t("Account information")}</h2>
               <p className="mt-1 text-sm leading-6 text-gray-600">
-              {t("Set the customer's account information.")}
+                {t("Set the customer's account information.")}
               </p>
             </div>
 
@@ -253,7 +287,7 @@ export const CustomersCreate = () => {
 
                     <div className="sm:col-span-4">
                       <label htmlFor="username" className="block text-sm font-medium leading-6 text-gray-900">
-                      {t("Username")}
+                        {t("Username")}
                       </label>
                       <div className="mt-2">
                         <input
@@ -270,7 +304,7 @@ export const CustomersCreate = () => {
 
                     <div className="sm:col-span-3 sm:col-start-1">
                       <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
-                      {t("Password")}
+                        {t("Password")}
                       </label>
                       <div className="mt-2">
                         <input
@@ -286,7 +320,7 @@ export const CustomersCreate = () => {
 
                     <div className="sm:col-span-3">
                       <label htmlFor="passwordConfirm" className="block text-sm font-medium leading-6 text-gray-900">
-                      {t("Confirm Password")}
+                        {t("Confirm Password")}
                       </label>
                       <div className="mt-2">
                         <input
@@ -304,7 +338,7 @@ export const CustomersCreate = () => {
                   <fieldset>
                     <legend className="text-sm font-semibold leading-6 text-gray-900">{t("Status")}</legend>
                     <p className="mt-1 text-sm leading-6 text-gray-600">
-                    {t("These is the customer's account status.")}
+                      {t("These is the customer's account status.")}
                     </p>
                     <div className="mt-2 flex gap-x-12">
                       <div className="flex items-center">
@@ -317,7 +351,7 @@ export const CustomersCreate = () => {
                           className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
                         />
                         <label htmlFor="push-everything" className="ml-2 block text-sm font-medium leading-6 text-gray-900">
-                        {t("Active")}
+                          {t("Active")}
                         </label>
                       </div>
                       <div className="flex items-center">
@@ -330,7 +364,7 @@ export const CustomersCreate = () => {
                           className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
                         />
                         <label htmlFor="push-email" className="ml-2 block text-sm font-medium leading-6 text-gray-900">
-                        {t("Inactive")}
+                          {t("Inactive")}
                         </label>
                       </div>
                       <div className="flex items-center">
@@ -343,7 +377,7 @@ export const CustomersCreate = () => {
                           className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
                         />
                         <label htmlFor="push-nothing" className="ml-2 block text-sm font-medium leading-6 text-gray-900">
-                        {t("Banned")}
+                          {t("Banned")}
                         </label>
                       </div>
 
@@ -357,7 +391,7 @@ export const CustomersCreate = () => {
                           className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
                         />
                         <label htmlFor="push-nothing" className="ml-2 block text-sm font-medium leading-6 text-gray-900">
-                        {t("Deleted")}
+                          {t("Deleted")}
                         </label>
                       </div>
                     </div>
@@ -366,7 +400,7 @@ export const CustomersCreate = () => {
                   <fieldset>
                     <legend className="text-sm font-semibold leading-6 text-gray-900">{t("Validated")}</legend>
                     <p className="mt-1 text-sm leading-6 text-gray-600">
-                    {t("These is the customer's account validation.")}
+                      {t("These is the customer's account validation.")}
                     </p>
                     <div className="mt-2 flex gap-x-3">
                       <div className="flex items-center">
@@ -379,7 +413,7 @@ export const CustomersCreate = () => {
                           className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
                         />
                         <label htmlFor="push-everything" className="ml-2 block text-sm font-medium leading-6 text-gray-900">
-                        {t("Yes")}
+                          {t("Yes")}
                         </label>
                       </div>
                       <div className="flex items-center">
@@ -392,7 +426,7 @@ export const CustomersCreate = () => {
                           className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
                         />
                         <label htmlFor="push-email" className="ml-2 block text-sm font-medium leading-6 text-gray-900">
-                        {t("No")}
+                          {t("No")}
                         </label>
                       </div>
                     </div>

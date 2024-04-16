@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 import AppLayout from '../../layout/AppLayout';
 import { useTranslation } from "react-i18next";
@@ -7,6 +7,8 @@ import { initReactI18next } from "react-i18next";
 import translationEN from "/src/locales/eng/translation.json";
 import translationCA from "/src/locales/cat/translation.json";
 import translationES from "/src/locales/esp/translation.json";
+import axios from 'axios';
+
 
 const resources = {
   eng: {
@@ -39,6 +41,9 @@ export const CustomersShow = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { state } = useLocation();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const showModal = () => setIsModalOpen(true);
+  const hideModal = () => setIsModalOpen(false);
   const customer = state?.customer;
   const {
     id,
@@ -55,13 +60,65 @@ export const CustomersShow = () => {
     postcode = '-'
   } = customer;
 
+  const token = localStorage.getItem('token');
+
+
   const steps = [
     { name: 'Customers', href: '/customers', current: true },
     { name: `${name} ${surname}`, href: `/customers/1`, current: true },
   ]
 
+  const onDelete = () => {
+    const headers = {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      'Authorization': `Bearer ${token}`,
+    };
+
+    axios.delete(`${import.meta.env.VITE_API_URL}/customers/${customer.id}`, { headers })
+      .then(() => {
+        alert('Customer deleted successfully!');
+        navigate('/customers');
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('There was an error deleting the customer.');
+      });
+  };
+
   return (
+
     <AppLayout Steps={steps}>
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
+          <div className="bg-white p-4 sm:p-6 lg:p-8 shadow-xl rounded-lg">
+            <h3 className="text-lg font-medium leading-6 text-gray-900">
+              {t("Confirm Deletion")}
+            </h3>
+            <div className="mt-2">
+              <p className="text-sm text-gray-500">
+                {t("Are you sure you want to delete this customer? This action cannot be undone.")}
+              </p>
+            </div>
+            <div className="mt-4 flex justify-end">
+              <button
+                type="button"
+                className="mr-2 inline-flex justify-center rounded-md border border-transparent px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-500"
+                onClick={hideModal}
+              >
+                {t("Cancel")}
+              </button>
+              <button
+                type="button"
+                className="inline-flex justify-center rounded-md border border-transparent px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                onClick={() => { onDelete(); hideModal(); }}
+              >
+                {t("Accept")}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="mt-6 mb-16 overflow-hidden bg-white shadow sm:rounded-lg">
         <div className="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
           <div className="-ml-4 -mt-2 flex flex-wrap items-center justify-between sm:flex-nowrap">
@@ -69,6 +126,12 @@ export const CustomersShow = () => {
               <h3 className="text-base font-semibold leading-6 text-gray-900">{t("Customer Information")}</h3>
             </div>
             <div className="ml-4 mt-2 flex-shrink-0">
+              <button
+                type="button" onClick={showModal}
+                className="bg-red-600 hover:bg-red-800 text-white font-bold py-2 px-4 rounded-full transition duration-300 mr-3"
+              >
+                {t("Delete Customer")}
+              </button>
               <button
                 type="button" onClick={() => navigate(`/customers/${id}/edit`, { state: { customer } })}
                 className="bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-full transition duration-300"
