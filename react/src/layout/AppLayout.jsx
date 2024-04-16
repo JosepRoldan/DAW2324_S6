@@ -437,7 +437,7 @@ export default function AppLayout({ children, Page, Steps }) {
                               }}
                               className={classNames(
                                 active ? "bg-gray-50" : "",
-                                "block px-3 py-1 text-sm leading-6 text-gray-900"
+                                "block px-3 py-1 text-sm leading-6 text-gray-900 select-none cursor-pointer"
                               )}
                             >
                               {item.name}
