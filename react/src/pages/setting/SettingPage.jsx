@@ -1,14 +1,16 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import AgGridTable from '../../components/table/TableSimple';
-import AppLayout from '../../layout/AppLayout';
 import EditButton from './EditButton';
 import DeleteButton from './DeleteButton';
-
-const steps = [
-  { name: 'Settings', href: '/settings', current: true },
-]
+import { usePage } from '../../contexts/PageContext';
 
 const SettingPage = () => {
+  const { setPage, setSteps } = usePage();
+
+    useEffect(() => {
+        setPage("Settings");
+        setSteps([{ name: 'Settings', href: '/settings', current: true }]);
+    }, [setPage, setSteps]);
   const [jsonData, setJsonData] = useState([]);
 
   useEffect(() => {
@@ -54,14 +56,14 @@ const SettingPage = () => {
   ];
 
   return (
-    <AppLayout Page={"Settings"} Steps={steps}>
+    <>
       <div>
         <AgGridTable
           rowData={jsonData}
           columnDefs={columnDefs}
         />
       </div>
-    </AppLayout>
+    </>
   );
 };
 

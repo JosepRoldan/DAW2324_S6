@@ -1,6 +1,6 @@
 import AppLayout from '../../layout/AppLayout';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useTranslation } from "react-i18next";
 import i18n from "i18next";
@@ -8,6 +8,8 @@ import { initReactI18next } from "react-i18next";
 import translationEN from "/src/locales/eng/translation.json";
 import translationCA from "/src/locales/cat/translation.json";
 import translationES from "/src/locales/esp/translation.json";
+import { usePage } from '../../contexts/PageContext';
+
 
 const resources = {
   eng: {
@@ -30,10 +32,7 @@ i18n.use(initReactI18next).init({
   },
 });
 
-const steps = [
-  { name: 'Customers', href: '/customers', current: false },
-  { name: 'Edit Customer', href: '/customers/create', current: true },
-]
+
 
 const token = localStorage.getItem('token');
 
@@ -44,6 +43,9 @@ const token = localStorage.getItem('token');
  * @return {JSX.Element} The JSX element representing the customer edit form.
  */
 export const CustomersEdit = () => {
+
+
+
   const navigate = useNavigate();
   const { t } = useTranslation();
 
@@ -70,6 +72,7 @@ export const CustomersEdit = () => {
     status: customer.customerStatus,
     is_validated: customer.is_validated,
   });
+
 
   /**
    * Updates the form data based on the input change event.
@@ -179,23 +182,23 @@ export const CustomersEdit = () => {
    * Deletes a customer using axios delete request.
    *
    */
-  // const onDelete = () => {
-  //   axios.delete(`${import.meta.env.VITE_API_URL}/customers/${customer.id}`)
-  //     .then(() => {
-  //       alert('Customer deleted successfully!');
-  //       navigate('/customers');
-  //     })
-  //     .catch(error => {
-  //       console.error('Error:', error);
-  //       alert('There was an error deleting the customer.');
-  //     });
-  // };
+
+  const { setPage, setSteps } = usePage();
+
+  useEffect(() => {
+    setPage("Customers");
+    setSteps([{ name: 'Customers', href: '/customers', current: true },
+    { name: 'Edit Customer', current: true }
+
+    ]);
+  }, [setPage, setSteps]);
+
+
 
 
 
   return (
-
-    <AppLayout Page={'Edit Customer'} Steps={steps}>
+    <>
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
           <div className="bg-white p-4 sm:p-6 lg:p-8 shadow-xl rounded-lg">
@@ -561,7 +564,8 @@ export const CustomersEdit = () => {
 
         </form>
       </div>
-    </ AppLayout >
-  );
+    </>
+  )
+}
 
 };

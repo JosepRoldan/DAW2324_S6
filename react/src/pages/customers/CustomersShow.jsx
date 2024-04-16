@@ -8,7 +8,7 @@ import translationEN from "/src/locales/eng/translation.json";
 import translationCA from "/src/locales/cat/translation.json";
 import translationES from "/src/locales/esp/translation.json";
 import axios from 'axios';
-
+import { usePage } from '../../contexts/PageContext';
 
 const resources = {
   eng: {
@@ -32,6 +32,7 @@ i18n.use(initReactI18next).init({
 });
 
 
+
 /**
  * Renders the customer information page.
  *
@@ -51,7 +52,7 @@ export const CustomersShow = () => {
     surname = '-',
     address = '-',
     city = '-',
-    created_at_formatted,
+    // created_at_formatted,
     customerStatus = '-',
     is_validated = '-',
     mail = '-',
@@ -60,13 +61,16 @@ export const CustomersShow = () => {
     postcode = '-'
   } = customer;
 
-  const token = localStorage.getItem('token');
+  const { setPage, setSteps } = usePage();
+
+  useEffect(() => {
+    setPage("Customers");
+    setSteps([{ name: 'Customers', href: '/customers/1', current: true },
+    { name: `${name} ${surname}`, href: `/customers/1`, current: true }
+    ]);
+  }, [setPage, setSteps]);
 
 
-  const steps = [
-    { name: 'Customers', href: '/customers', current: true },
-    { name: `${name} ${surname}`, href: `/customers/1`, current: true },
-  ]
 
   const onDelete = () => {
     const headers = {
@@ -88,7 +92,7 @@ export const CustomersShow = () => {
 
   return (
 
-    <AppLayout Steps={steps}>
+    <>
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
           <div className="bg-white p-4 sm:p-6 lg:p-8 shadow-xl rounded-lg">
@@ -194,7 +198,7 @@ export const CustomersShow = () => {
           </dl>
         </div>
       </div>
-    </AppLayout>
+    </>
 
   )
 }

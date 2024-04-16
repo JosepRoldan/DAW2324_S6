@@ -1,14 +1,14 @@
 import AppLayout from '../../layout/AppLayout';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
-
 import { useTranslation } from "react-i18next";
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import translationEN from "/src/locales/eng/translation.json";
 import translationCA from "/src/locales/cat/translation.json";
 import translationES from "/src/locales/esp/translation.json";
+import { usePage } from '../../contexts/PageContext';
 
 const resources = {
   eng: {
@@ -31,11 +31,6 @@ i18n.use(initReactI18next).init({
   },
 });
 
-const steps = [
-  { name: 'Customers', href: '/customers', current: false },
-  { name: 'Create Customer', href: '/customers/create', current: true },
-]
-
 const token = localStorage.getItem('token');
 
 
@@ -46,6 +41,15 @@ const token = localStorage.getItem('token');
  * @return {void} Nothing is returned from this function.
  */
 export const CustomersCreate = () => {
+
+  const { setPage, setSteps } = usePage();
+
+  useEffect(() => {
+    setPage("Customers");
+    setSteps([{ name: 'Customers', href: '/customers', current: true },
+    { name: 'Create Customer', href: '/customers/create', current: true }
+    ]);
+  }, [setPage, setSteps]);
   const { t } = useTranslation();
   const navigate = useNavigate();
 
@@ -157,7 +161,7 @@ export const CustomersCreate = () => {
 
   return (
 
-    <AppLayout Page={'Create Customer'} Steps={steps}>
+    <>
       <div className="pb-16 space-y-10 divide-y divide-gray-900/10">
         <form>
           <div className="grid grid-cols-1 gap-x-8 gap-y-8 pt-10 md:grid-cols-3">
@@ -481,7 +485,7 @@ export const CustomersCreate = () => {
           </div>
         </form>
       </div>
-    </ AppLayout >
+    </>
   )
 }
 

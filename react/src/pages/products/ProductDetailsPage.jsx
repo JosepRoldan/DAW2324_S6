@@ -9,6 +9,7 @@ import { initReactI18next } from "react-i18next";
 import translationEN from "/src/locales/eng/translation.json";
 import translationCA from "/src/locales/cat/translation.json";
 import translationES from "/src/locales/esp/translation.json";
+import { usePage } from '../../contexts/PageContext';
 
 const resources = {
     eng: {
@@ -31,12 +32,14 @@ i18n.use(initReactI18next).init({
     },
 });
 
-const steps = [
-    { name: 'Products', href: '/products', current: false },
-    { name: 'Product Details', href: '/', current: true },
-]
-
 const ProductDetailsPage = () => {
+    const { setPage, setSteps } = usePage();
+
+    useEffect(() => {
+        setPage("Product Details");
+        setSteps([{ name: 'Products', href: '/products' }, { name: "Product Details", href: `/products/${productId}`, current: true }]);
+    }, [setPage, setSteps]);
+
     const { t } = useTranslation();
     const { productId } = useParams();
     const [productData, setProductData] = useState({
@@ -182,7 +185,7 @@ const ProductDetailsPage = () => {
     }
 
     return (
-        <AppLayout Page={"Product Details"} Steps={steps}>
+        <>
             <div style={{ height: '80vh', width: '100%', overflowY: 'auto' }}>
                 <div className="flex justify-between mb-4">
                     <div className="w-1/3 pr-2">
@@ -245,7 +248,7 @@ const ProductDetailsPage = () => {
                         )}
                 </div>
             </div>
-        </AppLayout>
+        </>
     );
 };
 
