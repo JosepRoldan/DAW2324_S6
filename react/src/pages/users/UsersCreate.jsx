@@ -52,7 +52,8 @@ export const UsersCreate = () => {
 
   useEffect(() => {
     setPage(t("Users"));
-    setSteps([{ name: t("Create users"), href: '/users/create', current: true }]);
+    setSteps([{ name: t('Users'), href: '/users' }, { name: t("Create User"), href: '/users/create', current: true }]);
+
 }, [setPage, setSteps, navigate]);
 
   return (
