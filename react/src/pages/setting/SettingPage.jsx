@@ -9,7 +9,7 @@ const SettingPage = () => {
   const { setPage, setSteps } = usePage();
 
     useEffect(() => {
-        setPage("Settings");
+        setPage(t("Settings"));
         setSteps([{ name: t('Settings'), href: '/settings', current: true }]);
     }, [setPage, setSteps, t]);
   const [jsonData, setJsonData] = useState([]);
@@ -37,7 +37,7 @@ const SettingPage = () => {
   const columnDefs = [
     { headerName: t('Name'), field: t('config')},
     { headerName: t('Value'), field: t('value'), },
-    { headerName: t('Edit'), cellRenderer: EditButton, editable: false, cellStyle: { 'fontWeight': 'bold', 'color': 'green' }}
+    { cellRenderer: EditButton, editable: false, cellStyle: { 'fontWeight': 'bold', 'color': 'green' }}
   ];
 
   return (
