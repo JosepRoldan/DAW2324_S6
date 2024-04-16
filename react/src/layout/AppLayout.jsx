@@ -18,12 +18,13 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import UserwayWidget from "../components/userwayWidget/UserWayWidget";
 import { useTranslation } from "react-i18next";
-import i18n from "i18next";
+import i18n, { loadLanguages } from "i18next";
 import { initReactI18next } from "react-i18next";
 import LanguageSwitcher from "../components/LanguageSwitcher";
 import translationEN from "/src/locales/eng/translation.json";
 import translationCA from "/src/locales/cat/translation.json";
 import translationES from "/src/locales/esp/translation.json";
+
 
 const resources = {
   eng: {
@@ -53,19 +54,13 @@ function classNames(...classes) {
 export default function AppLayout({ children, Page, Steps }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const user = localStorage.getItem("user");
-  const idRole = localStorage.getItem("idRole");
-  const userId = localStorage.getItem("userId");
 
-  let data, role;
+  var dataJSON = JSON.parse(localStorage.getItem("user"));
+  
+  const user = dataJSON.user;
+  const role = dataJSON.idRole;
+  const userId = dataJSON.id;
 
-  if (user) {
-    data = JSON.parse(user);
-    role = JSON.parse(idRole);
-  } else {
-    data = "";
-    role = "";
-  }
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   let navigation = [];
@@ -73,59 +68,59 @@ export default function AppLayout({ children, Page, Steps }) {
   switch (role) {
     case 1:
       navigation = [
-        { name: t("Home"), href: "/dashboard", icon: HomeIcon, current: true },
-        { name: t("Users"), href: "/users", icon: UsersIcon, current: false },
+        { name: t("Dashboard"), to: "/dashboard", icon: HomeIcon, current: true },
+        { name: t("Users"), to: "/users", icon: UsersIcon, current: false },
         {
           name: t("Customers"),
-          href: "/customers",
+          to: "/customers",
           icon: UserGroupIcon,
           current: false,
         },
         {
           name: t("Products"),
-          href: "/products",
+          to: "/products",
           icon: CalendarIcon,
           current: false,
         },
         {
           name: t("Orders"),
-          href: "/orders",
+          to: "/orders",
           icon: DocumentDuplicateIcon,
           current: false,
         },
         {
-          name: t("Benefits"),
-          href: "/benefits",
+          name: t("Profit"),
+          to: "/profit",
           icon: ChartPieIcon,
           current: false,
         },
-        { name: t("Settings"), href: "/settings", icon: CogIcon, current: false },
+        { name: t("Settings"), to: "/settings", icon: CogIcon, current: false },
       ];
       break;
     case 2:
       navigation = [
-        { name: "Home", href: "/dashboard", icon: HomeIcon, current: true },
+        { name: "Home", to: "/dashboard", icon: HomeIcon, current: true },
         {
           name: "Customers",
-          href: "/customers",
+          to: "/customers",
           icon: UserGroupIcon,
           current: false,
         },
         {
           name: "Products",
-          href: "/products",
+          to: "/products",
           icon: CalendarIcon,
           current: false,
         },
         {
           name: "Orders",
-          href: "/orders",
+          to: "/orders",
           icon: DocumentDuplicateIcon,
           current: false,
         },
         {
-          name: "Benefits",
-          href: "/benefits",
+          name: "profit",
+          to: "/profit",
           icon: ChartPieIcon,
           current: false,
         },
@@ -133,16 +128,16 @@ export default function AppLayout({ children, Page, Steps }) {
       break;
     case 3:
       navigation = [
-        { name: "Home", href: "/dashboard", icon: HomeIcon, current: true },
+        { name: "Home", to: "/dashboard", icon: HomeIcon, current: true },
         {
           name: "Customers",
-          href: "/customers",
+          to: "/customers",
           icon: UserGroupIcon,
           current: false,
         },
         {
           name: "Orders",
-          href: "/orders",
+          to: "/orders",
           icon: DocumentDuplicateIcon,
           current: false,
         },
@@ -157,10 +152,11 @@ export default function AppLayout({ children, Page, Steps }) {
     if (navigation[i].current == true) {
       navigation[i].current = false;
     }
-    if (window.location.href.includes(navigation[i].href)) {
+    if (window.location.href.includes(navigation[i].to)) {
       navigation[i].current = true;
     }
   }
+  
   //This code snippet defines a function
   //handleNavigation that makes a POST request to a logout
   //endpoint when the action parameter is 'Sign out'. It then removes the token
@@ -176,6 +172,7 @@ export default function AppLayout({ children, Page, Steps }) {
         .then(function (response) {
           if (response.status === 200) {
             localStorage.removeItem("token");
+            localStorage.removeItem("user");
             navigate("/");
           }
         })
@@ -188,6 +185,10 @@ export default function AppLayout({ children, Page, Steps }) {
     }
   };
 
+  const handleNavigateTo = (to) => {
+    navigate(to);
+  };
+  
   const userNavigation = [
     { name: "My profile", action: "My profile" },
     { name: "Sign out", action: "Sign out" },
@@ -274,12 +275,10 @@ export default function AppLayout({ children, Page, Steps }) {
                             {navigation.map((item) => (
                               <li key={item.name}>
                                 <a
-                                  href={item.href}
+                                  onClick={() => handleNavigateTo(item.to)}
                                   className={classNames(
-                                    item.current
-                                      ? "bg-gray-800 text-white"
-                                      : "text-gray-400 hover:text-white hover:bg-gray-800",
-                                    "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
+                                    item.current ? "bg-gray-800 text-white" : "text-gray-400 hover:text-white hover:bg-gray-800",
+                                    "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold select-none cursor-pointer"
                                   )}
                                 >
                                   <item.icon
@@ -294,7 +293,7 @@ export default function AppLayout({ children, Page, Steps }) {
                         </li>
                         <li className="mt-auto">
                           <a
-                            href="#"
+                            to="#"
                             className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 hover:bg-gray-800 hover:text-white"
                           >
                             <Cog6ToothIcon
@@ -312,7 +311,6 @@ export default function AppLayout({ children, Page, Steps }) {
             </div>
           </Dialog>
         </Transition.Root>
-
         {/* Static sidebar for desktop */}
         <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-56 lg:flex-col">
           {/* Sidebar component, swap this element with another sidebar if you like */}
@@ -331,12 +329,10 @@ export default function AppLayout({ children, Page, Steps }) {
                     {navigation.map((item) => (
                       <li key={item.name}>
                         <a
-                          href={item.href}
+                         onClick={() => handleNavigateTo(item.to)}
                           className={classNames(
-                            item.current
-                              ? "bg-gray-800 text-white"
-                              : "text-gray-400 hover:text-white hover:bg-gray-800",
-                            "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
+                            item.current ? "bg-gray-800 text-white" : "text-gray-400 hover:text-white hover:bg-gray-800",
+          "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold select-none cursor-pointer"
                           )}
                         >
                           <item.icon
@@ -351,7 +347,7 @@ export default function AppLayout({ children, Page, Steps }) {
                 </li>
                 {/* <li className="mt-auto">
                                     <a
-                                        href="#"
+                                        to="#"
                                         className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 hover:bg-gray-800 hover:text-white"
                                     >
                                         <Cog6ToothIcon className="h-6 w-6 shrink-0" aria-hidden="true" />
@@ -359,6 +355,8 @@ export default function AppLayout({ children, Page, Steps }) {
                                     </a>
                                 </li> */}
               </ul>
+        <div id="userway-widget-container"><UserwayWidget/></div>
+
             </nav>
           </div>
         </div>
@@ -406,7 +404,7 @@ export default function AppLayout({ children, Page, Steps }) {
                         className="ml-4 text-sm font-semibold leading-6 text-gray-900"
                         aria-hidden="true"
                       >
-                        {data}
+                        {user}
                       </span>
                       <ChevronDownIcon
                         className="ml-2 h-5 w-5 text-gray-400"
@@ -428,7 +426,7 @@ export default function AppLayout({ children, Page, Steps }) {
                         <Menu.Item key={item.name}>
                           {({ active }) => (
                             <a
-                              href={item.action}
+                              to={item.action}
                               onClick={(e) => {
                                 e.preventDefault();
                                 if (item.action === "My profile") {
@@ -439,7 +437,7 @@ export default function AppLayout({ children, Page, Steps }) {
                               }}
                               className={classNames(
                                 active ? "bg-gray-50" : "",
-                                "block px-3 py-1 text-sm leading-6 text-gray-900"
+                                "block px-3 py-1 text-sm leading-6 text-gray-900 select-none cursor-pointer"
                               )}
                             >
                               {item.name}
@@ -455,15 +453,14 @@ export default function AppLayout({ children, Page, Steps }) {
           </div>
           <main className="bg-gray-100 py-5 h-screen overflow-y-auto">
             <div className="px-4 sm:px-6 lg:px-8">
-              {window.location.href.includes("/benefits") == false &&
+              {window.location.href.includes("/profit") == false &&
                 window.location.href.includes("/dashboard") == false && (
+                  
                   <Breadcrumb steps={Steps} />
                 )}
               {children}
             </div>
           </main>
-
-          <UserwayWidget />
         </div>
       </div>
     </>
