@@ -24,7 +24,7 @@ export default function ProductsPage() {
     useEffect(() => {
         setPage(t("Products"));
         setSteps([{ name: t("Products"), href: '/products', current: true }]);
-    }, [setPage, setSteps, navigate]);
+    }, [setPage, setSteps, navigate, t]);
 
     const [rowData, setRowData] = useState([]);
 
