@@ -28,7 +28,7 @@ const useFormValidator = () => {
 
     // Validation to avoid malicious scripts or SQL injections
     const isSafeInput = (input) => {
-      const regex = /[<>;'"&]/;
+      const regex = /[<>;'"&@]/;
       return !regex.test(input);
     }
 
