@@ -68,50 +68,74 @@ export const UsersEdit = () => {
     general: ''
   });
 
+  const validateField = (name, value) => {
+    const specialCharactersRegex = /[<>;'"&]/;
+    if (specialCharactersRegex.test(value)) {
+      return 'No se permiten caracteres especiales en este campo.';
+    }
+    return '';
+  };
+
+  const validateForm = () => {
+    const errors = {};
+  
+    if (!formData.name) {
+      errors.name = 'El nombre es obligatorio';
+    }
+    if (!formData.surname) {
+      errors.surname = 'El apellido es obligatorio';
+    }
+    if (!formData.user) {
+      errors.user = 'El nombre de usuario es obligatorio';
+    }
+    if (!formData.email) {
+      errors.email = 'El correo electrónico es obligatorio';
+    } else {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(formData.email)) {
+        errors.email = 'Formato de correo electrónico no válido.';
+      }
+    }
+    if (!formData.password) {
+      errors.password = 'La contraseña es obligatoria';
+    } else if (formData.password.length < 6) {
+      errors.password = 'La contraseña debe tener al menos 6 caracteres.';
+    }
+  
+    return errors;
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    setErrorMessages({ ...errorMessages, [name]: '' });
     
+    // Validate the field and set the appropriate error message.
+    const errorMessage = validateField(name, value);
+    setErrorMessages({ ...errorMessages, [name]: errorMessage });
 
   }
 
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    // Validaciones adicionales
-    if (!formData.name || !formData.surname || !formData.user || !formData.email || !formData.password) {
-      setErrorMessages({
-        name: !formData.name ? 'El nombre es obligatorio' : '',
-        surname: !formData.surname ? 'El apellido es obligatorio' : '',
-        user: !formData.user ? 'El nombre de usuario es obligatorio' : '',
-        email: !formData.email ? 'El correo electrónico es obligatorio' : '',
-        password: !formData.password ? 'La contraseña es obligatoria' : '',
-        general: ''
-      });
-      return;
-    }
+    const fieldErrors = validateForm();
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email)) {
-      setErrorMessages({ ...errorMessages, email: 'Formato de correo electrónico no válido.' });
-      return;
-    }
+    // Check if there are any field errors
+  if (Object.keys(fieldErrors).length > 0) {
+    setErrorMessages({ ...fieldErrors });
+    return;
+  }
 
-    if (formData.password.length < 6) {
-      setErrorMessages({ ...errorMessages, password: 'La contraseña debe tener al menos 6 caracteres.' });
-      return;
-    }
-
-    const isSafeInput = (input) => {
-      const regex = /[<>;'"&]/;
-      return !regex.test(input);
-    }
-
-    if (!isSafeInput(formData.name) || !isSafeInput(formData.surname) || !isSafeInput(formData.user) || !isSafeInput(formData.email) || !isSafeInput(formData.password)) {
-      setErrorMessages({ ...errorMessages, general: 'Los campos contienen caracteres no permitidos.' });
-      return;
-    }
+  // Check for special characters in each field
+  const isSafeInput = (input) => {
+    const regex = /[<>;'"&]/;
+    return !regex.test(input);
+  };
+  
+  if (!isSafeInput(formData.name) || !isSafeInput(formData.surname) || !isSafeInput(formData.user) || !isSafeInput(formData.email) || !isSafeInput(formData.password)) {
+    setErrorMessages({ general: 'Los campos contienen caracteres no permitidos.' });
+    return;
+  }
 
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/users/${userId}`, {
@@ -217,11 +241,12 @@ export const UsersEdit = () => {
                         id="name"
                         value={formData.name}
                         onChange={handleChange}
-                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      />
-                      {errorMessages.general && (
-  <span className="text-sm text-red-500">{errorMessages.general}</span>
-)}
+                        className={`block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 ${
+                          errorMessages.name ? 'border-red-500' : ''
+                        }`}                      />
+{errorMessages.name && (
+  <span className="text-sm text-red-500">{errorMessages.name}</span>
+)}                      
                     </div>
                   </div>
 
