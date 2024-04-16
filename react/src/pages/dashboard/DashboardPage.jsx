@@ -9,8 +9,8 @@ import translationEN from "/src/locales/eng/translation.json";
 import translationCA from "/src/locales/cat/translation.json";
 import translationES from "/src/locales/esp/translation.json";
 import { Link } from "react-router-dom";
-
-
+import { usePage } from '../../contexts/PageContext';
+import { useNavigate } from 'react-router-dom';
 
 const resources = {
   eng: {
@@ -34,6 +34,13 @@ i18n.use(initReactI18next).init({
 });
 
 export const DashboardPage = () => {
+  const navigate = useNavigate();
+
+  const { setPage } = usePage();
+  useEffect(() => {
+    setPage(t("Dashboard"));
+  }, [setPage, navigate]);
+
   const { t } = useTranslation();
   const [benefits, setBenefits] = useState([]);
   const [orders, setOrders] = useState([]);

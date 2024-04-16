@@ -13,8 +13,7 @@ export const BenefitsPage = () => {
     const { setPage, setSteps } = usePage();
     useEffect(() => {
         setPage(t("Profit"));
-        setSteps([{ name: t("Profit"), href: '/profit', current: true }]);
-    }, [setPage, setSteps, navigate]);
+    }, [setPage, navigate]);
     return (
         <>
             <SectionTable SectionName={"Benefits"}></SectionTable>
