@@ -3,14 +3,27 @@ import { createRoot } from "react-dom/client";
 
 export default function ShoppingOrder() {
     const [productos, setProductos] = useState([]);
-    const shippingPrice =10;
+    const [customer, setCustomer] = useState([]);
+    const [address, setAddress] = useState([]);
+    const shippingPrice =10; //hardcode per el preu d'enviament
+
 
     useEffect(() => {
         // Recuperar los productos del almacenamiento local
         const productosGuardados = (JSON.parse(localStorage.getItem('products')) || []);
         // Actualizar el estado con los productos recuperados
         setProductos(productosGuardados);
-      }, []); 
+    }, []); 
+
+
+    useEffect(() => {
+        // Obtener datos de usuarios y productos desde los atributos data de la vista
+        const usersData = JSON.parse(document.getElementById('app').getAttribute('data-customers'));
+        const addressData = JSON.parse(document.getElementById('app').getAttribute('data-address'));
+        // Actualizar el estado con los datos obtenidos
+        setCustomer(usersData);
+        setAddress(addressData);
+    }, []);
 
        // Calcular el total del carrito
     const totalCarrito = productos.reduce((total, producto) => {
@@ -24,33 +37,44 @@ export default function ShoppingOrder() {
                 <div className="flex flex-row items-center border-b sm:border-b-0 w-full sm:w-auto pb-4 sm:pb-0">
                     <div className="text-yellow-500">
                         <svg xmlns="http://www.w3.org/2000/svg" className="w-6 sm:w-5 h-6 sm:h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                     </div>
                     <div className="text-sm font-medium ml-3">Checkout</div>
                 </div>
                 <div className="text-sm tracking-wide text-gray-500 mt-4 sm:mt-0 sm:ml-4">Complete your shipping and payment details below.</div>
                 <div className="absolute sm:relative sm:top-auto sm:right-auto ml-auto right-4 top-4 text-gray-400 hover:text-gray-800 cursor-pointer">
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </div>
             </div>
-            <div className="rounded-md">
+            <form>
+                <section>
+                    <h2 className="uppercase tracking-wide text-lg font-semibold text-gray-700 my-2">Customer Date</h2>
+                    <div className="mt-3 p-4 relative flex flex-col sm:flex-row sm:items-center bg-white shadow rounded-md">
+                        <div className="flex sm:w-2/4 xl:w-1/4 border-gray-200 py-3">
+                            <label className="text-right px-2">Name</label>
+                            <input name="name" className="focus:outline-none px-3" placeholder="{user.name}" required=""/>
+                        </div>
+                        <div className="flex sm:w-2/4 xl:w-1/4 border-gray-200 py-3">
+                            <label className="text-right px-2">Surname</label>
+                            <input name="surname" className="focus:outline-none px-3" placeholder="Try Odinsson" required=""/>
+                        </div>
+                    </div>
+                    <div className=" p-4 relative flex flex-col sm:flex-row sm:items-center bg-white shadow rounded-md">
+                        <label className="flex sm:w-2/4 xl:w-1/4 border-b border-gray-200 h-12 py-3 items-center">
+                            <span className="text-right px-2">Email</span>
+                            <input name="email" type="email" className="focus:outline-none px-3" placeholder="try@example.com" required=""/>
+                        </label>
+                    </div>
+                    <button>Submit</button>
+                </section>
+            </form>
+            
+            <div className="rounded-md ">
                 <form id="payment-form" method="POST" action="">
                     <section>
-                        <h2 className="uppercase tracking-wide text-lg font-semibold text-gray-700 my-2">Shipping & Billing Information</h2>
-                        <fieldset className="mb-3 bg-white shadow-lg rounded text-gray-600">
-                            <label className="inline-flex w-2/4 border-gray-200 py-3">
-                                <span className="text-right px-2">Name</span>
-                                <input name="name" className="focus:outline-none px-3" placeholder="Try Odinsson" required=""/>
-                            </label>
-                            <label className="xl:w-1/4 xl:inline-flex py-3 items-center flex xl:border-none border-t border-gray-200 py-3">
-                                <span className="text-right px-2">Surname</span>
-                                <input name="surname" className="focus:outline-none px-3" placeholder="Try Odinsson" required=""/>
-                            </label>
-                            <label className="flex border-b border-gray-200 h-12 py-3 items-center">
-                                <span className="text-right px-2">Email</span>
-                                <input name="email" type="email" className="focus:outline-none px-3" placeholder="try@example.com" required=""/>
-                            </label>
+                        <h2 className="uppercase tracking-wide text-lg font-semibold text-gray-700 my-2">Shipping Information</h2>
+                        <fieldset className="p-4 mb-3 bg-white shadow-lg rounded text-gray-600">
                             <label className="flex border-b border-gray-200 h-12 py-3 items-center">
                                 <span className="text-right px-2">Address</span>
                                 <input name="address" className="focus:outline-none px-3" placeholder="10 Street XYZ 654"/>
@@ -70,7 +94,8 @@ export default function ShoppingOrder() {
                             <label className="flex border-t border-gray-200 h-12 py-3 items-center select relative">
                                 <span className="text-right px-2">Country</span>
                                 <div id="country" className="focus:outline-none px-3 w-full flex items-center">
-                                    <select name="country" className="border-none bg-transparent flex-1 cursor-pointer appearance-none focus:outline-none">
+                                    <select defaultValue="" name="country" className="border-none bg-transparent flex-1 cursor-pointer appearance-none focus:outline-none">
+                                        <option value=""></option>
                                         <option value="AU">Australia</option>
                                         <option value="BE">Belgium</option>
                                         <option value="BR">Brazil</option>
@@ -93,12 +118,13 @@ export default function ShoppingOrder() {
                                         <option value="ES">Spain</option>
                                         <option value="TN">Tunisia</option>
                                         <option value="GB">United Kingdom</option>
-                                        <option value="US" selected="selected">United States</option>
+                                        <option value="US" >United States</option>
                                     </select>
                                 </div>
                             </label>
                         </fieldset>
                     </section>
+                    <button>Save Address</button>
                 </form>
             </div>
             <div className="rounded-md">
@@ -155,10 +181,10 @@ export default function ShoppingOrder() {
             </div>
         </div>
     </div>
-
     );
 }
 
-if (document.getElementById("shoppingOrder")) {
-    createRoot(document.getElementById("shoppingOrder")).render(<ShoppingOrder />);
+const rootElement = document.getElementById("shoppingOrder");
+if (rootElement) {
+    createRoot(rootElement).render(<ShoppingOrder />);
 }

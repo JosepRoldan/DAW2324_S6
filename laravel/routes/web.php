@@ -42,7 +42,7 @@ Route::get('/daisy', function () {return view('daisy');})->name('daisy');
 Route::get('/productscard', function () {return view('productCard');});
 
 //////////////////////SHOP PROCESS////////////////////////
-Route::get('/Cart/Shipping', [BuyingProcessController::class, 'shippingDates'])->name('shipping');
+Route::get('/Cart/Shipping', [BuyingProcessController::class, 'getShoppingOrdreDates'])->name('shipping');
 Route::post('/cart/shipping/data/save', [OrdersController::class, 'saveCartShippingData'])->name('save.shipping.data');
 Route::put('/cart/shipping/data/update', [OrdersController::class, 'updateCartShippingData'])->name('update.shipping.data');
 
