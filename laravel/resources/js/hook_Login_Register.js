@@ -21,13 +21,13 @@ export function useForm(initialState) {
           body: JSON.stringify(formData)
       });
       if (response.status === 401) {
-          toast.error("El nombre de usuario o correo electrónico ya están en uso o hay campos sin rellenar.");
+          toast.error("El nombre de usuario o correo electrónico ya están en uso, o los campos están incompletos. Asegúrate de que el correo electrónico proporcionado sea válido y único");
       }if (response.status === 411) {
         toast.error("La contraseña debe tener un mínimo de 8 carácteres y carácteres especiales (!,@,#,$,%).");
       } else if (response.status === 200) {
           toast.success("Se ha registrado correctamente!");
           setTimeout(function() {
-              window.location.href = 'verification';
+              window.location.href = 'verificacion';
           }, 2000); // 2000 milisegundos = 2 segundos
       }
 

@@ -15,18 +15,6 @@
 <!-- EJEMPLO PARA MOSTRAR EL CONTENIDO DE LA VARIABLE DE SESION EN LA PLANTILLA BLADE <p>Bienvenido, {{ Session::get('token') }}</p> -->
     <input type="hidden" id="token" value="{{ Session::get('token') }}">
 @endif
-<!-- @if(Session::has('token'))
-    <script>
-        window.isLoggedIn = true; // Variable JavaScript que indica que el usuario está autenticado
-    </script>
-@else
-    <script>
-        window.isLoggedIn = false; // Variable JavaScript que indica que el usuario no está autenticado
-    </script>
-@endif
-<script>
-    window.isLoggedIn = {{ Auth::check() ? 'true' : 'false' }};
-</script> -->
 <body>
     <div id="header" class="z-40"></div>
     <div class="w-screen h-screen overflow-hidden relative bg-gradient-to-br from-blue-900 via-purple-600 to-cyan-400">

@@ -22,11 +22,11 @@ export default function Register() {
 
    return (  <>
         <Toaster richColors position="top-center"  />
-            <section className="h-full bg-neutral-200 dark:bg-neutral-700">
+            <section className="h-full bg-neutral-200">
                 <div className="container h-full p-10">
-                    <div className="g-6 flex h-full flex-wrap items-center justify-center text-neutral-800 dark:text-neutral-200">
+                    <div className="g-6 flex h-full flex-wrap items-center justify-center text-neutral-800">
                         <div className="w-full">
-                            <div className="block rounded-lg bg-white shadow-lg dark:bg-neutral-800">
+                            <div className="block rounded-lg bg-white shadow-lg">
                                 <div className="g-0 lg:flex lg:flex-wrap">
                                     <div className="px-4 md:px-0 lg:w-6/12">
                                         <div className="md:mx-6 md:p-12">
@@ -52,7 +52,6 @@ export default function Register() {
                                                     className="mb-4"
                                                 ></TEInput>
                                                 <TEInput
-                                                    type="email"
                                                     name="mail"
                                                     value={formData.email}
                                                     onChange={handleChange}
