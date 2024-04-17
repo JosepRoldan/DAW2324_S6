@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class DeliveryAddress extends Model
+class AddressDelivery extends Model
 {
     use HasFactory;
 
@@ -21,6 +21,6 @@ class DeliveryAddress extends Model
 
     public function customer()
     {
-        return $this->belongsTo(Customer::class, 'idCustomers', 'idCustomers');
+        return $this->belongsTo(Customer::class, 'id', 'idCustomers');
     }
 }
