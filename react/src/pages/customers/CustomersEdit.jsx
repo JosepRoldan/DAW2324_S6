@@ -65,7 +65,7 @@ export const CustomersEdit = () => {
     const newErrors = {};
 
     if (formData.name.trim() === '') {
-      newErrors.name = t("Please enter a name.");
+      newErrors.name = (t("Please enter a name."));
     }
 
     if (formData.surname.trim() === '') {
