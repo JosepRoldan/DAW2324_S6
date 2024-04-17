@@ -26,7 +26,6 @@ export const UsersEdit = () => {
     name: users.name || '',
     surname: users.surname || '',
     user: users.user || '',
-    newPassword: '',
     //newPasswordConfirm: '',
     email: users.email || ''
   });
@@ -110,6 +109,7 @@ export const UsersEdit = () => {
   }
 
     try {
+      console.log("entro al try")
       const response = await fetch(`${import.meta.env.VITE_API_URL}/users/${userId}`, {
         method: 'PUT',
         headers: {
