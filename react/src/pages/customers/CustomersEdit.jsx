@@ -1,51 +1,12 @@
-import AppLayout from '../../layout/AppLayout';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useTranslation } from "react-i18next";
-import i18n from "i18next";
-import { initReactI18next } from "react-i18next";
-import translationEN from "/src/locales/eng/translation.json";
-import translationCA from "/src/locales/cat/translation.json";
-import translationES from "/src/locales/esp/translation.json";
 import { usePage } from '../../contexts/PageContext';
-
-
-const resources = {
-  eng: {
-    translation: translationEN,
-  },
-  cat: {
-    translation: translationCA,
-  },
-  esp: {
-    translation: translationES,
-  },
-};
-
-i18n.use(initReactI18next).init({
-  resources,
-  lng: "eng",
-  fallbackLng: "eng",
-  interpolation: {
-    escapeValue: false,
-  },
-});
-
-
 
 const token = localStorage.getItem('token');
 
-/**
- * Edit customer information and handle deletion.
- *
- * @param {object} e - The event object.
- * @return {JSX.Element} The JSX element representing the customer edit form.
- */
 export const CustomersEdit = () => {
-
-
-
   const navigate = useNavigate();
   const { t } = useTranslation();
 
@@ -73,13 +34,6 @@ export const CustomersEdit = () => {
     is_validated: customer.is_validated,
   });
 
-
-  /**
-   * Updates the form data based on the input change event.
-   *
-   * @param {object} e - The input change event object.
-   * @return {void} This function does not return a value.
-   */
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
@@ -87,15 +41,6 @@ export const CustomersEdit = () => {
     setFormData({ ...formData, [name]: value });
     setErrors({ ...errors, [name]: '' });
   }
-
-
-  /**
-   * Submit form data asynchronously.
-   *
-   * @param {Event} e - The event object
-   * @return {Promise<void>} Promise that resolves after form submission
-   */
-
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -131,28 +76,10 @@ export const CustomersEdit = () => {
       newErrors.username = t("Please enter a username.");
     }
 
-    // if (formData.city.trim() === '') {
-    //   newErrors.city = t("Please enter a city.");
-    // }
-
-    // if (formData.address.trim() === '') {
-    //   newErrors.address = t("Please enter an address.");
-    // }
-
-    // const postcodeRegex = /^[0-9]+$/;
-    // if (!postcodeRegex.test(formData.postcode)) {
-    //   newErrors.postcode = t("Please enter a numeric Post Code.");
-    // }
-
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.mail)) {
       newErrors.mail = t("Please enter a valid email.");
     }
-
-    // const phoneRegex = /^[0-9]{7,15}$/;
-    // if (!phoneRegex.test(formData.phone)) {
-    //   newErrors.phone = t("Please enter a valid phone number (7-15 digits).");
-    // }
 
     setErrors(newErrors);
 
@@ -169,33 +96,20 @@ export const CustomersEdit = () => {
     axios.put(`${import.meta.env.VITE_API_URL}/customers/${customer.id}`, formData, { headers })
       .then(response => {
         const { data } = response;
-        alert('Customer updated successfully!');
         navigate(`/customers/${data.id}`, { state: { customer: response.data.data } });
       })
       .catch(error => console.error('Error:', error));
   };
 
-
-
-
-  /**
-   * Deletes a customer using axios delete request.
-   *
-   */
-
   const { setPage, setSteps } = usePage();
 
   useEffect(() => {
-    setPage("Customers");
-    setSteps([{ name: 'Customers', href: '/customers', current: true },
-    { name: 'Edit Customer', current: true }
+    setPage(t("Customers"));
+    setSteps([{ name: (t('Customers')), href: '/customers', current: true },
+    { name: (t('Edit Customer')), current: true }
 
     ]);
-  }, [setPage, setSteps]);
-
-
-
-
+  }, [setPage, setSteps, t]);
 
   return (
     <>

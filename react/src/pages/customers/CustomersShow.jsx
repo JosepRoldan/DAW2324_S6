@@ -1,43 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
-import AppLayout from '../../layout/AppLayout';
 import { useTranslation } from "react-i18next";
-import i18n from "i18next";
-import { initReactI18next } from "react-i18next";
-import translationEN from "/src/locales/eng/translation.json";
-import translationCA from "/src/locales/cat/translation.json";
-import translationES from "/src/locales/esp/translation.json";
 import axios from 'axios';
 import { usePage } from '../../contexts/PageContext';
-
-const resources = {
-  eng: {
-    translation: translationEN,
-  },
-  cat: {
-    translation: translationCA,
-  },
-  esp: {
-    translation: translationES,
-  },
-};
-
-i18n.use(initReactI18next).init({
-  resources,
-  lng: "eng",
-  fallbackLng: "eng",
-  interpolation: {
-    escapeValue: false,
-  },
-});
+import Spinner from '../../components/Spinner';
 
 
+const token = localStorage.getItem('token');
 
-/**
- * Renders the customer information page.
- *
- * @return {JSX.Element} The customer information page component.
- */
 export const CustomersShow = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -61,14 +31,17 @@ export const CustomersShow = () => {
     postcode = '-'
   } = customer;
 
+  const [isLoading, setIsLoading] = useState(true);
+
+
   const { setPage, setSteps } = usePage();
 
   useEffect(() => {
-    setPage("Customers");
-    setSteps([{ name: 'Customers', href: '/customers/1', current: true },
-    { name: `${name} ${surname}`, href: `/customers/1`, current: true }
+    setPage(t("Customers"));
+    setSteps([{ name: (t('Customers')), href: '/customers', current: true },
+    { name: `${name} ${surname}`, href: `/customers/${id}`, current: true }
     ]);
-  }, [setPage, setSteps]);
+  }, [setPage, setSteps, t]);
 
 
 
@@ -81,12 +54,10 @@ export const CustomersShow = () => {
 
     axios.delete(`${import.meta.env.VITE_API_URL}/customers/${customer.id}`, { headers })
       .then(() => {
-        alert('Customer deleted successfully!');
         navigate('/customers');
       })
       .catch(error => {
         console.error('Error:', error);
-        alert('There was an error deleting the customer.');
       });
   };
 
