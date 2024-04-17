@@ -6,6 +6,8 @@ export const updateMultipleProducts = async (selectedProducts, updates, token, a
 
     // Construir el objeto de carga (payload) según los datos proporcionados
     const payload = {};
+
+    // Actualizar el margen de beneficios si se proporciona y es válido
     if (updates.benefitsMargin !== undefined && updates.benefitsMargin.trim() !== "") {
         const margin = parseFloat(updates.benefitsMargin);
         if (!isNaN(margin)) {
@@ -13,6 +15,11 @@ export const updateMultipleProducts = async (selectedProducts, updates, token, a
         } else {
             console.error('Invalid benefits margin value');
         }
+    }
+
+    // Actualizar el estado del producto si se proporciona
+    if (updates.isActive !== undefined) {
+        payload.is_active = updates.isActive === 'true';
     }
 
     // Verificar si hay datos válidos para actualizar

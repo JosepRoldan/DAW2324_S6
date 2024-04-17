@@ -76,7 +76,12 @@ export default function ProductsMassiveActions() {
     }
 
     const handleMarginChange = (e) => {
+        console.log("jjjj")
         setBenefitsMargin(e.target.value);
+    };
+
+    const handleIsActiveChange = (e) => {
+        setIsActive(e.target.value);
     };
 
     const handleMassiveUpdate = () => {
@@ -108,32 +113,47 @@ export default function ProductsMassiveActions() {
             <div>
                 {isLoading ? <Spinner message='Loading Products...' /> : (
                     <div className="overflow-auto">
-                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px', marginTop: '10px' }}>
-                            <div>
-                                <label htmlFor="benefitsMargin">New Benefits Margin (%): </label>
+                        <div className="mt-4 mb-4">
+                            <div className="flex items-center">
+                                <label htmlFor="benefitsMargin" className="block text-sm font-medium text-gray-700 mr-2">
+                                    {t("New Benefits Margin")} (%):
+                                </label>
                                 <input
                                     type="text"
                                     id="benefitsMargin"
                                     value={benefitsMargin}
                                     onChange={handleMarginChange}
-                                    style={{ marginRight: '20px' }}
+                                    className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-50 sm:text-sm border-gray-300 rounded-md mr-2"
                                 />
+                                <button
+                                    onClick={handleMassiveUpdate}
+                                    className="px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-lg">
+                                    {t("Save Margin")}
+                                </button>
                             </div>
-                            <div>
-                                <label htmlFor="isActive">Product Status: </label>
+
+                            <div className="flex items-center mt-4">
+                                <label htmlFor="isActive" className="block text-sm font-medium text-gray-700 mr-2">
+                                    {t("Product Status:")}
+                                </label>
                                 <select
-                                    value={isActive}
-                                    onChange={(e) => setIsActive(e.target.value)}
+                                    id="isActive"
+                                    onChange={(e) => handleIsActiveChange(e)}  // Cambio aquí: asignar el manejador de eventos al select.
+                                    className="block w-50 pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
                                 >
-                                    <option> - </option>
-                                    <option value="true">Active</option>
-                                    <option value="false">Inactive</option>
+                                    <option value="">{t("Select status")}</option>
+                                    <option value="true">{t("Active")}</option>
+                                    <option value="false">{t("Inactive")}</option>
                                 </select>
+                                <button
+                                    onClick={handleMassiveUpdate}
+                                    className="ml-2 px-4 py-2 bg-green-500 hover:bg-green-700 text-white font-bold rounded-lg">
+                                    {t("Toggle Status")}
+                                </button>
                             </div>
-                            <button onClick={handleMassiveUpdate}>
-                                Save Changes
-                            </button>
+
                         </div>
+
                         <table className="w-full text-left table-fixed border-collapse mb-10">
                             <thead>
                                 <tr>
@@ -145,12 +165,12 @@ export default function ProductsMassiveActions() {
                                         // Recuerda: la propiedad "indeterminate" no es soportada directamente por JSX. Se necesita manejar con refs o efectos.
                                         />
                                     </th>
-                                    <th className="w-2/12 px-4 py-2 border border-gray-300">Image</th>
-                                    <th className="w-3/12 px-4 py-2 border border-gray-300">Product Name</th>
-                                    <th className="w-1/12 px-4 py-2 border border-gray-300">Active</th>
-                                    <th className="w-2/12 px-4 py-2 border border-gray-300">Price Range</th>
-                                    <th className="w-2/12 px-4 py-2 border border-gray-300">Benefits Margin</th>
-                                    <th className="w-2/12 px-4 py-2 border border-gray-300">Sales Price</th>
+                                    <th className="w-2/12 px-4 py-2 border border-gray-300">{t("Image")}</th>
+                                    <th className="w-3/12 px-4 py-2 border border-gray-300">{t("Product Name")}</th>
+                                    <th className="w-1/12 px-4 py-2 border border-gray-300">{t("Active")}</th>
+                                    <th className="w-2/12 px-4 py-2 border border-gray-300">{t("Price Range")}</th>
+                                    <th className="w-2/12 px-4 py-2 border border-gray-300">{t("Benefits Margin")}</th>
+                                    <th className="w-2/12 px-4 py-2 border border-gray-300">{t("Sales Price")}</th>
                                 </tr>
                             </thead>
                             <tbody>
