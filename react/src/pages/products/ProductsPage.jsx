@@ -2,7 +2,6 @@ import React, { useEffect, useState, useMemo } from 'react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
 import { AgGridReact } from 'ag-grid-react';
-import AppLayout from '../../layout/AppLayout';
 import ButtonFetchProductsAPI from '../../components/ButtonFetchProductsAPI';
 import ButtonToggle from '../../components/ButtonToggle';
 import { PriceRangeCellRenderer } from '../../components/tables/products/cellRenderers/PriceRangeCellRenderer';
@@ -12,39 +11,20 @@ import { ProductIsActiveCellRenderer } from '../../components/tables/products/ce
 import { updateProductDetails } from '../../api/updateProductDetails';
 import Spinner from '../../components/Spinner';
 import { useTranslation } from "react-i18next";
-import i18n from "i18next";
-import { initReactI18next } from "react-i18next";
-import translationEN from "/src/locales/eng/translation.json";
-import translationCA from "/src/locales/cat/translation.json";
-import translationES from "/src/locales/esp/translation.json";
+import { usePage } from '../../contexts/PageContext';
+import { useNavigate } from 'react-router-dom';
 
-const resources = {
-    eng: {
-        translation: translationEN,
-    },
-    cat: {
-        translation: translationCA,
-    },
-    esp: {
-        translation: translationES,
-    },
-};
-
-i18n.use(initReactI18next).init({
-    resources,
-    lng: "eng",
-    fallbackLng: "eng",
-    interpolation: {
-        escapeValue: false,
-    },
-});
-
-const steps = [
-    { name: 'Products', href: '/products', current: true },
-]
 
 export default function ProductsPage() {
     const { t } = useTranslation();
+    const { setPage, setSteps } = usePage();
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        setPage(t("Products"));
+        setSteps([{ name: t("Products"), href: '/products', current: true }]);
+    }, [setPage, setSteps, navigate, t]);
 
     const [rowData, setRowData] = useState([]);
 
@@ -127,35 +107,35 @@ export default function ProductsPage() {
     const colDefs = useMemo(() => [
         {
             field: 'priority',
-            headerName: 'Priority',
+            headerName: t('Priority'),
             editable: defaultColDef.editable,
         },
         {
             cellRenderer: ImageCellRenderer,
             field: 'thumb',
-            headerName: 'Image',
+            headerName: t('Image'),
             editable: false,
         },
         {
             field: 'name',
-            headerName: 'Product Name',
+            headerName: t('Product Name'),
             editable: false,
         },
         {
             cellRenderer: ProductIsActiveCellRenderer,
             field: 'is_active',
-            headerName: 'Active',
+            headerName: t('Active'),
             cellEditor: 'agCheckboxCellEditor',
             editable: defaultColDef.editable,
         },
         {
             cellRenderer: PriceRangeCellRenderer,
-            headerName: 'Price Range',
+            headerName: t('Price Range'),
             editable: false,
         },
         {
             field: 'benefits_margin',
-            headerName: "Benefits Margin",
+            headerName: t("Benefits Margin"),
             valueGetter: benefitsMarginValueGetter,
             valueSetter: (params) => {
                 if (params.data.product_details && params.data.product_details.length > 0) {
@@ -171,23 +151,29 @@ export default function ProductsPage() {
         },
         {
             cellRenderer: SalesPriceCellRenderer,
-            headerName: 'Sales Price',
+            headerName: t('Sales Price'),
             editable: false,
         },
         {
             cellRenderer: EditProductCellRenderer,
-            headerName: 'Actions',
+            headerName: t('Actions'),
             editable: false,
         }
-    ], [isEditable]);
+    ], [isEditable, t]);
 
     return (
-        <AppLayout Page={"Products"} Steps={steps}>
-            <div className="flex justify-end">
+        <>
+            <div className="flex items-center justify-end mb-3">
+                <button
+                    type="button" onClick={() => navigate("/products-massive-actions")}
+                    className="bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-full transition duration-300 mr-2"
+                >
+                    {t("Massive actions")}
+                </button>
                 <ButtonToggle onToggle={toggleEditable} />
                 {/* <ButtonFetchProductsAPI /> */}
             </div>
-            <div className="ag-theme-quartz" style={{ width: '100%', height: '80vh' }}>
+            <div className="ag-theme-quartz" style={{ width: '100%', height: '75vh' }}>
                 {isLoading
                     ? <Spinner message='Loading Products...' />
                     : (
@@ -205,6 +191,6 @@ export default function ProductsPage() {
                         </>
                     )}
             </div>
-        </AppLayout>
+        </>
     );
 };

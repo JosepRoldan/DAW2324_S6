@@ -15,6 +15,9 @@ const EditForm = () => {
   const token = localStorage.getItem('token');
   axios.defaults.headers.common['Authorization'] = `Bearer ${token}` 
   const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
+  const [loadingForm, setLoadingForm] = useState(false); 
+  
 
   profit = income - expense;
   let { id } = useParams();
@@ -23,6 +26,16 @@ const EditForm = () => {
     getFields(id);
   }, []);
 
+const handleKeyPress = (event) => {
+  if (event.key === 'Enter') {
+    setLoadingForm(true);
+     validate();
+  }
+
+  if(event.key === 'Escape'){
+    navigate('/profit');
+  }
+};
   /**
    * A function to retrieve fields based on the given ID.
    *
@@ -86,6 +99,7 @@ const EditForm = () => {
       if (isValid) {
         handleUpdate(idBenefit, month, income, expense,profit, year);
     }else{
+      setLoadingForm(false);
       setErrors(newErrors);
     }
 };
@@ -101,7 +115,6 @@ const EditForm = () => {
    * @param {number} profit - The profit for the update
    */
   const handleUpdate = async (idBenefit, month, income, expense,profit, year) => {
-    setAlertSucces(false);
     const url =`${import.meta.env.VITE_API_URL}/UpdateBenefit`;
     try {
       const response = await axios.post(url, {
@@ -114,12 +127,13 @@ const EditForm = () => {
       });
   
       if (response.status === 200) {
+        setLoadingForm(false);
       }
     } catch (error) {
       setAlertError(true);
       console.error("Error:", error);
     } finally {
-      setAlertSucces(true);
+      setLoadingForm(false);
     }
   };
 
@@ -133,6 +147,11 @@ const EditForm = () => {
     <div className="bg-gray-100 flex items-center justify-left">
     <div className="bg-white p-8 rounded-lg shadow-lg w-full">
       <div className="flex items-center space-x-2 mb-6">
+      {loadingForm &&(
+                      <div className="mr-2">
+                      <div className="h-5 w-5 border-t-transparent border-solid animate-spin rounded-full border-black border-4"></div>
+                      </div>
+                      )}
         <h1 className="text-xl font-semibold">Update form for Profit</h1>
       </div>
       <p className="text-sm text-gray-600 mb-6">Modify the following data:</p>
@@ -170,6 +189,7 @@ const EditForm = () => {
               id="year"
               value={year}
               onChange={(e) => setYear(e.target.value)}
+              onKeyDown={(e) => handleKeyPress(e)}
               className="year-input form-input block border w-full border-gray-300 rounded-md shadow-sm"
               required
             />
@@ -188,6 +208,7 @@ const EditForm = () => {
               id="income"
               value={income}
               onChange={(e) => setIncome(e.target.value)}
+              onKeyDown={(e) => handleKeyPress(e)}
               className="income-input form-input block border w-full border-gray-300 rounded-md shadow-sm"
               required
             />
@@ -204,6 +225,7 @@ const EditForm = () => {
               id="expenses"
               value={expense}
               onChange={(e) => setExpense(e.target.value)}
+              onKeyDown={(e) => handleKeyPress(e)}
               className="income-input form-input block border w-full border-gray-300 rounded-md shadow-sm"
               required
             />
@@ -222,18 +244,19 @@ const EditForm = () => {
           )}
           {errors.year && (
             <li>{errors.year}</li>
-          )}
+          )}  
           </ul>
           
         </div>
         <div className="flex justify-between">
-          <Link to={"/profit"} className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-full hover:bg-gray-300 focus:outline-none focus:ring focus:border-blue-300">
+          <Link to={"/profit"}
+          className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-full hover:bg-gray-300 focus:outline-none focus:ring focus:border-blue-300">
           Discard
           </Link>
           <button
             className="bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-full transition duration-300"
             onClick={() => validate()}
-          >
+          >          
             Update
           </button>
         </div>

@@ -1,14 +1,17 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import AgGridTable from '../../components/table/TableSimple';
-import AppLayout from '../../layout/AppLayout';
 import EditButton from './EditButton';
-import DeleteButton from './DeleteButton';
-
-const steps = [
-  { name: 'Settings', href: '/settings', current: true },
-]
+import { useTranslation } from "react-i18next";
+import { usePage } from '../../contexts/PageContext';
 
 const SettingPage = () => {
+  const { t } = useTranslation();
+  const { setPage, setSteps } = usePage();
+
+    useEffect(() => {
+        setPage(t("Settings"));
+        setSteps([{ name: t('Settings'), href: '/settings', current: true }]);
+    }, [setPage, setSteps, t]);
   const [jsonData, setJsonData] = useState([]);
 
   useEffect(() => {
@@ -31,37 +34,21 @@ const SettingPage = () => {
     fetchData();
   }, []);
 
-
   const columnDefs = [
-    {
-      headerName: 'Name',
-      field: 'config',
-    },
-    { headerName: 'Value', field: 'value', },
-    {
-      headerName: 'Edit',
-      cellRenderer: EditButton,
-      editable: false,
-      cellStyle: { 'fontWeight': 'bold', 'color': 'green', }
-    },
-    {
-      headerName: 'Delete',
-      cellRenderer: DeleteButton,
-      editable: false,
-      cellStyle: { 'fontWeight': 'bold', 'color': 'red', }
-
-    },
+    { headerName: t('Name'), field: t('config')},
+    { headerName: t('Value'), field: t('value'), },
+    { cellRenderer: EditButton, editable: false, cellStyle: { 'fontWeight': 'bold', 'color': 'green' }}
   ];
 
   return (
-    <AppLayout Page={"Settings"} Steps={steps}>
+    <>
       <div>
         <AgGridTable
           rowData={jsonData}
           columnDefs={columnDefs}
         />
       </div>
-    </AppLayout>
+    </>
   );
 };
 
