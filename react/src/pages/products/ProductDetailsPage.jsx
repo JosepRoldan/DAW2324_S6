@@ -1,46 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { AgGridReact } from 'ag-grid-react';
-import AppLayout from '../../layout/AppLayout';
 import Spinner from '../../components/Spinner';
 import { useTranslation } from "react-i18next";
-import i18n from "i18next";
-import { initReactI18next } from "react-i18next";
-import translationEN from "/src/locales/eng/translation.json";
-import translationCA from "/src/locales/cat/translation.json";
-import translationES from "/src/locales/esp/translation.json";
 import { usePage } from '../../contexts/PageContext';
 
-const resources = {
-    eng: {
-        translation: translationEN,
-    },
-    cat: {
-        translation: translationCA,
-    },
-    esp: {
-        translation: translationES,
-    },
-};
-
-i18n.use(initReactI18next).init({
-    resources,
-    lng: "eng",
-    fallbackLng: "eng",
-    interpolation: {
-        escapeValue: false,
-    },
-});
-
 const ProductDetailsPage = () => {
+    const { t } = useTranslation();
     const { setPage, setSteps } = usePage();
 
     useEffect(() => {
-        setPage("Product Details");
-        setSteps([{ name: 'Products', href: '/products' }, { name: "Product Details", href: `/products/${productId}`, current: true }]);
+        setPage(t("Product Details"));
+        setSteps([{ name: t('Products'), href: '/products' }, { name: t("Product Details"), href: `/products/${productId}`, current: true }]);
     }, [setPage, setSteps]);
 
-    const { t } = useTranslation();
+
     const { productId } = useParams();
     const [productData, setProductData] = useState({
         product: null,
@@ -88,7 +62,6 @@ const ProductDetailsPage = () => {
                 console.log(`Error: ${errorData.message}`);
             }
         } catch (error) {
-            // Manejo de errores de red
             alert(`Error: ${error.message}`);
         }
     };
@@ -172,12 +145,12 @@ const ProductDetailsPage = () => {
     }
 
     const detailColumnDefs = [
-        { field: 'name', headerName: 'Name', sortable: true, filter: true },
-        { field: 'format_width', headerName: 'Width (cm)', sortable: true, filter: true },
-        { field: 'format_height', headerName: 'Height (cm)', sortable: true, filter: true },
-        { field: 'formatted_price', headerName: 'Price', sortable: true, filter: true },
-        { valueGetter: benefitsMarginValueGetter, headerName: 'Benefits margin', sortable: true, filter: true },
-        { cellRenderer: SalesPriceCellRenderer, headerName: 'Sales price', sortable: true, filter: true },
+        { field: 'name', headerName: t('Name'), sortable: true, filter: true },
+        { field: 'format_width', headerName: t('Width (cm)'), sortable: true, filter: true },
+        { field: 'format_height', headerName: t('Height (cm)'), sortable: true, filter: true },
+        { field: 'formatted_price', headerName: t('Price'), sortable: true, filter: true },
+        { valueGetter: benefitsMarginValueGetter, headerName: t('Benefits Margin'), sortable: true, filter: true },
+        { cellRenderer: SalesPriceCellRenderer, headerName: t('Sales Price'), sortable: true, filter: true },
     ];
 
     if (error) {

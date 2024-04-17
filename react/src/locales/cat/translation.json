@@ -10,6 +10,7 @@
   "Users": "Usuaris",
   "Customers": "Clients",
   "Products": "Productes",
+  "Product Details": "Detalls del producte",
   "Orders": "Comandes",
   "Benefits": "Beneficis",
   "User": "Usuari",
@@ -93,5 +94,17 @@
   "Download": "Descarregar",
   "Edit": "Editar",
   "Your teams": "Els teus equips",
-  "DASHBOARD": "INICIO"
+  "DASHBOARD": "INICIO",
+  "Save": "Desar",
+  "Massive actions": "Accions massives",
+  "Priority": "Prioritat",
+  "Image": "Imatge",
+  "Product Name": "Nom del producte",
+  "Price Range": "Rang de preus",
+  "Benefits Margin": "Marge de beneficis",
+  "Sales Price": "Preu de venda",
+  "Actions": "Accions",
+  "Name": "Nom",
+  "Width (cm)": "Amplada (cm)",
+  "Height (cm)": "Alçada (cm)"
 }

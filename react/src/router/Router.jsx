@@ -25,6 +25,7 @@ import SettingForm from "../pages/setting/SettingForm";
 import OrdersPage from "../pages/orders/OrdersPage";
 import OrderDetailsPage from "../pages/orders/OrderDetailsPage";
 import AppLayout from "../layout/AppLayout";
+import ProductsMassiveActions from "../pages/products/ProductsMassiveActions";
 
 export const Router = () => {
   const navigate = useNavigate();
@@ -39,7 +40,7 @@ export const Router = () => {
   };
 
   useEffect(() => {
-    checkRoute();
+    // checkRoute();
   }, []);
 
   const productSteps = [
@@ -66,14 +67,15 @@ export const Router = () => {
         <Route path="/customers/:customerId/edit" element={<CustomersEdit />} />
       // PRODUCTS
         <Route path="products" element={<ProductsPage />} />
+        <Route path="/products-massive-actions" element={<ProductsMassiveActions />} />
         <Route path="products/:productId" element={<ProductDetailsPage />} />
       // BENEFITS
-        <Route path="/benefits" element={<BenefitsPage></BenefitsPage>} />
+        <Route path="/profit" element={<BenefitsPage></BenefitsPage>} />
         <Route
-          path="/benefits=create"
+          path="/profit=create"
           element={<BenefitsCreate></BenefitsCreate>}
         />
-        <Route path="/benefits=edit/:id" element={<BenefitsEdit />} />
+        <Route path="/profit=edit/:id" element={<BenefitsEdit />} />
       //Users
         <Route strict path="/users/:userId" element={<UsersShow />} />
         <Route path="/users" element={<UserPage />} />

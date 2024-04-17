@@ -1,46 +1,20 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react'
-import AppLayout from '../../layout/AppLayout';
 import { UsersTable } from '../../components/tables/UsersTable';
 import Spinner from '../../components/Spinner';
-//import axios from 'axios';
 const token = localStorage.getItem('token');
 import { useTranslation } from "react-i18next";
-import i18n from "i18next";
-import { initReactI18next } from "react-i18next";
-import translationEN from "/src/locales/eng/translation.json";
-import translationCA from "/src/locales/cat/translation.json";
-import translationES from "/src/locales/esp/translation.json";
+import { usePage } from '../../contexts/PageContext';
 
-const resources = {
-    eng: {
-        translation: translationEN,
-    },
-    cat: {
-        translation: translationCA,
-    },
-    esp: {
-        translation: translationES,
-    },
-};
 
-i18n.use(initReactI18next).init({
-    resources,
-    lng: "eng",
-    fallbackLng: "eng",
-    interpolation: {
-        escapeValue: false,
-    },
-});
 
-const steps = [
-    { name: 'Users', href: '/users', current: true },
-]
+
 export const UserPage = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const [userData, setUsersData] = useState([]);
     const [isLoading, setLoading] = useState(true);
+    const { setPage, setSteps } = usePage();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -71,8 +45,13 @@ export const UserPage = () => {
         fetchData();
     }, []);
 
+    useEffect(() => {
+        setPage(t("Users"));
+        setSteps([{ name: t("Users"), href: '/users', current: true }]);
+    }, [setPage, setSteps, navigate]);
+
     return (
-        <AppLayout Page={"Users"} Steps={steps}>
+        <>
             <div className="px-4 sm:px-6 lg:px-8">
                 <div className="sm:flex sm:items-center">
                     <div className="sm:flex-auto">
@@ -96,7 +75,7 @@ export const UserPage = () => {
                         <UsersTable userData={userData} />
                 }
             </div>
-        </AppLayout >
+        </>
     )
 }
 
