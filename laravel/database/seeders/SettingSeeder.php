@@ -16,19 +16,19 @@ class SettingSeeder extends Seeder
         DB::table('settings')->insert([
             [
                 'config' => 'Picanova API Key',
-                'value' => '047c83b57e9ad2ecb7360154c5b6b213',
+                'value' => env('PICANOVA_API_KEY'),
             ],
             [
                 'config' => 'Dall-e API Key',
-                'value' => 'c30dce2e1c3c9aafe0bf1ceeb68d9f7f',
+                'value' => env('DALL_E_API_KEY'),
             ],
             [
                 'config' => 'BigJPG API Key',
-                'value' => 'aebb870ef6ac718aa8bd442b1c993806',
+                'value' => env('BIG_JPG_API_KEY'),
             ],
             [
                 'config' => 'Google Tag Manager',
-                'value' => 'GTM-CA3DFFE52C546C',
+                'value' => env('GOOGLE_TAG_MANAGER'),
             ],
         ]);
     }
