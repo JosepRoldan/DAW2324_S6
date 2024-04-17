@@ -1,57 +1,14 @@
-import AppLayout from '../../layout/AppLayout';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useTranslation } from "react-i18next";
-import i18n from "i18next";
-import { initReactI18next } from "react-i18next";
-import translationEN from "/src/locales/eng/translation.json";
-import translationCA from "/src/locales/cat/translation.json";
-import translationES from "/src/locales/esp/translation.json";
 import { usePage } from '../../contexts/PageContext';
-
-const resources = {
-  eng: {
-    translation: translationEN,
-  },
-  cat: {
-    translation: translationCA,
-  },
-  esp: {
-    translation: translationES,
-  },
-};
-
-i18n.use(initReactI18next).init({
-  resources,
-  lng: "eng",
-  fallbackLng: "eng",
-  interpolation: {
-    escapeValue: false,
-  },
-});
 
 const token = localStorage.getItem('token');
 
-/**
- * Create a new customer with the provided information.
- *
- * @param {object} e - The event object.
- * @return {void} Nothing is returned from this function.
- */
 export const CustomersCreate = () => {
-
-  const { setPage, setSteps } = usePage();
-
-  useEffect(() => {
-    setPage("Customers");
-    setSteps([{ name: 'Customers', href: '/customers', current: true },
-    { name: 'Create Customer', href: '/customers/create', current: true }
-    ]);
-  }, [setPage, setSteps]);
   const { t } = useTranslation();
   const navigate = useNavigate();
-
   const [formData, setFormData] = useState({
     name: '',
     surname: '',
@@ -68,40 +25,93 @@ export const CustomersCreate = () => {
     is_validated: false
   });
 
-  /**
-   * Updates the form data with the new value of the input field.
-   *
-   * @param {Event} e - The event object representing the input change.
-   * @return {void} This function does not return anything.
-   */
+
+  const { setPage, setSteps } = usePage();
+
+  useEffect(() => {
+    setPage(t("Customers"));
+    setSteps([{ name: (t('Customers')), href: '/customers', current: true },
+    { name: (t('Create Customer')), href: '/customers/create', current: true }
+    ]);
+  }, [setPage, setSteps, t]);
+
+
+  const [errors, setErrors] = useState({});
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    setErrors({ ...errors, [name]: '' });
   }
 
-  /**
-   * A function that handles form submission asynchronously.
-   *
-   * @param {Event} e - the event object
-   * @return {Promise} a Promise that resolves when submission is complete
-   */
+
+  const renderErrorForField = (fieldName) => {
+    if (errors[fieldName]) {
+      return (
+        <p key={fieldName} className="text-red-500 text-sm mt-1">
+          {errors[fieldName]}
+        </p>
+      );
+    }
+    return null;
+  };
+  // Aquí comienza el código de validación
+  const validations = () => {
+    const newErrors = {};
+
+    if (formData.name.trim() === '') {
+      newErrors.name = t("Please enter a name.");
+    }
+
+    if (formData.surname.trim() === '') {
+      newErrors.surname = t("Please enter a surname.");
+    }
+
+    if (formData.username.trim() === '') {
+      newErrors.username = t("Please enter a username.");
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.mail)) {
+      newErrors.mail = t("Please enter a valid email.");
+    }
+
+    if (formData.password.trim() === '') {
+      newErrors.password = t("Please enter a password.");
+    } else if (formData.password.length < 6) {
+      newErrors.password = t("Password must be at least 6 characters long.");
+    }
+
+    if (formData.password !== formData.passwordConfirm) {
+      newErrors.passwordConfirm = t("Passwords must match");
+    }
+
+    setErrors(newErrors);
+
+    return Object.keys(newErrors).length === 0;
+  };
+
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    const url = `${import.meta.env.VITE_API_URL}/customers/create`;
-    const headers = {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      'Authorization': `Bearer ${token}`,
-    };
+    const validationPassed = validations(); // Ejecuta las validaciones
+    if (validationPassed) {
+      const url = `${import.meta.env.VITE_API_URL}/customers/create`;
+      const headers = {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        'Authorization': `Bearer ${token}`,
+      };
 
-    try {
-      const response = await axios.post(url, formData, { headers });
-      navigate('/customers');
-    } catch (error) {
-      console.error('Error:', error.response ? error.response.data : error.message);
-      // Manejar el error aquí
+      try {
+        const response = await axios.post(url, formData, { headers });
+        navigate('/customers');
+      } catch (error) {
+        console.error('Error:', error.response ? error.response.data : error.message);
+        // Manejar el error aquí
+      }
     }
+
   };
 
 
@@ -110,7 +120,7 @@ export const CustomersCreate = () => {
 
     <>
       <div className="pb-16 space-y-10 divide-y divide-gray-900/10">
-        <form>
+        <form onSubmit={onSubmit}>
           <div className="grid grid-cols-1 gap-x-8 gap-y-8 pt-10 md:grid-cols-3">
             <div className="px-4 sm:px-0">
               <h2 className="text-base font-semibold leading-7 text-gray-900">{t("Personal Information")}</h2>
@@ -134,6 +144,8 @@ export const CustomersCreate = () => {
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
                     </div>
+                    {renderErrorForField('name')}
+
                   </div>
 
                   <div className="sm:col-span-4">
@@ -151,6 +163,8 @@ export const CustomersCreate = () => {
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
                     </div>
+                    {renderErrorForField('surname')}
+
                   </div>
 
                   <div className="sm:col-span-4">
@@ -168,6 +182,8 @@ export const CustomersCreate = () => {
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
                     </div>
+                    {renderErrorForField('mail')}
+
                   </div>
 
                   <div className="sm:col-span-2">
@@ -221,7 +237,7 @@ export const CustomersCreate = () => {
                     </div>
                   </div>
 
-                  <div className="sm:col-span-2">
+                  <div className="sm:col-span-3">
                     <label htmlFor="postcode" className="block text-sm font-medium leading-6 text-gray-900">
                       {t("ZIP / Postal code")}
                     </label>
@@ -255,7 +271,7 @@ export const CustomersCreate = () => {
                 <div className="max-w-2xl space-y-10">
                   <div className="grid max-w-3xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
 
-                    <div className="sm:col-span-4">
+                    <div className="sm:col-span-3">
                       <label htmlFor="username" className="block text-sm font-medium leading-6 text-gray-900">
                         {t("Username")}
                       </label>
@@ -269,6 +285,8 @@ export const CustomersCreate = () => {
                           className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         />
                       </div>
+                      {renderErrorForField('username')}
+
                     </div>
 
 
@@ -286,6 +304,8 @@ export const CustomersCreate = () => {
                           className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         />
                       </div>
+                      {renderErrorForField('password')}
+
                     </div>
 
                     <div className="sm:col-span-3">
@@ -302,6 +322,8 @@ export const CustomersCreate = () => {
                           className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         />
                       </div>
+                      {renderErrorForField('passwordConfirm')}
+
                     </div>
                   </div>
 
@@ -413,8 +435,7 @@ export const CustomersCreate = () => {
               {t("Cancel")}
             </button>
 
-            <button type="submit" onClick={onSubmit}
-              className="ml-4 bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-full transition duration-300">
+            <button type="submit" className="ml-4 bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-full transition duration-300">
               {t("Create")}
             </button>
           </div>

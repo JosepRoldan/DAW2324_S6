@@ -80,3 +80,11 @@ http://localhost:8080/
 ```
 http://localhost:8003/docs/
 ```
+**Prometheus**
+```
+http://localhost:9090/
+```
+**Grafana**
+```
+http://localhost:4000/
+```

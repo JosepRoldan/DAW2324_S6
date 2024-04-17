@@ -1,51 +1,12 @@
-import AppLayout from '../../layout/AppLayout';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useTranslation } from "react-i18next";
-import i18n from "i18next";
-import { initReactI18next } from "react-i18next";
-import translationEN from "/src/locales/eng/translation.json";
-import translationCA from "/src/locales/cat/translation.json";
-import translationES from "/src/locales/esp/translation.json";
 import { usePage } from '../../contexts/PageContext';
-
-
-const resources = {
-  eng: {
-    translation: translationEN,
-  },
-  cat: {
-    translation: translationCA,
-  },
-  esp: {
-    translation: translationES,
-  },
-};
-
-i18n.use(initReactI18next).init({
-  resources,
-  lng: "eng",
-  fallbackLng: "eng",
-  interpolation: {
-    escapeValue: false,
-  },
-});
-
-
 
 const token = localStorage.getItem('token');
 
-/**
- * Edit customer information and handle deletion.
- *
- * @param {object} e - The event object.
- * @return {JSX.Element} The JSX element representing the customer edit form.
- */
 export const CustomersEdit = () => {
-
-
-
   const navigate = useNavigate();
   const { t } = useTranslation();
 
@@ -73,27 +34,59 @@ export const CustomersEdit = () => {
     is_validated: customer.is_validated,
   });
 
+  const [errors, setErrors] = useState({});
 
-  /**
-   * Updates the form data based on the input change event.
-   *
-   * @param {object} e - The input change event object.
-   * @return {void} This function does not return a value.
-   */
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    setErrors({ ...errors, [name]: '' });
   }
 
-  /**
-   * Submit form data asynchronously.
-   *
-   * @param {Event} e - The event object
-   * @return {Promise<void>} Promise that resolves after form submission
-   */
   const onSubmit = async (e) => {
     e.preventDefault();
+    const validationPassed = validations(); // Ejecuta las validaciones
+    if (validationPassed) {
+      showModal(); // Abre el modal solo si las validaciones pasan
+    }
+  };
 
+  const renderErrorForField = (fieldName) => {
+    if (errors[fieldName]) {
+      return (
+        <p key={fieldName} className="text-red-500 text-sm mt-1">
+          {errors[fieldName]}
+        </p>
+      );
+    }
+    return null;
+  };
+  // Aquí comienza el código de validación
+  const validations = () => {
+    const newErrors = {};
+
+    if (formData.name.trim() === '') {
+      newErrors.name = t("Please enter a name.");
+    }
+
+    if (formData.surname.trim() === '') {
+      newErrors.surname = t("Please enter a surname.");
+    }
+
+    if (formData.username.trim() === '') {
+      newErrors.username = t("Please enter a username.");
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.mail)) {
+      newErrors.mail = t("Please enter a valid email.");
+    }
+
+    setErrors(newErrors);
+
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleUpdate = () => {
     const headers = {
       Accept: "application/json",
       "Content-Type": "application/json",
@@ -103,40 +96,20 @@ export const CustomersEdit = () => {
     axios.put(`${import.meta.env.VITE_API_URL}/customers/${customer.id}`, formData, { headers })
       .then(response => {
         const { data } = response;
-        alert('Customer updated successfully!');
         navigate(`/customers/${data.id}`, { state: { customer: response.data.data } });
       })
       .catch(error => console.error('Error:', error));
   };
 
-
-  /**
-   * Deletes a customer using axios delete request.
-   *
-   */
-  const onDelete = () => {
-    axios.delete(`${import.meta.env.VITE_API_URL}/customers/${customer.id}`)
-      .then(() => {
-        alert('Customer deleted successfully!');
-        navigate('/customers');
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        alert('There was an error deleting the customer.');
-      });
-  };
-
   const { setPage, setSteps } = usePage();
 
   useEffect(() => {
-    setPage("Customers");
-    setSteps([{ name: 'Customers', href: '/customers', current: true },
-    { name: 'Edit Customer', current: true }
+    setPage(t("Customers"));
+    setSteps([{ name: (t('Customers')), href: '/customers', current: true },
+    { name: (t('Edit Customer')), current: true }
 
     ]);
-  }, [setPage, setSteps]);
-
-
+  }, [setPage, setSteps, t]);
 
   return (
     <>
@@ -148,7 +121,7 @@ export const CustomersEdit = () => {
             </h3>
             <div className="mt-2">
               <p className="text-sm text-gray-500">
-                {t("Are you sure you want to delete this customer? This action cannot be undone.")}
+                {t("Are you sure you want to update this customer? This action cannot be undone.")}
               </p>
             </div>
             <div className="mt-4 flex justify-end">
@@ -161,10 +134,10 @@ export const CustomersEdit = () => {
               </button>
               <button
                 type="button"
-                className="inline-flex justify-center rounded-md border border-transparent px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-red-500"
-                onClick={() => { onDelete();; }}
+                className="inline-flex justify-center rounded-md border border-transparent px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                onClick={() => { handleUpdate(); hideModal(); }}
               >
-                {t("Delete")}
+                {t("Update")}
               </button>
             </div>
           </div>
@@ -174,13 +147,14 @@ export const CustomersEdit = () => {
       <div className="pb-16 space-y-10 divide-y divide-gray-900/10">
         <form>
           <div className="grid grid-cols-1 gap-x-8 gap-y-8 pt-10 md:grid-cols-3">
+
             <div className="px-4 sm:px-0">
               <h2 className="text-base font-semibold leading-7 text-gray-900">{t("Personal Information")}</h2>
               <p className="mt-1 text-sm leading-6 text-gray-600">{t("Provide customers personal information.")}</p>
             </div>
-
             <div className="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2">
               <div className="px-4 py-6 sm:p-8">
+
                 <div className="grid max-w-3xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                   <div className="sm:col-span-2">
                     <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900">
@@ -196,6 +170,7 @@ export const CustomersEdit = () => {
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
                     </div>
+                    {renderErrorForField('name')}
                   </div>
 
                   <div className="sm:col-span-4">
@@ -213,6 +188,8 @@ export const CustomersEdit = () => {
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
                     </div>
+                    {renderErrorForField('surname')}
+
                   </div>
 
                   <div className="sm:col-span-4">
@@ -230,6 +207,8 @@ export const CustomersEdit = () => {
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
                     </div>
+                    {renderErrorForField('mail')}
+
                   </div>
 
                   <div className="sm:col-span-2">
@@ -283,7 +262,7 @@ export const CustomersEdit = () => {
                     </div>
                   </div>
 
-                  <div className="sm:col-span-2">
+                  <div className="sm:col-span-3">
                     <label htmlFor="postcode" className="block text-sm font-medium leading-6 text-gray-900">
                       {t("ZIP / Postal code")}
                     </label>
@@ -317,7 +296,7 @@ export const CustomersEdit = () => {
                 <div className="max-w-2xl space-y-10">
                   <div className="grid max-w-3xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
 
-                    <div className="sm:col-span-4">
+                    <div className="sm:col-span-2">
                       <label htmlFor="username" className="block text-sm font-medium leading-6 text-gray-900">
                         {t("Username")}
                       </label>
@@ -331,10 +310,12 @@ export const CustomersEdit = () => {
                           className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         />
                       </div>
+                      {renderErrorForField('username')}
+
                     </div>
 
 
-                    <div className="sm:col-span-3 sm:col-start-1">
+                    {/* <div className="sm:col-span-3 sm:col-start-1">
                       <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
                         {t("Password")}
                       </label>
@@ -348,9 +329,9 @@ export const CustomersEdit = () => {
                           className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         />
                       </div>
-                    </div>
+                    </div> */}
 
-                    <div className="sm:col-span-3">
+                    {/* <div className="sm:col-span-3">
                       <label htmlFor="passwordConfirm" className="block text-sm font-medium leading-6 text-gray-900">
                         {t("Confirm Password")}
                       </label>
@@ -364,7 +345,7 @@ export const CustomersEdit = () => {
                           className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         />
                       </div>
-                    </div>
+                    </div> */}
                   </div>
 
                   <fieldset>
@@ -470,16 +451,17 @@ export const CustomersEdit = () => {
 
           <div className="px-4 py-4 sm:px-6 flex justify-between items-center">
             {/* Botón a la izquierda */}
-            <button type="button" onClick={showModal}
+            {/* <button type="button" onClick={showModal}
               className="inline-flex justify-center rounded-md bg-red-600 px-3 py-2 text-md font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 mr-2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
               </svg>
 
               {t("Delete Customer")}
-            </button>
+            </button> */}
 
             {/* Contenedor para los botones de la derecha */}
+            <div></div>
             <div className="flex justify-end">
               <button type="button" onClick={() => navigate(-1)}
                 className="bg-slate-700 text-white font-bold py-2 px-4 rounded-full transition duration-300">
@@ -499,4 +481,5 @@ export const CustomersEdit = () => {
     </>
   )
 }
+
 
