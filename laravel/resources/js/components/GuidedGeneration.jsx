@@ -12,6 +12,8 @@ import usePeticionAsincrona from "../hooks/peticioAsincrona.jsx";
 import BotonRedireccion from "./BotonRedireccion";
 import useURLParams from "../hooks/useURLParams";
 import { hsvaToHex } from "@uiw/color-convert";
+import DotLoader from "react-spinners/DotLoader";
+
 
 function GenerateGuidedImage() {
     const imageStyle = [

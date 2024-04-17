@@ -173,3 +173,6 @@ Route::get('/legalnotice', function () {return view('footer.legalnotice');});
 //Header
 Route::post('/change-language', [LanguageController::class, 'changeLanguage']);
 Route::get('/current-language', [LanguageController::class, 'currentLanguage']);
+
+//Token
+Route::post('/check-token', [LanguageController::class, 'changeLanguage']);
