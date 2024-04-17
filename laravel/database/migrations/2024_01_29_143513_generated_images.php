@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('generatedImages', function (Blueprint $table) {
             $table->id('idGI');
             $table->unsignedBigInteger('idCustomers');
-            $table->foreign('idCustomers')->references('idCustomers')->on('customers');
+            $table->foreign('idCustomers')->references('id')->on('customers');
             $table->string('prompt')->nullable(false);
             $table->string('path')->nullable(false);
             $table->decimal('cost')->nullable(false);
