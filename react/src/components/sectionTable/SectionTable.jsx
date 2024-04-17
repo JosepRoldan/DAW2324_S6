@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./SectionTable.css";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { useRef } from "react";
 /**
  * Renders a section table with benefits data and a chart.
  *
@@ -19,15 +20,10 @@ function SectionTable({ SectionName }) {
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const [tooltipX, setTooltipX] = useState(0);
   const [tooltipY, setTooltipY] = useState(0);
-  const [alertError, setAlertError] = useState(false);
-  const [alertSucces, setAlertSucces] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
   const [years, setYears] = useState([]);
   const [actualYear, setActualYear] = useState(new Date().getFullYear());
-  const dropdownButton = document.getElementById('dropdown-button');
-  const dropdownMenu = document.getElementById('dropdown-menu');
-  let isDropdownOpen = false;
+  const dropdownRef = useRef(null);
 
   /**
    * Function to show a tooltip based on the event target.
@@ -43,12 +39,7 @@ function SectionTable({ SectionName }) {
   };
 
   const toggleDropdown = () => {
-    isDropdownOpen = !isDropdownOpen;
-    if (isDropdownOpen) {
-        dropdownMenu.classList.remove('hidden');
-    } else {
-        dropdownMenu.classList.add('hidden');
-    }
+    setIsOpen(!isOpen);
   };
 
   /**
@@ -61,16 +52,21 @@ function SectionTable({ SectionName }) {
     setTooltipY(0);
   };
 
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setIsOpen(false);
+    }
+  };
+
   useEffect(() => {
     getBenefits();
     getYears();
 
-    window.addEventListener('click', (event) => {
-      if (!dropdownButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
-          dropdownMenu.classList.add('hidden');
-          isDropdownOpen = false;
-      }
-  });
+    document.addEventListener("mousedown", handleClickOutside);
+    
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, []);
 
   /**
@@ -244,22 +240,14 @@ function SectionTable({ SectionName }) {
    */
   const deleteBenefits = async (id) => {
     setLoading(true);
-    setAlertError(false);
-    setAlertSucces(false);
     try {
       const url = `${import.meta.env.VITE_API_URL}/deleteBenefits/${id}`;
       const response = await axios.delete(url);
       if (response.status === 200) {
         console.log("Resource deleted successfully:", response.data);
-        setAlertSucces(true);
-        setAlertError(false);
-      } else {
-        setAlertSucces(false);
-        setAlertError(true);
       }
     } catch (error) {
-      setAlertError(true);
-      console.error("Error deleting resource:", error);
+       console.error("Error deleting resource:", error);
     } finally {
       getBenefits(...benefits);
       setLoading(false);
@@ -275,29 +263,17 @@ function SectionTable({ SectionName }) {
           <div className="loader"></div>
         </div>
       )}
-      <div className="relative group mb-10">
+     <div className="relative group mb-10">
         <button
           id="dropdown-button"
           onClick={toggleDropdown}
           className="inline-flex justify-center w-50 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm"
         >
-          <span className="mr-2">Select Year</span>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="w-5 h-5 ml-2 -mr-1"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            aria-hidden="true"
-          >
-            <path
-              fillRule="evenodd"
-              d="M6.293 9.293a1 1 0 011.414 0L10 11.586l2.293-2.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
-              clipRule="evenodd"
-            />
-          </svg>
+          Select Year
         </button>
         <div
           id="dropdown-menu"
+          ref={dropdownRef}  
           className={`z-10 absolute left-0 mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 p-1 space-y-1 ${
             isOpen ? "" : "hidden"
           }`}
