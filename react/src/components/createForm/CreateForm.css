@@ -20,3 +20,30 @@
     font-weight: 700;
     margin-bottom: 0px !important;
 }
+
+.flex-container {
+    display: flex;          /* Enables Flexbox */
+    justify-content: space-between; /* Spaces the children evenly */
+    width: 100%;            /* Take full width to contain both children */
+}
+
+.flex-container > div {
+    width: 48%;             /* Each child takes slightly less than half the width to fit side by side */
+    box-sizing: border-box; /* Includes padding and border in the element's total width and height */
+}
+
+.date-selector {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Align vertically */
+    gap: 20px; /* Space between month and year selectors */
+}
+
+.month-selector, .year-selector {
+    flex: 1; /* Each takes equal width */
+}
+
+/* Optional: Adjust width of select and input elements inside flex containers */
+.month-selector select, .year-selector input {
+    width: 100%; /* Full width of their containers */
+}

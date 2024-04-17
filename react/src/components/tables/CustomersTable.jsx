@@ -2,6 +2,8 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
 import { AgGridReact } from 'ag-grid-react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from "react-i18next";
+
 
 /**
  * Renders a button that navigates to the customer details page when clicked.
@@ -36,17 +38,18 @@ const showCustomer = ({ data }) => {
  * @return {JSX.Element} The JSX element representing the customer table.
  */
 export const CustomersTable = ({ customers }) => {
+  const { t } = useTranslation();
 
   const colDefs = [
-    { field: 'name', headerName: 'Name', filter: true },
-    { field: 'mail', headerName: 'Email', filter: true },
-    { field: 'username', headerName: 'Username', filter: true },
-    { field: 'postcode', headerName: 'PostalCode', filter: true },
-    { field: 'is_validated', headerName: 'Validated', filter: true },
-    { field: 'customerStatus', headerName: 'Status', filter: true },
+    { field: 'name', headerName: (t('Name')), filter: true },
+    { field: 'mail', headerName: (t('Email')), filter: true },
+    { field: 'username', headerName: (t('Username')), filter: true },
+    // { field: 'postcode', headerName: 'Pos(t(talCode', filter: true },
+    { field: 'is_validated', headerName: (t('Validated')), filter: true },
+    // { field: 'customerStatus', headerName: 'Status', filter: true },
     // { field: 'phone', headerName: 'Phone' },
     // { field: 'address', headerName: 'Address' },
-    { headerName: 'Show', cellRenderer: showCustomer }
+    { headerName: (t('Show')), cellRenderer: showCustomer }
   ];
 
   return (
@@ -60,7 +63,7 @@ export const CustomersTable = ({ customers }) => {
             </div>
           </div>
           : <div className="align-middle overflow-x-auto shadow overflow-hidden sm:rounded-lg">
-            <div className="ag-theme-quartz" style={{ width: 'auto', height: '80vh' }}>
+            <div className="ag-theme-quartz" style={{ width: 'auto', height: '70vh' }}>
               <AgGridReact
                 rowData={customers}
                 columnDefs={colDefs}
