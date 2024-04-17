@@ -117,7 +117,7 @@ export const CustomersEdit = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
           <div className="bg-white p-4 sm:p-6 lg:p-8 shadow-xl rounded-lg">
             <h3 className="text-lg font-medium leading-6 text-gray-900">
-              {t("Confirm Deletion")}
+              {t("Confirm Update")}
             </h3>
             <div className="mt-2">
               <p className="text-sm text-gray-500">
