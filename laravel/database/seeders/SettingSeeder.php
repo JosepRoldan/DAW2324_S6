@@ -14,22 +14,10 @@ class SettingSeeder extends Seeder
     public function run(): void
     {
         DB::table('settings')->insert([
-            [
-                'config' => 'Picanova API Key',
-                'value' => env('PICANOVA_API_KEY'),
-            ],
-            [
-                'config' => 'Dall-e API Key',
-                'value' => env('DALL_E_API_KEY'),
-            ],
-            [
-                'config' => 'BigJPG API Key',
-                'value' => env('BIG_JPG_API_KEY'),
-            ],
-            [
-                'config' => 'Google Tag Manager',
-                'value' => env('GOOGLE_TAG_MANAGER'),
-            ],
+            [ 'config' => 'Picanova API Key', 'value' => env('PICANOVA_API_KEY') ],
+            [ 'config' => 'Dall-e API Key', 'value' => env('DALL_E_API_KEY') ],
+            [ 'config' => 'BigJPG API Key', 'value' => env('BIGJPG_API_KEY') ],
+            [ 'config' => 'Google Tag Manager', 'value' => env('GOOGLE_TAG_MANAGER') ],
         ]);
     }
 }
