@@ -25,6 +25,9 @@ function SectionTable({ SectionName }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [years, setYears] = useState([]);
   const [actualYear, setActualYear] = useState(new Date().getFullYear());
+  const dropdownButton = document.getElementById('dropdown-button');
+  const dropdownMenu = document.getElementById('dropdown-menu');
+  let isDropdownOpen = false;
 
   /**
    * Function to show a tooltip based on the event target.
@@ -40,7 +43,12 @@ function SectionTable({ SectionName }) {
   };
 
   const toggleDropdown = () => {
-    setIsOpen(!isOpen);
+    isDropdownOpen = !isDropdownOpen;
+    if (isDropdownOpen) {
+        dropdownMenu.classList.remove('hidden');
+    } else {
+        dropdownMenu.classList.add('hidden');
+    }
   };
 
   /**
@@ -56,6 +64,13 @@ function SectionTable({ SectionName }) {
   useEffect(() => {
     getBenefits();
     getYears();
+
+    window.addEventListener('click', (event) => {
+      if (!dropdownButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+          dropdownMenu.classList.add('hidden');
+          isDropdownOpen = false;
+      }
+  });
   }, []);
 
   /**
@@ -253,7 +268,6 @@ function SectionTable({ SectionName }) {
 
   return (
     <div
-      onClick={() => toggleDropdown()}
       className="flex flex-col h-[100vh] divContainer"
     >
       {loading && (
