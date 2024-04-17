@@ -11,7 +11,7 @@ import translationES from "/src/locales/esp/translation.json";
 import { Link } from "react-router-dom";
 import { usePage } from '../../contexts/PageContext';
 import { useNavigate } from 'react-router-dom';
-
+import Spinner from "../../components/Spinner";
 const resources = {
   eng: {
     translation: translationEN,
@@ -106,13 +106,10 @@ export const DashboardPage = () => {
   return (
     <>
       <div className="flex flex-col h-[100vh] divContainer">
-        {loading && (
-          <div className="loader-container">
-            <div className="loader"></div>
-          </div>
-        )}
-
-        <div className="container mx-w-6xl mx-auto py-4">
+        {loading ? (
+           <Spinner message='Loading...' />
+        ) : (
+          <div className="container mx-w-6xl mx-auto py-4">
           <div className="flex flex-col space-y-8">
             <div className="grid grid-cols-1 md:grid-cols-4 xl:grid-cols-5 px-4 xl:p-0 gap-y-4 md:gap-6">
               <div className="md:col-span-2 xl:col-span-3 bg-white p-6 rounded-2xl border border-gray-50">
@@ -233,6 +230,9 @@ export const DashboardPage = () => {
             )}
           </div>
         </div>
+        )}
+
+
       </div>
     </>
   );
