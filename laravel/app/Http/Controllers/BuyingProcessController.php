@@ -78,42 +78,39 @@ class BuyingProcessController extends Controller
         return $productsData;
     }
 
-    public function shippingDates()
+    public function getShoppingOrdreDates()
     {
         // Obtener el nombre de usuario del cliente de la sesión
         $username = Session::get('token');
-    
         // Obtener el cliente actual
         $customer = Customer::where('username', $username)->first();
-    
+
         // Verificar si se encontró el cliente
         if (!$customer) {
             return view('processShop.guess');
         }
-    
-        // Obtener el carrito de compras del cliente
-        $shoppingCart = ShoppingCart::where('idCustomers', $customer->idCustomers)->first();
-        
-        // Verificar si el cliente tiene un carrito de compras
-        if (!$shoppingCart) {
-            return view('processShop.shipping', ['customer' => $customer, 'errorMessage' => 'You have no cart at the moment']);
+
+        $address = DB::table('delivery_address')->where('idCustomers', $customer->idCustomers)->first();
+       
+        if ($address) {
+            // Convertir la dirección de entrega a JSON
+            $addressJson = $address->toJson();
+        } else {
+            // Si la dirección de entrega no existe, establecer el JSON como null
+            $addressJson = [];
         }
-    
-        // Verificar si existe una orden pendiente para este cliente
-        $customer = Order::where('idCustomers', $customer->idCustomers)
-                              ->where('orderStatus', 'Pending')
-                              ->first();
-    
+
         // Si existe una orden pendiente, usar los datos de envío de esa orden
         if ($customer) {
             //Si ha encontrado una orden vamos a details
-            return view('processShop.shippingUpdate', ['customer' => $customer, 'carrito' => $shoppingCart, 'errorMessage'=>'']);
+            return view('processShop.shipping', ['customer' => $customer, 'address' => $addressJson,'errorMessage'=>'']);
+
         } else {
             $customer = Customer::where('username', $username)->first();
             if ($customer) {
-                return view('processShop.shipping', ['customer' => $customer, 'carrito' => $shoppingCart,'errorMessage'=>'']);
+                return view('processShop.shipping', ['customer' => $customer, 'address' => $address,'errorMessage'=>'']);
             } else {
-                return view('processShop.shipping', ['customer' => $customer, 'carrito' => $shoppingCart, 'errorMessage'=>'']);
+                return view('processShop.shipping', ['customer' => $customer, 'address' => $address, 'errorMessage'=>'']);
             }
         }
     }
