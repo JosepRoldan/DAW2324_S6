@@ -279,7 +279,7 @@ const ViewDetails = () => {
                                         </div>
                                         <div className="">
                                             <p className="text-sm">
-                                                Price: 23.00€{" "}
+                                                Price: 23.00€
                                             </p>
                                         </div>
                                         
@@ -300,14 +300,14 @@ const ViewDetails = () => {
                                     <p className="mb-4 font-bold">Customer:</p>
                                 </div>
                                 <div className="text-gray-900 order-last">
-                                    <p className="mb-4">{details.idOrder}</p>
-                                    <p className="mb-4">{details.variant}</p>
-                                    <p className="mb-4">{details.datetime}</p>
+                                    <p className="mb-4">1</p>
+                                    <p className="mb-4">xorizo</p>
+                                    <p className="mb-4">12/23/2007</p>
                                     <p className="mb-4">
-                                        {details.orderStatus}
+                                        send
                                     </p>
                                     <p className="mb-4">
-                                        {details.name} {details.surname}
+                                        manolo gimenez
                                     </p>
                                 </div>
                             </div>
@@ -316,7 +316,7 @@ const ViewDetails = () => {
                                 <p className="text-lg font-bold">Total price</p>
                                 <div className="">
                                     <p className="mb-1 text-lg font-bold">
-                                        {details.priceEach}€
+                                        4€
                                     </p>
                                     <p className="text-sm text-gray-700">
                                         including IVA

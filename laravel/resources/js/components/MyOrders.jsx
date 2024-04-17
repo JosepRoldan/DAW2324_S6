@@ -107,7 +107,8 @@ const MyOrders = () => {
 
         document.addEventListener("click", handleProfile);
 
-        axios.get("/getOrders")
+        axios
+            .get("/getOrders")
             .then((response) => {
                 setOrder(response.data);
                 console.log(response.data);
@@ -115,8 +116,9 @@ const MyOrders = () => {
             .catch((error) => {
                 console.error("Error al obtener las ordenes:", error);
             });
-            
     }, []);
+
+    let orderNumber = 1;
 
     return (
         <>
@@ -280,60 +282,70 @@ const MyOrders = () => {
                                                 </th>
                                             </tr>
                                         </thead>
-                                        
-                                        {order.map((order, index) => (
-                                        <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-                                            <tr>
-                                                <td className="px-4 py-4 text-sm font-medium text-gray-700 dark:text-gray-200 whitespace-nowrap">
-                                                    <div className="inline-flex items-center gap-x-3">
-                                                        <span>#{order.id}</span>
-                                                    </div>
-                                                </td>
-                                                <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
-                                                    <span>{order.datetime}</span>
-                                                </td>
-                                                <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
-                                                    <div className="inline-flex items-center px-3 py-1 text-gray-500 rounded-full gap-x-2 bg-gray-100/60 dark:bg-gray-800">
-                                                        <h2 className="text-sm font-normal">
-                                                            {order.orderStatus}
-                                                        </h2>
-                                                    </div>
-                                                </td>
-                                                <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
-                                                    <div className="flex items-center gap-x-2">
-                                                        <img
-                                                            className="object-cover w-8 h-8 rounded-full"
-                                                            src="/img/fotoPerfil.jpeg"
-                                                            alt=""
-                                                        ></img>
-                                                        <div>
-                                                            <h2 className="text-sm font-medium text-gray-800 dark:text-white ">
-                                                                {order.name} {order.surname}
-                                                            </h2>
-                                                            <p className="text-xs font-normal text-gray-600 dark:text-gray-400">
-                                                                {order.mail}
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td className="px-4 py-4 text-sm whitespace-nowrap">
-                                                    <div className="flex items-center gap-x-6">
-                                                        <a
-                                                            href="/viewDetails"
-                                                            className="text-blue-700 transition-colors duration-200 dark:hover:text-indigo-500 dark:text-gray-300 hover:text-indigo-500 focus:outline-none"
-                                                        >
-                                                            <button className="focus:outline-none">
-                                                                View Details
-                                                            </button>
-                                                        </a>
 
-                                                        <button className="text-blue-700 transition-colors duration-200 hover:text-indigo-500 focus:outline-none">
-                                                            Download
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
+                                        {order.map((order, index) => (
+                                            <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
+                                                <tr>
+                                                    <td className="px-4 py-4 text-sm font-medium text-gray-700 dark:text-gray-200 whitespace-nowrap">
+                                                        <div className="inline-flex items-center gap-x-3">
+                                                            <span>
+                                                                #{orderNumber ++} 
+                                                            </span>
+                                                        </div>
+                                                    </td>
+
+                                                    <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
+                                                        <span>
+                                                            {order.datetime}
+                                                        </span>
+                                                    </td>
+                                                    <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
+                                                        <div className="inline-flex items-center px-3 py-1 text-gray-500 rounded-full gap-x-2 bg-gray-100/60 dark:bg-gray-800">
+                                                            <h2 className="text-sm font-normal">
+                                                                {
+                                                                    order.orderStatus
+                                                                }
+                                                            </h2>
+                                                        </div>
+                                                    </td>
+                                                    <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
+                                                        <div className="flex items-center gap-x-2">
+                                                            <img
+                                                                className="object-cover w-8 h-8 rounded-full"
+                                                                src="/img/fotoPerfil.jpeg"
+                                                                alt=""
+                                                            ></img>
+                                                            <div>
+                                                                <h2 className="text-sm font-medium text-gray-800 dark:text-white ">
+                                                                    {order.name}{" "}
+                                                                    {
+                                                                        order.surname
+                                                                    }
+                                                                </h2>
+                                                                <p className="text-xs font-normal text-gray-600 dark:text-gray-400">
+                                                                    {order.mail}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td className="px-4 py-4 text-sm whitespace-nowrap">
+                                                        <div className="flex items-center gap-x-6">
+                                                            <a
+                                                                href="/viewDetails"
+                                                                className="text-blue-700 transition-colors duration-200 dark:hover:text-indigo-500 dark:text-gray-300 hover:text-indigo-500 focus:outline-none"
+                                                            >
+                                                                <button className="focus:outline-none">
+                                                                    View Details
+                                                                </button>
+                                                            </a>
+
+                                                            <button className="text-blue-700 transition-colors duration-200 hover:text-indigo-500 focus:outline-none">
+                                                                Download
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
                                         ))}
                                     </table>
                                 </div>
