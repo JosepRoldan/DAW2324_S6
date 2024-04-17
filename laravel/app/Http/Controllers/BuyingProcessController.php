@@ -57,133 +57,35 @@ class BuyingProcessController extends Controller
         return view('processShop.cart', ['cart' => $cart]);
     }
 
-    public function getCartItems($cartId)
-    {
-        // Obtener todos los elementos del carrito
-        $cartItems = ShoppingCartItems::where('idCart', $cartId)->with('product')->get();
 
-        // Inicializar un array para almacenar los detalles de los productos
-        $productsData = [];
-
-        // Recorrer cada elemento del carrito para obtener los detalles de los productos
-        foreach ($cartItems as $item) {
-            // Acceder a los detalles del producto directamente desde la relación
-            $productData = $item->product;
-
-            // Agregar los detalles del producto al array
-            $productsData[] = $productData;
-        }
-
-        // Devolver solo los datos de los productos sin incluir los encabezados de la respuesta
-        return $productsData;
-    }
-
-    public function shippingDates()
+    public function getShoppingOrdreDates()
     {
         // Obtener el nombre de usuario del cliente de la sesión
         $username = Session::get('token');
-    
         // Obtener el cliente actual
         $customer = Customer::where('username', $username)->first();
-    
+
         // Verificar si se encontró el cliente
         if (!$customer) {
             return view('processShop.guess');
         }
-    
-        // Obtener el carrito de compras del cliente
-        $shoppingCart = ShoppingCart::where('idCustomers', $customer->idCustomers)->first();
-        
-        // Verificar si el cliente tiene un carrito de compras
-        if (!$shoppingCart) {
-            return view('processShop.shipping', ['customer' => $customer, 'errorMessage' => 'You have no cart at the moment']);
+
+        $address = DB::table('delivery_address')->where('id', $customer->id)->first();
+       
+        if ($address) {
+            // Convertir la dirección de entrega a JSON
+            $addressJson = $address->toJson();
+        } else {
+            // Si la dirección de entrega no existe, establecer el JSON como null
+            $addressJson = [];
         }
-    
-        // Verificar si existe una orden pendiente para este cliente
-        $customer = Order::where('idCustomers', $customer->idCustomers)
-                              ->where('orderStatus', 'Pending')
-                              ->first();
-    
+
         // Si existe una orden pendiente, usar los datos de envío de esa orden
         if ($customer) {
             //Si ha encontrado una orden vamos a details
-            return view('processShop.shippingUpdate', ['customer' => $customer, 'carrito' => $shoppingCart, 'errorMessage'=>'']);
-        } else {
-            $customer = Customer::where('username', $username)->first();
-            if ($customer) {
-                return view('processShop.shipping', ['customer' => $customer, 'carrito' => $shoppingCart,'errorMessage'=>'']);
-            } else {
-                return view('processShop.shipping', ['customer' => $customer, 'carrito' => $shoppingCart, 'errorMessage'=>'']);
-            }
-        }
+            return view('processShop.shipping', ['customer' => $customer, 'address' => $addressJson,'errorMessage'=>'']);
+
+        } 
     }
-
-    public function detailsDates()
-    {
-        // Obtener el nombre de usuario del cliente de la sesión
-        $username = Session::get('token');
-    
-        // Obtener el cliente actual
-        $customer = Customer::where('username', $username)->first();
-    
-        // Verificar si se encontró el cliente
-        if (!$customer) {
-            return view('processShop.guess', ['errorMessage' => "You aren't login"]);
-        }
-    
-        // Obtener el carrito de compras del cliente
-        $shoppingCart = ShoppingCart::where('idCustomers', $customer->idCustomers)->first();
-        
-        // Verificar si el cliente tiene un carrito de compras
-        if (!$shoppingCart) {
-            return view('processShop.shipping', ['customer' => $customer, 'errorMessage' => 'You have no cart at the moment']);
-        }
-    
-        // Verificar si existe una orden pendiente para este cliente
-        $customer = Order::where('idCustomers', $customer->idCustomers)
-                              ->where('orderStatus', 'Pending')
-                              ->first();
-    
-        // Si existe una orden pendiente, usar los datos de envío de esa orden
-        if ($customer) {
-            //$products = $shoppingCart->items();
-            $products = $this->getCartItems($shoppingCart->id);
-
-            //Si ha encontrado una orden vamos a details
-            return view('processShop.details', ['customer' => $customer, 'carrito' => $shoppingCart, 'products' => $products,'errorMessage'=>'']);
-        } else {
-            $customer = Customer::where('username', $username)->first();
-            if ($customer) {
-                return view('processShop.shipping', ['customer' => $customer, 'carrito' => $shoppingCart,'errorMessage'=>'']);
-            } else {
-                return view('processShop.shipping', ['customer' => $customer, 'carrito' => $shoppingCart, 'errorMessage'=>'']);
-            }
-        }
-    }
-
-    public function paymentDates()
-    {
-        // Obtener el nombre de usuario del cliente de la sesión
-        $username = Session::get('token');
-    
-        // Obtener el cliente actual
-        $customer = Customer::where('username', $username)->first();
-    
-        // Verificar si se encontró el cliente
-        if (!$customer) {
-            return view('processShop.shipping', ['errorMessage' => "You aren't login"]);
-        }
-    
-        // Obtener el carrito de compras del cliente
-        $shoppingCart = ShoppingCart::where('idCustomers', $customer->idCustomers)->first();
-        
-        // Verificar si el cliente tiene un carrito de compras
-        if (!$shoppingCart) {
-            return view('processShop.shipping', ['customer' => $customer, 'errorMessage' => 'You have no cart at the moment']);
-        }
-        return view('processShop.paymentMethod', ['carrito' => $shoppingCart,'errorMessage'=>'']);
-
-    }
-
 
 }

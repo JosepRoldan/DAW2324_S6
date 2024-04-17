@@ -53,4 +53,9 @@ class Customer extends Model
             'formatted' => $createdAt->format('H:i d-m-Y'),
         ];
     }
+
+    public function getAddressDelivery ()
+    {
+        return $this->hasOne(AddressDelivery::class, 'idCustomers', 'id');
+    }
 }
