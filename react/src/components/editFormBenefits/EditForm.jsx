@@ -28,7 +28,6 @@ const EditForm = () => {
 
 const handleKeyPress = (event) => {
   if (event.key === 'Enter') {
-    setLoadingForm(true);
      validate();
   }
 
@@ -41,9 +40,9 @@ const handleKeyPress = (event) => {
    *
    * @param {number} id - the ID used to retrieve the fields
    * @return {Promise<void>} a Promise that resolves when the fields are retrieved
-   */
+   */ 
   const getFields = async (id) => {
-    setLoading(true); 
+    setLoadingForm(true);
     try {
       const url =`${import.meta.env.VITE_API_URL}/getOneBenefit/${id}`;
       const response = await axios.get(url);
@@ -58,7 +57,7 @@ const handleKeyPress = (event) => {
     } catch (error) {
       console.error('Error deleting resource:', error);
     } finally {
-      setLoading(false); 
+      setLoadingForm(false); 
     }
   };
 
@@ -69,6 +68,7 @@ const handleKeyPress = (event) => {
    */
   const validate = () => {
     let isValid = true;
+    setLoadingForm(true);
     const newErrors = {};
 
     if (month.trim() === "") {
@@ -128,6 +128,7 @@ const handleKeyPress = (event) => {
   
       if (response.status === 200) {
         setLoadingForm(false);
+        navigate('/profit')
       }
     } catch (error) {
       setAlertError(true);
@@ -139,11 +140,6 @@ const handleKeyPress = (event) => {
 
   return (
     <div className="flex flex-col h-[100vh] divContainer">
-    {loading && (
-      <div className="loader-container">
-        <div className="loader"></div>
-      </div>
-    )}
     <div className="bg-gray-100 flex items-center justify-left">
     <div className="bg-white p-8 rounded-lg shadow-lg w-full">
       <div className="flex items-center space-x-2 mb-6">

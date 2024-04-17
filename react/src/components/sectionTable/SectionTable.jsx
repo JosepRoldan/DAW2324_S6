@@ -3,6 +3,7 @@ import "./SectionTable.css";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useRef } from "react";
+import Spinner from "../Spinner";
 /**
  * Renders a section table with benefits data and a chart.
  *
@@ -255,15 +256,12 @@ function SectionTable({ SectionName }) {
   };
 
   return (
-    <div
-      className="flex flex-col h-[100vh] divContainer"
-    >
-      {loading && (
-        <div className="loader-container">
-          <div className="loader"></div>
-        </div>
-      )}
-     <div className="relative group mb-10">
+    <div className="flex flex-col h-[100vh] divContainer">
+      {loading ? (
+     <Spinner message='Loading...' />
+      ) : (
+        <div>
+        <div className="relative group mb-10">
         <button
           id="dropdown-button"
           onClick={toggleDropdown}
@@ -487,6 +485,9 @@ function SectionTable({ SectionName }) {
           </div>
         </div>
       </div>
+      </div>
+      )}
+
     </div>
   );
 }
