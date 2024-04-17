@@ -2,31 +2,55 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Customer extends Model
 {
-    protected $table = 'customers';
-    protected $primaryKey = 'idCustomers'; // Especifica el nombre de la clave primaria
+    use HasFactory;
+
+    protected $table = 'customers'; // Nombre de la tabla en la base de datos
+
+    protected $appends = ['created_at_formatted'];
+
 
     protected $fillable = [
-        'name', 'email', 'password',
+        'name',
+        'surname',
+        'username',
+        'password',
+        'mail',
+        'phone',
+        'address',
+        'postcode',
+        'idCountry',
+        'is_validated',
+        'membershipDate',
+        'customerStatus'
     ];
-    public $timestamps = false;
 
-    public function orders()
-    {
-        return $this->hasMany(Order::class);
-    }
+    protected $hidden = [
+        'password',
+    ];
 
-    /* public function shoppingCart()
-    {
-        return $this->hasOne(ShoppingCart::class);
-    } */
 
-    //per simplificar domes una sola direccio per client
-    public function addressDelivery () 
+    protected $casts = [
+        'is_validated' => 'boolean',
+        'membershipDate' => 'datetime',
+    ];
+
+    public function getCreatedAtFormattedAttribute()
     {
-        return $this->hasOne(AddressDelivery::class);
+        $createdAt = $this->created_at;
+
+        return [
+            'year' => $createdAt->year,
+            'month' => $createdAt->month,
+            'day' => $createdAt->day,
+            'hour' => $createdAt->hour,
+            'minute' => $createdAt->minute,
+            'second' => $createdAt->second,
+            'formatted' => $createdAt->format('H:i d-m-Y'),
+        ];
     }
 }

@@ -19,7 +19,6 @@ export const UserProfile = () => {
   }
 
   return (
-    <AppLayout Page={'User Profile'} Steps={steps}>
       <div className="pb-16 space-y-10 divide-y divide-gray-900/10">
         <form>
           <div className="grid grid-cols-1 gap-x-8 gap-y-8 pt-10 md:grid-cols-3">
@@ -85,13 +84,12 @@ export const UserProfile = () => {
           <div className="px-4 py-4 sm:px-6 flex justify-between items-center">
             {/* Botón para regresar */}
             <button type="button" onClick={() => window.history.back()}
-              className="inline-flex justify-center rounded-full bg-blue-900 px-3 py-2 text-md font-semibold text-white shadow-sm hover:bg-blue-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900">
+              className="inline-flex justify-center rounded-md bg-indigo-400 px-3 py-2 text-md font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900">
               Go Back
             </button>
           </div>
         </form>
       </div>
-    </AppLayout>
   );
 };
 
