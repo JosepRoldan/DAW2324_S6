@@ -11,7 +11,7 @@ return new class extends Migration
     {
         Schema::create('shoppingCarts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('idCustomers')->references('idCustomers')->on('customers')->nullable(false); 
+            $table->foreignId('idCustomers')->references('id')->on('customers')->nullable(false);
             $table->timestamp('date')->nullable(true);
             $table->float('total')->nullable(true)->default(0);
         });
