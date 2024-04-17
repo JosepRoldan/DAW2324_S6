@@ -4,18 +4,20 @@ import Spinner from '../../components/Spinner';
 import { PriceRangeCellRenderer } from '../../components/tables/products/cellRenderers/PriceRangeCellRenderer';
 import { SalesPriceCellRenderer } from '../../components/tables/products/cellRenderers/SalesPriceCellRenderer';
 import { usePage } from '../../contexts/PageContext';
+import { useTranslation } from "react-i18next";
 import { updateMultipleProducts } from '../../api/updateMultipleProducts';
 
 export default function ProductsMassiveActions() {
+    const { t } = useTranslation();
     const { setPage, setSteps } = usePage();
 
     useEffect(() => {
-        setPage("Products Massive Actions");
+        setPage(t("Products Massive Actions"));
         setSteps([
-            { name: 'Products', href: '/products' },
-            { name: 'Products Massive Actions', href: '/products-massive-actions', current: true }
+            { name: t('Products'), href: '/products' },
+            { name: t('Products Massive Actions'), href: '/products-massive-actions', current: true }
         ]);
-    }, [setPage, setSteps]);
+    }, [setPage, setSteps, t]);
 
     const [rowData, setRowData] = useState([]);
     const [selectedProducts, setSelectedProducts] = useState(new Set());
@@ -77,28 +79,6 @@ export default function ProductsMassiveActions() {
         setBenefitsMargin(e.target.value);
     };
 
-    const handleIsActiveChange = (e) => {
-        setIsActive(e.target.value);
-    };
-
-    const handleUpdateClick = () => {
-        if (selectedProducts.size === 0) {
-            console.log("No products selected");
-            return;
-        }
-
-        const token = localStorage.getItem('token');
-        const apiUrl = import.meta.env.VITE_API_URL;
-
-        updateMultipleProducts(selectedProducts, benefitsMargin, token, apiUrl)
-            .then(() => {
-                console.log("All selected products updated successfully");
-            })
-            .catch(error => {
-                console.error("Error updating products", error);
-            });
-    };
-
     const handleMassiveUpdate = () => {
         if (selectedProducts.size === 0) {
             console.log("No products selected");
@@ -115,13 +95,13 @@ export default function ProductsMassiveActions() {
         updateMultipleProducts(selectedProducts, updateData, token, apiUrl)
             .then(() => {
                 console.log("All selected products updated successfully");
-                // Opcional: recargar datos de productos u otras acciones post-actualización
+                // Aquí se actualiza el estado lastUpdated para desencadenar una recarga de datos
+                setLastUpdated(Date.now());
             })
             .catch(error => {
                 console.error("Error updating products", error);
             });
     };
-
 
     return (
         <>
