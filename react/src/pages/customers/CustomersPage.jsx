@@ -11,26 +11,28 @@ import { initReactI18next } from "react-i18next";
 import translationEN from "/src/locales/eng/translation.json";
 import translationCA from "/src/locales/cat/translation.json";
 import translationES from "/src/locales/esp/translation.json";
+import { usePage } from '../../contexts/PageContext';
+
 
 const resources = {
-  eng: {
-    translation: translationEN,
-  },
-  cat: {
-    translation: translationCA,
-  },
-  esp: {
-    translation: translationES,
-  },
+    eng: {
+        translation: translationEN,
+    },
+    cat: {
+        translation: translationCA,
+    },
+    esp: {
+        translation: translationES,
+    },
 };
 
 i18n.use(initReactI18next).init({
-  resources,
-  lng: "eng",
-  fallbackLng: "eng",
-  interpolation: {
-    escapeValue: false,
-  },
+    resources,
+    lng: "eng",
+    fallbackLng: "eng",
+    interpolation: {
+        escapeValue: false,
+    },
 });
 
 const steps = [
@@ -48,6 +50,13 @@ export const CustomersPage = () => {
     const { t } = useTranslation();
     const [customers, setCustomers] = useState([]);
     const [isLoading, setLoading] = useState(true);
+
+    const { setPage, setSteps } = usePage();
+
+    useEffect(() => {
+        setPage("Customers");
+        setSteps([{ name: 'Customers', href: '/customers', current: true }]);
+    }, [setPage, setSteps]);
 
     useEffect(() => {
         /**
@@ -75,33 +84,32 @@ export const CustomersPage = () => {
         fetchCustomers();
     }, []);
 
-    return (
-        <AppLayout Page={"Customers"} Steps={steps}>
-            <div className="px-4 sm:px-6 lg:px-8">
-                <div className="sm:flex sm:items-center">
-                    <div className="sm:flex-auto">
-                    </div>
-                    <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-                        <button
-                            type="button"
-                            onClick={() => navigate('/customers/create')}
-                            className="bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-full transition duration-300"
-                        >
-                            {t("Add Customer")}
-                        </button>
+    return (<>
+        <div className="px-4 sm:px-6 lg:px-8">
+            <div className="sm:flex sm:items-center">
+                <div className="sm:flex-auto">
+                </div>
+                <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+                    <button
+                        type="button"
+                        onClick={() => navigate('/customers/create')}
+                        className="bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-full transition duration-300"
+                    >
+                        {t("Add Customer")}
+                    </button>
 
-                    </div>
                 </div>
             </div>
-            <div className="flex flex-col my-3">
-                {
-                    isLoading
-                        ? <Spinner message='Loading Customers...' />
-                        :
-                        <CustomersTable customers={customers} />
-                }
-            </div>
-        </AppLayout >
+        </div>
+        <div className="flex flex-col my-3">
+            {
+                isLoading
+                    ? <Spinner message='Loading Customers...' />
+                    :
+                    <CustomersTable customers={customers} />
+            }
+        </div>
+    </>
     )
 }
 
