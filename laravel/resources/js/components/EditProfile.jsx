@@ -290,6 +290,7 @@ const EditProfile = () => {
     );
 };
 
+export default EditProfile;
 
 if (document.getElementById("editProfile")) {
     const root = createRoot(document.getElementById("editProfile")).render(<EditProfile />);
