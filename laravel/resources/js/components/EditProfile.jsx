@@ -48,7 +48,7 @@ const EditProfile = () => {
 
     const navsFooter = [
         {
-            href: "javascript:void(0)",
+            href: "#",
             name: "Help",
             icon: (
                 <svg
@@ -68,7 +68,7 @@ const EditProfile = () => {
             ),
         },
         {
-            href: "javascript:void(0)",
+            href: "#",
             name: "Settings",
             icon: (
                 <svg
@@ -108,7 +108,8 @@ const EditProfile = () => {
 
         document.addEventListener("click", handleProfile);
 
-        axios.get("/getProfileData")
+        axios
+            .get("/getProfileData")
             .then((response) => {
                 setProfileData(response.data[0]);
                 console.log(response.data);
@@ -116,7 +117,6 @@ const EditProfile = () => {
             .catch((error) => {
                 console.error("Error al obtener los datos:", error);
             });
-            
     }, []);
 
     return (
@@ -162,7 +162,7 @@ const EditProfile = () => {
                                     <div className="absolute z-10 top-12 right-0 w-60 rounded-lg bg-white shadow-md border text-sm text-gray-600">
                                         <div className="p-2 text-left">
                                             <span className="block text-gray-500 p-2">
-                                            {profileData.mail}
+                                                {profileData.mail}
                                             </span>
                                             <div className="relative">
                                                 <select className="w-full rounded-lg cursor-pointer">
@@ -235,7 +235,9 @@ const EditProfile = () => {
                         src="/img/fotoPerfil.jpeg"
                         className="w-32 h-32 rounded-full mb-7"
                     />
-                    <h2 className="text-xl font-semibold">{profileData.name} {profileData.surname}</h2>
+                    <h2 className="text-xl font-semibold">
+                        {profileData.name} {profileData.surname}
+                    </h2>
 
                     <p className="text-gray-500">{profileData.mail}</p>
                     <div className="mt-4">
@@ -249,30 +251,72 @@ const EditProfile = () => {
                     <div className="justify-center border-t border-gray-200 px-4 py-5 sm:p-0">
                         <dl className="sm:divide-y sm:divide-gray-200">
                             <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt className="text-center text-sm font-medium text-gray-500">
-                                    Email address
+                                <dt className="text-center text-sm font-medium text-gray-500 pt-2.5">
+                                    Email address:
                                 </dt>
                                 <dd className="text-center mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                    {profileData.mail}
+                                    <input
+                                        type="text"
+                                        value={profileData.mail}
+                                        onChange={(e) =>
+                                            setProfileData((prevState) => ({
+                                                ...prevState,
+                                                mail: e.target.value,
+                                            }))
+                                        }
+                                        className="rounded-md border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 "
+                                    />
                                 </dd>
                             </div>
                             <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt className="text-center text-sm font-medium text-gray-500">
-                                    Full name
+                                <dt className="text-center text-sm font-medium text-gray-500 pt-2.5">
+                                    Full name:
                                 </dt>
-                                <dd className="text-center text-center mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                {profileData.name} {profileData.surname}
-                                </dd>
+                                <div className="text-center mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                    <input
+                                        type="text"
+                                        value={profileData.name}
+                                        onChange={(e) =>
+                                            setProfileData((prevState) => ({
+                                                ...prevState,
+                                                name: e.target.value,
+                                            }))
+                                        }
+                                        placeholder="First name"
+                                        className="mr-2 rounded-md border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 pb-1"
+                                    />
+                                    <input
+                                        type="text"
+                                        value={profileData.surname}
+                                        onChange={(e) =>
+                                            setProfileData((prevState) => ({
+                                                ...prevState,
+                                                surname: e.target.value,
+                                            }))
+                                        }
+                                        placeholder="Last name"
+                                        className="rounded-md border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 pb-1"
+                                    />
+                                </div>
                             </div>
-                            
                             <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt className="text-center text-sm font-medium text-gray-500">
-                                    Phone number
+                                <dt className="text-center text-sm font-medium text-gray-500 pt-2.5">
+                                    Phone number:
                                 </dt>
-                                <dd className="text-center mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                    {profileData.phone}
-                                </dd>
+                                <input
+                                    type="text"
+                                    value={profileData.phone}
+                                    onChange={(e) =>
+                                        setProfileData((prevState) => ({
+                                            ...prevState,
+                                            phone: e.target.value,
+                                        }))
+                                    }
+                                    placeholder="Phone number"
+                                    className="text-center mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 rounded-md border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 pb-2"
+                                />
                             </div>
+
                             <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                 <dt className="text-center text-sm font-medium text-gray-500">
                                     Address
@@ -293,5 +337,7 @@ const EditProfile = () => {
 export default EditProfile;
 
 if (document.getElementById("editProfile")) {
-    const root = createRoot(document.getElementById("editProfile")).render(<EditProfile />);
+    const root = createRoot(document.getElementById("editProfile")).render(
+        <EditProfile />
+    );
 }
