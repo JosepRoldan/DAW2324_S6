@@ -4,8 +4,8 @@ import { createRoot } from "react-dom/client";
 export default function ShoppingOrder() {
     const [productos, setProductos] = useState([]);
     const [customer, setCustomer] = useState([]);
-    const [address, setAddress] = useState([]);
-    const shippingPrice =10; //hardcode per el preu d'enviament
+    const [address, setAddress] = useState({});
+    const shippingPrice = 10; // Hardcode para el precio de envío
 
 
     useEffect(() => {
@@ -18,8 +18,8 @@ export default function ShoppingOrder() {
 
     useEffect(() => {
         // Obtener datos de usuarios y productos desde los atributos data de la vista
-        const usersData = JSON.parse(document.getElementById('app').getAttribute('data-customers'));
-        const addressData = JSON.parse(document.getElementById('app').getAttribute('data-address'));
+        const usersData = JSON.parse(document.getElementById('data').getAttribute('data-customers'));
+        const addressData = JSON.parse(document.getElementById('data').getAttribute('data-address'));
         // Actualizar el estado con los datos obtenidos
         setCustomer(usersData);
         setAddress(addressData);

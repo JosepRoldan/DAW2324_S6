@@ -57,35 +57,30 @@ class BuyingProcessController extends Controller
         return view('processShop.cart', ['cart' => $cart]);
     }
 
-
     public function getShoppingOrdreDates()
     {
         // Obtener el nombre de usuario del cliente de la sesión
         $username = Session::get('token');
         // Obtener el cliente actual
         $customer = Customer::where('username', $username)->first();
-
+    
         // Verificar si se encontró el cliente
         if (!$customer) {
             return view('processShop.guess');
         }
-
+    
+        // Obtener la dirección de entrega si existe
         $address = DB::table('delivery_address')->where('id', $customer->id)->first();
-       
-        if ($address) {
-            // Convertir la dirección de entrega a JSON
-            $addressJson = $address->toJson();
-        } else {
-            // Si la dirección de entrega no existe, establecer el JSON como null
-            $addressJson = [];
+    
+        // Definir un valor por defecto para la dirección si es nula
+        if (!$address) {
+            $address = [];
         }
-
+    
         // Si existe una orden pendiente, usar los datos de envío de esa orden
         if ($customer) {
             //Si ha encontrado una orden vamos a details
-            return view('processShop.shipping', ['customer' => $customer, 'address' => $addressJson,'errorMessage'=>'']);
-
+            return view('processShop.shipping', ['customer' => $customer, 'address' => $address,'errorMessage'=>'']);
         } 
     }
-
 }
