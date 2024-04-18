@@ -9,6 +9,30 @@
     @vite('resources/js/app.js')
     @vite('resources/css/app.css')
     <link rel="icon" type="image/png" href="../img/logo.png">
+    <style>
+        .fake-message {
+            background-color: red;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+        .fake-message button {
+            color: white;
+            font-weight: bold;
+            border: none;
+            background-color: transparent;
+            cursor: pointer;
+            font-size: 20px;
+            margin-top: 40px;
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            padding: 5px;
+        }
+    </style>
 </head>
 <!-- <div class="text-red-500" id="head"></div> -->
 @if(Session::has('token'))
@@ -31,19 +55,21 @@
 
 <!-- First Section -->
     <div id="header" class="z-40"></div>
-    <div class="w-screen h-screen overflow-hidden relative bg-gradient-to-br from-blue-900 via-purple-600 to-cyan-400">
-  <div class="relative max-w-screen-lg mx-auto grid grid-cols-12 h-full items-center">
-    <div class="col-span-6">
-      <h1 class="text-white font-extrabold text-5xl mb-8">Unleash Your Creativity with AI-Powered Designs</h1>
-      <p class="text-white text-base">
-        At CustomAIze, we blend cutting-edge technology with your imagination to bring your ideas to life. With our innovative platform, you can generate stunning designs using artificial intelligence and transform them into personalized products that reflect your style.
-      </p>
-      <a href="/daisy" class="mt-8 text-white uppercase py-4 text-base font-light px-10 border border-white hover:bg-white hover:bg-opacity-10 inline-block rounded">Start Creating</a>
-    </div>
-    <div class="col-span-6">
-      <img src="img/logo.png" class="z-10 ml-20 max-w-full h-auto">
+    <div class="fake-message">
+    <p>This page is fake for demonstration purposes only.</p>
+    <button id="closeFakeMessage">x</button>
+   </div>
+    <div class="w-screen h-screen overflow-hidden relative">
+  <img src="/img/animacionInicio.gif" class="absolute inset-0 w-full h-full object-cover object-center z-0" alt="Animated GIF">
+  <div class="max-w-screen-lg grid ml-10 grid-cols-12 h-full items-center relative z-10">
+    <div class="col-span-12 md:col-span-6 px-0 md:px-6 text-white">  
+      <h1 class="font-extrabold text-gray-500 text-5xl md:text-6xl mb-8 tracking-wider">Unleash Your Creativity with AI-Powered Designs</h1>
+      <a href="/daisy" class="mt-8 uppercase py-4 px-8 md:px-10 border border-white hover:bg-white hover:bg-opacity-10 inline-block rounded text-gray-400 font-semibold">Start Creating</a>
     </div>
   </div>
+</div>
+
+
 </div>
 
 <!-- Carousel Section -->
@@ -268,6 +294,11 @@
 
 
 <div id="footer"></div>
+<script>
+   document.getElementById('closeFakeMessage').addEventListener('click', function() {
+   this.parentNode.style.display = 'none';
+   });
+</script>
 </body>
 
 

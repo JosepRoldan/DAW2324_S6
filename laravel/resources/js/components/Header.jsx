@@ -3,23 +3,24 @@ import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { createRoot } from "react-dom/client";
 import { ShoppingCartIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import MiniCarrito from "./MiniCarrito";
-import React, { useEffect } from 'react';
-import LanguageSelector from './LanguageSelector';
-
+import React, { useEffect } from "react";
+import LanguageSelector from "./LanguageSelector";
 
 const navigation = [
-    { name: 'Home', href: 'Inicio', current: false },
-    { name: 'Products', href: '../products', current: false },
-    { name: 'Generate Image', href: '../daisy', current: false },
-    { name: 'Generate Guided Image', href: '../guidedGeneratedImage', current: false },
-]
-
+    { name: "Home", href: "Inicio", current: false },
+    { name: "Products", href: "../products", current: false },
+    { name: "Generate Image", href: "../daisy", current: false },
+    {
+        name: "Generate Guided Image",
+        href: "../guidedGeneratedImage",
+        current: false,
+    },
+    { name: "FAQ", href: "../faq", current: false },
+];
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
 }
-
-
 
 export default function Header() {
     const [isCartOpen, setIsCartOpen] = useState(false);
@@ -88,10 +89,9 @@ export default function Header() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="flex-1 flex justify-center px-2 lg:ml-6 lg:justify-end">
-                            </div>
+                            <div className="flex-1 flex justify-center px-2 lg:ml-6 lg:justify-end"></div>
                             <div>
-                            <LanguageSelector></LanguageSelector>   
+                                <LanguageSelector></LanguageSelector>
                             </div>
                             <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                                 <button
@@ -113,7 +113,9 @@ export default function Header() {
                                     <div>
                                         <Menu.Button className="relative rounded-full p-1 text-gray-400 hover:text-white focus:outline-none">
                                             <span className="absolute -inset-1.5" />
-                                            <span className="sr-only">Open user menu</span>
+                                            <span className="sr-only">
+                                                Open user menu
+                                            </span>
                                             <img
                                                 className="h-8 w-8 rounded-full ml-3"
                                                 src="/img/fotoPerfil.jpeg"
@@ -135,7 +137,12 @@ export default function Header() {
                                                 {({ active }) => (
                                                     <a
                                                         href="/profile"
-                                                        className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                                                        className={classNames(
+                                                            active
+                                                                ? "bg-gray-100"
+                                                                : "",
+                                                            "block px-4 py-2 text-sm text-gray-700"
+                                                        )}
                                                     >
                                                         Your Profile
                                                     </a>
@@ -144,10 +151,21 @@ export default function Header() {
                                             <Menu.Item>
                                                 {({ active }) => (
                                                     <a
-                                                        href={isLoggedIn ? "logout" : "login"}
-                                                        className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                                                        href={
+                                                            isLoggedIn
+                                                                ? "logout"
+                                                                : "login"
+                                                        }
+                                                        className={classNames(
+                                                            active
+                                                                ? "bg-gray-100"
+                                                                : "",
+                                                            "block px-4 py-2 text-sm text-gray-700"
+                                                        )}
                                                     >
-                                                        {isLoggedIn ? "Sign out" : "Sign in"}
+                                                        {isLoggedIn
+                                                            ? "Sign out"
+                                                            : "Sign in"}
                                                     </a>
                                                 )}
                                             </Menu.Item>
