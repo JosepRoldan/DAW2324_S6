@@ -14,6 +14,7 @@ return new class extends Migration
             $table->unsignedBigInteger('number_order');
             $table->foreignId('idCustomers')->references('idCustomers')->on('customers');
             $table->string('name',100);
+            $table->string('surname',100);
             $table->string('address',100);
             $table->decimal('totalPrice');
             $table->timestamp('datetime');

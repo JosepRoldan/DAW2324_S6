@@ -120,7 +120,7 @@ export default function ProductsPage() {
   return (
     <>
       <div
-        className="ag-theme-quartz"
+        className="ag-theme-quartz mt-4"
         style={{ width: "100%", height: "75vh" }}
       >
         {isLoading ? (

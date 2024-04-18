@@ -14,6 +14,7 @@ class Order extends Model
         'number_order',
         'idCustomers',
         'name',
+        'surname',
         'address',
         'totalPrice',
         'datetime',
