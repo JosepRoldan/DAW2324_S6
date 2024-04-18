@@ -91,13 +91,13 @@ export default function ProductsPage() {
   const colDefs = useMemo(
     () => [
       {
-        field: "name",
-        headerName: "Customer Name",
+        field: "idOrderPicanova",
+        headerName: "Order Number",
         cellRenderer: undefined,
       },
       {
-        field: "surname",
-        headerName: "Customer Surname",
+        field: "customerName",
+        headerName: "Customer Name",
         cellRenderer: undefined,
       },
       {

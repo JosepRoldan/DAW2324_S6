@@ -18,8 +18,9 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             UserSeeder::class,
             BenefitsTableSeeder::class,
-            SettingSeeder::class,
+            //SettingSeeder::class,
             CustomerSeeder::class,
+            OrderDetailSeeder::class,
         ]);
     }
 }

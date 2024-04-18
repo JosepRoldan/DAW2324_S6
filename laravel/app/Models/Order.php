@@ -8,39 +8,20 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     use HasFactory;
-    public $timestamps = false;
+
+    protected $table = 'orders';
 
     protected $fillable = [
-        'orderNumber',
-        'idCustomers',
-        'name',
-        'surname',
-        'address',
-        'totalPrice',
+        'idOrderPicanova',
+        'customerName',
         'datetime',
         'orderStatus',
     ];
 
-    public function setNumberOrderAttribute($value)
-    {
-        // Este mutador establece automáticamente el valor de 'number_order' en 99 +1 más el último 'number_order' existente en la tabla
-        $lastNumberOrder = self::max('number_order') ?? 99;
-        $this->attributes['number_order'] = $lastNumberOrder + 1;
-    }
+    public $timestamps = true;
 
-    function customer()
+    public function Customer()
     {
-        return $this->belongsTo(Customer::class);
+        return $this->belongsTo(Customer::class, 'idCustomer', 'id');
     }
-
-    function product()
-    {
-        return $this->belongsToMany(Product::class);
-    }
-
-    function shoppingCart()
-    {
-        return $this->belongsTo(ShoppingCart::class);
-    }
-
 }

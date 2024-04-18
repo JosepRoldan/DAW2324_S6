@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import AppLayout from "../../layout/AppLayout";
+import useOrdersData from "../../hooks/useOrders";
 
 const steps = [
   { name: "Orders", href: "/orders", current: false },
@@ -47,7 +48,7 @@ const OrderDetailsPage = () => {
   } = useOrdersData(`${import.meta.env.VITE_API_URL}/OrderDetails/${idOrder}`);
   const {
     rowData: orders, // Extract rowData from the custom hook response
-  } = useOrdersData(`${import.meta.env.VITE_API_URL}/Orders`);
+  } = useOrdersData(`${import.meta.env.VITE_API_URL}/orders`);
 
   // // Render loading state if data is still loading
   // if (loading) {
@@ -87,7 +88,7 @@ const OrderDetailsPage = () => {
           <table className="w-full mb-8">
             <tr>
               <th className="w-1/4">Order Number</th>
-              <td className="w-3/4">{idOrder}</td>
+              <td className="w-3/4">{orders.idOrderPicanova}</td>
             </tr>
             <tr>
               <th>Date</th>
