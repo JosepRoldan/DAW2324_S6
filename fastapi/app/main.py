@@ -11,6 +11,7 @@ import json
 import openai
 from openai import OpenAI
 from sqlalchemy.orm import Session
+from prometheus_fastapi_instrumentator import Instrumentator
 # IMPORTS FROM OUR FILES
 from app.database import SessionLocal, engine
 from app.picanova.products_picanova import fetch_products_from_api, insert_products
@@ -23,6 +24,7 @@ from app.models.country_model import Country
 from app.security import get_api_key
 
 app = FastAPI()
+Instrumentator().instrument(app=app).expose(app=app)
 
 load_dotenv()
 credentials = os.getenv("CREDENTIALS")

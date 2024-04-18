@@ -18,8 +18,8 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             UserSeeder::class,
             BenefitsTableSeeder::class,
-            // TO-DO customer seeder not working, needs fix
-            // CustomerSeeder::class,
+            SettingSeeder::class,
+            CustomerSeeder::class,
         ]);
     }
 }
