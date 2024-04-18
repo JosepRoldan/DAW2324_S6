@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import AppLayout from "../../layout/AppLayout";
-import useOrdersData from "../../hooks/useOrders";
 
 const steps = [
   { name: "Orders", href: "/orders", current: false },

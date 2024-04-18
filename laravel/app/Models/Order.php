@@ -11,7 +11,7 @@ class Order extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'number_order',
+        'orderNumber',
         'idCustomers',
         'name',
         'surname',
