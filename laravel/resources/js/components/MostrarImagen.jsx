@@ -1,6 +1,6 @@
 // src/components/TailwindComponent.jsx
 import { createRoot } from "react-dom/client";
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { Toaster, toast } from "sonner";
 import usePeticionAsincrona from "../hooks/peticioAsincrona.jsx";
 import BotonRedireccion from "./BotonRedireccion";
@@ -8,29 +8,30 @@ import useURLParams from "../hooks/useURLParams";
 import DotLoader from "react-spinners/DotLoader";
 
 function MostrarImagen() {
-    
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState();
     useEffect(() => {
         // Función asincrónica dentro de useEffect
         const fetchData = async () => {
             // Verificar si hay una sesión activa al cargar el componente
-            let token = document.getElementById("token");
-            if (token) {
+            var tokenUsr = document.getElementById("token").value;
+            console.log(tokenUsr);
+            if (tokenUsr != null) {
                 setIsLoggedIn(true);
             }
             try {
                 const validated = await enviarPrompt(
                     "POST",
-                    dataEditar,
+                    { token: tokenUsr },
                     token,
                     "/check-token"
                 );
-                setIsLoggedIn(true)
+                setIsLoggedIn(validated.status);
+                console.log(validated.status);
             } catch (error) {
                 console.error("Error en la petición:", error);
             }
         };
-    
+
         // Llama a la función asincrónica
         fetchData();
     }, []);
@@ -57,7 +58,17 @@ function MostrarImagen() {
     const dataToken = {
         token: token,
     };
-    
+
+    const consultarUser = () => {
+        switch (isLoggedIn) {
+            case "1":
+                toast(<div>A custom toast with default styling</div>);
+            case "2":
+
+            case "3":
+                return <div>Error: Invalid User Role</div>;
+        }
+    };
 
     //Modificará la imagenseleccionada enviandola a la api
     const seleccionarImg = (url, id) => {
@@ -115,20 +126,6 @@ function MostrarImagen() {
         }
     };
 
-    const consultarVeri = async () => {
-        try {
-            const urls = await enviarPrompt(
-                "POST",
-                dataCrear,
-                token,
-                "/enviar-prompt"
-            );
-            generarDivs(urls);
-        } catch (error) {
-            console.error("Error en la petición:", error);
-        }
-    };
-
     const handleButtonClick2 = async () => {
         try {
             setDivsContent([]);
@@ -144,7 +141,6 @@ function MostrarImagen() {
             console.error("Error en la petición:", error);
         }
     };
-
 
     //Muestra la array de imagenes que le pasemos.
     const mostrarImagenes = (imagen) => {
@@ -285,9 +281,7 @@ function MostrarImagen() {
                     </ul>
                 </div>
                 <div className="flex justify-center">
-                    {params.idVariant ? (
-                        <a>{params.idVariant}</a>
-                    ) : ""}
+                    {params.idVariant ? <a>{params.idVariant}</a> : ""}
                 </div>
                 <div className="flex justify-center my-3 gap-4">
                     {/* <form className="flex gap-2"> */}
