@@ -18,7 +18,8 @@ export default function ShoppingOrder() {
 
     useEffect(() => {
         // Obtener datos de usuarios y productos desde los atributos data de la vista
-        const usersData = JSON.parse(document.getElementById('data').getAttribute('data-customers'));
+        const usersData = JSON.parse(document.getElementById('data').getAttribute('data-customer'));
+        console.log(usersData)
         const addressData = JSON.parse(document.getElementById('data').getAttribute('data-address'));
         // Actualizar el estado con los datos obtenidos
         setCustomer(usersData);
@@ -29,7 +30,7 @@ export default function ShoppingOrder() {
     const totalCarrito = productos.reduce((total, producto) => {
         return total + (parseFloat(producto.price) * producto.quantity);
     }, 0);
-
+console.log(customer)
     return (
     <div className="h-screen grid grid-cols-3">
         <div className="lg:col-span-2 col-span-3 bg-indigo-50 space-y-8 px-12">
@@ -47,85 +48,87 @@ export default function ShoppingOrder() {
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </div>
             </div>
-            <form>
                 <section>
                     <h2 className="uppercase tracking-wide text-lg font-semibold text-gray-700 my-2">Customer Date</h2>
                     <div className="mt-3 p-4 relative flex flex-col sm:flex-row sm:items-center bg-white shadow rounded-md">
                         <div className="flex sm:w-2/4 xl:w-1/4 border-gray-200 py-3">
                             <label className="text-right px-2">Name</label>
-                            <input name="name" className="focus:outline-none px-3" placeholder="{user.name}" required=""/>
+                            <input
+                              name="name"
+                              className="focus:outline-none px-3"
+                              value={customer.name}  
+                              required=""                      
+                            />                        
                         </div>
                         <div className="flex sm:w-2/4 xl:w-1/4 border-gray-200 py-3">
                             <label className="text-right px-2">Surname</label>
-                            <input name="surname" className="focus:outline-none px-3" placeholder="Try Odinsson" required=""/>
+                            <input
+                              name="surname"
+                              className="focus:outline-none px-3"
+                              value={customer.surname}
+                              required=""
+                            />                        
                         </div>
                     </div>
                     <div className=" p-4 relative flex flex-col sm:flex-row sm:items-center bg-white shadow rounded-md">
                         <label className="flex sm:w-2/4 xl:w-1/4 border-b border-gray-200 h-12 py-3 items-center">
                             <span className="text-right px-2">Email</span>
-                            <input name="email" type="email" className="focus:outline-none px-3" placeholder="try@example.com" required=""/>
+                            <input
+                              name="mail"
+                              type="email"
+                              className="focus:outline-none px-3"
+                              value={customer.mail}
+                              required=""
+                            />                        
                         </label>
                     </div>
-                    <button>Submit</button>
-                </section>
-            </form>
-            
+                </section>            
             <div className="rounded-md ">
-                <form id="payment-form" method="POST" action="">
                     <section>
                         <h2 className="uppercase tracking-wide text-lg font-semibold text-gray-700 my-2">Shipping Information</h2>
                         <fieldset className="p-4 mb-3 bg-white shadow-lg rounded text-gray-600">
                             <label className="flex border-b border-gray-200 h-12 py-3 items-center">
                                 <span className="text-right px-2">Address</span>
-                                <input name="address" className="focus:outline-none px-3" placeholder="10 Street XYZ 654"/>
+                                <input
+                                    name="address"
+                                    className="focus:outline-none px-3"
+                                    value={address.address}
+                                />                            
                             </label>
                             <label className="flex border-b border-gray-200 h-12 py-3 items-center">
                                 <span className="text-right px-2">City</span>
-                                <input name="city" className="focus:outline-none px-3" placeholder="San Francisco"/>
+                                <input
+                                    name="city"
+                                    className="focus:outline-none px-3"
+                                    value={address.city}
+                                />                            
+                            </label>
+                            <label  className="flex border-b border-gray-200 h-12 py-3 items-center">
+                                <span className="text-right px-2 xl:px-1 xl:text-none">ZIP</span>
+                                <input
+                                  name="postal_code"
+                                  className="focus:outline-none px-3"
+                                  value={address.postal_code}
+                                />                            
                             </label>
                             <label className="inline-flex w-2/4 border-gray-200 py-3">
                                 <span className="text-right px-2">State</span>
-                                <input name="state" className="focus:outline-none px-3" placeholder="CA"/>
+                                <input
+                                  name="state"
+                                  className="focus:outline-none px-3"
+                                  value={address.state}
+                                />                            
                             </label>
-                            <label className="xl:w-1/4 xl:inline-flex py-3 items-center flex xl:border-none border-t border-gray-200 py-3">
-                                <span className="text-right px-2 xl:px-1 xl:text-none">ZIP</span>
-                                <input name="postal_code" className="focus:outline-none px-3" placeholder="98603"/>
-                            </label>
-                            <label className="flex border-t border-gray-200 h-12 py-3 items-center select relative">
-                                <span className="text-right px-2">Country</span>
-                                <div id="country" className="focus:outline-none px-3 w-full flex items-center">
-                                    <select defaultValue="" name="country" className="border-none bg-transparent flex-1 cursor-pointer appearance-none focus:outline-none">
-                                        <option value=""></option>
-                                        <option value="AU">Australia</option>
-                                        <option value="BE">Belgium</option>
-                                        <option value="BR">Brazil</option>
-                                        <option value="CA">Canada</option>
-                                        <option value="CN">China</option>
-                                        <option value="DK">Denmark</option>
-                                        <option value="FI">Finland</option>
-                                        <option value="FR">France</option>
-                                        <option value="DE">Germany</option>
-                                        <option value="HK">Hong Kong</option>
-                                        <option value="IE">Ireland</option>
-                                        <option value="IT">Italy</option>
-                                        <option value="JP">Japan</option>
-                                        <option value="LU">Luxembourg</option>
-                                        <option value="MX">Mexico</option>
-                                        <option value="NL">Netherlands</option>
-                                        <option value="PL">Poland</option>
-                                        <option value="PT">Portugal</option>
-                                        <option value="SG">Singapore</option>
-                                        <option value="ES">Spain</option>
-                                        <option value="TN">Tunisia</option>
-                                        <option value="GB">United Kingdom</option>
-                                        <option value="US" >United States</option>
-                                    </select>
-                                </div>
+                            <label className="flex border-b border-gray-200 h-12 py-3 items-center">
+                                <span className="text-right px-2 xl:px-1 xl:text-none">Country</span>
+                                <input
+                                  name="country"
+                                  className="focus:outline-none px-3"
+                                  placeholder={address.country}
+                                />
                             </label>
                         </fieldset>
                     </section>
-                    <button>Save Address</button>
-                </form>
             </div>
             <div className="rounded-md">
                 <section>
