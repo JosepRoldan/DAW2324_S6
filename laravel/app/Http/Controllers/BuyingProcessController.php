@@ -25,10 +25,10 @@ class BuyingProcessController extends Controller
         $rules = [
             'name' => 'required',
             'surname' => 'required',
-            'phone' => 'required',
+            'city' => 'required',
             'address' => 'required',
             'postcode' => 'required',
-            'idCountry' => 'required',
+            'country' => 'required',
         ];
     
         $validator = Validator::make($request->all(), $rules);
@@ -41,21 +41,15 @@ class BuyingProcessController extends Controller
         Customer::create([
             'name' => $request->input('name'),
             'surname' => $request->input('surname'),
-            'phone' => $request->input('phone'),
+            'city' => $request->input('city'),
             'address' => $request->input('address'),
             'postcode' => $request->input('postcode'),
-            'idCountry' => $request->input('idCountry'),
+            'Country' => $request->input('country'),
         ]);
     
         return response()->json(['message' => 'Customer created successfully'], 200);
     }
 
-    public function userCartShop()
-    {
-        $user = Session::get('token');
-        $cart = ShoppingCart::find($user);
-        return view('processShop.cart', ['cart' => $cart]);
-    }
 
     public function getShoppingOrdreDates()
     {
@@ -70,7 +64,7 @@ class BuyingProcessController extends Controller
         }
     
         // Obtener la dirección de entrega si existe
-        $address = DB::table('delivery_address')->where('id', $customer->id)->first();
+        $address = $customer->getAddressDelivery;
     
         // Definir un valor por defecto para la dirección si es nula
         if (!$address) {
@@ -83,4 +77,5 @@ class BuyingProcessController extends Controller
             return view('processShop.shipping', ['customer' => $customer, 'address' => $address,'errorMessage'=>'']);
         } 
     }
+    
 }

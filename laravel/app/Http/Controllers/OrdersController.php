@@ -2,8 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AddressDelivery;
 use App\Models\OrderView;
 use App\Models\Order;
+use App\Models\OrderDetail;
+use App\Models\DeliveryAddress;
+
+use App\Models\Customer;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -19,89 +25,77 @@ class OrdersController extends Controller
         return view('MyOrders', compact('orders'));
     }
 
-    public function saveCartShippingData(Request $request)
+    public function storeDates(Request $request)
     {
-        // Validación de datos
-        $rules = [
-            'idCustomers' => 'required',
-            'name' => 'required',
-            'surname' => 'required',
-            'address' => 'required',
-            'postcode' => 'required',
-            'country' => 'required',
-            'state' => 'required',
-            'city'=>'required',
-        ];
-    
-        $validator = Validator::make($request->all(), $rules);
-    
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
+        $requestData = $request->validate([
+            'customer'=>'required|array',
+            'customer.name' => 'required|string',
+            'customer.surname' => 'required|string',
+            'customer.mail'=> 'required|string',
+
+            'address' => 'required|array',
+            'address.address' => 'required|string',
+            'address.city' => 'required|string',
+            'address.postcode' => 'required|string',
+            'address.state' => 'required|string',
+            'address.country' => 'required|string',
+
+            'products' => 'required|array',
+            // Agrega más validaciones según tus necesidades
+        ]);
+
+        $customerData = $requestData['customer'];
+        $addressData = $requestData['address'];
+        $productsData = $requestData['products'];
+
+        // Verifica si el cliente ya existe en la base de datos
+        $customer = Customer::where('mail', $customerData['mail'])->first();
+
+        // Si el cliente no existe, crea uno nuevo
+        if (!$customer) {
+            return redirect()->route('login')->with('error', 'Please login to place your order.');
+        } else {
+            // Si el cliente ya existe, actualiza los datos
+            $customer->update($customerData);
         }
-    
-        // Crear un nuevo pedido con los datos proporcionados
-        $order = new Order();
-        $order->idCustomers = $request->input('idCustomers');
-        $order->datetime = now();
-        $order->name = $request->input('name');
-        $order->surname = $request->input('surname');
-        $order->address = $request->input('address');
-        $order->postcode = $request->input('postcode');
-        $order->country = $request->input('country');
-        $order->state = $request->input('state');
-        $order->city = $request->input('city');
-        $order->orderStatus = 'Pending';
-        $order->save();
-    
-        // Aquí debes incluir la lógica para guardar los detalles del pedido
-    
-        // Redireccionar a una página de confirmación u otra página según tu flujo de la aplicación
-        return redirect()->route('details')->with('success', 'Order placed successfully!');
+
+        // Guarda o actualiza la dirección de envío
+        $deliveryAddress = AddressDelivery::updateOrCreate(
+            ['idCustomers' => $customer->id],
+            $addressData
+        );
+
+        // Crea una nueva orden
+        $order = Order::create([
+            'idCustomers' => $customer->id,
+            'name' => $customer->name,
+            'address' => $deliveryAddress->address,
+            'totalPrice' => $this->calculateTotalPrice($productsData),
+            'datetime' => now(),
+        ]);
+
+        // Guarda los detalles de la orden
+        foreach ($productsData as $product) {
+            OrderDetail::create([
+                'idOrder' => $order->id,
+                'idProduct' => $product['id'],
+                'productName' => $product['name'],
+                'quantity' => $product['quantity'],
+                'priceEach' => $product['price'],
+                'totalPrice' => $product['totalPrice'],
+                // Puedes manejar el precio de envío aquí si es necesario
+            ]);
+        }
+
+        return response()->json(['message' => 'Order data saved successfully']);
     }
 
-    public function updateCartShippingData(Request $request)
+    // Método auxiliar para calcular el precio total de los productos
+    private function calculateTotalPrice($products)
     {
-        // Validación de datos
-        $rules = [
-            'idCustomers' => 'required',
-            'name' => 'required',
-            'surname' => 'required',
-            'address' => 'required',
-            'postcode' => 'required',
-            'country' => 'required',
-            'state' => 'required',
-            'city' => 'required',
-        ];
-
-        $validator = Validator::make($request->all(), $rules);
-
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-
-        // Obtener el ID del cliente desde el formulario
-        $customerId = $request->input('idCustomers');
-
-        // Buscar la orden del cliente en la base de datos
-        $order = Order::where('idCustomers', $customerId)->first();
-
-        // Verificar si la orden existe
-        if (!$order) {
-            return redirect()->back()->withErrors(['message' => 'Order not found.'])->withInput();
-        }
-
-        // Actualizar los datos de envío de la orden
-        $order->name = $request->input('name');
-        $order->surname = $request->input('surname');
-        $order->address = $request->input('address');
-        $order->postcode = $request->input('postcode');
-        $order->country = $request->input('country');
-        $order->state = $request->input('state');
-        $order->city = $request->input('city');
-        $order->save();
-
-        // Redireccionar a una página de confirmación o a donde desees
-        return redirect()->route('details')->with('message', 'Shipping information updated successfully!');
+        return collect($products)->sum(function ($product) {
+            return $product['price'] * $product['quantity'];
+        });
     }
-
+    
 }
