@@ -61,7 +61,6 @@ export default function ShoppingOrder() {
         setProductos(productosGuardados);
         const usersData = JSON.parse(document.getElementById('data').getAttribute('data-customer'));
         const addressData = JSON.parse(document.getElementById('data').getAttribute('data-address'));
-        console.log(addressData)
         setCustomer(usersData);
         setAddress(addressData);
     }, []);

@@ -47,6 +47,7 @@ class OrdersController extends Controller
         $customerData = $requestData['customer'];
         $addressData = $requestData['address'];
         $productsData = $requestData['products'];
+        $totalAmount = $request['totalAmount'];
 
         // Verifica si el cliente ya existe en la base de datos
         $customer = Customer::where('mail', $customerData['mail'])->first();
@@ -68,9 +69,9 @@ class OrdersController extends Controller
         // Crea una nueva orden
         $order = Order::create([
             'idCustomers' => $customer->id,
-            'name' => $customer->name,
+            'name' => $customer->name." ".$customer->surname,
             'address' => $deliveryAddress->address,
-            'totalPrice' => $this->calculateTotalPrice($productsData),
+            'totalPrice' => $totalAmount,
             'datetime' => now(),
         ]);
 
@@ -82,7 +83,7 @@ class OrdersController extends Controller
                 'productName' => $product['name'],
                 'quantity' => $product['quantity'],
                 'priceEach' => $product['price'],
-                'totalPrice' => $product['totalPrice'],
+                'totalPrice' => $totalAmount,
                 // Puedes manejar el precio de envío aquí si es necesario
             ]);
         }
@@ -90,12 +91,5 @@ class OrdersController extends Controller
         return response()->json(['message' => 'Order data saved successfully']);
     }
 
-    // Método auxiliar para calcular el precio total de los productos
-    private function calculateTotalPrice($products)
-    {
-        return collect($products)->sum(function ($product) {
-            return $product['price'] * $product['quantity'];
-        });
-    }
     
 }

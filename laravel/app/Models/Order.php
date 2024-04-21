@@ -20,11 +20,14 @@ class Order extends Model
         'orderStatus',
     ];
 
-    public function setNumberOrderAttribute($value)
+    protected static function boot()
     {
-        // Este mutador establece automáticamente el valor de 'number_order' en 99 +1 más el último 'number_order' existente en la tabla
-        $lastNumberOrder = self::max('number_order') ?? 99;
-        $this->attributes['number_order'] = $lastNumberOrder + 1;
+        parent::boot();
+    
+        static::creating(function ($order) {
+            $lastNumberOrder = static::max('number_order') ?? 99;
+            $order->number_order = $lastNumberOrder + 1;
+        });
     }
 
     function customer()
