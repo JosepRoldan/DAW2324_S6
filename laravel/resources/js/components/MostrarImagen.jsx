@@ -8,33 +8,31 @@ import useURLParams from "../hooks/useURLParams";
 import DotLoader from "react-spinners/DotLoader";
 
 function MostrarImagen() {
-    const [isLoggedIn, setIsLoggedIn] = useState();
+    const [loginStatus, setLoginStatus] = useState(null);
     useEffect(() => {
         // Función asincrónica dentro de useEffect
         const fetchData = async () => {
-            // Verificar si hay una sesión activa al cargar el componente
-            var tokenUsr = document.getElementById("token").value;
-            console.log(tokenUsr);
-            if (tokenUsr != null) {
-                setIsLoggedIn(true);
-            }
-            try {
-                const validated = await enviarPrompt(
-                    "POST",
-                    { token: tokenUsr },
-                    token,
-                    "/check-token"
-                );
-                setIsLoggedIn(validated.status);
-                console.log(validated.status);
-            } catch (error) {
-                console.error("Error en la petición:", error);
+            var tokenUsr = document.getElementById("token");
+            if (tokenUsr) {
+                console.log(tokenUsr.value);
+                try {
+                    const validated = await enviarPrompt(
+                        "POST",
+                        { token: tokenUsr.value },
+                        token,
+                        "/check-token"
+                    );
+                    setLoginStatus(validated.status);
+                    consultarStatus(validated.status);
+                } catch (error) {
+                    console.error("Error en la petición:", error);
+                }
             }
         };
 
-        // Llama a la función asincrónica
         fetchData();
     }, []);
+
     const [mostrarDiv, setMostrarDiv] = useState(0);
     const [divsContent, setDivsContent] = useState([]);
     const [inputValue, setInputValue] = useState("");
@@ -55,18 +53,23 @@ function MostrarImagen() {
         idImg: inputId,
         prompt: inputValue,
     };
-    const dataToken = {
-        token: token,
-    };
 
-    const consultarUser = () => {
-        switch (isLoggedIn) {
-            case "1":
-                toast(<div>A custom toast with default styling</div>);
-            case "2":
-
-            case "3":
-                return <div>Error: Invalid User Role</div>;
+    const consultarStatus = (status) => {
+        console.log(status);
+        switch (status) {
+            case 2:
+                toast("Valida tu usuario para poder generar imágenes aquí", {
+                    position: "top-center",
+                });
+                break;
+            case 3:
+                toast(
+                    "Registrate en la página para poder generar imágenes aquí",
+                    {
+                        position: "top-center",
+                    }
+                );
+                break;
         }
     };
 
@@ -295,6 +298,11 @@ function MostrarImagen() {
                     />
                     <button
                         className="btn"
+                        disabled={
+                            (loginStatus == 2) | (loginStatus == 3)
+                                ? "disabled"
+                                : ""
+                        }
                         onClick={() => {
                             setMostrarDiv(1);
                             handleButtonClick();

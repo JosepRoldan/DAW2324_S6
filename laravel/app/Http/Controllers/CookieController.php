@@ -16,8 +16,8 @@ class CookieController extends Controller
         if ($isValidated) {
             // El cliente està validado
             return response()->json(['status' => 1]);
-        } else {
-            // El cliente no està validado
+        } else 
+        {
             return response()->json(['status' => 2]);
         }
         }else{
