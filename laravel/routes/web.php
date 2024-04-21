@@ -16,7 +16,7 @@ use App\Http\Controllers\ViewDetailsController;
 
 
 use App\Http\Controllers\LanguageController;
-
+use App\Http\Controllers\CookieController;
 
 
 /*
@@ -173,3 +173,5 @@ Route::get('/legalnotice', function () {return view('footer.legalnotice');});
 //Header
 Route::post('/change-language', [LanguageController::class, 'changeLanguage']);
 Route::get('/current-language', [LanguageController::class, 'currentLanguage']);
+
+Route::post('/check-token', [CookieController::class, 'checkToken']);
