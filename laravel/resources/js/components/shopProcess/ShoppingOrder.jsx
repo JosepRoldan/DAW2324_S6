@@ -223,7 +223,7 @@ export default function ShoppingOrder() {
                     </div>
                     <div className="flex justify-between py-4 text-gray-600">
                         <span>Shipping</span>
-                        <span className="font-semibold text-pink-500">Free</span>
+                        <span className="font-semibold text-pink-500">{shippingPrice}</span>
                     </div>
                 </div>
                 <div className="font-semibold text-xl px-8 flex justify-between py-8 text-gray-600">

@@ -48,6 +48,8 @@ class OrdersController extends Controller
         $addressData = $requestData['address'];
         $productsData = $requestData['products'];
         $totalAmount = $request['totalAmount'];
+        $shippingPrice = $request['shippingPrice'];
+
 
         // Verifica si el cliente ya existe en la base de datos
         $customer = Customer::where('mail', $customerData['mail'])->first();
@@ -70,7 +72,7 @@ class OrdersController extends Controller
         $order = Order::create([
             'idCustomers' => $customer->id,
             'name' => $customer->name." ".$customer->surname,
-            'address' => $deliveryAddress->address,
+            'address' => $deliveryAddress->address." ".$deliveryAddress->city." ".$deliveryAddress->postcode." ".$deliveryAddress->state." ".$deliveryAddress->country,
             'totalPrice' => $totalAmount,
             'datetime' => now(),
         ]);
@@ -80,11 +82,13 @@ class OrdersController extends Controller
             OrderDetail::create([
                 'idOrder' => $order->id,
                 'idProduct' => $product['id'],
+                'idGI'=>1,
                 'productName' => $product['name'],
                 'quantity' => $product['quantity'],
                 'priceEach' => $product['price'],
                 'totalPrice' => $totalAmount,
-                // Puedes manejar el precio de envío aquí si es necesario
+                'productDetails' => 'Valor predeterminado', // Proporciona un valor ya se hara
+                'shippingPrice'=> $shippingPrice,
             ]);
         }
 
