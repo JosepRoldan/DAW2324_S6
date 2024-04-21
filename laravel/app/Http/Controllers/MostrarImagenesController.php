@@ -95,7 +95,7 @@ class MostrarImagenesController extends Controller
         if ($guardada) {
             return $guardada;
         }
-    } catch (Exception $e) {
+    } catch (\Exception $e) {
         // Manejar el error aquí, devolver un mensaje de error
         return response()->json(['error' => $e->getMessage()], 500);
     }

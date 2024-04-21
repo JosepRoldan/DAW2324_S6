@@ -52,17 +52,20 @@ function GenerateGuidedImage() {
         "Pastel",
         "Escenas urbana",
     ];
+
+    function getToken() {
+        const tokenElement = document.getElementById("token");
+        return tokenElement ? tokenElement.value : null;
+    }
     const [loginStatus, setLoginStatus] = useState(null);
     useEffect(() => {
         // Función asincrónica dentro de useEffect
         const fetchData = async () => {
-            var tokenUsr = document.getElementById("token");
-            const tokenValue = tokenUsr !== null ? tokenUsr.value : null;
-            console.log(tokenValue);
+            console.log(getToken());
             try {
                 const validated = await enviarPrompt(
                     "POST",
-                    { token: tokenValue },
+                    { token: getToken() },
                     token,
                     "/check-token"
                 );
@@ -127,6 +130,7 @@ function GenerateGuidedImage() {
     const token = document
         .querySelector('meta[name="token"]')
         .getAttribute("content");
+
     const dataCrear = {
         prompt:
             "Creame una imagen en estilo " +
@@ -138,8 +142,9 @@ function GenerateGuidedImage() {
             " y con un " +
             element +
             " como elemento principal.",
-        user: "Miquel",
+        user: getToken(),
     };
+
     function generarOpciones(opciones, selected, setSelected) {
         return (
             <>
@@ -176,7 +181,9 @@ function GenerateGuidedImage() {
                     ))}
                     <button
                         onClick={() => {
-                            setSelected(estilos);
+                            setSelected(
+                                document.getElementById("inputId").value
+                            );
                             cambiarSet();
                         }}
                         className="block mb-4"
@@ -199,6 +206,7 @@ function GenerateGuidedImage() {
                             <div className="px-6 py-4">
                                 <div className="font-bold text-xl mb-2 text-black">
                                     <input
+                                        id="inputId"
                                         onChange={(event) => {
                                             setSelected(event.target.value); // Establece el valor seleccionado
                                             cambiarSet(); // Llama a la función cambiarSet
