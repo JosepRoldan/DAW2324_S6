@@ -20,3 +20,4 @@ pytest
 pytest-asyncio
 mysqlclient
 aiofiles
+prometheus-fastapi-instrumentator
