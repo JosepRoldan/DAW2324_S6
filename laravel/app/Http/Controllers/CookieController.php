@@ -18,9 +18,11 @@ class CookieController extends Controller
             return response()->json(['status' => 1]);
         } else 
         {
+            // El cliente no està validado
             return response()->json(['status' => 2]);
         }
         }else{
+            // El cliente no está registrado
             return response()->json(['status' => 3]);
         }
         

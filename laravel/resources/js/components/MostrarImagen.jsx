@@ -13,21 +13,22 @@ function MostrarImagen() {
         // Función asincrónica dentro de useEffect
         const fetchData = async () => {
             var tokenUsr = document.getElementById("token");
-            if (tokenUsr) {
-                console.log(tokenUsr.value);
-                try {
-                    const validated = await enviarPrompt(
-                        "POST",
-                        { token: tokenUsr.value },
-                        token,
-                        "/check-token"
-                    );
-                    setLoginStatus(validated.status);
-                    consultarStatus(validated.status);
-                } catch (error) {
-                    console.error("Error en la petición:", error);
-                }
+            const tokenValue = tokenUsr !== null ? tokenUsr.value : null;
+            console.log(tokenValue);
+            try {
+                const validated = await enviarPrompt(
+                    "POST",
+                    { token: tokenValue },
+                    token,
+                    "/check-token"
+                );
+                setLoginStatus(validated.status);
+                consultarStatus(validated.status);
+            } catch (error) {
+                console.error("Error en la petición:", error);
             }
+
+            setLoginStatus();
         };
 
         fetchData();
@@ -58,14 +59,25 @@ function MostrarImagen() {
         console.log(status);
         switch (status) {
             case 2:
-                toast("Valida tu usuario para poder generar imágenes aquí", {
-                    position: "top-center",
-                });
+                toast.info(
+                    "Valida tu cuenta aquí para poder generar imágenes.",
+                    {
+                        action: {
+                            label: "Hazlo aquí",
+                            onClick: () => (window.location.href = "daisy"),
+                        },
+                        position: "top-center",
+                    }
+                );
                 break;
             case 3:
-                toast(
-                    "Registrate en la página para poder generar imágenes aquí",
+                toast.info(
+                    "Registrate en la página aquí para poder generar imágenes.",
                     {
+                        action: {
+                            label: "Hazlo aquí",
+                            onClick: () => (window.location.href = "sign_up"),
+                        },
                         position: "top-center",
                     }
                 );
@@ -199,7 +211,7 @@ function MostrarImagen() {
 
     return (
         <div className="w-screen">
-            <Toaster />
+            <Toaster richColors />
 
             <div
                 id="generació_imatge"
