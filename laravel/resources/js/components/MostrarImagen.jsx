@@ -99,7 +99,7 @@ function MostrarImagen() {
         toast.promise(
             enviarPrompt(
                 "POST",
-                { idImg: idImg, idUser: getToken(), imgUrl: imgUrl },
+                { idImg: idImg, user: getToken(), imgUrl: imgUrl },
                 token,
                 "/save-img"
             ),
