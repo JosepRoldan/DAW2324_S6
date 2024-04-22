@@ -1,12 +1,39 @@
 // src/components/TailwindComponent.jsx
 import { createRoot } from "react-dom/client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Toaster, toast } from "sonner";
 import usePeticionAsincrona from "../hooks/peticioAsincrona.jsx";
 import BotonRedireccion from "./BotonRedireccion";
 import useURLParams from "../hooks/useURLParams";
+import DotLoader from "react-spinners/DotLoader";
 
 function MostrarImagen() {
+    function getToken() {
+        const tokenElement = document.getElementById("token");
+        return tokenElement ? tokenElement.value : null;
+    }
+    const [loginStatus, setLoginStatus] = useState(null);
+    useEffect(() => {
+        // Función asincrónica dentro de useEffect
+        const fetchData = async () => {
+            console.log(getToken());
+            try {
+                const validated = await enviarPrompt(
+                    "POST",
+                    { token: getToken() },
+                    token,
+                    "/check-token"
+                );
+                setLoginStatus(validated.status);
+                consultarStatus(validated.status);
+            } catch (error) {
+                console.error("Error en la petición:", error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
     const [mostrarDiv, setMostrarDiv] = useState(0);
     const [divsContent, setDivsContent] = useState([]);
     const [inputValue, setInputValue] = useState("");
@@ -19,13 +46,43 @@ function MostrarImagen() {
     const params = useURLParams();
     const dataCrear = {
         prompt: inputValue,
-        user: "Miquel",
+        user: getToken(),
     };
     const dataEditar = {
         url: inputImg,
-        user: "Miquel",
+        user: getToken(),
         idImg: inputId,
         prompt: inputValue,
+    };
+
+    const consultarStatus = (status) => {
+        console.log(status);
+        switch (status) {
+            case 2:
+                toast.info(
+                    "Valida tu cuenta aquí para poder generar imágenes.",
+                    {
+                        action: {
+                            label: "Hazlo aquí",
+                            onClick: () => (window.location.href = "daisy"),
+                        },
+                        position: "top-center",
+                    }
+                );
+                break;
+            case 3:
+                toast.info(
+                    "Registrate en la página aquí para poder generar imágenes.",
+                    {
+                        action: {
+                            label: "Hazlo aquí",
+                            onClick: () => (window.location.href = "sign_up"),
+                        },
+                        position: "top-center",
+                    }
+                );
+                break;
+        }
     };
 
     //Modificará la imagenseleccionada enviandola a la api
@@ -37,21 +94,25 @@ function MostrarImagen() {
     };
 
     //Guarda la imagen a laa bd. Muestra una noti
-    const guardarImatge = async (idImg,imgUrl) => {
-            toast.promise(enviarPrompt(
+    const guardarImatge = async (idImg, imgUrl) => {
+        console.log(idImg, imgUrl);
+        toast.promise(
+            enviarPrompt(
                 "POST",
-                { idImg: idImg, idUser: 1,imgUrl: imgUrl},
+                { idImg: idImg, idUser: getToken(), imgUrl: imgUrl },
                 token,
                 "/save-img"
-            ), {
-                loading: 'Loading...',
+            ),
+            {
+                loading: "Loading...",
                 success: (data) => {
-                    console.log(data)
-                  return `La imagen se ha guardado correctamente.`;
+                    console.log(data);
+                    return `La imagen se ha guardado correctamente.`;
                 },
-                error: 'Error',
+                error: "Error",
                 closeButton: true,
-              });
+            }
+        );
     };
 
     const generarDivs = (datos) => {
@@ -97,23 +158,6 @@ function MostrarImagen() {
         }
     };
 
-    //recuperar imagen de producto en concreto. Perguntar a jordi por método
-    const recuperarImatge = async () => {
-        try {
-            setDivsContent([]);
-            const urls = await enviarPrompt(
-                "POST",
-                dataEditar,
-                token,
-                "/db-image"
-            );
-            generarDivs(urls);
-            setInputId("");
-        } catch (error) {
-            console.error("Error en la petición:", error);
-        }
-    };
-
     //Muestra la array de imagenes que le pasemos.
     const mostrarImagenes = (imagen) => {
         return (
@@ -122,22 +166,37 @@ function MostrarImagen() {
                 className="size-60 relative rounded-md p-2 grid place-content-center "
             >
                 <button
-                    onClick={() => guardarImatge(imagen.id,imagen.url)}
-                    className="absolute top-0 right-0 mt-2 mr-2 hover:scale-110 "
+                    onClick={() => guardarImatge(imagen.id, imagen.url)}
+                    className="absolute -top-0.5 right-0 mr-2 hover:scale-110 "
                 >
                     <svg
+                        width="32px"
+                        height="32px"
+                        viewBox="0 0 1024 1024"
+                        className="icon"
+                        version="1.1"
                         xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="w-6 h-6 fill-blue-400 hover:fill-blue-500"
+                        fill="#000000"
                     >
-                        <path
+                        <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                        <g
+                            id="SVGRepo_tracerCarrier"
                             strokeLinecap="round"
                             strokeLinejoin="round"
-                            d="M16.5 3.75V16.5L12 14.25 7.5 16.5V3.75m9 0H18A2.25 2.25 0 0 1 20.25 6v12A2.25 2.25 0 0 1 18 20.25H6A2.25 2.25 0 0 1 3.75 18V6A2.25 2.25 0 0 1 6 3.75h1.5m9 0h-9"
-                        />
+                            stroke="#CCCCCC"
+                            strokeWidth="61.44"
+                        >
+                            <path
+                                d="M789.333333 917.333333l-277.333333-128-277.333333 128V192c0-46.933333 38.4-85.333333 85.333333-85.333333h384c46.933333 0 85.333333 38.4 85.333333 85.333333v725.333333z"
+                                fill="#e7fc00"
+                            ></path>
+                        </g>
+                        <g id="SVGRepo_iconCarrier">
+                            <path
+                                d="M789.333333 917.333333l-277.333333-128-277.333333 128V192c0-46.933333 38.4-85.333333 85.333333-85.333333h384c46.933333 0 85.333333 38.4 85.333333 85.333333v725.333333z"
+                                fill="#e7fc00"
+                            ></path>
+                        </g>
                     </svg>
                 </button>
 
@@ -153,165 +212,146 @@ function MostrarImagen() {
 
     return (
         <div className="w-screen">
-            <Toaster />
+            <Toaster richColors />
 
-                <div
-                    id="generació_imatge"
-                    className={mostrarDiv == 1 ? "" : "hidden"}
-                >
-                    <div className="grid grid-cols-1 place-items-center">
-                        <a href="daisy">
-                            <button className="btn btn-ghost">
-                                Generar otro prompt
-                            </button>
-                        </a>
-                    </div>
-                    <div className="grid grid-cols-1 place-items-center">
-                        <ul className="steps">
-                            <li className="step step-primary">
-                                Elige tu soporte
-                            </li>
-                            <li className="step step-primary">
-                                Crea tu imagen
-                            </li>
-                            <li className="step">
-                                Continua con tu compra
-                            </li>
-                        </ul>
-                    </div>
+            <div
+                id="generació_imatge"
+                className={mostrarDiv == 1 ? "" : "hidden"}
+            >
+                <div className="grid grid-cols-1 place-items-center">
+                    <a href="daisy">
+                        <button className="btn btn-ghost">
+                            Generar otro prompt
+                        </button>
+                    </a>
+                </div>
+                <div className="grid grid-cols-1 place-items-center">
+                    <ul className="steps">
+                        <li className="step step-primary">Elige tu soporte</li>
+                        <li className="step step-primary">Crea tu imagen</li>
+                        <li className="step">Continua con tu compra</li>
+                    </ul>
+                </div>
 
-                    {divsContent.length > 0 && divsContent ? (
-                        <div
-                            id="real"
-                            className="grid grid-cols-3 place-items-center mx-32"
-                        >
-                            {divsContent.map((content, index) => (
-                                <div key={index}>{content}</div>
-                            ))}
-                        </div>
+                {divsContent.length > 0 && divsContent ? (
+                    <div
+                        id="real"
+                        className="grid grid-cols-3 place-items-center mx-32"
+                    >
+                        {divsContent.map((content, index) => (
+                            <div key={index}>{content}</div>
+                        ))}
+                    </div>
+                ) : (
+                    <div className="grid grid-cols-1 place-items-center my-6">
+                        <DotLoader color="#1d4ed8" loading />
+                    </div>
+                )}
+
+                <div className="flex justify-center my-3 gap-4">
+                    {/* <form className="flex gap-2"> */}
+                    <button
+                        className="btn"
+                        disabled={inputId ? "" : "disabled"}
+                        onClick={() => {
+                            handleButtonClick2();
+                        }}
+                    >
+                        Modificar imagen seleccionada
+                    </button>
+                    <input
+                        type="hidden"
+                        name="_token"
+                        value="{{ csrf_token() }}"
+                    />
+                    {inputId ? (
+                        <BotonRedireccion
+                            ruta="/redirect-from-image"
+                            parametros={{
+                                ...params,
+                                idImage: inputId,
+                                idUser: 1,
+                            }}
+                            texto="Elegir Imagen"
+                        />
                     ) : (
-                        <div className="grid grid-cols-1 place-items-center">
-                            <span className="loading loading-infinity loading-lg"></span>
-                        </div>
+                        <BotonRedireccion
+                            disabled="disabled"
+                            ruta="/test"
+                            parametros={{ idImage: inputId }}
+                            texto="Elegir Imagen"
+                        />
                     )}
 
-                    <div className="flex justify-center my-3 gap-4">
-                        {/* <form className="flex gap-2"> */}
-                        <input
-                            type="text"
-                            placeholder="Modifica la imagen seleccionada"
-                            className="input input-bordered w-full max-w-xl"
-                            // value={inputValue}
-                            // onChange={handleInputChange}
+                    {/* </form> */}
+                </div>
+                <div className="w-full border-solid border-red rounded-md "></div>
+            </div>
+
+            <div className={mostrarDiv == 0 ? "" : "hidden"}>
+                <div className="flex justify-center">
+                    <ul className="steps">
+                        <li className="step step-primary">Elige tu soporte</li>
+                        <li className="step">Crea tu imagen</li>
+                        <li className="step">Continua con tu compra</li>
+                    </ul>
+                </div>
+                <div className="flex justify-center">
+                    {params.idVariant ? <a>{params.idVariant}</a> : ""}
+                </div>
+                <div className="flex justify-center my-3 gap-4">
+                    {/* <form className="flex gap-2"> */}
+
+                    <input
+                        type="text"
+                        placeholder="Un perro tocando la trompeta encima de una bicicleta."
+                        className="input input-bordered w-full max-w-xl"
+                        value={inputValue}
+                        onChange={handleInputChange}
+                    />
+                    <button
+                        className="btn"
+                        disabled={
+                            (loginStatus == 2) | (loginStatus == 3)
+                                ? "disabled"
+                                : ""
+                        }
+                        onClick={() => {
+                            setMostrarDiv(1);
+                            handleButtonClick();
+                        }}
+                    >
+                        CREAR UNA IMAGEN!
+                    </button>
+                    <input
+                        type="hidden"
+                        name="_token"
+                        value="{{ csrf_token() }}"
+                    />
+                </div>
+            </div>
+            <div className={mostrarDiv == 2 ? "" : "hidden"}>
+                <div className="flex flex-col items-center">
+                    <h1 className="my-2 text-3xl text-center font-bold text-blue-500">
+                        ¡Esta es la imagen que has seleccionado!
+                    </h1>
+                    <div className="border border-black">
+                        <img
+                            className="w-50 h-auto rounded-md"
+                            src={inputImg}
+                            alt="Imagen seleccionada"
                         />
-                        <button
-                            className="btn"
-                            disabled={inputId ? "" : "disabled"}
-                            onClick={() => {
-                                handleButtonClick2();
-                            }}
-                        >
-                            Modificar imagen seleccionada
+                    </div>
+                    <div>
+                        <button className="btn my-4">
+                            Añadir tu imagen a un producto
                         </button>
-                        <input
-                            type="hidden"
-                            name="_token"
-                            value="{{ csrf_token() }}"
-                        />
-                        {inputId ? (
-                            <BotonRedireccion
-                                ruta="/redirect-from-image"
-                                parametros={{
-                                    ...params,
-                                    idImage: inputId,
-                                    idUser: 1,
-                                }}
-                                texto="Elegir Imagen"
-                            />
-                        ) : (
-                            <BotonRedireccion
-                                disabled="disabled"
-                                ruta="/test"
-                                parametros={{ idImage: inputId }}
-                                texto="Elegir Imagen"
-                            />
-                        )}
-
-                        {/* </form> */}
-                    </div>
-                    <div className="w-full border-solid border-red rounded-md "></div>
-                </div>
-
-                <div className={mostrarDiv == 0 ? "" : "hidden"}>
-                    <div className="flex justify-center">
-                        <ul className="steps">
-                            <li className="step step-primary">
-                                Elige tu soporte
-                            </li>
-                            <li className="step">Crea tu imagen</li>
-                            <li className="step">
-                                Continua con tu compra
-                            </li>
-                        </ul>
-                    </div>
-                    <div className="flex justify-center">
-                        {params.idVariant ? (
-                            <a>{params.idVariant}</a>
-                        ) : (
-                            <img
-                                src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Heart_coraz%C3%B3n.svg/800px-Heart_coraz%C3%B3n.svg.png"
-                                className="w-20 h-auto"
-                            ></img>
-                        )}
-                    </div>
-                    <div className="flex justify-center my-3 gap-4">
-                        {/* <form className="flex gap-2"> */}
-
-                        <input
-                            type="text"
-                            placeholder="Un perro tocando la trompeta encima de una bicicleta."
-                            className="input input-bordered w-full max-w-xl"
-                            value={inputValue}
-                            onChange={handleInputChange}
-                        />
-                        <button
-                            className="btn"
-                            onClick={() => {
-                                setMostrarDiv(1);
-                                handleButtonClick();
-                            }}
-                        >
-                            CREAR UNA IMAGEN!
+                        <button className="btn my-4">
+                            Añadir tu producto al carro
                         </button>
-                        <input
-                            type="hidden"
-                            name="_token"
-                            value="{{ csrf_token() }}"
-                        />
                     </div>
                 </div>
-                <div className={mostrarDiv == 2 ? "" : "hidden"}>
-                    <div className="flex flex-col items-center">
-                        <h1 className="my-2 text-3xl text-center font-bold text-blue-500">
-                            ¡Esta es la imagen que has seleccionado!
-                        </h1>
-                        <div className="border border-black">
-                            <img
-                                className="w-50 h-auto rounded-md"
-                                src={inputImg}
-                                alt="Imagen seleccionada"
-                            />
-                        </div>
-                        <div>
-                            <button className="btn my-4">
-                                Añadir tu imagen a un producto
-                            </button>
-                            <button className="btn my-4">
-                                Añadir tu producto al carro
-                            </button>
-                        </div>
-                    </div>
-                </div>
+            </div>
         </div>
     );
 }
