@@ -239,7 +239,7 @@ function GenerateGuidedImage() {
         toast.promise(
             enviarPrompt(
                 "POST",
-                { idImg: idImg, idUser: 1, imgUrl: imgUrl },
+                { idImg: idImg, user: getToken(), imgUrl: imgUrl },
                 token,
                 "/save-img"
             ),

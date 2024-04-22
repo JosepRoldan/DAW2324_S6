@@ -87,11 +87,14 @@ class MostrarImagenesController extends Controller
     public function saveImg(Request $request)
 {
     try {
-        $guardantImatge = new MostrarImagenesModel();
+        
         $idImg = $request->input('idImg'); 
-        $userId = $request->input('idUser');
+        $username = $request->input('user');
         $imgUrl = $request->input('imgUrl');
-        $guardada = $guardantImatge->storeImg($idImg, $userId, $imgUrl);
+        $solicitarCliente = new Registro();
+        $guardantImatge2 = new MostrarImagenesModel();
+        $idUser = $solicitarCliente->solicitarId($username);
+        $guardada = $guardantImatge2->storeImg($idImg, $idUser, $imgUrl);
         if ($guardada) {
             return $guardada;
         }
