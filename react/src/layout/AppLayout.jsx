@@ -173,7 +173,9 @@ export default function AppLayout({ children }) {
                     ))}
                   </ul>
                 </li>
-                <LanguageSwitcher />
+                <div style={{ marginTop: "auto" }}>
+                  <LanguageSwitcher />
+                </div>
               </ul>
               <div id="userway-widget-container"><UserwayWidget /></div>
 
