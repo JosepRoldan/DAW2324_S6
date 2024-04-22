@@ -63,7 +63,7 @@
   <img src="/img/inicio.gif" class="absolute inset-0 w-full h-full object-cover object-center z-0" alt="Animated GIF">
   <div class="max-w-screen-lg grid ml-24 grid-cols-12 h-full items-center relative z-10">
     <div class="col-span-12 md:col-span-6 px-0 md:px-6 text-white">  
-      <h1 class="font-extrabold text-gray-400 text-5xl md:text-6xl mb-8 tracking-wider">Unleash Your Creativity with AI-Powered Designs</h1>
+      <h1 class="font-extrabold text-[#6F96A6] text-5xl md:text-6xl mb-8 tracking-wider">Unleash Your Creativity with AI-Powered Designs</h1>
       <a href="/daisy" class="mt-8 uppercase py-4 px-8 md:px-10 border border-white hover:bg-white hover:bg-opacity-10 inline-block rounded text-gray-400 font-semibold">Start Creating</a>
     </div>
   </div>
