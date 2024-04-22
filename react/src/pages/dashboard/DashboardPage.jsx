@@ -2,30 +2,31 @@ import { useEffect, useState } from "react";
 import "../../components/sectionTable/SectionTable.css";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { usePage } from '../../contexts/PageContext';
-import { useNavigate } from 'react-router-dom';
 import Spinner from "../../components/Spinner";
 
 export const DashboardPage = () => {
-  const { t } = useTranslation();
   const navigate = useNavigate();
   const { setPage } = usePage();
-  useEffect(() => {
-    setPage(t("Dashboard"));
-  }, [setPage, navigate, t]);
-  const [setBenefits] = useState([]);
+  const { t } = useTranslation();
+  const [benefits, setBenefits] = useState([]);
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
   const [totalProfit, setTotalProfit] = useState(0);
   const token = localStorage.getItem("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
+
   useEffect(() => {
     getBenefits();
+    setPage(t("Dashboard"));
     getOrders();
-  }, []);
+  }, [setPage, t]);
 
+  /**
+   * Asynchronous function to fetch benefits from the API and update state accordingly.
+   */
   const getBenefits = async () => {
     setLoading(true);
     try {
@@ -47,6 +48,13 @@ export const DashboardPage = () => {
     }
   };
 
+
+
+  /**
+   * Asynchronous function to retrieve orders from the API and handle the response or error.
+   *
+   * @return {void}
+   */
   const getOrders = async () => {
     try {
       const url = `${import.meta.env.VITE_API_URL}/orders`;
@@ -107,13 +115,14 @@ export const DashboardPage = () => {
                 <div className="flex flex-col space-y-2">
                   <h2 className="text-white font-bold text-lg">Overview of your account</h2>
                   <p className="text-gray-100 text-sm md:text-base leading-tight max-w-sm">
-                    {/* eslint-disable-next-line react/no-unescaped-entities */}
+                    {/* eslint-disable-next-line react/no-unescaped-entities*/}
                     This dashboard provides a quick and easy way to see what's going on in your account. It also includes specialized areas with more detailed information.
                   </p>
                 </div>
                 <div className="flex justify-between items-end">
                 </div>
               </div>
+
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 px-4 xl:p-0 gap-4 xl:gap-6">
               <div className="col-span-1 md:col-span-2 lg:col-span-4 flex justify-between">
@@ -185,6 +194,7 @@ export const DashboardPage = () => {
                         </p>
                       </li>
                     ))}
+
                   </ul>
                 </div>
               </div>
@@ -192,8 +202,11 @@ export const DashboardPage = () => {
           </div>
         </div>
         )}
+
+
       </div>
     </>
   );
 };
+
 export default DashboardPage;
