@@ -13,10 +13,9 @@ use App\Http\Controllers\MyImagesController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MyOrdersController;
 use App\Http\Controllers\ViewDetailsController;
-
+use App\Http\Controllers\CookieController;
 
 use App\Http\Controllers\LanguageController;
-
 
 
 /*
@@ -43,8 +42,7 @@ Route::get('/productscard', function () {return view('productCard');});
 
 //////////////////////SHOP PROCESS////////////////////////
 Route::get('/Cart/Shipping', [BuyingProcessController::class, 'getShoppingOrdreDates'])->name('shipping');
-Route::post('/cart/shipping/data/save', [OrdersController::class, 'saveCartShippingData'])->name('save.shipping.data');
-Route::put('/cart/shipping/data/update', [OrdersController::class, 'updateCartShippingData'])->name('update.shipping.data');
+Route::post('/Cart/Order', [OrdersController::class, 'storeDates'])->name('shopProcessOrder');
 
 Route::get('/Cart/Shipping/PaymentMethod', [BuyingProcessController::class, 'paymentDates'])->name('paymentMethod');
 
@@ -127,8 +125,6 @@ Route::get('/product/{product}', [ProductController::class, 'show'])->name('show
 Route::post('/enviar-prompt', [MostrarImagenesController::class, 'enviarPrompt']);
 Route::post('/modi-prompt', [MostrarImagenesController::class, 'modiPrompt']);
 
-Route::post('/save-img', [MostrarImagenesController::class, 'saveImg']);
-
 Route::get('/redirect-from-image', [RedirectController::class, 'redirectFromImage']);
 
 //Footer
@@ -177,3 +173,6 @@ Route::get('/legalnotice', function () {return view('footer.legalnotice');});
 //Header
 Route::post('/change-language', [LanguageController::class, 'changeLanguage']);
 Route::get('/current-language', [LanguageController::class, 'currentLanguage']);
+
+//Token
+Route::post('/check-token', [CookieController::class, 'checkToken']);

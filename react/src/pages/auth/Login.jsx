@@ -6,7 +6,6 @@ import { useCookies } from "react-cookie";
 import { useTranslation } from "react-i18next";
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-import LanguageSwitcher from "../../components/LanguageSwitcher";
 import translationEN from "/src/locales/eng/translation.json";
 import translationCA from "/src/locales/cat/translation.json";
 import translationES from "/src/locales/esp/translation.json";
@@ -107,11 +106,6 @@ export const Login = () => {
   return (
     
     <div className="antialiased background-login">
-      <div className="float-right">
-      <LanguageSwitcher />
-      </div>
-
-      
       <div className="container px-6 mx-auto">
         <div className="flex flex-col text-center md:text-left md:flex-row h-screen justify-evenly md:items-center">
           <div className="flex pl-20 flex-col w-full">
@@ -163,7 +157,7 @@ export const Login = () => {
                     id="user"
                     value={user}
                     onChange={(e) => setUser(e.target.value)}
-                    placeholder="Please insert your user"
+                    placeholder={t("Please insert your user")}
                     className="appearance-none border-2 border-gray-100 rounded-lg px-4 py-3 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-primaryColor focus:shadow-lg"
                   />
                   {errors.user && (
@@ -180,7 +174,7 @@ export const Login = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     onKeyDown={(e) => handleKeyPress(e)}
-                    placeholder="Please insert your password"
+                    placeholder={t("Please insert your password")}
                     className="appearance-none border-2 border-gray-100 rounded-lg px-4 py-3 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-primaryColor focus:shadow-lg"
                   />
                   {errors.password && (

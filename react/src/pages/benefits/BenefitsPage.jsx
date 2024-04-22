@@ -15,7 +15,7 @@ export const BenefitsPage = () => {
     }, [setPage, navigate]);
     return (
         <>
-            <SectionTable SectionName={"Benefits"}></SectionTable>
+            <SectionTable SectionName={"Profit"}></SectionTable>
         </>
     )
 }
