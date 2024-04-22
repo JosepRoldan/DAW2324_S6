@@ -14,7 +14,6 @@ class OrderDetailsFactory extends Factory
     public function definition()
     {
     
-        $order = OrderDetail::inRandomOrder()->first();
         $product = Product::inRandomOrder()->first(); // Obtiene un producto aleatorio
 
         return [

@@ -96,12 +96,12 @@ export default function ProductsPage() {
         cellRenderer: undefined,
       },
       {
-        field: "customerName",
+        field: "name",
         headerName: "Customer Name",
         cellRenderer: undefined,
       },
       {
-        field: "customerSurname",
+        field: "surname",
         headerName: "Customer Surname",
         cellRenderer: undefined,
       },
