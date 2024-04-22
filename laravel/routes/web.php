@@ -96,7 +96,6 @@ Route::post('/sign_up', [RegisterController::class, 'store'])->name('customers.s
 Route::get('/forgot', function () {return view('/auth/recover-password');})->name('forgot');
 //Logout
 Route::get('/logout', [RegisterController::class, 'logout'])->name('logout');
-Route::get('/auth/verify/{token}', function ($token) {return view('auth.passwords.reset', ['token' => $token]);})->name('password.reset.form');
 
 
 //Reset Password
@@ -109,8 +108,6 @@ Route::get('/forgot-password', [ForgotPasswordController::class, 'showForgotPass
 Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
 Route::get('/passwords/reset/{token}', function ($token) {return view('auth.passwords.reset', ['token' => $token]);})->name('password.reset.form');
 Route::get('/error-reset', function () {return view('error-reset');})->name('error.route');
-Route::get('/error-verify', function () {return view('error-verify');})->name('error.verify');
-
 
 
 // PRODUCTS

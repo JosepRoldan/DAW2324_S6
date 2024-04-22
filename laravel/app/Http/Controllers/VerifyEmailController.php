@@ -1,4 +1,4 @@
-<?php
+<!-- <?php
 
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
@@ -14,7 +14,8 @@ class VerifyEmailController extends Controller
 {
     public function showForgotPasswordForm()
     {
-        return view('auth.forgot-password');
+        //View a la que debe devolver
+        return view('');
     }
 
     public function sendVerifyLinkEmail(Request $request){
@@ -92,4 +93,4 @@ class VerifyEmailController extends Controller
     }
 }
 
-
+ -->
