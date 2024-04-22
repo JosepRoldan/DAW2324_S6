@@ -99,5 +99,15 @@
     "Sales Price": "Precio de venta",
     "Actions": "Acciones",
     "Width (cm)": "Anchura (cm)",
-    "Height (cm)": "Altura (cm)"
+    "Height (cm)": "Altura (cm)",
+    "Loading Users...": "Cargando Usuarios...",
+    "Users": "Usuarios",
+    "Create User": "Crear Usuario",
+    "Show User": "Mostrar Usuario",
+    "Delete": "Eliminar",
+    "Are you sure you want to update this user?": "¿Estás seguro de que quieres actualizar este usuario?",
+    "Confirm Update": "Confirma Actualización",
+    "My profile": "Mi perfil",
+    "Sign out": "Salir"
+    
 }

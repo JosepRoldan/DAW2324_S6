@@ -2,6 +2,8 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
 import { AgGridReact } from 'ag-grid-react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from "react-i18next";
+
 
 const showUser = ({ data }) => {
   const navigate = useNavigate();
@@ -25,16 +27,18 @@ const showUser = ({ data }) => {
 
 export const UsersTable = ({ userData }) => {
 
+      const { t } = useTranslation();
+
   const colDefs = [
-    { field: 'name', headerName: 'Name', filter: true },
-    { field: 'surname', headerName: 'Surname', filter: true },
-    { field: 'user', headerName: 'Username', filter: true  },
-    { field: 'email', headerName: 'Email', filter: true  },
+    { field: 'name', headerName: t('Name'), filter: true },
+    { field: 'surname', headerName: t('Surname'), filter: true },
+    { field: 'user', headerName: t('Username'), filter: true  },
+    { field: 'email', headerName: t('Email'), filter: true  },
     //{ field: 'role', headerName: 'Email', filter: true  },
 
 
 
-    { headerName: 'Show', cellRenderer: showUser }
+    { headerName: t('Show'), cellRenderer: showUser }
   ];
 
   return (
