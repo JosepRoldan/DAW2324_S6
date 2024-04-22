@@ -12,8 +12,7 @@ import "./components/SearchInput.jsx";
 import "./components/BreadCrumbs.jsx";
 import "./components/Filtre.jsx";
 import "./components/Profile.jsx";
-import "./components/ShoppingOrder.jsx"
-import "./components/shopProcess/shipping.jsx"
+import "./components/shopProcess/ShoppingOrder.jsx"
 import "./components/BotonRedireccion.jsx"
 import "./components/GuidedGeneration.jsx"
 import "./components/ColorWheel.jsx"

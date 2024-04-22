@@ -70,12 +70,12 @@ export const Router = () => {
         <Route path="/products-massive-actions" element={<ProductsMassiveActions />} />
         <Route path="products/:productId" element={<ProductDetailsPage />} />
       // BENEFITS
-        <Route path="/benefits" element={<BenefitsPage></BenefitsPage>} />
+        <Route path="/profit" element={<BenefitsPage></BenefitsPage>} />
         <Route
-          path="/benefits=create"
+          path="/profit=create"
           element={<BenefitsCreate></BenefitsCreate>}
         />
-        <Route path="/benefits=edit/:id" element={<BenefitsEdit />} />
+        <Route path="/profit=edit/:id" element={<BenefitsEdit />} />
       //Users
         <Route strict path="/users/:userId" element={<UsersShow />} />
         <Route path="/users" element={<UserPage />} />

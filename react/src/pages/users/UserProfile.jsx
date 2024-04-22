@@ -1,8 +1,6 @@
 import AppLayout from '../../layout/AppLayout';
 import React, { useState, useEffect } from 'react';
 import Spinner from '../../components/Spinner';
-import { usePage } from '../../contexts/PageContext';
-import { useTranslation } from "react-i18next";
 
 
 const token = localStorage.getItem('token');
@@ -13,52 +11,14 @@ const steps = [
 ];
 
 export const UserProfile = () => {
-  const { userId } = useParams(); // Obtener el ID de usuario de la URL
-  const navigate = useNavigate();
-  const [user, setUser] = useState(null);
-  const [isLoading, setLoading] = useState(true);
-  const { setPage, setSteps } = usePage();
-  const { t } = useTranslation();
-
-
-  useEffect(() => {
-    setPage(t("Users"));
-    setSteps([{ name: t('Users'), href: '/users' }, { name: t("User Profile"), href: '/users/profile/${userId}', current: true }]);
-}, [setPage, setSteps, navigate]);
-
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/users/${userId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (response.ok) {
-          const userData = await response.json();
-          setUser(userData);
-        } else {
-          console.error('Error fetching user data:', response.statusText);
-        }
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (userId) {
-      fetchUserData();
-    }
-  }, [userId]);
+  var jsonData = JSON.parse(localStorage.getItem("user"));
+  const [user, setUser] = useState(jsonData);
 
   if (!user) {
     return <Spinner message='Loading...' />;
   }
 
   return (
-    <>
       <div className="pb-16 space-y-10 divide-y divide-gray-900/10">
         <form>
           <div className="grid grid-cols-1 gap-x-8 gap-y-8 pt-10 md:grid-cols-3">
@@ -124,13 +84,12 @@ export const UserProfile = () => {
           <div className="px-4 py-4 sm:px-6 flex justify-between items-center">
             {/* Botón para regresar */}
             <button type="button" onClick={() => window.history.back()}
-              className="inline-flex justify-center rounded-full bg-blue-900 px-3 py-2 text-md font-semibold text-white shadow-sm hover:bg-blue-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900">
+              className="inline-flex justify-center rounded-md bg-indigo-400 px-3 py-2 text-md font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900">
               Go Back
             </button>
           </div>
         </form>
       </div>
-    </>
   );
 };
 

@@ -61,7 +61,7 @@ const OrderDetailsPage = () => {
 
   // Render the UI for the OrderDetailsPage
   return (
-    <AppLayout Page={"Order Details"} Steps={steps}>
+    <>
       <div className="flex items-center justify-center mt-4">
         <div className="w-80 rounded bg-gray-50 px-6 pt-8 shadow-lg">
           {/* ... Header and logo section (omitted for brevity) ... */}
@@ -138,7 +138,7 @@ const OrderDetailsPage = () => {
           </div>
         </div>
       </div>
-    </AppLayout>
+    </>
   );
 };
 

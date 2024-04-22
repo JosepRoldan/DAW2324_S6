@@ -1,39 +1,14 @@
-import AppLayout from "../../layout/AppLayout";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "../../components/sectionTable/SectionTable.css";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
-import i18n from "i18next";
-import { initReactI18next } from "react-i18next";
-import translationEN from "/src/locales/eng/translation.json";
-import translationCA from "/src/locales/cat/translation.json";
-import translationES from "/src/locales/esp/translation.json";
-import { Link } from "react-router-dom";
-
-
-
-const resources = {
-  eng: {
-    translation: translationEN,
-  },
-  cat: {
-    translation: translationCA,
-  },
-  esp: {
-    translation: translationES,
-  },
-};
-
-i18n.use(initReactI18next).init({
-  resources,
-  lng: "eng",
-  fallbackLng: "eng",
-  interpolation: {
-    escapeValue: false,
-  },
-});
+import { Link, useNavigate } from "react-router-dom";
+import { usePage } from '../../contexts/PageContext';
+import Spinner from "../../components/Spinner";
 
 export const DashboardPage = () => {
+  const navigate = useNavigate();
+  const { setPage } = usePage();
   const { t } = useTranslation();
   const [benefits, setBenefits] = useState([]);
   const [orders, setOrders] = useState([]);
@@ -45,8 +20,9 @@ export const DashboardPage = () => {
 
   useEffect(() => {
     getBenefits();
+    setPage(t("Dashboard"));
     getOrders();
-  }, []);
+  }, [setPage, t]);
 
   /**
    * Asynchronous function to fetch benefits from the API and update state accordingly.
@@ -99,13 +75,10 @@ export const DashboardPage = () => {
   return (
     <>
       <div className="flex flex-col h-[100vh] divContainer">
-        {loading && (
-          <div className="loader-container">
-            <div className="loader"></div>
-          </div>
-        )}
-
-        <div className="container mx-w-6xl mx-auto py-4">
+        {loading ? (
+           <Spinner message='Loading...' />
+        ) : (
+          <div className="container mx-w-6xl mx-auto py-4">
           <div className="flex flex-col space-y-8">
             <div className="grid grid-cols-1 md:grid-cols-4 xl:grid-cols-5 px-4 xl:p-0 gap-y-4 md:gap-6">
               <div className="md:col-span-2 xl:col-span-3 bg-white p-6 rounded-2xl border border-gray-50">
@@ -142,6 +115,7 @@ export const DashboardPage = () => {
                 <div className="flex flex-col space-y-2">
                   <h2 className="text-white font-bold text-lg">Overview of your account</h2>
                   <p className="text-gray-100 text-sm md:text-base leading-tight max-w-sm">
+                    {/* eslint-disable-next-line react/no-unescaped-entities*/}
                     This dashboard provides a quick and easy way to see what's going on in your account. It also includes specialized areas with more detailed information.
                   </p>
                 </div>
@@ -205,6 +179,7 @@ export const DashboardPage = () => {
                   </div>
                   <ul className="divide-y-2 divide-gray-100 overflow-x-auto w-full">
                     {orders.map((order) => (
+                      // eslint-disable-next-line react/jsx-key
                       <li className="py-3 flex justify-between text-sm text-gray-500 font-semibold">
                         <p className="px-4 font-semibold">{order.idOrderPicanova}</p>
                         <p className="px-4 text-gray-600">{order.datetime}</p>
@@ -226,6 +201,9 @@ export const DashboardPage = () => {
             )}
           </div>
         </div>
+        )}
+
+
       </div>
     </>
   );

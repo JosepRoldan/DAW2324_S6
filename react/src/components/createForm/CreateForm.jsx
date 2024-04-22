@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Link,useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../sectionTable/alert.scss";
-
+import Spinner from "../Spinner";
 /**
  * Function for creating a form.
  *
@@ -18,6 +18,8 @@ const CreateForm = ({ section }) => {
   var [profit, setProfit] = useState("");
   profit = income - expense;
   const navigate = useNavigate();
+
+  const [loadingForm, setLoadingForm] = useState(false);
 
   const [errors, setErrors] = useState({});
   const token = localStorage.getItem("token");
@@ -52,12 +54,25 @@ const CreateForm = ({ section }) => {
     if (isNaN(parseInt(year)) || !isFinite(year) || parseInt(year) <= 0) {
       isValid = false;
       newErrors.year = "Year must be a number greater than 0";
-    }
+    } 
+
 
     if (isValid) {
        handleCreate(month, income, expense, profit, year);
     } else {
       setErrors(newErrors);
+      setLoadingForm(false);
+    }
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      setLoadingForm(true);
+       validate();
+    }
+  
+    if(event.key === 'Escape'){
+      navigate('/profit');
     }
   };
 
@@ -86,6 +101,7 @@ const CreateForm = ({ section }) => {
         console.error("Error:", error);
       })
       .finally(function () {
+        setLoadingForm(false);
         navigate('/profit');
       });
   };
@@ -94,6 +110,11 @@ const CreateForm = ({ section }) => {
     <div className="bg-gray-100 flex items-center justify-left">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full">
         <div className="flex items-center space-x-2 mb-6">
+        {loadingForm &&(
+                      <div className="mr-2">
+                      <div className="h-5 w-5 border-t-transparent border-solid animate-spin rounded-full border-black border-4"></div>
+                      </div>
+                      )}
           <h1 className="text-xl font-semibold">Create form for Profit</h1>
         </div>
         <p className="text-sm text-gray-600 mb-6">Insert the following data:</p>
@@ -129,6 +150,7 @@ const CreateForm = ({ section }) => {
               <input
                 type="text"
                 id="year"
+                onKeyDown={(e) => handleKeyPress(e)}
                 onChange={(e) => setYear(e.target.value)}
                 className="year-input form-input block border w-full border-gray-300 rounded-md shadow-sm"
                 required
@@ -146,6 +168,7 @@ const CreateForm = ({ section }) => {
               <input
                 type="text"
                 id="income"
+                onKeyDown={(e) => handleKeyPress(e)}
                 onChange={(e) => setIncome(e.target.value)}
                 className="income-input form-input block border w-full border-gray-300 rounded-md shadow-sm"
                 required
@@ -161,6 +184,7 @@ const CreateForm = ({ section }) => {
               <input
                 type="text"
                 id="expenses"
+                onKeyDown={(e) => handleKeyPress(e)}
                 onChange={(e) => setExpense(e.target.value)}
                 className="income-input form-input block border w-full border-gray-300 rounded-md shadow-sm"
                 required

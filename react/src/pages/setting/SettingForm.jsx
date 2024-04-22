@@ -1,44 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useTranslation } from "react-i18next";
-import i18n from "i18next";
-import { initReactI18next } from "react-i18next";
-import translationEN from "/src/locales/eng/translation.json";
-import translationCA from "/src/locales/cat/translation.json";
-import translationES from "/src/locales/esp/translation.json";
-
-const resources = {
-  eng: {
-    translation: translationEN,
-  },
-  cat: {
-    translation: translationCA,
-  },
-  esp: {
-    translation: translationES,
-  },
-};
-
-i18n.use(initReactI18next).init({
-  resources,
-  lng: "eng",
-  fallbackLng: "eng",
-  interpolation: {
-    escapeValue: false,
-  },
-});
 
 const SettingForm = () => {
   const { t } = useTranslation();
   const [serverErrors, setServerErrors] = useState(null);
   const [authToken, setAuthToken] = useState(localStorage.getItem('authToken') || '');
 
-  // Función para manejar la autenticación y almacenar el token
   const navigate = useNavigate();
 
-  // Efecto para cargar el token automáticamente al montar el componente
   useEffect(() => {
     const storedToken = localStorage.getItem('authToken');
     if (storedToken) {
@@ -46,7 +18,7 @@ const SettingForm = () => {
     }
   }, []);
 
-  const handleSubmit = async (values, { setSubmitting }) => {
+  const handleSubmit = async (values) => {
     console.log('Submitting form with values:', values);
     try {
       const response = await axios.post('http://localhost:8000/api/settings', values, {
@@ -139,6 +111,3 @@ const SettingForm = () => {
 }
 
 export default SettingForm;
-
-  
-
