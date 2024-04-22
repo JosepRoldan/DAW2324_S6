@@ -67,7 +67,7 @@ function GenerateGuidedImage() {
                     "POST",
                     { token: getToken() },
                     token,
-                    "/check-token"
+                    "/check-token",
                 );
                 setLoginStatus(validated.status);
                 consultarStatus(validated.status);
@@ -91,7 +91,7 @@ function GenerateGuidedImage() {
                             onClick: () => (window.location.href = "daisy"),
                         },
                         position: "top-center",
-                    }
+                    },
                 );
                 break;
             case 3:
@@ -103,7 +103,7 @@ function GenerateGuidedImage() {
                             onClick: () => (window.location.href = "sign_up"),
                         },
                         position: "top-center",
-                    }
+                    },
                 );
                 break;
         }
@@ -182,7 +182,7 @@ function GenerateGuidedImage() {
                     <button
                         onClick={() => {
                             setSelected(
-                                document.getElementById("inputId").value
+                                document.getElementById("inputId").value,
                             );
                             cambiarSet();
                         }}
@@ -227,7 +227,7 @@ function GenerateGuidedImage() {
                 "POST",
                 dataCrear,
                 token,
-                "/enviar-prompt"
+                "/enviar-prompt",
             );
             generarDivs(urls);
         } catch (error) {
@@ -241,7 +241,7 @@ function GenerateGuidedImage() {
                 "POST",
                 { idImg: idImg, user: getToken(), imgUrl: imgUrl },
                 token,
-                "/save-img"
+                "/save-img",
             ),
             {
                 loading: "Loading...",
@@ -251,7 +251,7 @@ function GenerateGuidedImage() {
                 },
                 error: "Error",
                 closeButton: true,
-            }
+            },
         );
     };
 
@@ -391,17 +391,29 @@ function GenerateGuidedImage() {
                 </div>
                 {/* Div que muestra los estilos de la imagen */}
                 <div className={divMostrat == 1 ? "" : "hidden"}>
+                    <div className="flex my-5 justify-center">
+                        <b>Elige un estilo</b>
+                    </div>
                     {generarOpciones(imageStyle, style, setStyle)}
                 </div>
                 {/* Div que muestra el color principal de la imagen */}
                 <div className={divMostrat == 2 ? "" : "hidden"}>
+                    <div className="flex my-5 justify-center">
+                        <b>Elige el sentimiento que transmita tu imagen</b>
+                    </div>
                     {generarOpciones(imageFeel, feel, setFeel)}
                 </div>
                 <div className={divMostrat == 3 ? "" : "hidden"}>
+                    <div className="flex my-5 justify-center">
+                        <b>Elige el elemento principal</b>
+                    </div>
                     {generarOpciones(imageElement, element, setElement)}
                 </div>
                 {/* Div que muestra la eleccion de color de la imagen */}
                 <div className={divMostrat == 4 ? "" : "hidden"}>
+                    <div className="flex my-5 justify-center">
+                        <b>Elige el color principal de tu imagen</b>
+                    </div>
                     <div className="flex my-5 justify-center h-full">
                         <div dir="ltr">
                             <div className="rounded-s-xl artboard artboard-horizontal phone-1 bg-gray-100 w-1/2 grid place-content-center">
@@ -508,6 +520,6 @@ function GenerateGuidedImage() {
 }
 if (document.getElementById("GenerateGuidedImage")) {
     createRoot(document.getElementById("GenerateGuidedImage")).render(
-        <GenerateGuidedImage />
+        <GenerateGuidedImage />,
     );
 }
