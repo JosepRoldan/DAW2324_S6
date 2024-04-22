@@ -82,7 +82,7 @@ export default function AppLayout({ children }) {
       ];
       break;
     default:
-      console.log("NO tienes rol");
+          navigate("/login");
       break;
   }
 
