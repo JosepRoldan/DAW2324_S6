@@ -18,10 +18,12 @@
             <h4 class="text-4xl font-bold text-gray-800 tracking-widest uppercase text-center">FAQ</h4>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 xl:gap-12 px-2 xl:px-12 mt-4">
                 <div class="flex space-x-8 mt-8">
-                    <div class="bg-gray-100 p-6 rounded-lg shadow-md w-full">
-                        <h4 class="text-xl font-bold text-gray-700">How can I start creating my own designs?</h4>
-                        <p class="text-gray-600 my-2">You can begin by visiting our platform and exploring the available design options. Once you find a product you like, you can use our customization tools to add your own designs, text, or images.</p>
-                    </div>
+                <div class="bg-gray-100 p-6 rounded-lg shadow-md w-full">
+                <h4 class="text-xl font-bold text-gray-700">How can I start creating my own designs?</h4>
+
+                <p class="text-gray-600 my-2">You can begin by visiting our platform and exploring the available design options. Once you find a product you like, you can use our customization tools to add your own designs, text, or images. <span class="highlighted-word"><a href="url_of_another_page.html" class="text-blue-500 hover:underline">designs</a></span></p>
+                
+                </div>
                 </div>
 
                 <div class="flex space-x-8 mt-8">
