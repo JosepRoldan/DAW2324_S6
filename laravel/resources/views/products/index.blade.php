@@ -25,76 +25,80 @@
     </div>
     <div class="flex flex-col lg:flex-row px-4 py-7 sm:px-6 lg:px-8 mx-4 sm:mx-10 md:mx-20 lg:mx-0 self-stretch">
       <div class="lg:w-1/4 mr-8 mb-8 lg:mb-0 lg:mr-8">
+        <form id="filterForm" action="{{ route('products.index') }}" method="GET">
+          <div class="bg-gray-100 mt-10 p-7 rounded-md shadow-md ">
+            <h2 class="mb-7 text-2xl font-extrabold text-center underline uppercase text-gray-900">Filters</h2>
+            <h3 class="text-lg font-bold text-center text-gray-900">Categories</h3>
+            <div class="flex flex-wrap gap-4 justify-center mt-2">
+              <button id="all" type="button" onclick="selectCategory(event)"
+                class="category-button transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full">
+                All
+              </button>
 
-        <div class="bg-gray-100 mt-10 p-7 rounded-md shadow-md ">
-          <h2 class="mb-7 text-2xl font-extrabold text-center underline uppercase text-gray-900">Filters</h2>
-          <h3 class="text-lg font-bold text-center text-gray-900">Categories</h3>
-          <div class="flex flex-wrap gap-4 justify-center mt-2">
-            <button id="all" onclick="selectCategory(event)"
-              class="category-button transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full">
-              All
-            </button>
+              <button id="wallDecoration" type="button" onclick="selectCategory(event)"
+                class="category-button transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                Wall Decoration
+              </button>
 
-            <button id="wallDecoration" onclick="selectCategory(event)"
-              class="category-button transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
-              Wall Decoration
-            </button>
+              <button id="homeLifestyle" type="button" onclick="selectCategory(event)"
+                class="category-button transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                Home & Lifestyle
+              </button>
 
-            <button id="homeLifestyle" onclick="selectCategory(event)"
-              class="category-button transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
-              Home & Lifestyle
-            </button>
+              <button id="photoGifts" type="button" onclick="selectCategory(event)"
+                class="category-button transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                Photo Gifts
+              </button>
+            </div>
 
-            <button id="photoGifts" onclick="selectCategory(event)"
-              class="category-button transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
-              Photo Gifts
-            </button>
-          </div>
+            <h2 class="mt-10 text-lg font-bold text-center text-gray-900">Price</h2>
+            <!-- range -->
+            <div class="mt-3 flex justify-center items-center">
+              <div x-data="range(0, @json($maxPrice), 300)" x-init="initializeRange()" class="relative max-w-xl w-full">
+                <div>
+                  <!-- Min Price Range Input -->
+                  <input type="range" step="1" min="0" max="300" id="minPriceRange" x-model="minprice"
+                    class="absolute pointer-events-none appearance-none z-20 h-2 w-full opacity-50" disabled>
 
-          <h2 class="mt-10 text-lg font-bold text-center text-gray-900">Price</h2>
-          <!-- range -->
-          <div class="mt-3 flex justify-center items-center">
-            <div x-data="range()" x-init="mintrigger(); maxtrigger()" class="relative max-w-xl w-full">
-              <div>
-                <input type="range" step="100" x-bind:min="min" x-bind:max="max" x-on:input="mintrigger"
-                  x-model="minprice"
-                  class="absolute pointer-events-none appearance-none z-20 h-2 w-full opacity-0 cursor-pointer">
+                  <!-- Max Price Range Input -->
+                  <input type="range" step="1" min="0" max="300" x-on:input="maxtrigger" id="maxPriceRange"
+                    x-model="maxprice"
+                    class="absolute pointer-events-none appearance-none z-20 h-2 w-full opacity-0 cursor-pointer">
 
-                <input type="range" step="100" x-bind:min="min" x-bind:max="max" x-on:input="maxtrigger"
-                  x-model="maxprice"
-                  class="absolute pointer-events-none appearance-none z-20 h-2 w-full opacity-0 cursor-pointer">
+                  <div class="relative z-10 h-2">
+                    <!-- Background bar -->
+                    <div class="absolute z-10 left-0 right-0 bottom-0 top-0 rounded-md bg-gray-50"></div>
+                    <!-- Active range bar -->
+                    <div class="absolute z-20 top-0 bottom-0 rounded-md bg-indigo-300"
+                      x-bind:style="'right:'+ (100 - maxthumb) +'%; left:'+ minthumb +'%'"></div>
+                    <!-- Min thumb -->
+                    <div class="absolute z-30 w-6 h-6 top-0 left-0 bg-gray-400 rounded-full -mt-2 -ml-3"
+                      x-bind:style="'left: '+ minthumb +'%'"></div>
+                    <!-- Max thumb -->
+                    <div class="absolute z-30 w-6 h-6 top-0 right-0 bg-indigo-300 rounded-full -mt-2 -mr-3"
+                      x-bind:style="'right: '+ (100 - maxthumb) +'%'"></div>
+                  </div>
+                </div>
 
-                <div class="relative z-10 h-2">
-
-                  <div class="absolute z-10 left-0 right-0 bottom-0 top-0 rounded-md bg-gray-50"></div>
-
-                  <div class="absolute z-20 top-0 bottom-0 rounded-md bg-indigo-300"
-                    x-bind:style="'right:'+maxthumb+'%; left:'+minthumb+'%'"></div>
-
-                  <div class="absolute z-30 w-6 h-6 top-0 left-0 bg-indigo-300 rounded-full -mt-2 -ml-1"
-                    x-bind:style="'left: '+minthumb+'%'"></div>
-
-                  <div class="absolute z-30 w-6 h-6 top-0 right-0 bg-indigo-300 rounded-full -mt-2 -mr-3"
-                    x-bind:style="'right: '+maxthumb+'%'"></div>
+                <div class="flex justify-between items-center py-5">
+                  <!-- Min price text input -->
+                  <div>
+                    <input type="text" maxlength="5" x-model="minprice" name="min_price" disabled
+                      class="px-3 py-2 border border-gray-300 rounded w-24 text-center bg-gray-100 text-gray-500 cursor-not-allowed">
+                  </div>
+                  <!-- Max price text input -->
+                  <div>
+                    <input type="text" maxlength="5" x-on:input="maxtrigger" x-model="maxprice" name="max_price" id="max_price"
+                      class="px-3 py-2 border border-gray-200 text-black rounded w-24 text-center">
+                  </div>
                 </div>
               </div>
 
-              <div class="flex justify-between items-center py-5">
-                <div>
-                  <input type="text" maxlength="5" x-on:input="mintrigger" x-model="minprice"
-                    class="px-3 py-2 border border-gray-200 rounded w-24 text-center">
-                </div>
-                <div>
-                  <input type="text" maxlength="5" x-on:input="maxtrigger" x-model="maxprice"
-                    class="px-3 py-2 border border-gray-200 rounded w-24 text-center">
-                </div>
-              </div>
+
             </div>
           </div>
-        </div>
+        </form>
       </div>
-
-
 
       <div class="w-3/4">
         <div class="grid gap-x-4 gap-y-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -127,7 +131,7 @@
               </div>
               <a href="{{ route('products.show', ['product_id'=>$product->id]) }}"
                 class="inline-flex items-center justify-center w-full rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300">
-                <span class="font-bold mr-2">Ver variantes </span> ({{ count($product->productDetails) }})
+                <span class="font-bold mr-2">Ver variantes </span> ({{ $product->variant_count }})
               </a>
             </div>
           </div>
@@ -184,6 +188,7 @@
         button.classList.replace("bg-green-500", "bg-blue-500");
         button.classList.replace("hover:bg-green-700", "hover:bg-blue-700");
       }
+      // document.getElementById('filterForm').submit();
     }
 
     function checkAndAdjustAllButton() {
@@ -202,27 +207,43 @@
       }
     }
 
-    function range() {
+    function range(initialMinPrice, initialMaxPrice, max) {
       return {
-        minprice: 1000,
-        maxprice: 7000,
-        min: 100,
-        max: 10000,
-        minthumb: 0,
-        maxthumb: 0,
+        min: 0,
+        max: max,
+        minprice: initialMinPrice,
+        maxprice: initialMaxPrice,
+        minthumb: (initialMinPrice / max) * 100,
+        maxthumb: (initialMaxPrice / max) * 100,
+
+        initializeRange() {
+          this.mintrigger();
+          this.maxtrigger();
+        },
 
         mintrigger() {
-          this.minprice = Math.min(this.minprice, this.maxprice - 500);
-          this.minthumb = ((this.minprice - this.min) / (this.max - this.min)) * 100;
-
+          this.minprice = Math.min(this.minprice, this.maxprice - 1);
+          this.minthumb = (this.minprice / this.max) * 100;
         },
 
         maxtrigger() {
-          this.maxprice = Math.max(this.maxprice, this.minprice + 500);
-          this.maxthumb = 100 - (((this.maxprice - this.min) / (this.max - this.min)) * 100);
-        },
+          this.maxprice = Math.max(this.maxprice, this.minprice + 1);
+          this.maxthumb = (this.maxprice / this.max) * 100;
+        }
       }
     }
+
+
+
+    document.getElementById('maxPriceRange').addEventListener('change', function () {
+      document.getElementById('filterForm').submit();
+    });
+
+    document.getElementById('max_price').addEventListener('change', function () {
+      document.getElementById('filterForm').submit();
+    });
+
+
   </script>
   <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
 
