@@ -98,7 +98,7 @@ export const UserProfile = () => {
             {/* Botón para regresar */}
             <button type="button" onClick={() => window.history.back()}
               className="inline-flex justify-center rounded-md bg-indigo-400 px-3 py-2 text-md font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900">
-              Go Back
+              {t("Go back")}
             </button>
           </div>
         </form>
