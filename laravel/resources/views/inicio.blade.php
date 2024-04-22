@@ -117,7 +117,7 @@
 
 <!-- Third Section -->
 <div class="overflow-hidden bg-white">
-    <div class="col-span-12 md:col-span-6 py-10 md:py-16 bg-gradient-to-r from-purple-700 to-indigo-700 relative before:absolute before:h-full before:w-screen before:bg-[#061F41] before:top-0 before:right-0">
+    <div class="col-span-12 md:col-span-6 py-10 md:py-16 relative bg-[#141415]">
         <div class="relative z-20 pl-5 pr-3 md:pr-5"> <!-- Adjusted padding on the right side -->
             <h2 class="text-white font-black text-3xl md:text-5xl leading-snug mb-3 md:mb-5">Why Choose CustomAIze?</h2> <!-- Adjusted font size and margin bottom -->
             <p class="text-white text-lg md:text-base">
