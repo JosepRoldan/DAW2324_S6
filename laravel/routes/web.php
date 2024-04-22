@@ -42,8 +42,7 @@ Route::get('/productscard', function () {return view('productCard');});
 
 //////////////////////SHOP PROCESS////////////////////////
 Route::get('/Cart/Shipping', [BuyingProcessController::class, 'getShoppingOrdreDates'])->name('shipping');
-Route::post('/cart/shipping/data/save', [OrdersController::class, 'saveCartShippingData'])->name('save.shipping.data');
-Route::put('/cart/shipping/data/update', [OrdersController::class, 'updateCartShippingData'])->name('update.shipping.data');
+Route::post('/Cart/Order', [OrdersController::class, 'storeDates'])->name('shopProcessOrder');
 
 Route::get('/Cart/Shipping/PaymentMethod', [BuyingProcessController::class, 'paymentDates'])->name('paymentMethod');
 
