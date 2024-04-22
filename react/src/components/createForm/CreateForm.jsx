@@ -4,6 +4,9 @@ import { Link,useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../sectionTable/alert.scss";
 import Spinner from "../Spinner";
+import { useTranslation } from "react-i18next";
+
+
 /**
  * Function for creating a form.
  *
@@ -24,14 +27,14 @@ const CreateForm = ({ section }) => {
   const [errors, setErrors] = useState({});
   const token = localStorage.getItem("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-
+  const { t } = useTranslation();
   const validate = () => {
     let isValid = true;
     const newErrors = {};
 
     if (month.trim() === "") {
       isValid = false;
-      newErrors.month = "Month is required";
+      newErrors.month = t("Month is required");
     }
  
     if (
@@ -40,7 +43,7 @@ const CreateForm = ({ section }) => {
       parseFloat(income) <= 0
     ) {
       isValid = false;
-      newErrors.income = "Income must be a number greater than 0";
+      newErrors.income = t("Income must be a number greater than 0");
     }
     if (
       isNaN(parseFloat(expense)) ||
@@ -48,12 +51,12 @@ const CreateForm = ({ section }) => {
       parseFloat(expense) <= 0
     ) {
       isValid = false;
-      newErrors.expense = "Expense must be a number greater than 0";
+      newErrors.expense = t("Expense must be a number greater than 0");
     }
 
     if (isNaN(parseInt(year)) || !isFinite(year) || parseInt(year) <= 0) {
       isValid = false;
-      newErrors.year = "Year must be a number greater than 0";
+      newErrors.year = t("Year must be a number greater than 0");
     } 
 
 
@@ -115,9 +118,9 @@ const CreateForm = ({ section }) => {
                       <div className="h-5 w-5 border-t-transparent border-solid animate-spin rounded-full border-black border-4"></div>
                       </div>
                       )}
-          <h1 className="text-xl font-semibold">Create form for Profit</h1>
+          <h1 className="text-xl font-semibold">{t("Create form for Profit")}</h1>
         </div>
-        <p className="text-sm text-gray-600 mb-6">Insert the following data:</p>
+        <p className="text-sm text-gray-600 mb-6">{t("Insert the following data:")}</p>
         <div className="space-y-6">
           <div className="date-selector">
             <div className="month-selector">
@@ -129,18 +132,18 @@ const CreateForm = ({ section }) => {
                 className="bg-white-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 onChange={(e) => setMonth(e.target.value)}
               >
-                <option defaultValue>Select a month</option>
-                <option value="January">January</option>
-                <option value="February">February</option>
-                <option value="March">March</option>
-                <option value="April">April</option>
-                <option value="June">June</option>
-                <option value="July">July</option>
-                <option value="August">August</option>
-                <option value="September">September</option>
-                <option value="October">October</option>
-                <option value="November">November</option>
-                <option value="December">December</option>
+                <option defaultValue>{t("Select a month")}</option>
+                <option value="January">{t("January")}</option>
+                <option value="February">{t("February")}</option>
+                <option value="March">{t("March")}</option>
+                <option value="April">{t("April")}</option>
+                <option value="June">{t("June")}</option>
+                <option value="July">{t("July")}</option>
+                <option value="August">{t("August")}</option>
+                <option value="September">{t("September")}</option>
+                <option value="October">{t("October")}</option>
+                <option value="November">{t("November")}</option>
+                <option value="December">{t("December")}</option>
               </select>
             </div>
             <div className="year-selector">

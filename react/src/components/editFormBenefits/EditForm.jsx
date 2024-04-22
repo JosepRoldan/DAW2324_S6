@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Outlet, Link, useNavigate,useParams } from "react-router-dom";
 import axios from "axios";
 import "../sectionTable/alert.scss";
+import { useTranslation } from "react-i18next";
 
 const EditForm = () => {
   const [idBenefit, setId] = useState("");
@@ -17,7 +18,7 @@ const EditForm = () => {
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
   const [loadingForm, setLoadingForm] = useState(false); 
-  
+  const { t } = useTranslation();
 
   profit = income - expense;
   let { id } = useParams();
@@ -73,27 +74,27 @@ const handleKeyPress = (event) => {
 
     if (month.trim() === "") {
       isValid = false;
-      newErrors.month = "Month is required";
+      newErrors.month = t("Month is required");
     }
     
    if (month.trim() !== 'January' && month.trim() !== 'February' && month.trim() !== 'March' && month.trim() !== 'April' && month.trim() !== 'June' && month.trim() !== 'July' && month.trim() !== 'August' && month.trim() !== 'September' && month.trim() !== 'October' && month.trim() !== 'November' && month.trim() !== 'December') {
         isValid = false;
-        newErrors.month = "Month must be valid";
+        newErrors.month = t("Month must be valid");
     }
    
     if (isNaN(parseFloat(income)) || !isFinite(income) || parseFloat(income) <= 0) {
       isValid = false;
-      newErrors.income = "Income must be a number greater than 0";
+      newErrors.income = t("Income must be a number greater than 0");
     }
     if (isNaN(parseFloat(expense)) || !isFinite(expense) || parseFloat(expense) <= 0) {
       isValid = false;
-      newErrors.expense = "Expense must be a number greater than 0";
+      newErrors.expense = t("Expense must be a number greater than 0");
     }
 
 
     if (isNaN(parseInt(year)) || !isFinite(year) || parseInt(year) <= 0) {
       isValid = false;
-      newErrors.year = "Year must be a number greater than 0";
+      newErrors.year = t("Year must be a number greater than 0");
     }
 
       if (isValid) {
@@ -148,14 +149,14 @@ const handleKeyPress = (event) => {
                       <div className="h-5 w-5 border-t-transparent border-solid animate-spin rounded-full border-black border-4"></div>
                       </div>
                       )}
-        <h1 className="text-xl font-semibold">Update form for Profit</h1>
+        <h1 className="text-xl font-semibold">{t("Update form for Profit")}</h1>
       </div>
-      <p className="text-sm text-gray-600 mb-6">Modify the following data:</p>
+      <p className="text-sm text-gray-600 mb-6">{t("Modify the following data")}:</p>
       <div className="space-y-6">
         <div className="date-selector">
           <div className="month-selector">
             <label htmlFor="countries" className="text-sm font-medium text-gray-900">
-              Month
+              {t("Month")}
             </label>
             <select
               id="countries"
@@ -163,22 +164,22 @@ const handleKeyPress = (event) => {
               onChange={(e) => setMonth(e.target.value)}
             >
               <option defaultValue>{month}</option>
-              <option value="January">January</option>
-              <option value="February">February</option>
-              <option value="March">March</option>
-              <option value="April">April</option>
-              <option value="June">June</option>
-              <option value="July">July</option>
-              <option value="August">August</option>
-              <option value="September">September</option>
-              <option value="October">October</option>
-              <option value="November">November</option>
-              <option value="December">December</option>
+              <option value="January">{t("January")}</option>
+              <option value="February">{t("February")}</option>
+              <option value="March">{t("March")}</option>
+              <option value="April">{t("April")}</option>
+              <option value="June">{t("June")}</option>
+              <option value="July">{t("July")}</option>
+              <option value="August">{t("August")}</option>
+              <option value="September">{t("September")}</option>
+              <option value="October">{t("October")}</option>
+              <option value="November">{t("November")}</option>
+              <option value="December">{t("December")}</option>
             </select>
           </div>
           <div className="year-selector">
             <label htmlFor="year" className="text-sm font-medium text-gray-900">
-              Year
+              {t("Year")}
             </label>
             <input
               type="text"
@@ -197,7 +198,7 @@ const handleKeyPress = (event) => {
               htmlFor="income"
               className="text-sm font-medium text-gray-700 block mb-2"
             >
-              Income
+              {t("Income")}
             </label>
             <input
               type="text"
@@ -214,7 +215,7 @@ const handleKeyPress = (event) => {
               htmlFor="expenses"
               className="text-sm font-medium text-gray-700 flex mb-2"
             >
-              Expenses
+             {t("Expenses")}
             </label>
             <input
               type="text"
@@ -247,13 +248,13 @@ const handleKeyPress = (event) => {
         <div className="flex justify-between">
           <Link to={"/profit"}
           className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-full hover:bg-gray-300 focus:outline-none focus:ring focus:border-blue-300">
-          Discard
+          {t("Discard")}
           </Link>
           <button
             className="bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-full transition duration-300"
             onClick={() => validate()}
-          >          
-            Update
+          >
+          {t("Update")}
           </button>
         </div>
       </div>
