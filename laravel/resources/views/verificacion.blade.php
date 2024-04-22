@@ -13,7 +13,7 @@
 <body>
     @extends($layout)
     @section ('content')
-        <div class="bg-gray-100 flex justify-center items-center h-screen">
+        <div class="bg-gray-100 flex justify-center items-center h-screen text-black">
             <div class="bg-white p-8 rounded shadow-md max-w-md">
                 <h1 class="text-2xl font-bold mb-4">¡Correo de Verificación Enviado!</h1>
                 <p class="mb-4">Se ha enviado un correo electrónico a tu dirección de correo electrónico registrada.</p>

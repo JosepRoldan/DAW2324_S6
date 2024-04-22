@@ -17,7 +17,7 @@ class VerifyEmailController extends Controller
         return view('auth.forgot-password');
     }
 
-    public function sendResetLinkEmail(Request $request){
+    public function sendVerifyLinkEmail(Request $request){
         $request->validate([
             'email' => 'required|email|exists:customers,mail',
         ]);
@@ -29,7 +29,7 @@ class VerifyEmailController extends Controller
         $token = Str::random(60); // Utiliza Str::random() para generar una cadena aleatoria segura
         $createdAt = now();
         $expiresAt = now()->addMinutes(120);
-        ResetPasswordToken::create([
+        VerifyEmailToken::create([
             'mail' => $request->email,
             'token' => $token,
             'created_at' => $createdAt,
@@ -37,7 +37,7 @@ class VerifyEmailController extends Controller
         ]);
 
         // Genera el enlace para restablecer la contraseña
-        $resetLink = url('/passwords/reset/'.$token);
+        $resetLink = url('/auth/verify/'.$token);
 
         // Busca al usuario por su correo electrónico
         $registro = new Registro();
@@ -45,7 +45,7 @@ class VerifyEmailController extends Controller
 
         // Envía el correo electrónico con el enlace para restablecer la contraseña
         $email = new Mail();
-        $email->setFrom("josemedina@iesmontsia.org", "Aladdin Powell");
+        $email->setFrom("info@customAIze.org", "Aladdin Powell");
         $email->setSubject("Cambio de contraseña CustomAIze");
         $email->addTo($user->mail, "Nombre del Destinatario");
         $email->addContent("text/plain", "Ha solicitado un restablecimiento de contraseña. Haz clic en el siguiente enlace para cambiar tu contraseña: $resetLink , en caso de que no has solicitado un restablecimiento de contraseña, puedes ignorar este correo electrónico.");

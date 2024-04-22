@@ -49,7 +49,6 @@ class ForgotPasswordController extends Controller
         $email->setSubject("Cambio de contraseña CustomAIze");
         $email->addTo($user->mail, "Nombre del Destinatario");
         $email->addContent("text/plain", "Ha solicitado un restablecimiento de contraseña. Haz clic en el siguiente enlace para cambiar tu contraseña: $resetLink , en caso de que no has solicitado un restablecimiento de contraseña, puedes ignorar este correo electrónico.");
-
         // Configuración de SendGrid
         $apiKey = env('SENDGRID_API_KEY');
         $sendgrid = new SendGrid($apiKey);

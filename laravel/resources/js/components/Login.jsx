@@ -73,11 +73,11 @@ export default function Login() {
                                             <form onSubmit={handleSubmit}>
                                                 <p className="mb-4">Por favor, inicia sesión</p>
                                                 <TEInput
-                                                    type="email"
                                                     name="mail"
                                                     value={formData.email}
                                                     onChange={handleChange}
                                                     label="Correo Electrónico"
+                                                    style={{ color: "black" }}
                                                     className="mb-4 text-black"
                                                 ></TEInput>
                                                 <TEInput
@@ -87,6 +87,7 @@ export default function Login() {
                                                     onChange={handleChange}
                                                     label="Contraseña"
                                                     className="mb-4"
+                                                    style={{ color: "black" }}
                                                 ></TEInput>
 
                                                 <div className="mb-12 pb-1 pt-1 text-center">
@@ -103,7 +104,7 @@ export default function Login() {
                                                         </button>
                                                     </TERipple>
 
-                                                    <a href="#!">Términos y condiciones</a><br></br>
+                                                    <a href="termsandconditions">Términos y condiciones</a><br></br>
                                                     <a href="forgot">Recuperar contraseña</a>
                                                 </div>
 

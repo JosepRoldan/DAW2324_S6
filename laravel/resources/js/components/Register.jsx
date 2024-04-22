@@ -49,6 +49,7 @@ export default function Register() {
                                                     value={formData.username}
                                                     onChange={handleChange}
                                                     label="Nombre de Usuario"
+                                                    style={{ color: "black" }}
                                                     className="mb-4"
                                                 ></TEInput>
                                                 <TEInput
@@ -57,6 +58,7 @@ export default function Register() {
                                                     onChange={handleChange}
                                                     label="Correo Electrónico"
                                                     className="mb-4 text-black"
+                                                    style={{ color: "black" }}
                                                 ></TEInput>
                                                 <TEInput
                                                     type="password"
@@ -64,6 +66,7 @@ export default function Register() {
                                                     value={formData.password}
                                                     onChange={handleChange}
                                                     label="Contraseña"
+                                                    style={{ color: "black" }}
                                                     className="mb-4"
                                                 ></TEInput>
 
@@ -81,7 +84,7 @@ export default function Register() {
                                                         </button>
                                                     </TERipple>
 
-                                                    <a href="#!">Términos y condiciones</a>
+                                                    <a href="termsandconditions">Términos y condiciones</a>
                                                 </div>
 
                                                 <div className="flex items-center justify-between pb-6">

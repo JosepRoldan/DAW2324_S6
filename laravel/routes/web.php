@@ -96,6 +96,8 @@ Route::post('/sign_up', [RegisterController::class, 'store'])->name('customers.s
 Route::get('/forgot', function () {return view('/auth/recover-password');})->name('forgot');
 //Logout
 Route::get('/logout', [RegisterController::class, 'logout'])->name('logout');
+Route::get('/auth/verify/{token}', function ($token) {return view('auth.passwords.reset', ['token' => $token]);})->name('password.reset.form');
+
 
 //Reset Password
 use App\Models\ResetPasswordToken;
