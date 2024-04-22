@@ -6,6 +6,7 @@ import { SalesPriceCellRenderer } from '../../components/tables/products/cellRen
 import { usePage } from '../../contexts/PageContext';
 import { useTranslation } from "react-i18next";
 import { updateMultipleProducts } from '../../api/updateMultipleProducts';
+import { updateMultipleProductMargins } from '../../api/updateMultipleProductMargins';
 
 export default function ProductsMassiveActions() {
     const { t } = useTranslation();
@@ -22,11 +23,10 @@ export default function ProductsMassiveActions() {
     const [rowData, setRowData] = useState([]);
     const [selectedProducts, setSelectedProducts] = useState(new Set());
     const [isLoading, setIsLoading] = useState(true);
-    const [benefitsMargin, setBenefitsMargin] = useState('');  // Nuevo estado para el margen de beneficios
-    const [isActive, setIsActive] = useState('true');  // Nuevo estado para el estado activo/inactivo
+    const [benefitsMargin, setBenefitsMargin] = useState('');
+    const [isActive, setIsActive] = useState('true');
     const [lastUpdated, setLastUpdated] = useState(Date.now());
 
-    // Cargar datos de productos
     useEffect(() => {
         const token = localStorage.getItem('token');
         fetch(`${import.meta.env.VITE_API_URL}/products`, {
@@ -76,7 +76,6 @@ export default function ProductsMassiveActions() {
     }
 
     const handleMarginChange = (e) => {
-        console.log("jjjj")
         setBenefitsMargin(e.target.value);
     };
 
@@ -84,29 +83,35 @@ export default function ProductsMassiveActions() {
         setIsActive(e.target.value);
     };
 
-    const handleMassiveUpdate = () => {
-        if (selectedProducts.size === 0) {
-            console.log("No products selected");
-            return;
-        }
-
+    const handleMassiveUpdateForActiveProducts = () => {
         const token = localStorage.getItem('token');
         const apiUrl = import.meta.env.VITE_API_URL;
-        const updateData = {
-            benefitsMargin: benefitsMargin,  // Asume que benefitsMargin es una variable de estado
-            isActive: isActive               // Asume que isActive es una variable de estado
+        const activeData = {
+            isActive: isActive
         };
-
-        updateMultipleProducts(selectedProducts, updateData, token, apiUrl)
+        updateMultipleProductsActive(selectedProducts, activeData, token, apiUrl)
             .then(() => {
-                console.log("All selected products updated successfully");
-                // Aquí se actualiza el estado lastUpdated para desencadenar una recarga de datos
                 setLastUpdated(Date.now());
             })
             .catch(error => {
                 console.error("Error updating products", error);
             });
-    };
+    }
+
+    const handleMassiveUpdateForBenefitsMargin = () => {
+        const token = localStorage.getItem('token');
+        const apiUrl = import.meta.env.VITE_API_URL;
+        const marginData = {
+            benefitsMargin: benefitsMargin
+        };
+        updateMultipleProductMargins(selectedProducts, marginData, token, apiUrl)
+            .then(() => {
+                setLastUpdated(Date.now());
+            })
+            .catch(error => {
+                console.error("Error updating products", error);
+            });
+    }
 
     return (
         <>
@@ -126,7 +131,7 @@ export default function ProductsMassiveActions() {
                                     className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-50 sm:text-sm border-gray-300 rounded-md mr-2"
                                 />
                                 <button
-                                    onClick={handleMassiveUpdate}
+                                    onClick={handleMassiveUpdateForBenefitsMargin}
                                     className="px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-lg">
                                     {t("Save Margin")}
                                 </button>
@@ -146,7 +151,7 @@ export default function ProductsMassiveActions() {
                                     <option value="false">{t("Inactive")}</option>
                                 </select>
                                 <button
-                                    onClick={handleMassiveUpdate}
+                                    onClick={handleMassiveUpdateForActiveProducts}
                                     className="ml-2 px-4 py-2 bg-green-500 hover:bg-green-700 text-white font-bold rounded-lg">
                                     {t("Toggle Status")}
                                 </button>
@@ -162,7 +167,6 @@ export default function ProductsMassiveActions() {
                                             type="checkbox"
                                             onChange={handleSelectAllClick}
                                             checked={rowData.length > 0 && selectedProducts.size === rowData.length}
-                                        // Recuerda: la propiedad "indeterminate" no es soportada directamente por JSX. Se necesita manejar con refs o efectos.
                                         />
                                     </th>
                                     <th className="w-2/12 px-4 py-2 border border-gray-300">{t("Image")}</th>

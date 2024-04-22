@@ -1,4 +1,4 @@
-export const updateMultipleProductsActive = async (selectedProducts, activeData, token, apiUrl) => {
+export const updateMultipleProductMargins = async (selectedProducts, marginData, token, apiUrl) => {
     if (!selectedProducts.size) {
         console.error('No products selected');
         return;
@@ -6,8 +6,14 @@ export const updateMultipleProductsActive = async (selectedProducts, activeData,
 
     const payload = {};
 
-    if (activeData.isActive !== undefined) {
-        payload.is_active = activeData.isActive === 'true';
+    if (marginData.benefitsMargin !== undefined) {
+        const marginValue = parseFloat(marginData.benefitsMargin.replace(' %', ''));
+        if (!isNaN(marginValue)) {
+            payload.benefits_margin = marginValue;
+        } else {
+            console.error('Invalid benefits margin value');
+            return;
+        }
     }
 
     if (Object.keys(payload).length === 0) {
