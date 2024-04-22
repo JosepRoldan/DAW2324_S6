@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import axios from "axios";
+import * as Yup from "yup";
 
 export default function ShoppingOrder() {
     const [customer, setCustomer] = useState({
@@ -18,6 +19,19 @@ export default function ShoppingOrder() {
     });
     const [productos, setProductos] = useState([]);
     const shippingPrice = 10; // Hardcode para el precio de envío
+    const [validationErrors, setValidationErrors] = useState({});
+
+    // Esquema de validación utilizando Yup
+    const validationSchema = Yup.object().shape({
+        name: Yup.string().required("Name is required"),
+        surname: Yup.string().required("Surname is required"),
+        mail: Yup.string().email("Invalid email address").required("Email is required"),
+        address: Yup.string().required("Address is required"),
+        city: Yup.string().required("City is required"),
+        state: Yup.string().required("State is required"),
+        postcode: Yup.string().required("ZIP is required"),
+        country: Yup.string().required("Country is required"),
+    });
 
     // Función para manejar los cambios en los campos del cliente
     const handleCustomerChange = (e) => {
@@ -29,44 +43,54 @@ export default function ShoppingOrder() {
         setAddress({ ...address, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const csrfToken = document.head.querySelector(
-            'meta[name="csrf-token"]',
-        ).content;
+        try {
+            // Validar los datos del cliente y la dirección
+            await validationSchema.validate({ ...customer, ...address }, { abortEarly: false });
 
-        // Calcula el total del carrito
-        const totalCarrito = productos.reduce((total, producto) => {
-            return total + parseFloat(producto.price) * producto.quantity;
-        }, 0);
+            const csrfToken = document.head.querySelector(
+                'meta[name="csrf-token"]',
+            ).content;
 
-        // Calcula el total final sumando el total del carrito y el precio de envío
-        const totalAmount = totalCarrito + shippingPrice;
+            // Calcula el total del carrito
+            const totalCarrito = productos.reduce((total, producto) => {
+                return total + parseFloat(producto.price) * producto.quantity;
+            }, 0);
 
-        // Crea el objeto formData con todos los datos necesarios, incluyendo el total del carrito y el total final
-        const formData = {
-            customer: customer,
-            address: address,
-            products: productos,
-            totalCarrito: totalCarrito, // Agrega el total del carrito al formData
-            shippingPrice: shippingPrice, // Agrega el precio de envío al formData
-            totalAmount: totalAmount, // Agrega el total final al formData
-        };
+            // Calcula el total final sumando el total del carrito y el precio de envío
+            const totalAmount = totalCarrito + shippingPrice;
 
-        axios
-            .post("/Cart/Order", formData, {
+            // Crea el objeto formData con todos los datos necesarios, incluyendo el total del carrito y el total final
+            const formData = {
+                customer: customer,
+                address: address,
+                products: productos,
+                totalCarrito: totalCarrito, // Agrega el total del carrito al formData
+                shippingPrice: shippingPrice, // Agrega el precio de envío al formData
+                totalAmount: totalAmount, // Agrega el total final al formData
+            };
+
+            await axios.post("/Cart/Order", formData, {
                 headers: {
                     "X-CSRF-TOKEN": csrfToken,
                 },
-            })
-            .then((response) => {
-                console.log("Order data saved:", response.data);
-                // Aquí puedes agregar lógica adicional después de que se haya guardado la orden, como redireccionar a otra página
-            })
-            .catch((error) => {
-                console.error("Error saving order data:", error);
             });
+
+            console.log("Order data saved");
+            // Aquí puedes agregar lógica adicional después de que se haya guardado la orden, como redireccionar a otra página
+        } catch (error) {
+            if (error instanceof Yup.ValidationError) {
+                const errors = {};
+                error.inner.forEach((e) => {
+                    errors[e.path] = e.message;
+                });
+                setValidationErrors(errors);
+            } else {
+                console.error("Error saving order data:", error);
+            }
+        }
     };
 
     // useEffect para cargar los productos desde el almacenamiento local
@@ -112,6 +136,7 @@ export default function ShoppingOrder() {
                                     onChange={handleCustomerChange}
                                     required
                                 />
+                                {validationErrors.name && <p className="text-red-500">{validationErrors.name}</p>}
                             </div>
                             <div className="flex sm:w-2/4 xl:w-1/4 border-gray-200 py-3">
                                 <label className="text-right px-2">
@@ -124,6 +149,7 @@ export default function ShoppingOrder() {
                                     onChange={handleCustomerChange}
                                     required
                                 />
+                                {validationErrors.surname && <p className="text-red-500">{validationErrors.surname}</p>}
                             </div>
                         </div>
                         <div className=" p-4 relative flex flex-col sm:flex-row sm:items-center bg-white shadow rounded-md">
@@ -137,6 +163,7 @@ export default function ShoppingOrder() {
                                     onChange={handleCustomerChange}
                                     required
                                 />
+                                {validationErrors.mail && <p className="text-red-500">{validationErrors.mail}</p>}
                             </label>
                         </div>
                     </section>
@@ -154,6 +181,7 @@ export default function ShoppingOrder() {
                                     onChange={handleAddressChange}
                                     required
                                 />
+                                {validationErrors.address && <p className="text-red-500">{validationErrors.address}</p>}
                             </label>
                             <label className="flex border-b border-gray-200 h-12 py-3 items-center">
                                 <span className="text-right px-2">City</span>
@@ -164,6 +192,7 @@ export default function ShoppingOrder() {
                                     onChange={handleAddressChange}
                                     required
                                 />
+                                {validationErrors.city && <p className="text-red-500">{validationErrors.city}</p>}
                             </label>
                             <label className="flex border-b border-gray-200 h-12 py-3 items-center">
                                 <span className="text-right px-2">State</span>
@@ -174,6 +203,7 @@ export default function ShoppingOrder() {
                                     onChange={handleAddressChange}
                                     required
                                 />
+                                {validationErrors.state && <p className="text-red-500">{validationErrors.state}</p>}
                             </label>
                             <label className="inline-flex w-2/4 border-gray-200 py-3">
                                 <span className="text-right px-2">ZIP</span>
@@ -184,6 +214,7 @@ export default function ShoppingOrder() {
                                     onChange={handleAddressChange}
                                     required
                                 />
+                                {validationErrors.postcode && <p className="text-red-500">{validationErrors.postcode}</p>}
                             </label>
                             <label className="flex border-b border-gray-200 h-12 py-3 items-center">
                                 <span className="text-right px-2">Country</span>
@@ -194,6 +225,7 @@ export default function ShoppingOrder() {
                                     onChange={handleAddressChange}
                                     required
                                 />
+                                {validationErrors.country && <p className="text-red-500">{validationErrors.country}</p>}
                             </label>
                         </fieldset>
                     </section>

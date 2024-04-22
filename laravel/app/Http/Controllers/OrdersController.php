@@ -93,7 +93,5 @@ class OrdersController extends Controller
         }
 
         return response()->json(['message' => 'Order data saved successfully']);
-    }
-
-    
+    }    
 }
