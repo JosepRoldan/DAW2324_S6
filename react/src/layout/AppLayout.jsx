@@ -82,7 +82,7 @@ export default function AppLayout({ children }) {
       ];
       break;
     default:
-      console.log("NO tienes rol");
+          navigate("/login");
       break;
   }
 
@@ -173,7 +173,9 @@ export default function AppLayout({ children }) {
                     ))}
                   </ul>
                 </li>
-                <LanguageSwitcher />
+                <div style={{ marginTop: "auto", textAlign: "center" }}>
+                  <LanguageSwitcher />
+                </div>
               </ul>
               <div id="userway-widget-container"><UserwayWidget /></div>
 

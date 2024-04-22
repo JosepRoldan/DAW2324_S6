@@ -2,20 +2,21 @@ import requests
 import os
 
 async def guardar_imagen(url, nombre_usuario):
-    try:
+    # try:
         # Realizar la solicitud GET para obtener la imagen
+        print(url)
         response = requests.get(url)
         # Verificar si la solicitud fue exitosa
         if response.status_code == 200:
-            # Guardar la imagen en el archivo especificado
-            with open(f"temp/{nombre_usuario}.png", 'wb') as archivo:
+            print(f"Este es el código{response.status_code}")
+            with open(f"/temp/{nombre_usuario}.png", 'wb') as archivo:
                 archivo.write(response.content)
             print(f"La imagen se ha descargado correctamente como '{nombre_usuario}'")
         else:
             print("Error al descargar la imagen. Código de estado:", response.status_code)
-    except Exception as e:
-        print("Error:", e)
-    return nombre_usuario
+    # except Exception as e:
+    #     print("Error:", e)
+    # return nombre_usuario
 
 async def eliminar_imagen(nombre_usuario):
     try:
