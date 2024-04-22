@@ -1,6 +1,6 @@
 // src/components/TailwindComponent.jsx
 import { createRoot } from "react-dom/client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Toaster, toast } from "sonner";
 import Demo from "./ColorWheel.jsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -14,9 +14,8 @@ import useURLParams from "../hooks/useURLParams";
 import { hsvaToHex } from "@uiw/color-convert";
 import DotLoader from "react-spinners/DotLoader";
 
-
 function GenerateGuidedImage() {
-    const imageStyle = [
+    let imageStyle = [
         "Acuarela",
         "Pintura al óleo",
         "Psicodélico",
@@ -26,7 +25,7 @@ function GenerateGuidedImage() {
         "3D",
     ];
 
-    const imageFeel = [
+    let imageFeel = [
         "Alegría",
         "Tristeza",
         "Asombro",
@@ -42,7 +41,7 @@ function GenerateGuidedImage() {
         "Nostalgia",
     ];
 
-    const imageElement = [
+    let imageElement = [
         "Bosque",
         "Pizza",
         "Cafetería",
@@ -53,6 +52,62 @@ function GenerateGuidedImage() {
         "Pastel",
         "Escenas urbana",
     ];
+
+    function getToken() {
+        const tokenElement = document.getElementById("token");
+        return tokenElement ? tokenElement.value : null;
+    }
+    const [loginStatus, setLoginStatus] = useState(null);
+    useEffect(() => {
+        // Función asincrónica dentro de useEffect
+        const fetchData = async () => {
+            console.log(getToken());
+            try {
+                const validated = await enviarPrompt(
+                    "POST",
+                    { token: getToken() },
+                    token,
+                    "/check-token"
+                );
+                setLoginStatus(validated.status);
+                consultarStatus(validated.status);
+            } catch (error) {
+                console.error("Error en la petición:", error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    const consultarStatus = (status) => {
+        console.log(status);
+        switch (status) {
+            case 2:
+                toast.info(
+                    "Valida tu cuenta aquí para poder generar imágenes.",
+                    {
+                        action: {
+                            label: "Hazlo aquí",
+                            onClick: () => (window.location.href = "daisy"),
+                        },
+                        position: "top-center",
+                    }
+                );
+                break;
+            case 3:
+                toast.info(
+                    "Registrate en la página aquí para poder generar imágenes.",
+                    {
+                        action: {
+                            label: "Hazlo aquí",
+                            onClick: () => (window.location.href = "sign_up"),
+                        },
+                        position: "top-center",
+                    }
+                );
+                break;
+        }
+    };
     const params = useURLParams();
     const [divsContent, setDivsContent] = useState([]);
     const [inputValue, setInputValue] = useState("");
@@ -75,6 +130,7 @@ function GenerateGuidedImage() {
     const token = document
         .querySelector('meta[name="token"]')
         .getAttribute("content");
+
     const dataCrear = {
         prompt:
             "Creame una imagen en estilo " +
@@ -86,8 +142,9 @@ function GenerateGuidedImage() {
             " y con un " +
             element +
             " como elemento principal.",
-        user: "Miquel",
+        user: getToken(),
     };
+
     function generarOpciones(opciones, selected, setSelected) {
         return (
             <>
@@ -122,6 +179,43 @@ function GenerateGuidedImage() {
                             </div>
                         </button>
                     ))}
+                    <button
+                        onClick={() => {
+                            setSelected(
+                                document.getElementById("inputId").value
+                            );
+                            cambiarSet();
+                        }}
+                        className="block mb-4"
+                    >
+                        <div
+                            className={`max-w-md mx-auto rounded-lg overflow-hidden shadow-md 
+                            ${
+                                selected
+                                    ? "transition duration-300 ease-in-out hover:bg-gray-300  bg-white"
+                                    : "-translate-y-1 scale-105 bg-gray-300"
+                            }`}
+                        >
+                            <div className="w-full h-32">
+                                <img
+                                    className="w-full h-full object-cover"
+                                    src="https://www.diariodesevilla.es/2024/03/14/consumo/mejores-piensos-perro-OCU_1884422746_206408349_667x375.jpg"
+                                    alt="Descripción de la imagen"
+                                />
+                            </div>
+                            <div className="px-6 py-4">
+                                <div className="font-bold text-xl mb-2 text-black">
+                                    <input
+                                        id="inputId"
+                                        onChange={(event) => {
+                                            setSelected(event.target.value); // Establece el valor seleccionado
+                                            cambiarSet(); // Llama a la función cambiarSet
+                                        }}
+                                    ></input>
+                                </div>
+                            </div>
+                        </div>
+                    </button>
                 </div>
             </>
         );
@@ -145,7 +239,7 @@ function GenerateGuidedImage() {
         toast.promise(
             enviarPrompt(
                 "POST",
-                { idImg: idImg, idUser: 1, imgUrl: imgUrl },
+                { idImg: idImg, user: getToken(), imgUrl: imgUrl },
                 token,
                 "/save-img"
             ),
@@ -233,55 +327,67 @@ function GenerateGuidedImage() {
         setDivMostrat(paginaActual);
     }
     const cambiarSet = () => {
-        setStep((prevState) => ({
-            ...prevState,
-            [divMostrat]: { ...prevState[divMostrat], set: true },
-        }));
+        if (loginStatus == 1) {
+            console.log("CAmbio de div");
+            setStep((prevState) => ({
+                ...prevState,
+                [divMostrat]: { ...prevState[divMostrat], set: true },
+            }));
+        }
     };
 
     return (
         <div className="w-screen min-h-screen my-8 flex justify-center items-center">
-            <Toaster />
-            
+            <Toaster richColors />
+
             <div className="grid grid-cols-1 ">
-            <div className="grid grid-cols-1 place-items-center">
-                        <ul className="steps">
-                            <li className="step step-primary">
-                                Elige tu soporte
-                            </li>
-                            <li className="step step-primary">
-                                Crea tu imagen
-                            </li>
-                            <li className="step">
-                                Continua con tu compra
-                            </li>
-                        </ul>
-                    </div>
+                <div className="grid grid-cols-1 place-items-center">
+                    <ul className="steps">
+                        <li className="step step-primary">Elige tu soporte</li>
+                        <li className="step step-primary">Crea tu imagen</li>
+                        <li className="step">Continua con tu compra</li>
+                    </ul>
+                </div>
                 <div className="grid grid-cols-2 my-2">
-                    {divMostrat == 5 ? "": (<div><div className="grid justify-items-start">
-                        {divMostrat == 1 ? "" : (<div
-                            onClick={() => atrasarPagina()}
-                            className="fixed top-1/2 left-4 transform -translate-y-1/2 z-10 w-16 h-16 flex items-center justify-center rounded-full bg-blue-500 hover:bg-blue-700 text-white font-bold cursor-pointer shadow-2xl"
-                        >
-                            <FontAwesomeIcon icon={faChevronLeft} size="lg" />
-                        </div>)}
-                    </div>
-                    <div className="grid justify-items-end">
-                        <div
-                            onClick={() => {
-                                adelantarPágina();
-                            }}
-                            className={`fixed top-1/2 right-4 transform -translate-y-1/2 z-10 w-16 h-16 flex items-center justify-center rounded-full font-bold cursor-pointer ${
-                                step[divMostrat].set === false
-                                    ? "btn-disabled bg-gray-300 text-gray-400"
-                                    : "bg-blue-500 hover:bg-blue-700 text-white"
-                            }`}
-                            // className="btn btn-disabled"
-                        >
-                            <FontAwesomeIcon icon={faChevronRight} size="lg" />
+                    {divMostrat == 5 ? (
+                        ""
+                    ) : (
+                        <div>
+                            <div className="grid justify-items-start">
+                                {divMostrat == 1 ? (
+                                    ""
+                                ) : (
+                                    <div
+                                        onClick={() => atrasarPagina()}
+                                        className="fixed top-1/2 left-4 transform -translate-y-1/2 z-10 w-16 h-16 flex items-center justify-center rounded-full bg-blue-500 hover:bg-blue-700 text-white font-bold cursor-pointer shadow-2xl"
+                                    >
+                                        <FontAwesomeIcon
+                                            icon={faChevronLeft}
+                                            size="lg"
+                                        />
+                                    </div>
+                                )}
+                            </div>
+                            <div className="grid justify-items-end">
+                                <button
+                                    onClick={() => {
+                                        adelantarPágina();
+                                    }}
+                                    className={`fixed top-1/2 right-4 transform -translate-y-1/2 z-10 w-16 h-16 flex items-center justify-center rounded-full font-bold cursor-pointer ${
+                                        step[divMostrat].set === false
+                                            ? "btn-disabled bg-gray-300 text-gray-400"
+                                            : "bg-blue-500 hover:bg-blue-700 text-white"
+                                    }`}
+                                    // className="btn btn-disabled"
+                                >
+                                    <FontAwesomeIcon
+                                        icon={faChevronRight}
+                                        size="lg"
+                                    />
+                                </button>
+                            </div>
                         </div>
-                    </div></div>)}
-                    
+                    )}
                 </div>
                 {/* Div que muestra los estilos de la imagen */}
                 <div className={divMostrat == 1 ? "" : "hidden"}>
@@ -317,7 +423,7 @@ function GenerateGuidedImage() {
                         </div>
                     </div>
                 </div>
-                
+
                 <div className={divMostrat == 5 ? "" : "hidden"}>
                     <div className="flex flex-col justify-center ">
                         <button
@@ -344,14 +450,34 @@ function GenerateGuidedImage() {
                         )}
                         <div className="flex h-9 justify-center items-center my-4">
                             <div className="flex justify-center items-center gap-2">
-                                <button className="btn" onClick={() => setDivMostrat(1)}>Estilo: {style}</button>
-                                <button className="btn" onClick={() => setDivMostrat(2)}>Sentimiento: {feel}</button>
-                                <button className="btn" onClick={() => setDivMostrat(3)}>Elemento: {element}</button>
+                                <button
+                                    className="btn"
+                                    onClick={() => setDivMostrat(1)}
+                                >
+                                    Estilo: {style}
+                                </button>
+                                <button
+                                    className="btn"
+                                    onClick={() => setDivMostrat(2)}
+                                >
+                                    Sentimiento: {feel}
+                                </button>
+                                <button
+                                    className="btn"
+                                    onClick={() => setDivMostrat(3)}
+                                >
+                                    Elemento: {element}
+                                </button>
                                 <div className="flex items-center">
-                                    <button className="mr-4 btn" onClick={() => setDivMostrat(4)}>Color:</button>
+                                    <button
+                                        className="mr-4 btn"
+                                        onClick={() => setDivMostrat(4)}
+                                    >
+                                        Color:
+                                    </button>
                                     <div
                                         className="w-9 h-4 flex justify-center"
-                                        style={{background:  color }}
+                                        style={{ background: color }}
                                     ></div>
                                 </div>
                             </div>

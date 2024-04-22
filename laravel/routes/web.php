@@ -18,7 +18,6 @@ use App\Http\Controllers\CookieController;
 use App\Http\Controllers\LanguageController;
 
 
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
