@@ -114,6 +114,7 @@
     "The surname is mandatory": "El apellido es obligatorio",
     "Username is mandatory": "El usuario es obligatorio",
     "Email is mandatory": "Email es obligatorio",
-    "Password is mandatory": "Password es obligatoria"
+    "Password is mandatory": "Password es obligatoria",
+    "The password must be at least 6 characters long.": "La contraseña debe tener al menos 6 caracteres."
     
 }
