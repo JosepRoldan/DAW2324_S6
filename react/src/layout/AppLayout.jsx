@@ -5,9 +5,8 @@ import { Breadcrumb } from "../components/Breadcrumb";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import UserwayWidget from "../components/userwayWidget/UserWayWidget";
-import { useTranslation } from "react-i18next";
-import i18n, { loadLanguages } from "i18next";
-import { initReactI18next } from "react-i18next";
+import { useTranslation, initReactI18next } from "react-i18next";
+import i18n from "i18next";
 import LanguageSwitcher from "../components/LanguageSwitcher";
 import translationEN from "/src/locales/eng/translation.json";
 import translationCA from "/src/locales/cat/translation.json";
@@ -68,22 +67,22 @@ export default function AppLayout({ children }) {
       break;
     case 2:
       navigation = [
-        { name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: true },
-        { name: "Products", href: "/products", icon: CalendarIcon, current: false, },
-        { name: "Orders", href: "/orders", icon: DocumentDuplicateIcon, current: false, },
-        { name: "Profit", href: "/profit", icon: ChartPieIcon, current: false, },
-        { name: "Customers", href: "/customers", icon: UserGroupIcon, current: false, },
+        { name: t("Dashboard"), href: "/dashboard", icon: HomeIcon, current: true },
+        { name: t("Products"), href: "/products", icon: CalendarIcon, current: false, },
+        { name: t("Orders"), href: "/orders", icon: DocumentDuplicateIcon, current: false, },
+        { name: t("Profit"), href: "/profit", icon: ChartPieIcon, current: false, },
+        { name: t("Customers"), href: "/customers", icon: UserGroupIcon, current: false, },
       ];
       break;
     case 3:
       navigation = [
-        { name: "Home", href: "/dashboard", icon: HomeIcon, current: true },
-        { name: "Orders", href: "/orders", icon: DocumentDuplicateIcon, current: false, },
-        { name: "Customers", href: "/customers", icon: UserGroupIcon, current: false, },
+        { name: t("Home"), href: "/dashboard", icon: HomeIcon, current: true },
+        { name: t("Orders"), href: "/orders", icon: DocumentDuplicateIcon, current: false, },
+        { name: t("Customers"), href: "/customers", icon: UserGroupIcon, current: false, },
       ];
       break;
     default:
-      console.log("NO tienes rol");
+          navigate("/login");
       break;
   }
 
@@ -174,6 +173,9 @@ export default function AppLayout({ children }) {
                     ))}
                   </ul>
                 </li>
+                <div style={{ marginTop: "auto" }}>
+                  <LanguageSwitcher />
+                </div>
               </ul>
               <div id="userway-widget-container"><UserwayWidget /></div>
 
@@ -184,7 +186,6 @@ export default function AppLayout({ children }) {
           <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
             <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
               <div className="float-right">
-                <LanguageSwitcher />
               </div>
               <div className="relative flex flex-1 my-auto">
                 <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
