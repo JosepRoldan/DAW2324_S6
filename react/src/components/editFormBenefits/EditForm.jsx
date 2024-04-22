@@ -163,7 +163,7 @@ const handleKeyPress = (event) => {
               className="bg-white-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               onChange={(e) => setMonth(e.target.value)}
             >
-              <option defaultValue>{month}</option>
+              <option defaultValue>{t(month)}</option>
               <option value="January">{t("January")}</option>
               <option value="February">{t("February")}</option>
               <option value="March">{t("March")}</option>

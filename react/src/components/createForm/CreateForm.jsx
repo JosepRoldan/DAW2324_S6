@@ -166,7 +166,7 @@ const CreateForm = ({ section }) => {
                 htmlFor="income"
                 className="text-sm font-medium text-gray-700 block mb-2"
               >
-                Income
+                {t("Income")}
               </label>
               <input
                 type="text"
@@ -182,7 +182,7 @@ const CreateForm = ({ section }) => {
                 htmlFor="expenses"
                 className="text-sm font-medium text-gray-700 flex mb-2"
               >
-                Expenses
+                {t("Expenses")}
               </label>
               <input
                 type="text"
@@ -200,7 +200,7 @@ const CreateForm = ({ section }) => {
                 <li>{errors.income}</li>
             )}
             {errors.month && (
-               <li>{errors.month}</li>
+               <li>{t(errors.month)}</li>
             )}
              {errors.expense && (
             <li>{errors.expense}</li>
@@ -213,13 +213,13 @@ const CreateForm = ({ section }) => {
           </div>
           <div className="flex justify-between">
             <Link to={"/profit"} className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-full hover:bg-gray-300 focus:outline-none focus:ring focus:border-blue-300">
-            Discard
+            {t("Discard")}
             </Link>
             <button
               className="bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-full transition duration-300"
               onClick={() => validate()}
             >
-              Create
+               {t("Create")}
             </button>
           </div>
         </div>

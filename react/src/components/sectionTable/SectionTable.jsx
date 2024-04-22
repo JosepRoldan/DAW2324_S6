@@ -386,7 +386,7 @@ function SectionTable({ SectionName }) {
                       {benefit.year}
                     </td>
                     <td className="py-4 px-6 text-sm font-medium text-gray-900">
-                      {benefit.month}
+                      {t(benefit.month)}
                     </td>
                     <td className="py-4 px-6 text-sm font-medium text-gray-900">
                       {benefit.income} €
@@ -508,7 +508,7 @@ function SectionTable({ SectionName }) {
                         style={{ width: "1px" }}
                       ></div>
                       <div className="text-center absolute top-0 left-0 right-0 mt-3 text-gray-700 text-sm">
-                        {label}
+                        {t(label)}
                       </div>
                     </div>
                   </div>
