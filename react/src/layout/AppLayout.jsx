@@ -173,7 +173,7 @@ export default function AppLayout({ children }) {
                     ))}
                   </ul>
                 </li>
-                <div style={{ marginTop: "auto" }}>
+                <div style={{ marginTop: "auto", textAlign: "center" }}>
                   <LanguageSwitcher />
                 </div>
               </ul>
