@@ -5,7 +5,7 @@ import { PriceRangeCellRenderer } from '../../components/tables/products/cellRen
 import { SalesPriceCellRenderer } from '../../components/tables/products/cellRenderers/SalesPriceCellRenderer';
 import { usePage } from '../../contexts/PageContext';
 import { useTranslation } from "react-i18next";
-import { updateMultipleProducts } from '../../api/updateMultipleProducts';
+import { updateMultipleProductsActive } from '../../api/updateMultipleProductsActive';
 import { updateMultipleProductMargins } from '../../api/updateMultipleProductMargins';
 
 export default function ProductsMassiveActions() {
