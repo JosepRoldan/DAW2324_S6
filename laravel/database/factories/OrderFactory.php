@@ -15,6 +15,7 @@ class OrderFactory extends Factory
         return [
             'idOrderPicanova' => $this->faker->unique()->numberBetween(100000000, 999999999),
             'customerName' => Customer::query()->inRandomOrder()->value('name'), // Obtiene un nombre aleatorio de la tabla customers
+            'customerSurname' => Customer::query()->inRandomOrder()->value('surname'),
             'datetime' => $this->faker->dateTimeBetween('-1 month', 'now'),
             'orderStatus' => $this->faker->randomElement(['Pending', 'Processing', 'Shipped']),
         ];

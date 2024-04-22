@@ -46,9 +46,6 @@ const OrderDetailsPage = () => {
   const {
     rowData: ordersDetails, // Extract rowData from the custom hook response
   } = useOrdersData(`${import.meta.env.VITE_API_URL}/OrderDetails/${idOrder}`);
-  const {
-    rowData: orders, // Extract rowData from the custom hook response
-  } = useOrdersData(`${import.meta.env.VITE_API_URL}/orders`);
 
   // // Render loading state if data is still loading
   // if (loading) {
@@ -82,13 +79,16 @@ const OrderDetailsPage = () => {
         </header>
         <article className="container mx-auto py-4">
           <address className="float-left font-lg font-bold">
-            <p>Infosys LTD</p>
+            <p></p>
+          </address>
+          <address className="float-left font-lg font-bold">
+            <p></p>
           </address>
 
           <table className="w-full mb-8">
             <tr>
               <th className="w-1/4">Order Number</th>
-              <td className="w-3/4">{orders.idOrderPicanova}</td>
+              <td className="w-3/4">{idOrder}</td>
             </tr>
             <tr>
               <th>Date</th>
@@ -97,8 +97,8 @@ const OrderDetailsPage = () => {
             <tr>
               <th>Amount Due</th>
               <td>
-                <span className="text-green-500">$</span>
-                <span className="text-green-500">600.00</span>
+                <span className="text-green-500">TOTAL</span>
+                <span className="text-green-500">€</span>
               </td>
             </tr>
           </table>
@@ -108,23 +108,18 @@ const OrderDetailsPage = () => {
               <tr>
                 <th>Item</th>
                 <th>Description</th>
-                <th>Rate</th>
                 <th>Quantity</th>
                 <th>Price</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
+              <tr className="text-center">
                 <td>
                   <a className="cut">-</a>
                   <span>Front End Consultation</span>
                 </td>
                 <td>Experience Review</td>
-                <td>
-                  <span className="text-green-500">$</span>
-                  <span className="text-green-500">150.00</span>
-                </td>
-                <td>4</td>
+                <td></td>
                 <td>
                   <span className="text-green-500">$</span>
                   <span className="text-green-500">600.00</span>

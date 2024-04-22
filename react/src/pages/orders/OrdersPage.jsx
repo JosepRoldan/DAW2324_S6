@@ -101,6 +101,11 @@ export default function ProductsPage() {
         cellRenderer: undefined,
       },
       {
+        field: "customerSurname",
+        headerName: "Customer Surname",
+        cellRenderer: undefined,
+      },
+      {
         field: "datetime",
         headerName: "Order Date",
       },
