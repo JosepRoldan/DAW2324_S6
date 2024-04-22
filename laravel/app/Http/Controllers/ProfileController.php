@@ -15,4 +15,19 @@ class ProfileController extends Controller
         
         return response()->json($profile);
     }
+
+    public function updateUserProfileData(Request $request)
+    {
+        $token = Session::get('token');
+        $profile = ProfileModel::where('username', $token)->first();
+        // Actualiza los valores del perfil con los datos enviados desde el frontend
+        $profile->name = $request->name;
+        $profile->surname = $request->surname;
+        $profile->mail = $request->mail;
+        $profile->phone = $request->phone;
+        $profile->address = $request->address;
+        $profile->save();
+        
+        return response()->json(['message' => 'Profile updated successfully 3', 'profile' => $profile]);
+    }
 }

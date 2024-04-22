@@ -20,7 +20,7 @@ class ViewDetailsController extends Controller
 
 
         $details = MyOrdersModel::join('orderDetails', 'orders.id', '=', 'orderDetails.idOrder')
-            ->join('customers', 'customers.idCustomers', '=', 'orders.idCustomers')
+            ->join('customers', 'customers.id', '=', 'orders.idCustomers')
             ->join('product_details', 'product_details.idProduct', '=', 'orderDetails.idProduct') 
             ->join('generatedImages', 'generatedImages.idGI', '=', 'orderDetails.idGi')
             ->select('orderDetails.*', 'customers.surname', 'customers.name', 'product_details.name', 'generatedImages.prompt', 'orders.datetime', 'orders.orderStatus')

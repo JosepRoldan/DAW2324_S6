@@ -239,9 +239,9 @@ const Profile = () => {
 
                     <p className="text-gray-500">{profileData.mail}</p>
                     <div className="mt-4">
-                        <button className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+                        <a href="../editProfile" className="px-6 py-3 bg-blue-500 text-white rounded-md hover:bg-blue-600">
                             Edit Profile
-                        </button>
+                        </a>
                     </div>
                     <br></br>
                 </div>

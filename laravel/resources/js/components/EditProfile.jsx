@@ -87,7 +87,7 @@ const EditProfile = () => {
                     <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0zm-4.5 3h.008v.008H10.5v-.008z"
                     />
                 </svg>
             ),
@@ -118,6 +118,20 @@ const EditProfile = () => {
                 console.error("Error al obtener los datos:", error);
             });
     }, []);
+
+    const updateProfileData = async () => {
+        try {
+             axios.put("/updateProfileData", profileData)
+            .then(response => {
+                console.log(response.data);
+            })
+            console.log("Profile data updated successfully");
+            window.location.href = "/profile";
+            console.log(response);
+        } catch (error) {
+            console.error("Error updating user profile data:", error);
+        }
+    };
 
     return (
         <>
@@ -229,25 +243,18 @@ const EditProfile = () => {
                 </div>
             </nav>
             <div className="ml-80 h-50 bg-white">
-                <br></br>
                 <div className="flex flex-col items-center justify-center h-full">
                     <img
                         src="/img/fotoPerfil.jpeg"
-                        className="w-32 h-32 rounded-full mb-7"
+                        className="w-32 h-32 rounded-full"
                     />
                     <h2 className="text-xl font-semibold">
                         {profileData.name} {profileData.surname}
                     </h2>
 
                     <p className="text-gray-500">{profileData.mail}</p>
-                    <div className="mt-4">
-                        <button className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
-                            Edit Profile
-                        </button>
-                    </div>
-                    <br></br>
                 </div>
-                <div className="bg-gray-300 overflow-hidden shadow rounded-lg border flex justify-center items-center mx-20">
+                <div className="bg-gray-300 overflow-hidden shadow rounded-lg border flex justify-center items-center mx-20 my-5">
                     <div className="justify-center border-t border-gray-200 px-4 py-5 sm:p-0">
                         <dl className="sm:divide-y sm:divide-gray-200">
                             <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -264,6 +271,7 @@ const EditProfile = () => {
                                                 mail: e.target.value,
                                             }))
                                         }
+                                        placeholder="Email address"
                                         className="rounded-md border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 "
                                     />
                                 </dd>
@@ -316,20 +324,38 @@ const EditProfile = () => {
                                     className="text-center mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 rounded-md border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 pb-2"
                                 />
                             </div>
-
                             <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                 <dt className="text-center text-sm font-medium text-gray-500">
                                     Address
                                 </dt>
                                 <dd className=" text-center mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                    {profileData.address}
+                                    <input
+                                        type="text"
+                                        value={profileData.address}
+                                        onChange={(e) =>
+                                            setProfileData((prevState) => ({
+                                                ...prevState,
+                                                address: e.target.value,
+                                            }))
+                                        }
+                                        placeholder="Address"
+                                        className="rounded-md border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 pb-2"
+                                    />
                                 </dd>
                             </div>
                         </dl>
                     </div>
                 </div>
-                <br></br>
+                <div className="mt-4 flex justify-end mr-20">
+                    <a href="/profile" className="px-4 py-2 mr-2 bg-red-500 text-white rounded-md hover:bg-red-600">
+                        Cancel
+                    </a>
+                    <button onClick={updateProfileData} className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600" href="">
+                        Confirm
+                    </button>
+                </div>
             </div>
+            <br></br>
         </>
     );
 };
