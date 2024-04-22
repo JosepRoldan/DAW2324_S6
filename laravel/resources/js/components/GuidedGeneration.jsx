@@ -109,6 +109,7 @@ function GenerateGuidedImage() {
         }
     };
     const params = useURLParams();
+    const [loading, setLoading] = useState("");
     const [divsContent, setDivsContent] = useState([]);
     const [inputValue, setInputValue] = useState("");
     const [inputImg, setInputImg] = useState("");
@@ -223,6 +224,7 @@ function GenerateGuidedImage() {
 
     const handleButtonClick = async () => {
         try {
+            setDivsContent([]);
             const urls = await enviarPrompt(
                 "POST",
                 dataCrear,
@@ -272,21 +274,36 @@ function GenerateGuidedImage() {
             >
                 <button
                     onClick={() => guardarImatge(imagen.id, imagen.url)}
-                    className="absolute top-0 right-0 mt-2 mr-2 hover:scale-110 "
+                    className="absolute -top-0.5 right-0 mr-2 hover:scale-110 "
                 >
                     <svg
+                        width="32px"
+                        height="32px"
+                        viewBox="0 0 1024 1024"
+                        className="icon"
+                        version="1.1"
                         xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth="1.5"
-                        stroke="currentColor"
-                        className="w-6 h-6 fill-blue-400 hover:fill-blue-500"
+                        fill="#000000"
                     >
-                        <path
+                        <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                        <g
+                            id="SVGRepo_tracerCarrier"
                             strokeLinecap="round"
                             strokeLinejoin="round"
-                            d="M16.5 3.75V16.5L12 14.25 7.5 16.5V3.75m9 0H18A2.25 2.25 0 0 1 20.25 6v12A2.25 2.25 0 0 1 18 20.25H6A2.25 2.25 0 0 1 3.75 18V6A2.25 2.25 0 0 1 6 3.75h1.5m9 0h-9"
-                        />
+                            stroke="#CCCCCC"
+                            strokeWidth="61.44"
+                        >
+                            <path
+                                d="M789.333333 917.333333l-277.333333-128-277.333333 128V192c0-46.933333 38.4-85.333333 85.333333-85.333333h384c46.933333 0 85.333333 38.4 85.333333 85.333333v725.333333z"
+                                fill="#e7fc00"
+                            ></path>
+                        </g>
+                        <g id="SVGRepo_iconCarrier">
+                            <path
+                                d="M789.333333 917.333333l-277.333333-128-277.333333 128V192c0-46.933333 38.4-85.333333 85.333333-85.333333h384c46.933333 0 85.333333 38.4 85.333333 85.333333v725.333333z"
+                                fill="#e7fc00"
+                            ></path>
+                        </g>
                     </svg>
                 </button>
 
@@ -341,13 +358,6 @@ function GenerateGuidedImage() {
             <Toaster richColors />
 
             <div className="grid grid-cols-1 ">
-                <div className="grid grid-cols-1 place-items-center">
-                    <ul className="steps">
-                        <li className="step step-primary">Elige tu soporte</li>
-                        <li className="step step-primary">Crea tu imagen</li>
-                        <li className="step">Continua con tu compra</li>
-                    </ul>
-                </div>
                 <div className="grid grid-cols-2 my-2">
                     {divMostrat == 5 ? (
                         ""
@@ -392,27 +402,33 @@ function GenerateGuidedImage() {
                 {/* Div que muestra los estilos de la imagen */}
                 <div className={divMostrat == 1 ? "" : "hidden"}>
                     <div className="flex my-5 justify-center">
-                        <b>Elige un estilo</b>
+                        <p class="text-lg font-bold">Elige un estilo</p>
                     </div>
                     {generarOpciones(imageStyle, style, setStyle)}
                 </div>
                 {/* Div que muestra el color principal de la imagen */}
                 <div className={divMostrat == 2 ? "" : "hidden"}>
                     <div className="flex my-5 justify-center">
-                        <b>Elige el sentimiento que transmita tu imagen</b>
+                        <p class="text-lg font-bold">
+                            Elige el sentimiento que transmita tu imagen
+                        </p>
                     </div>
                     {generarOpciones(imageFeel, feel, setFeel)}
                 </div>
                 <div className={divMostrat == 3 ? "" : "hidden"}>
                     <div className="flex my-5 justify-center">
-                        <b>Elige el elemento principal</b>
+                        <p class="text-lg font-bold">
+                            Elige el elemento principal
+                        </p>
                     </div>
                     {generarOpciones(imageElement, element, setElement)}
                 </div>
                 {/* Div que muestra la eleccion de color de la imagen */}
                 <div className={divMostrat == 4 ? "" : "hidden"}>
                     <div className="flex my-5 justify-center">
-                        <b>Elige el color principal de tu imagen</b>
+                        <p class="text-lg font-bold">
+                            Elige el color principal de tu imagen
+                        </p>
                     </div>
                     <div className="flex my-5 justify-center h-full">
                         <div dir="ltr">
@@ -456,9 +472,7 @@ function GenerateGuidedImage() {
                                 ))}
                             </div>
                         ) : (
-                            <div className="grid grid-cols-1 place-items-center">
-                                <span className="loading loading-infinity loading-lg"></span>
-                            </div>
+                            ""
                         )}
                         <div className="flex h-9 justify-center items-center my-4">
                             <div className="flex justify-center items-center gap-2">
