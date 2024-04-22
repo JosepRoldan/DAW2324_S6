@@ -14,7 +14,7 @@ class MyImagesController extends Controller
     {
         $token = Session::get('token');
 
-        $imagenes = MyImagesModel::join('customers', 'generatedImages.idCustomers', '=', 'customers.idCustomers')
+        $imagenes = MyImagesModel::join('customers', 'generatedImages.idCustomers', '=', 'customers.id')
                     ->select('generatedImages.*', 'customers.*')
                     ->where('customers.username', $token)
                     ->where('generatedImages.is_saved', true)
