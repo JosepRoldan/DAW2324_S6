@@ -20,7 +20,7 @@ class Registro extends Model
     
     public function solicitarId($clientName)
     {
-        return DB::table('customers')->where('name', 'Miquel')->value('idCustomers');
+        return DB::table('customers')->where('username',$clientName)->value('id');
         
     }
 }

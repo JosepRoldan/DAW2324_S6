@@ -125,8 +125,6 @@ Route::get('/product/{product}', [ProductController::class, 'show'])->name('show
 Route::post('/enviar-prompt', [MostrarImagenesController::class, 'enviarPrompt']);
 Route::post('/modi-prompt', [MostrarImagenesController::class, 'modiPrompt']);
 
-Route::post('/save-img', [MostrarImagenesController::class, 'saveImg']);
-
 Route::get('/redirect-from-image', [RedirectController::class, 'redirectFromImage']);
 
 //Footer

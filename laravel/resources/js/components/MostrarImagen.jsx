@@ -8,17 +8,19 @@ import useURLParams from "../hooks/useURLParams";
 import DotLoader from "react-spinners/DotLoader";
 
 function MostrarImagen() {
+    function getToken() {
+        const tokenElement = document.getElementById("token");
+        return tokenElement ? tokenElement.value : null;
+    }
     const [loginStatus, setLoginStatus] = useState(null);
     useEffect(() => {
         // Función asincrónica dentro de useEffect
         const fetchData = async () => {
-            var tokenUsr = document.getElementById("token");
-            const tokenValue = tokenUsr !== null ? tokenUsr.value : null;
-            console.log(tokenValue);
+            console.log(getToken());
             try {
                 const validated = await enviarPrompt(
                     "POST",
-                    { token: tokenValue },
+                    { token: getToken() },
                     token,
                     "/check-token"
                 );
@@ -27,8 +29,6 @@ function MostrarImagen() {
             } catch (error) {
                 console.error("Error en la petición:", error);
             }
-
-            setLoginStatus();
         };
 
         fetchData();
@@ -46,11 +46,11 @@ function MostrarImagen() {
     const params = useURLParams();
     const dataCrear = {
         prompt: inputValue,
-        user: "Miquel",
+        user: getToken(),
     };
     const dataEditar = {
         url: inputImg,
-        user: "Miquel",
+        user: getToken(),
         idImg: inputId,
         prompt: inputValue,
     };
@@ -95,10 +95,11 @@ function MostrarImagen() {
 
     //Guarda la imagen a laa bd. Muestra una noti
     const guardarImatge = async (idImg, imgUrl) => {
+        console.log(idImg, imgUrl);
         toast.promise(
             enviarPrompt(
                 "POST",
-                { idImg: idImg, idUser: 1, imgUrl: imgUrl },
+                { idImg: idImg, idUser: getToken(), imgUrl: imgUrl },
                 token,
                 "/save-img"
             ),
@@ -172,18 +173,18 @@ function MostrarImagen() {
                         width="32px"
                         height="32px"
                         viewBox="0 0 1024 1024"
-                        class="icon"
+                        className="icon"
                         version="1.1"
                         xmlns="http://www.w3.org/2000/svg"
                         fill="#000000"
                     >
-                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
                         <g
                             id="SVGRepo_tracerCarrier"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
                             stroke="#CCCCCC"
-                            stroke-width="61.44"
+                            strokeWidth="61.44"
                         >
                             <path
                                 d="M789.333333 917.333333l-277.333333-128-277.333333 128V192c0-46.933333 38.4-85.333333 85.333333-85.333333h384c46.933333 0 85.333333 38.4 85.333333 85.333333v725.333333z"
