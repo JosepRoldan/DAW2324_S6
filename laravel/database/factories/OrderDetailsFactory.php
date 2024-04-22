@@ -2,28 +2,31 @@
 
 namespace Database\Factories;
 
-use App\Models\OrderDetails;
+use App\Models\OrderDetail;
 use App\Models\Order;
+use App\Models\Product;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class OrderDetailsFactory extends Factory
 {
-    protected $model = OrderDetails::class;
+    protected $model = OrderDetail::class;
 
     public function definition()
     {
     
-        $order = OrderDetails::inRandomOrder()->first();
+        $order = OrderDetail::inRandomOrder()->first();
+        $product = Product::inRandomOrder()->first(); // Obtiene un producto aleatorio
 
         return [
-            'idOrder' => Order::factory(),
-            'idProduct' => $this->faker->numberBetween(1, 50),
-            'idVariant' => $this->faker->randomNumber(4),
-            'quantity' => $this->faker->numberBetween(1, 10),
-            'priceEach' => $this->faker->randomFloat(2, 10, 100),
-            'shippingPrice' => $this->faker->randomFloat(2, 5, 20),
-            'created_at' => now(),
-            'updated_at' => now(),
+            'idOrder' => null, // Puedes asignar el ID de la orden específica al crear la orden
+            'idProduct' => $product->id,
+            'idGI' => $product->idGI, // Asigna el ID del grupo de inventario del producto
+            'productName' => $product->name,
+            'productDetails' => $product->description,
+            'quantity' => $this->faker->numberBetween(1, 10), // Cantidad aleatoria entre 1 y 10
+            'priceEach' => $product->price,
+            'totalPrice' => $product->price * $this->faker->numberBetween(1, 10), // Precio total aleatorio basado en la cantidad y el precio unitario
+            'shippingPrice' => $this->faker->randomFloat(2, 5, 20), // Precio de envío aleatorio entre 5 y 20
         ];
     }
 

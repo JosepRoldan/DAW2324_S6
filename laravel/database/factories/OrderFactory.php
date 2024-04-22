@@ -13,11 +13,13 @@ class OrderFactory extends Factory
     public function definition()
     {
         return [
-            'idOrderPicanova' => $this->faker->unique()->numberBetween(100000000, 999999999),
-            'customerName' => Customer::query()->inRandomOrder()->value('name'), // Obtiene un nombre aleatorio de la tabla customers
-            'customerSurname' => Customer::query()->inRandomOrder()->value('surname'),
-            'datetime' => $this->faker->dateTimeBetween('-1 month', 'now'),
-            'orderStatus' => $this->faker->randomElement(['Pending', 'Processing', 'Shipped']),
+            'number_order' => $this->faker->unique()->randomNumber(5),
+            'idCustomers' => Customer::factory(),
+            'name' => $this->faker->name,
+            'address' => $this->faker->address,
+            'totalPrice' => $this->faker->randomFloat(2, 10, 500),
+            'datetime' => $this->faker->dateTimeThisYear(),
+            'orderStatus' => $this->faker->randomElement(['pending', 'processing', 'completed']),
         ];
     }
 }
