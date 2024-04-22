@@ -1,29 +1,42 @@
 import AppLayout from '../../layout/AppLayout';
 import React, { useState, useEffect } from 'react';
 import Spinner from '../../components/Spinner';
+import { useTranslation } from "react-i18next";
+import { usePage } from '../../contexts/PageContext';
+import { useNavigate } from 'react-router-dom';
+
 
 
 const token = localStorage.getItem('token');
 
-const steps = [
-  { name: 'Users', href: '/users', current: false },
-  { name: 'User Profile', href: '/users/profile', current: true },
-];
 
 export const UserProfile = () => {
   var jsonData = JSON.parse(localStorage.getItem("user"));
   const [user, setUser] = useState(jsonData);
+  const { t } = useTranslation();
+  const { setPage, setSteps } = usePage();
+  const navigate = useNavigate();
+
+
+
 
   if (!user) {
-    return <Spinner message='Loading...' />;
+    return <Spinner message= {t('Loading...' )}/>;
   }
+
+  useEffect(() => {
+    setPage(t("Users"));
+    setSteps([{ name: t('Users'), href: '/users' }, { name: t("Create User"), href: '/users/create', current: true }]);
+
+}, [setPage, setSteps, navigate]);
+
 
   return (
       <div className="pb-16 space-y-10 divide-y divide-gray-900/10">
         <form>
           <div className="grid grid-cols-1 gap-x-8 gap-y-8 pt-10 md:grid-cols-3">
             <div className="px-4 sm:px-0">
-              <h2 className="text-base font-semibold leading-7 text-gray-900">Personal Information</h2>
+              <h2 className="text-base font-semibold leading-7 text-gray-900">{t("Personal Information")}</h2>
             </div>
 
             <div className="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2">
@@ -31,7 +44,7 @@ export const UserProfile = () => {
                 <div className="grid max-w-3xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                   <div className="sm:col-span-2">
                     <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900">
-                      First name
+                    {t("Name")}
                     </label>
                     <div className="mt-2">
                       <input
@@ -47,7 +60,7 @@ export const UserProfile = () => {
 
                   <div className="sm:col-span-4">
                     <label htmlFor="surname" className="block text-sm font-medium leading-6 text-gray-900">
-                      Last name
+                    {t("Surname")}
                     </label>
                     <div className="mt-2">
                       <input
@@ -63,7 +76,7 @@ export const UserProfile = () => {
 
                   <div className="sm:col-span-4">
                     <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
-                      Email
+                    {t("Email")}
                     </label>
                     <div className="mt-2">
                       <input
