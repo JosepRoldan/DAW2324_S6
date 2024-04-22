@@ -16,42 +16,42 @@
 
   @if($products->isEmpty())
   <div class="bg-white pt-10 flex justify-center min-h-screen w-full">
-    <h2 class="text-2xl font-bold text-gray-900">Sorry, no products found :´(</h2>
+    <h2 class="text-2xl font-bold text-gray-900">@lang('products.no_products')</h2>
   </div>
   @else
   <div class="bg-white flex flex-col justify-center items-start min-h-screen">
     <div class="w-full py-4 mt-10 flex justify-center">
-      <h1 class="text-3xl font-bold uppercase text-gray-900">Products</h1>
+      <h1 class="text-3xl font-bold uppercase text-gray-900">@lang('products.products')</h1>
     </div>
     <div class="flex flex-col lg:flex-row px-4 py-7 sm:px-6 lg:px-8 mx-4 sm:mx-10 md:mx-20 lg:mx-0 self-stretch">
       <div class="lg:w-1/4 mr-8 mb-8 lg:mb-0 lg:mr-8">
         <form id="filterForm" action="{{ route('products.index') }}" method="GET">
           <div class="bg-gray-100 mt-10 p-7 rounded-md shadow-md ">
-            <h2 class="mb-7 text-2xl font-extrabold text-center underline uppercase text-gray-900">Filters</h2>
-            <h3 class="text-lg font-bold text-center text-gray-900">Categories</h3>
+            <h2 class="mb-7 text-2xl font-extrabold text-center underline uppercase text-gray-900">@lang('products.filters')</h2>
+            <h3 class="text-lg font-bold text-center text-gray-900">@lang('products.categories')</h3>
             <div class="flex flex-wrap gap-4 justify-center mt-2">
               <button id="all" type="button" onclick="selectCategory(event)"
                 class="category-button transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full">
-                All
+                @lang('products.all')
               </button>
 
               <button id="wallDecoration" type="button" onclick="selectCategory(event)"
                 class="category-button transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
-                Wall Decoration
+                @lang('products.wall_decoration')
               </button>
 
               <button id="homeLifestyle" type="button" onclick="selectCategory(event)"
                 class="category-button transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
-                Home & Lifestyle
+                @lang('products.home_lifestyle')
               </button>
 
               <button id="photoGifts" type="button" onclick="selectCategory(event)"
                 class="category-button transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
-                Photo Gifts
+                @lang('products.photo_gifts')
               </button>
             </div>
 
-            <h2 class="mt-10 text-lg font-bold text-center text-gray-900">Price</h2>
+            <h2 class="mt-10 text-lg font-bold text-center text-gray-900">@lang('products.price')</h2>
             <!-- range -->
             <div class="mt-3 flex justify-center items-center">
               <div x-data="range(0, @json($maxPrice), 300)" x-init="initializeRange()" class="relative max-w-xl w-full">
@@ -125,13 +125,13 @@
               </a>
               <div class="mt-2 mb-5 flex items-center justify-between">
                 <p class="text-lg text-gray-700">
-                  Desde <span class="ml-1 text-2xl font-bold text-slate-900">{{
+                  @lang('products.from') <span class="ml-1 text-2xl font-bold text-slate-900">{{
                     $product->getCheapestProductDetail()->formatted_price }}</span>
                 </p>
               </div>
               <a href="{{ route('products.show', ['product_id'=>$product->id]) }}"
                 class="inline-flex items-center justify-center w-full rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300">
-                <span class="font-bold mr-2">Ver variantes </span> ({{ $product->variant_count }})
+                <span class="font-bold mr-2">@lang('products.show_variants') </span> ({{ $product->variant_count }})
               </a>
             </div>
           </div>
