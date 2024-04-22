@@ -114,5 +114,7 @@
   "Delete": "Suprimeix",
   "Go back": "Ves enrere",
   "My profile": "El meu perfil", 
-  "Sign out": "Tanca la sessió"
+  "Sign out": "Tanca la sessió",
+  "The name is mandatory": "El nom és obligatori"
+
 }

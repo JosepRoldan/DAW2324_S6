@@ -42,7 +42,7 @@ export const UsersCreate = () => {
     // Field validation required
     if (!formData.name || !formData.surname || !formData.user || !formData.email || !formData.password) {
       setErrorMessages({
-        name: !formData.name ? 'The name is mandatory' : '',
+        name: !formData.name ? t('The name is mandatory') : '',
         surname: !formData.surname ? 'The surname is mandatory' : '',
         user: !formData.user ? 'Username is mandatory' : '',
         email: !formData.email ? 'Email is mandatory' : '',
