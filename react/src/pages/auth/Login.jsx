@@ -163,7 +163,7 @@ export const Login = () => {
                     id="user"
                     value={user}
                     onChange={(e) => setUser(e.target.value)}
-                    placeholder="Please insert your user"
+                    placeholder={t("Please insert your user")}
                     className="appearance-none border-2 border-gray-100 rounded-lg px-4 py-3 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-primaryColor focus:shadow-lg"
                   />
                   {errors.user && (
@@ -180,7 +180,7 @@ export const Login = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     onKeyDown={(e) => handleKeyPress(e)}
-                    placeholder="Please insert your password"
+                    placeholder={t("Please insert your password")}
                     className="appearance-none border-2 border-gray-100 rounded-lg px-4 py-3 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-primaryColor focus:shadow-lg"
                   />
                   {errors.password && (
