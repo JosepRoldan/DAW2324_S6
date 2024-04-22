@@ -14,7 +14,7 @@ class MyOrdersController extends Controller
     {
         $token = Session::get('token');
 
-        $orders = MyOrdersModel::join('customers', 'orders.idCustomers', '=', 'customers.idCustomers')
+        $orders = MyOrdersModel::join('customers', 'orders.idCustomers', '=', 'customers.id')
             ->select('orders.*', 'customers.name', 'customers.surname', 'customers.mail', 'customers.username')
             ->where('customers.username', $token)
             ->get();
