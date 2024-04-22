@@ -26,7 +26,7 @@ export const UserProfile = () => {
 
   useEffect(() => {
     setPage(t("Users"));
-    setSteps([{ name: t('Users'), href: '/users' }, { name: t("Create User"), href: '/users/create', current: true }]);
+    setSteps([{ name: t('Users'), href: '/users' }, { name: t("Show User"), href: '/users/create', current: true }]);
 
 }, [setPage, setSteps, navigate]);
 
