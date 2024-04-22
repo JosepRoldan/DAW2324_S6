@@ -110,6 +110,10 @@
     "My profile": "Mi perfil",
     "Sign out": "Salir",
     "Go back": "Volver",
-    "The name is mandatory": "El nombre es obligatorio"
+    "The name is mandatory": "El nombre es obligatorio",
+    "The surname is mandatory": "El apellido es obligatorio",
+    "Username is mandatory": "El usuario es obligatorio",
+    "Email is mandatory": "Email es obligatorio",
+    "Password is mandatory": "Password es obligatoria"
     
 }

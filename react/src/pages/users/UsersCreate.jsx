@@ -43,10 +43,10 @@ export const UsersCreate = () => {
     if (!formData.name || !formData.surname || !formData.user || !formData.email || !formData.password) {
       setErrorMessages({
         name: !formData.name ? t('The name is mandatory') : '',
-        surname: !formData.surname ? 'The surname is mandatory' : '',
-        user: !formData.user ? 'Username is mandatory' : '',
-        email: !formData.email ? 'Email is mandatory' : '',
-        password: !formData.password ? 'Password is mandatory' : ''
+        surname: !formData.surname ? t('The surname is mandatory') : '',
+        user: !formData.user ? t('Username is mandatory') : '',
+        email: !formData.email ? t('Email is mandatory') : '',
+        password: !formData.password ? t('Password is mandatory') : ''
       });
       return;
     }
