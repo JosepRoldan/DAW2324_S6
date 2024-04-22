@@ -33,7 +33,7 @@ client = OpenAI(api_key=os.environ.get("API_KEY_DALLE"),)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost"],
+    allow_origins=["http://localhost:8000,http://localhost:3000"],
     allow_credentials=True,
     allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["*"],
@@ -108,10 +108,10 @@ async def editar_imagen(infoEdit: infoEdit,
     try:
         ruta = await guardar_imagen(infoEdit.url ,infoEdit.idImg)
         print("Ruta de la imagen guardada:", ruta)
-        with open("temp/" + ruta + ".png", "rb") as image_file:
+        with open(f"app/openai/temp/{ruta}.png", "rb") as image_file:
             response =  client.images.create_variation(
                 image=image_file,
-                n=2,
+                n=3,
                 size="256x256"
             )
         print("Imagen abierta")
