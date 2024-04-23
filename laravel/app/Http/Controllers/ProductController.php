@@ -20,13 +20,16 @@ class ProductController extends Controller
             $maxPrice = 300;
         }
 
-        $products = Product::where('is_active', true)->where('priority', '>', 0)
+        $products = Product::where('is_active', true)
+            ->where('priority', '>', 0)
             ->whereHas('productDetails', function ($query) use ($maxPrice) {
-                $query->where('price', '<=', $maxPrice);
+                // Multiplicar price por benefit_margin y compararlo con maxPrice
+                $query->whereRaw('price * benefits_margin <= ?', [$maxPrice]);
             })
             ->withCount([
                 'productDetails as variant_count' => function ($query) use ($maxPrice) {
-                    $query->where('price', '<=', $maxPrice);
+                    // Contar variantes donde price multiplicado por benefit_margin es menor o igual a maxPrice
+                    $query->whereRaw('price * benefits_margin <= ?', [$maxPrice]);
                 }
             ])
             ->orderBy('priority', 'asc')
@@ -44,11 +47,12 @@ class ProductController extends Controller
         $productImages = $product->productImages;
         $productVariants = $product->productDetails;
 
+        // dd($product);
+
         return view('products.show', [
             'product' => $product,
             'productImages' => $productImages,
             'productVariants' => $productVariants,
         ]);
     }
-
 }
