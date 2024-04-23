@@ -80,6 +80,8 @@
     "Please enter a username.": "Please enter a username.",
     "Please enter a password.": "Please enter a password.",
     "Passwords must match": "Passwords must match",
+    "Order Number": "Order Number",
+    "Date": "Date",
     "Password must be at least 6 characters long.": "Password must be at least 6 characters long.",
     "Please select an account status.": "Please select an account status.",
     "Please select whether the account is validated or not.": "Please select whether the account is validated or not.",
