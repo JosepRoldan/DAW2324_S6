@@ -1,4 +1,4 @@
-<!-- <?php
+<?php
 
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
@@ -12,12 +12,6 @@ use App\Models\VerifyEmailToken;
 
 class VerifyEmailController extends Controller
 {
-    public function showForgotPasswordForm()
-    {
-        //View a la que debe devolver
-        return view('');
-    }
-
     public function sendVerifyLinkEmail(Request $request){
         $request->validate([
             'email' => 'required|email|exists:customers,mail',
@@ -47,12 +41,12 @@ class VerifyEmailController extends Controller
         // Envía el correo electrónico con el enlace para restablecer la contraseña
         $email = new Mail();
         $email->setFrom("info@customAIze.org", "Aladdin Powell");
-        $email->setSubject("Cambio de contraseña CustomAIze");
+        $email->setSubject("Verificación de email CustomAIze");
         $email->addTo($user->mail, "Nombre del Destinatario");
-        $email->addContent("text/plain", "Ha solicitado un restablecimiento de contraseña. Haz clic en el siguiente enlace para cambiar tu contraseña: $resetLink , en caso de que no has solicitado un restablecimiento de contraseña, puedes ignorar este correo electrónico.");
+        $email->addContent("text/plain", "Hemos recibido una solicitud de verificación. Haz clic en el siguiente enlace para verificar tu correo electrónico: $resetLink , en caso de que no hayas solicitado una verificación, cambia tu contraseña.");
 
         // Configuración de SendGrid
-        $apiKey = env('SENDGRID_API_KEY');
+        $apiKey = config('configuration.SENDGRID_API_KEY');
         $sendgrid = new SendGrid($apiKey);
         try {
             $response = $sendgrid->send($email);
@@ -92,5 +86,3 @@ class VerifyEmailController extends Controller
         return view('password.reset', ['token' => $token, 'email' => $email]);
     }
 }
-
- -->
