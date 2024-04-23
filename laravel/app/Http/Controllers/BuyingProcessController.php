@@ -25,10 +25,10 @@ class BuyingProcessController extends Controller
         $rules = [
             'name' => 'required',
             'surname' => 'required',
-            'phone' => 'required',
+            'city' => 'required',
             'address' => 'required',
             'postcode' => 'required',
-            'idCountry' => 'required',
+            'country' => 'required',
         ];
     
         $validator = Validator::make($request->all(), $rules);
@@ -41,20 +41,13 @@ class BuyingProcessController extends Controller
         Customer::create([
             'name' => $request->input('name'),
             'surname' => $request->input('surname'),
-            'phone' => $request->input('phone'),
+            'city' => $request->input('city'),
             'address' => $request->input('address'),
             'postcode' => $request->input('postcode'),
-            'idCountry' => $request->input('idCountry'),
+            'Country' => $request->input('country'),
         ]);
     
         return response()->json(['message' => 'Customer created successfully'], 200);
-    }
-
-    public function userCartShop()
-    {
-        $user = Session::get('token');
-        $cart = ShoppingCart::find($user);
-        return view('processShop.cart', ['cart' => $cart]);
     }
 
 
@@ -64,28 +57,25 @@ class BuyingProcessController extends Controller
         $username = Session::get('token');
         // Obtener el cliente actual
         $customer = Customer::where('username', $username)->first();
-
+    
         // Verificar si se encontró el cliente
         if (!$customer) {
             return view('processShop.guess');
         }
-
-        $address = DB::table('delivery_address')->where('id', $customer->id)->first();
-       
-        if ($address) {
-            // Convertir la dirección de entrega a JSON
-            $addressJson = $address->toJson();
-        } else {
-            // Si la dirección de entrega no existe, establecer el JSON como null
-            $addressJson = [];
+    
+        // Obtener la dirección de entrega si existe
+        $address = $customer->getAddressDelivery;
+    
+        // Definir un valor por defecto para la dirección si es nula
+        if (!$address) {
+            $address = [];
         }
-
+    
         // Si existe una orden pendiente, usar los datos de envío de esa orden
         if ($customer) {
             //Si ha encontrado una orden vamos a details
-            return view('processShop.shipping', ['customer' => $customer, 'address' => $addressJson,'errorMessage'=>'']);
-
+            return view('processShop.shipping', ['customer' => $customer, 'address' => $address,'errorMessage'=>'']);
         } 
     }
-
+    
 }

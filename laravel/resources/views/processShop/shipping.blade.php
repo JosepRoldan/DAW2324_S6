@@ -37,12 +37,10 @@
         }
     </style>
 </head>
-@if(!$address)
     <div id="data" 
-        data-address="{{ json_encode($address) }}" 
+        data-address="{{ $address ? $address->toJson() : '{}' }}" 
         data-customer="{{ $customer->toJson() }}">
     </div>
-@endif
 
 <div id="shoppingOrder"></div>
 

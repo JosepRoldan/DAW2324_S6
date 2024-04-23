@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('delivery_address', function (Blueprint $table) {
+        Schema::create('address_deliveries', function (Blueprint $table) {
             $table->id();
             $table->foreignId('idCustomers')->references('id')->on('customers');
             $table->string('address', 50);
