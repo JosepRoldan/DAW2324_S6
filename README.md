@@ -29,6 +29,7 @@ cp .env.example .env
 # Go to the `fastapi` folder:
 ```
 cd fastapi/
+cd app/
 cp .env.example .env
 ```
 
@@ -78,4 +79,12 @@ http://localhost:8080/
 **FastAPI**
 ```
 http://localhost:8003/docs/
+```
+**Prometheus**
+```
+http://localhost:9090/
+```
+**Grafana**
+```
+http://localhost:4000/
 ```

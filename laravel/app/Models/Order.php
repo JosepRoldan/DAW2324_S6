@@ -10,6 +10,26 @@ class Order extends Model
     use HasFactory;
     public $timestamps = false;
 
+    protected $fillable = [
+        'number_order',
+        'idCustomers',
+        'name',
+        'address',
+        'totalPrice',
+        'datetime',
+        'orderStatus',
+    ];
+
+    protected static function boot()
+    {
+        parent::boot();
+    
+        static::creating(function ($order) {
+            $lastNumberOrder = static::max('number_order') ?? 99;
+            $order->number_order = $lastNumberOrder + 1;
+        });
+    }
+
     function customer()
     {
         return $this->belongsTo(Customer::class);

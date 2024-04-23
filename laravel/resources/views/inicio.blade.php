@@ -95,6 +95,17 @@
         <svg class="hidden md:block absolute inset-y-0 h-full w-24 fill-current text-gray-100 -ml-12" viewBox="0 0 100 100" preserveAspectRatio="none">
           <polygon points="50,0 100,0 50,100 0,100" />
         </svg>
+      <div class="w-full md:w-3/5 h-full flex items-center bg-gray-100 rounded-lg">
+        <div class="p-12 md:pr-24 md:pl-16 md:py-12">
+          <p class="text-gray-600"><span class="text-gray-900">Jose Tonto</span> is a UK-based fashion retailer that has nearly doubled in size since last year. They integrated Stripe to deliver seamless checkout across mobile and web for customers in 100+ countries, all while automatically combating fraud.</p>
+          <a class="flex items-baseline mt-3 text-indigo-600 hover:text-indigo-900 focus:text-indigo-900" href="">
+            <span>Learn more about our users</span>
+            <span class="text-xs ml-1">&#x279c;</span>
+          </a>
+        </div>
+        <svg class="hidden md:block absolute inset-y-0 h-full w-24 fill-current text-gray-100 -ml-12" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <polygon points="50,0 100,0 50,100 0,100" />
+        </svg>
       </div>
       <button class="absolute top-0 mt-32 left-0 bg-white rounded-full shadow-md h-12 w-12 text-2xl text-indigo-600 hover:text-indigo-400 focus:text-indigo-400 -ml-6 focus:outline-none focus:shadow-outline">
         <span class="block" style="transform: scale(-1);">&#x279c;</span>
@@ -129,6 +140,169 @@
         </div>
     </div>
 </div>
+
+<!-- Forth Section -->
+<h2 class="text-center text-2xl md:text-5xl font-semibold text-gray-800 pt-16">Top Picks: Most Sold Products</h2>
+<link rel="stylesheet" href="https://cdn.tailgrids.com/tailgrids-fallback.css" />
+
+<!-- ====== Cards Section Start -->
+<section class="pt-10 pb-6">
+   <div class="container">
+      <div class="flex flex-wrap -mx-4">
+         <div class="w-full md:w-1/2 xl:w-1/3 px-4">
+            <div class="bg-white rounded-lg overflow-hidden shadow-md mb-10"> <!-- Aquí se agregó la clase 'shadow-md' para la sombra -->
+               <img
+                  src="https://cdn.tailgrids.com/1.0/assets/images/cards/card-01/image-01.jpg"
+                  alt="image"
+                  class="w-full"
+                  />
+               <div class="p-8 sm:p-9 md:p-7 xl:p-9 text-center">
+                  <h3>
+                     <a
+                        href="javascript:void(0)"
+                        class="
+                        font-semibold
+                        text-dark text-xl
+                        sm:text-[22px]
+                        md:text-xl
+                        lg:text-[22px]
+                        xl:text-xl
+                        2xl:text-[22px]
+                        mb-4
+                        block
+                        hover:text-primary
+                        "
+                        >
+                     50+ Best creative website themes & templates
+                     </a>
+                  </h3>
+                  <p class="text-base text-body-color leading-relaxed mb-7">
+                     Lorem ipsum dolor sit amet pretium consectetur adipiscing
+                     elit. Lorem consectetur adipiscing elit.
+                  </p>
+                  <a
+                     href="javascript:void(0)"
+                     class="
+                     inline-block
+                     py-2
+                     px-7
+                     border border-[#E5E7EB]
+                     rounded-full
+                     text-base text-body-color
+                     font-medium
+                     hover:border-primary hover:bg-primary hover:text-white
+                     transition
+                     "
+                     >
+                  View Details
+                  </a>
+               </div>
+            </div>
+         </div>
+         <div class="w-full md:w-1/2 xl:w-1/3 px-4">
+            <div class="bg-white rounded-lg overflow-hidden shadow-md mb-10"> <!-- Aquí se agregó la clase 'shadow-md' para la sombra -->
+               <img
+                  src="https://cdn.tailgrids.com/1.0/assets/images/cards/card-01/image-02.jpg"
+                  alt="image"
+                  class="w-full"
+                  />
+               <div class="p-8 sm:p-9 md:p-7 xl:p-9 text-center">
+                  <h3>
+                     <a
+                        href="javascript:void(0)"
+                        class="
+                        font-semibold
+                        text-dark text-xl
+                        sm:text-[22px]
+                        md:text-xl
+                        lg:text-[22px]
+                        xl:text-xl
+                        2xl:text-[22px]
+                        mb-4
+                        block
+                        hover:text-primary
+                        "
+                        >
+                     The ultimate UX and UI guide to card design
+                     </a>
+                  </h3>
+                  <p class="text-base text-body-color leading-relaxed mb-7">
+                     Lorem ipsum dolor sit amet pretium consectetur adipiscing
+                     elit. Lorem consectetur adipiscing elit.
+                  </p>
+                  <a
+                     href="javascript:void(0)"
+                     class="
+                     inline-block
+                     py-2
+                     px-7
+                     border border-[#E5E7EB]
+                     rounded-full
+                     text-base text-body-color
+                     font-medium
+                     hover:border-primary hover:bg-primary hover:text-white
+                     transition
+                     "
+                     >
+                  View Details
+                  </a>
+               </div>
+            </div>
+         </div>
+         <div class="w-full md:w-1/2 xl:w-1/3 px-4">
+            <div class="bg-white rounded-lg overflow-hidden shadow-md mb-10"> <!-- Aquí se agregó la clase 'shadow-md' para la sombra -->
+               <img
+                  src="https://cdn.tailgrids.com/1.0/assets/images/cards/card-01/image-03.jpg"
+                  alt="image"
+                  class="w-full"
+                  />
+               <div class="p-8 sm:p-9 md:p-7 xl:p-9 text-center">
+                  <h3>
+                     <a
+                        href="javascript:void(0)"
+                        class="
+                        font-semibold
+                        text-dark text-xl
+                        sm:text-[22px]
+                        md:text-xl
+                        lg:text-[22px]
+                        xl:text-xl
+                        2xl:text-[22px]
+                        mb-4
+                        block
+                        hover:text-primary
+                        "
+                        >
+                     Creative Card Component designs graphic elements
+                     </a>
+                  </h3>
+                  <p class="text-base text-body-color leading-relaxed mb-7">
+                     Lorem ipsum dolor sit amet pretium consectetur adipiscing
+                     elit. Lorem consectetur adipiscing elit.
+                  </p>
+                  <a
+                     href="javascript:void(0)"
+                     class="
+                     inline-block
+                     py-2
+                     px-7
+                     border border-[#E5E7EB]
+                     rounded-full
+                     text-base text-body-color
+                     font-medium
+                     hover:border-primary hover:bg-primary hover:text-white
+                     transition
+                     "
+                     >
+                  View Product
+                  </a>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</section>
+
 
 <!-- Forth Section -->
 <h2 class="text-center text-2xl md:text-5xl font-semibold text-gray-800 pt-16">Top Picks: Most Sold Products</h2>

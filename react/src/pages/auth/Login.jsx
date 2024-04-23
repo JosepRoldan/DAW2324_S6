@@ -6,7 +6,6 @@ import { useCookies } from "react-cookie";
 import { useTranslation } from "react-i18next";
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-import LanguageSwitcher from "../../components/LanguageSwitcher";
 import translationEN from "/src/locales/eng/translation.json";
 import translationCA from "/src/locales/cat/translation.json";
 import translationES from "/src/locales/esp/translation.json";
@@ -40,79 +39,55 @@ export const Login = () => {
   const [token, setToken] = useState("");
   const [alert, setAlert] = useState(false);
   const navigate = useNavigate();
-
+  const [loading, setLoading] = useState(false);
   
-  //Este metodo se encarga de hacer el login recibiendo usuario y contraseña
+  
   const handleLogin = async (user, password) => {
     setAlert(false);
-
+    setLoading(true);
     try {
-      //hacemos peticion con axios pasando parametros
       const response = await axios.post(`${import.meta.env.VITE_API_URL}/login`,
         {
           user,
           password,
         },
-        //{
-          //headers: {
-            //Accept: "application/json",
-            //"Content-Type": "application/json",
-          //},
-        //}
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        }
       );
 
       if (response.status === 200) {
-        //si respuesta es igual a 200 guardamos usuario y token
         const { token } = response.data;
-        //const { user } = response.data;
-        //verificamos que no esten vacios
+        const { user } = response.data;
         if (!token) {
           console.error("No token found in the response");
           setAlert(true);
           return;
-        } 
-        //else if (!user) {
-          //console.error("No user found in the response");
-          //setAlert(true);
-       // }
-        //si no estan vacios se guardan los datos
-        localStorage.setItem("token", token);
-
-        // Hacemos una solicitud adicional para obtener los datos del usuario, incluido su rol
-        const userDataResponse = await axios.get(`${import.meta.env.VITE_API_URL}/users`, {
-          headers: {
-            Authorization: `Bearer ${token}`, // Pasamos el token en los headers de autorización
-          },
-        });
-
-        if (userDataResponse.status === 200) {
-          const userData = userDataResponse.data.data;
-        const loggedInUser = userData.find(userData => userData.user === user);
-        const idRole = loggedInUser ? loggedInUser.idRole : null;
-        const userId = loggedInUser ? loggedInUser.id : null;
-          console.log("User role:", idRole);
-          // Guardamos los datos del usuario en el almacenamiento local
-          localStorage.setItem("user", JSON.stringify(user));
-          localStorage.setItem("idRole", JSON.stringify(idRole));
-          console.log("User ID:", userId);
-          localStorage.setItem("userId", userId);
-          // Navegamos a la página de dashboard
-          navigate('/dashboard');
+        } else if (!user) {
+          console.error("No user found in the response");
+          setAlert(true);
         }
-
-        //localStorage.setItem("user", JSON.stringify(user));
-        //setToken(token);
-        //navegamos a /dashboard
-        //navigate('/dashboard');
+        localStorage.setItem("token", token);
+        localStorage.setItem("user", JSON.stringify(user));
+        setToken(token);
+         navigate('/dashboard');
       }
     } catch (error) {
       console.error("Error logging in:", error);
-      //en caso de error mostramos alerta
       setAlert(true);
+    }finally{
+      setLoading(false);
     }
   };
 
-//Este metodo se encarga de comprovar que hayan datos cuando se envie la peticion
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+        onSubmit();
+    }
+};
   const onSubmit = () => {
     const newErrors = {};
     if (!user) {
@@ -121,11 +96,9 @@ export const Login = () => {
     if (!password) {
       newErrors.password = "Password is required";
     }
-    //en caso de haber errores se mostraran 
     setErrors(newErrors);
 
     if (!newErrors.user && !newErrors.password) {
-      //si no hay errores realizamos login
       handleLogin(user, password);
     }
   };
@@ -133,9 +106,6 @@ export const Login = () => {
   return (
     
     <div className="antialiased background-login">
-      <div className="float-right">
-      <LanguageSwitcher />
-      </div>
       <div className="container px-6 mx-auto">
         <div className="flex flex-col text-center md:text-left md:flex-row h-screen justify-evenly md:items-center">
           <div className="flex pl-20 flex-col w-full">
@@ -187,7 +157,7 @@ export const Login = () => {
                     id="user"
                     value={user}
                     onChange={(e) => setUser(e.target.value)}
-                    placeholder="Please insert your user"
+                    placeholder={t("Please insert your user")}
                     className="appearance-none border-2 border-gray-100 rounded-lg px-4 py-3 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-primaryColor focus:shadow-lg"
                   />
                   {errors.user && (
@@ -203,7 +173,8 @@ export const Login = () => {
                     id="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Please insert your password"
+                    onKeyDown={(e) => handleKeyPress(e)}
+                    placeholder={t("Please insert your password")}
                     className="appearance-none border-2 border-gray-100 rounded-lg px-4 py-3 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-primaryColor focus:shadow-lg"
                   />
                   {errors.password && (
@@ -218,25 +189,15 @@ export const Login = () => {
                     className="w-full py-4 rounded-lg text-black-100"
                   >
                     <div className="flex flex-row items-center justify-center">
+                    {loading &&(
                       <div className="mr-2">
-                        <svg
-                          className="w-6 h-6"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
-                          ></path>
-                        </svg>
+                      <div className="h-5 w-5 border-t-transparent border-solid animate-spin rounded-full border-white border-4"></div>
                       </div>
+                      )}
                       <div className="font-bold">{t("Sign in")}</div>
                     </div>
                   </button>
+ 
                   <div className="flex justify-evenly mt-5">
                     <a
                       className="w-full text-center font-medium text-gray-500"
