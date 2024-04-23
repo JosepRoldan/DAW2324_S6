@@ -6,7 +6,7 @@ use App\Models\AddressDelivery;
 use App\Models\OrderView;
 use App\Models\Order;
 use App\Models\OrderDetail;
-use App\Models\DeliveryAddress;
+
 
 use App\Models\Customer;
 
@@ -91,7 +91,7 @@ class OrdersController extends Controller
                 'shippingPrice'=> $shippingPrice,
             ]);
         }
-
+        
         return response()->json(['message' => 'Order data saved successfully']);
-    }    
+    }
 }

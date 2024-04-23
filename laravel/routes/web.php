@@ -44,9 +44,11 @@ Route::get('/productscard', function () {return view('productCard');});
 Route::get('/Cart/Shipping', [BuyingProcessController::class, 'getShoppingOrdreDates'])->name('shipping');
 Route::post('/Cart/Order', [OrdersController::class, 'storeDates'])->name('shopProcessOrder');
 
-Route::get('/Cart/Shipping/PaymentMethod', [BuyingProcessController::class, 'paymentDates'])->name('paymentMethod');
+Route::get('/shopProccess/paypal', [BuyingProcessController::class, 'paypal'])->name('processShop.paypal');
+Route::get('/shopProccess/success', [BuyingProcessController::class, 'success'])->name('processShop.success');
+Route::get('/shopProccess/cancel', [BuyingProcessController::class, 'cancel'])->name('processShop.cancel');
 
-Route::get('/Cart/Shipping/Details',[BuyingProcessController::class, 'detailsDates'])->name('details');
+
 Route::get('/Cart/Shipping/guess', function () {
     return view('processShop.guess');
 });

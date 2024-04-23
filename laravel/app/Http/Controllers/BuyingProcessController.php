@@ -3,15 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Hash;
-use App\Models\BuyingProcess;
-use App\Models\ShoppingCart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\DB;
 use App\Models\Customer;
-use App\Models\Order;
-use App\Models\ShoppingCartItems;
+use Srmklive\PayPal\Services\PayPal as PayPalClient; //per usar paypal
 use Illuminate\Http\Response;
 
 
@@ -76,6 +71,36 @@ class BuyingProcessController extends Controller
             //Si ha encontrado una orden vamos a details
             return view('processShop.shipping', ['customer' => $customer, 'address' => $address,'errorMessage'=>'']);
         } 
+    }
+
+    public function paypal(Request $request){
+        $provider = new PayPalClient;
+        $provider->setApiCredentials(config('paypal'));
+        $paypalToken = $provider->getAccessToken();
+
+        $response = $provider->createOrder([
+            "intent"=> "CAPTURE",
+            "aplicationtion_context" => [
+                "return_url" => route('processShop.success'),
+                "cancel_url" => route('processShop.cancel'),
+            ],
+            "purchase_units"=> [
+              [
+                "amount"=> [
+                    "currency_code"=> "USD",
+                    "value"=> $request->totalAmount
+                ]
+              ]
+            ]
+        ]);
+        if (isset($response['id']) && $response['id']!= null ) {
+            foreach ($response['links'] as $link) {
+                if ($link['rel'] === 'approve') {
+                    return redirect()->away($link['href']);
+                }
+            }
+
+        }
     }
     
 }
