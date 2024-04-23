@@ -7,10 +7,13 @@ import { usePage } from '../../contexts/PageContext';
 import { useTranslation } from "react-i18next";
 import { updateMultipleProductsActive } from '../../api/updateMultipleProductsActive';
 import { updateMultipleProductMargins } from '../../api/updateMultipleProductMargins';
+import SuccessMessageModal from '../../components/SuccessMessageModal';
 
 export default function ProductsMassiveActions() {
     const { t } = useTranslation();
     const { setPage, setSteps } = usePage();
+    const [isShowingMessage, setShowingMessage] = useState(false);
+    const [updateMessage, setUpdateMessage] = useState('');
 
     useEffect(() => {
         setPage(t("Products Massive Actions"));
@@ -92,6 +95,8 @@ export default function ProductsMassiveActions() {
         updateMultipleProductsActive(selectedProducts, activeData, token, apiUrl)
             .then(() => {
                 setLastUpdated(Date.now());
+                setUpdateMessage(t(`Products updated succesfully.`));
+                setShowingMessage(true);
             })
             .catch(error => {
                 console.error("Error updating products", error);
@@ -118,6 +123,14 @@ export default function ProductsMassiveActions() {
             <div>
                 {isLoading ? <Spinner message='Loading Products...' /> : (
                     <div className="overflow-auto">
+                        {isShowingMessage ? (
+                            <div className="flex justify-center items-center w-full h-full mt-4">
+                                <div className="w-1/2">
+                                    <SuccessMessageModal message={updateMessage} />
+                                </div>
+                            </div>
+                        ) : null
+                        }
                         <div className="mt-4 mb-4">
                             <div className="flex items-center">
                                 <label htmlFor="benefitsMargin" className="block text-sm font-medium text-gray-700 mr-2">

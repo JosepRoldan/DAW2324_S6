@@ -172,7 +172,11 @@ const ProductDetailsPage = () => {
         <>
             <div style={{ height: '80vh', width: '100%', overflowY: 'auto' }}>
                 {isShowingMessage ? (
-                    <SuccessMessageModal message={updateMessage} />
+                    <div className="flex justify-center items-center mt-4">
+                        <div className="w-1/2">
+                            <SuccessMessageModal message={updateMessage} />
+                        </div>
+                    </div>
                 ) : null
                 }
                 <div className="flex justify-between mb-4">
