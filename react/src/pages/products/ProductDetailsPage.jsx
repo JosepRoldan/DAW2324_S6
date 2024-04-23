@@ -4,10 +4,13 @@ import { AgGridReact } from 'ag-grid-react';
 import Spinner from '../../components/Spinner';
 import { useTranslation } from "react-i18next";
 import { usePage } from '../../contexts/PageContext';
+import SuccessMessageModal from '../../components/SuccessMessageModal';
 
 const ProductDetailsPage = () => {
     const { t } = useTranslation();
     const { setPage, setSteps } = usePage();
+    const [isShowingMessage, setShowingMessage] = useState(false);
+    const [updateMessage, setUpdateMessage] = useState('');
 
     useEffect(() => {
         setPage(t("Product Details"));
@@ -56,16 +59,24 @@ const ProductDetailsPage = () => {
 
             if (response.ok) {
                 const data = await response.json();
+                const langFull = language === 'ENG' ? 'English' : language === 'CAT' ? 'Catalan' : 'Spanish';
+                setShowingMessage(false);
+                setTimeout(() => {
+                    setUpdateMessage(t(`The ${langFull} description has been successfully updated.`));
+                    setShowingMessage(true);
+                    setTimeout(() => setShowingMessage(false), 2000);
+                }, 0);
                 console.log('Description updated successfully.');
             } else {
                 const errorData = await response.json();
                 console.log(`Error: ${errorData.message}`);
             }
         } catch (error) {
+            setUpdateMessage(`Error updating description: ${error.message}`);
+            setShowingMessage(true);
             alert(`Error: ${error.message}`);
         }
     };
-
 
     useEffect(() => {
         const fetchData = async () => {
@@ -160,6 +171,10 @@ const ProductDetailsPage = () => {
     return (
         <>
             <div style={{ height: '80vh', width: '100%', overflowY: 'auto' }}>
+                {isShowingMessage ? (
+                    <SuccessMessageModal message={updateMessage} />
+                ) : null
+                }
                 <div className="flex justify-between mb-4">
                     <div className="w-1/3 pr-2">
                         <label htmlFor="ENG_description" className="block text-sm font-medium text-gray-700">Product Description (English)</label>
