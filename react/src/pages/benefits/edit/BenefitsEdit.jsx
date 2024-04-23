@@ -5,9 +5,7 @@ import EditForm from '../../../components/editFormBenefits/EditForm'
 export const BenefitsPage = () => {
 
     return (
-        <AppLayout Page={"Benefits"}>
             <EditForm></EditForm>
-        </AppLayout>
     )
 }
 

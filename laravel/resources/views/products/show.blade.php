@@ -56,7 +56,7 @@
                                 <div class="flex items-center">
 
                                     <a href="{{ route('products.index') }}"
-                                        class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">Products</a>
+                                        class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">@lang('products.products')</a>
                                 </div>
                             </li>
                             <li>
@@ -98,11 +98,15 @@
                     <div class="lg:col-span-2 lg:border lg:border-gray-200 rounded-lg lg:p-8">
                         <h1 class="text-2xl mb-3 font-bold tracking-tight text-gray-900 sm:text-3xl">{{ $product->name
                             }}</h1>
-                        <p class="mt-6 text-gray-900">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                            Vestibulum dictum fermentum est, et
-                            egestas nibh tempus nec. Nulla ut dapibus nunc, non faucibus turpis. Vivamus pharetra sed
-                            elit eu fringilla. Nullam non nisi sit amet lectus faucibus dictum. Pellentesque dapibus
-                            tortor at urna tristique, sed interdum elit iaculis.</p>
+                        <p class="mt-6 text-gray-900">
+                            @if( App::getLocale() == 'es' )
+                            {{ $product->ESP_description }}
+                            @elseif( App::getLocale() == 'cat' )
+                            {{ $product->CAT_description }}
+                            @else
+                            {{ $product->ENG_description }}
+                            @endif
+                        </p>
 
                         <!-- Product Information Section -->
                         <div class="mt-4 lg:row-span-3 lg:mt-0">
@@ -112,8 +116,7 @@
                             <div class="mt-10">
 
                                 <div class="mt-4">
-                                    <label for="variantSelect" class="block text-sm font-medium text-gray-700">Choose a
-                                        variant:</label>
+                                    <label for="variantSelect" class="block text-sm font-medium text-gray-700">@lang('products.choose_variant')</label>
                                     <select id="variantSelect" name="variantSelect"
                                         class="mt-1 block w-full py-2 pl-3 pr-10 text-base text-gray-900 border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
                                         @foreach($productVariants as $variant)
@@ -135,7 +138,7 @@
                             <button
                                 onclick="agregarProducto({id: '{{ $product->id }}', name: '{{ $product->name }}', image: '{{ $productImages[0]->original }}', price: '{{ $productVariants->first()->price }}', quantity: 1})"
                                 class="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-700 px-8 py-3 text-base font-medium text-white hover:bg-indigo-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                                Add to bag
+                                @lang('products.add_to_cart')
                             </button>
                         </div>
                     </div>

@@ -1,46 +1,25 @@
-import AppLayout from '../../layout/AppLayout';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect,useState } from 'react';
 import { useTranslation } from "react-i18next";
-import i18n from "i18next";
-import { initReactI18next } from "react-i18next";
-import translationEN from "/src/locales/eng/translation.json";
-import translationCA from "/src/locales/cat/translation.json";
-import translationES from "/src/locales/esp/translation.json";
-
-const resources = {
-  eng: {
-    translation: translationEN,
-  },
-  cat: {
-    translation: translationCA,
-  },
-  esp: {
-    translation: translationES,
-  },
-};
-
-i18n.use(initReactI18next).init({
-  resources,
-  lng: "eng",
-  fallbackLng: "eng",
-  interpolation: {
-    escapeValue: false,
-  },
-});
+import { usePage } from '../../contexts/PageContext';
 
 const token = localStorage.getItem('token');
 
-const steps = [
-  { name: 'Users', href: '/users', current: false },
-  { name: 'Create User', href: '/users/create', current: true },
-]
 
 export const UsersCreate = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { setPage, setSteps } = usePage();
 
   const [formData, setFormData] = useState({
+    name: '',
+    surname: '',
+    user: '',
+    email: '',
+    password: ''
+  });
+
+  const [errorMessages, setErrorMessages] = useState({
     name: '',
     surname: '',
     user: '',
@@ -51,10 +30,51 @@ export const UsersCreate = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+
+    // Validate the field and set the appropriate error message.
+    const errorMessage = validateField(name, value);
+    setErrorMessages({ ...errorMessages, [name]: errorMessage });
   }
 
   const onSubmit = async (e) => {
     e.preventDefault();
+
+    // Field validation required
+    if (!formData.name || !formData.surname || !formData.user || !formData.email || !formData.password) {
+      setErrorMessages({
+        name: !formData.name ? 'The name is mandatory' : '',
+        surname: !formData.surname ? 'The surname is mandatory' : '',
+        user: !formData.user ? 'Username is mandatory' : '',
+        email: !formData.email ? 'Email is mandatory' : '',
+        password: !formData.password ? 'Password is mandatory' : ''
+      });
+      return;
+    }
+
+    // Email format validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      setErrorMessages({ ...errorMessages, email: 'Invalid e-mail format.' });
+      return;
+    }
+
+    // Validation of minimum password length
+    if (formData.password.length < 6) {
+      setErrorMessages({ ...errorMessages, password: 'The password must be at least 6 characters long.' });
+      return;
+    }
+
+    // Validation to avoid malicious scripts or SQL injections
+    const isSafeInput = (input) => {
+      const regex = /[<>;'"&]/;
+      return !regex.test(input);
+    }
+
+    if (!isSafeInput(formData.name) || !isSafeInput(formData.surname) || !isSafeInput(formData.user) || !isSafeInput(formData.email) || !isSafeInput(formData.password)) {
+      setErrorMessages({ ...errorMessages, general: 'Fields contain characters that are not allowed.' });
+      return;
+    }
+
 
     const url = `${import.meta.env.VITE_API_URL}/createUser`;
 
@@ -79,10 +99,15 @@ export const UsersCreate = () => {
 
   }
 
+  useEffect(() => {
+    setPage(t("Users"));
+    setSteps([{ name: t('Users'), href: '/users' }, { name: t("Create User"), href: '/users/create', current: true }]);
+
+}, [setPage, setSteps, navigate]);
 
   return (
 
-    <AppLayout Page={'Create User'} Steps={steps}>
+    <>
       <div className="pb-16 space-y-10 divide-y divide-gray-900/10">
         <form>
           <div className="grid grid-cols-1 gap-x-8 gap-y-8 pt-10 md:grid-cols-3">
@@ -107,6 +132,7 @@ export const UsersCreate = () => {
                         onChange={handleChange}
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
+                     {errorMessages.name && <div className="text-red-600 text-sm mt-1">{errorMessages.name}</div>}
                     </div>
                   </div>
 
@@ -124,6 +150,8 @@ export const UsersCreate = () => {
                         autoComplete="family-name"
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
+                      {errorMessages.surname && <div className="text-red-600 text-sm mt-1">{errorMessages.surname}</div>}
+
                     </div>
                   </div>
 
@@ -141,6 +169,8 @@ export const UsersCreate = () => {
                         autoComplete="email"
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
+                      {errorMessages.email && <div className="text-red-600 text-sm mt-1">{errorMessages.email}</div>}
+
                     </div>
                   </div>
                 </div>
@@ -174,6 +204,8 @@ export const UsersCreate = () => {
                           type="text"
                           className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         />
+                        {errorMessages.user && <div className="text-red-600 text-sm mt-1">{errorMessages.user}</div>}
+
                       </div>
                     </div>
 
@@ -191,61 +223,13 @@ export const UsersCreate = () => {
                           id="password"
                           className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         />
+                        {errorMessages.password && <div className="text-red-600 text-sm mt-1">{errorMessages.password}</div>}
+
                       </div>
                     </div>
 
 
                   </div>
-
-                  <fieldset>
-                    <legend className="text-sm font-semibold leading-6 text-gray-900">{t("Status")}</legend>
-                    <p className="mt-1 text-sm leading-6 text-gray-600">
-                    {t("These is the customer's account status.")}
-                    </p>
-                    <div className="mt-2 flex gap-x-12">
-                      <div className="flex items-center">
-                        <input
-                          name="status"
-                          type="radio"
-                          value="Active"
-                          onChange={handleChange}
-                          checked={formData.status === 'Active'}
-                          className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                        />
-                        <label htmlFor="push-everything" className="ml-2 block text-sm font-medium leading-6 text-gray-900">
-                        {t("Active")}
-                        </label>
-                      </div>
-                      <div className="flex items-center">
-                        <input
-                          name="status"
-                          type="radio"
-                          value="Inactive"
-                          onChange={handleChange}
-                          checked={formData.status === 'Inactive'}
-                          className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                        />
-                        <label htmlFor="push-email" className="ml-2 block text-sm font-medium leading-6 text-gray-900">
-                        {t("Inactive")}
-                        </label>
-                      </div>
-
-
-                      <div className="flex items-center">
-                        <input
-                          name="status"
-                          type="radio"
-                          value="Deleted"
-                          onChange={handleChange}
-                          checked={formData.status === 'Deleted'}
-                          className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                        />
-                        <label htmlFor="push-nothing" className="ml-2 block text-sm font-medium leading-6 text-gray-900">
-                        {t("Deleted")}
-                        </label>
-                      </div>
-                    </div>
-                  </fieldset>
 
 
                 </div>
@@ -267,7 +251,7 @@ export const UsersCreate = () => {
           </div>
         </form>
       </div>
-    </ AppLayout >
+    </ >
   )
 }
 
