@@ -25,7 +25,6 @@ class ViewDetailsController extends Controller
             ->join('generatedImages', 'generatedImages.idGI', '=', 'orderDetails.idGi')
             ->select('orderDetails.*', 'customers.surname', 'customers.name as name', 'product_details.name as variant', 'generatedImages.prompt', 'orders.datetime', 'orders.orderStatus')
             ->where('customers.username', $token)
-            ->limit(1)
             ->get();
 
         return response()->json($details);
