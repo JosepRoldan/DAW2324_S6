@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class ViewDetailsModel extends Model
 {
-    protected $table = 'orderDetails'; // Nombre de la tabla en la base de datos
+    protected $table = 'orderDetails'; 
 
     protected $fillable = [
-        'idOD','idOrder','idProduct','idGI','idVariant','quantity','priceEach','shippingPrice' // Lista de campos que se pueden llenar de forma masiva
+        'id','idOrder','idProduct','idGI','variant','quantity','priceEach','shippingPrice' 
     ];
 }

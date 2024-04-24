@@ -9,6 +9,7 @@ import {
   CustomersCreate,
   CustomersShow,
   CustomersEdit,
+  CustomersOrders,
 } from "../pages/customers";
 import ProductDetailsPage from "../pages/products/ProductDetailsPage";
 import BenefitsPage from "../pages/benefits/BenefitsPage";
@@ -65,6 +66,7 @@ export const Router = () => {
         <Route path="/customers/create" element={<CustomersCreate />} />
         <Route strict path="/customers/:customerId" element={<CustomersShow />} />
         <Route path="/customers/:customerId/edit" element={<CustomersEdit />} />
+        <Route path="/customers/:customerId/orders" element={<CustomersOrders />} />
       // PRODUCTS
         <Route path="products" element={<ProductsPage />} />
         <Route path="/products-massive-actions" element={<ProductsMassiveActions />} />
