@@ -239,7 +239,7 @@ const MyImages = () => {
                     {images.map((image, index) => (
                         <div className="relative rounded overflow-hidden group">
                             <img
-                                src={`http://http://daw4.alumnat.iesmontsia.org/storage/uploads/${image.idGI}.jpg`}
+                                src={`http://localhost/storage/uploads/${image.idGI}.jpg`}
                                 className="w-full"
                             ></img>
                             <p className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center text-2xl text-center text-white font-roboto font-medium opacity-0 group-hover:opacity-100 transition">

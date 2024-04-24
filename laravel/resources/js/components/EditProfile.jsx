@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import axios from "axios";
 
-const MyOrders = () => {
+const EditProfile = () => {
     const navigation = [
         {
             href: "/myOrders",
@@ -25,7 +25,7 @@ const MyOrders = () => {
             ),
         },
         {
-            href: "myImages",
+            href: "/myImages",
             name: "My Images",
             icon: (
                 <svg
@@ -48,7 +48,7 @@ const MyOrders = () => {
 
     const navsFooter = [
         {
-            href: "javascript:void(0)",
+            href: "#",
             name: "Help",
             icon: (
                 <svg
@@ -68,7 +68,7 @@ const MyOrders = () => {
             ),
         },
         {
-            href: "javascript:void(0)",
+            href: "#",
             name: "Settings",
             icon: (
                 <svg
@@ -87,7 +87,7 @@ const MyOrders = () => {
                     <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0zm-4.5 3h.008v.008H10.5v-.008z"
                     />
                 </svg>
             ),
@@ -97,7 +97,8 @@ const MyOrders = () => {
     const profileRef = useRef();
 
     const [isProfileActive, setIsProfileActive] = useState(false);
-    const [order, setOrder] = useState([]);
+
+    const [profileData, setProfileData] = useState([]);
 
     useEffect(() => {
         const handleProfile = (e) => {
@@ -108,17 +109,29 @@ const MyOrders = () => {
         document.addEventListener("click", handleProfile);
 
         axios
-            .get("/getOrders")
+            .get("/getProfileData")
             .then((response) => {
-                setOrder(response.data);
+                setProfileData(response.data[0]);
                 console.log(response.data);
             })
             .catch((error) => {
-                console.error("Error al obtener las ordenes:", error);
+                console.error("Error al obtener los datos:", error);
             });
     }, []);
 
-    let orderNumber = 1;
+    const updateProfileData = async () => {
+        try {
+             axios.put("/updateProfileData", profileData)
+            .then(response => {
+                console.log(response.data);
+            })
+            console.log("Profile data updated successfully");
+            window.location.href = "/profile";
+            console.log(response);
+        } catch (error) {
+            console.error("Error updating user profile data:", error);
+        }
+    };
 
     return (
         <>
@@ -132,7 +145,7 @@ const MyOrders = () => {
                             />
                             <div>
                                 <span className="block text-white text-sm font-semibold">
-                                    Perfil
+                                    {profileData.name} {profileData.surname}
                                 </span>
                                 <span className="block mt-px text-white text-xs text-decoration-line: underline">
                                     <a href="../profile">View Profile</a>
@@ -163,10 +176,10 @@ const MyOrders = () => {
                                     <div className="absolute z-10 top-12 right-0 w-60 rounded-lg bg-white shadow-md border text-sm text-gray-600">
                                         <div className="p-2 text-left">
                                             <span className="block text-gray-500 p-2">
-                                                perfil@gmail.com
+                                                {profileData.mail}
                                             </span>
                                             <div className="relative">
-                                                <select className="w-full cursor-pointer appearance-none bg-transparent outline-none rounded-lg">
+                                                <select className="w-full rounded-lg cursor-pointer">
                                                     <option disabled selected>
                                                         Theme
                                                     </option>
@@ -230,138 +243,127 @@ const MyOrders = () => {
                 </div>
             </nav>
             <div className="ml-80 h-50 bg-white">
-                <section className="container px-2 mx-auto">
-                    <div className="flex flex-col">
-                        <div className="-mx-4 overflow-x-auto sm:-mx-6 lg:-mx-1 mt-4">
-                            <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-                                <div className="overflow-hidden border border-gray-200 dark:border-gray-900 md:rounded-lg">
-                                    <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-900">
-                                        <thead className="bg-gray-50 dark:bg-gray-900">
-                                            <tr>
-                                                <th
-                                                    scope="col"
-                                                    className="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
-                                                >
-                                                    <div className="flex items-center gap-x-3 text-center">
-                                                        <button className="flex items-center gap-x-2">
-                                                            <span>
-                                                                Number Order
-                                                            </span>
-                                                        </button>
-                                                    </div>
-                                                </th>
+                <div className="flex flex-col items-center justify-center h-full">
+                    <img
+                        src="/img/fotoPerfil.jpeg"
+                        className="w-32 h-32 rounded-full"
+                    />
+                    <h2 className="text-xl font-semibold">
+                        {profileData.name} {profileData.surname}
+                    </h2>
 
-                                                <th
-                                                    scope="col"
-                                                    className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
-                                                >
-                                                    Date
-                                                </th>
-
-                                                <th
-                                                    scope="col"
-                                                    className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
-                                                >
-                                                    Status
-                                                </th>
-
-                                                <th
-                                                    scope="col"
-                                                    className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
-                                                >
-                                                    Customer
-                                                </th>
-
-                                                <th
-                                                    scope="col"
-                                                    className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
-                                                >
-                                                    <span className="sr-only">
-                                                        Actions
-                                                    </span>
-                                                </th>
-                                            </tr>
-                                        </thead>
-
-                                        {order.map((order, index) => (
-                                            <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-                                                <tr>
-                                                    <td className="px-4 py-4 text-sm font-medium text-gray-700 dark:text-gray-200 whitespace-nowrap">
-                                                        <div className="inline-flex items-center gap-x-3">
-                                                            <span>
-                                                                #{orderNumber ++} 
-                                                            </span>
-                                                        </div>
-                                                    </td>
-
-                                                    <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
-                                                        <span>
-                                                            {order.datetime}
-                                                        </span>
-                                                    </td>
-                                                    <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
-                                                        <div className="inline-flex items-center px-3 py-1 text-gray-500 rounded-full gap-x-2 bg-gray-100/60 dark:bg-gray-800">
-                                                            <h2 className="text-sm font-normal">
-                                                                {
-                                                                    order.orderStatus
-                                                                }
-                                                            </h2>
-                                                        </div>
-                                                    </td>
-                                                    <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
-                                                        <div className="flex items-center gap-x-2">
-                                                            <img
-                                                                className="object-cover w-8 h-8 rounded-full"
-                                                                src="/img/fotoPerfil.jpeg"
-                                                                alt=""
-                                                            ></img>
-                                                            <div>
-                                                                <h2 className="text-sm font-medium text-gray-800 dark:text-white ">
-                                                                    {order.name}{" "}
-                                                                    {
-                                                                        order.surname
-                                                                    }
-                                                                </h2>
-                                                                <p className="text-xs font-normal text-gray-600 dark:text-gray-400">
-                                                                    {order.mail}
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td className="px-4 py-4 text-sm whitespace-nowrap">
-                                                        <div className="flex items-center gap-x-6">
-                                                            <a
-                                                                href="/viewDetails"
-                                                                className="text-blue-700 transition-colors duration-200 dark:hover:text-indigo-500 dark:text-gray-300 hover:text-indigo-500 focus:outline-none"
-                                                            >
-                                                                <button className="focus:outline-none">
-                                                                    View Details
-                                                                </button>
-                                                            </a>
-
-                                                            <button className="text-blue-700 transition-colors duration-200 hover:text-indigo-500 focus:outline-none">
-                                                                Download
-                                                            </button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        ))}
-                                    </table>
+                    <p className="text-gray-500">{profileData.mail}</p>
+                </div>
+                <div className="bg-gray-300 overflow-hidden shadow rounded-lg border flex justify-center items-center mx-20 my-5">
+                    <div className="justify-center border-t border-gray-200 px-4 py-5 sm:p-0">
+                        <dl className="sm:divide-y sm:divide-gray-200">
+                            <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt className="text-center text-sm font-medium text-gray-500 pt-2.5">
+                                    Email address:
+                                </dt>
+                                <dd className="text-center mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                    <input
+                                        type="text"
+                                        value={profileData.mail}
+                                        onChange={(e) =>
+                                            setProfileData((prevState) => ({
+                                                ...prevState,
+                                                mail: e.target.value,
+                                            }))
+                                        }
+                                        placeholder="Email address"
+                                        className="rounded-md border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 "
+                                    />
+                                </dd>
+                            </div>
+                            <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt className="text-center text-sm font-medium text-gray-500 pt-2.5">
+                                    Full name:
+                                </dt>
+                                <div className="text-center mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                    <input
+                                        type="text"
+                                        value={profileData.name}
+                                        onChange={(e) =>
+                                            setProfileData((prevState) => ({
+                                                ...prevState,
+                                                name: e.target.value,
+                                            }))
+                                        }
+                                        placeholder="First name"
+                                        className="mr-2 rounded-md border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 pb-1"
+                                    />
+                                    <input
+                                        type="text"
+                                        value={profileData.surname}
+                                        onChange={(e) =>
+                                            setProfileData((prevState) => ({
+                                                ...prevState,
+                                                surname: e.target.value,
+                                            }))
+                                        }
+                                        placeholder="Last name"
+                                        className="rounded-md border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 pb-1"
+                                    />
                                 </div>
                             </div>
-                        </div>
+                            <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt className="text-center text-sm font-medium text-gray-500 pt-2.5">
+                                    Phone number:
+                                </dt>
+                                <input
+                                    type="text"
+                                    value={profileData.phone}
+                                    onChange={(e) =>
+                                        setProfileData((prevState) => ({
+                                            ...prevState,
+                                            phone: e.target.value,
+                                        }))
+                                    }
+                                    placeholder="Phone number"
+                                    className="text-center mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 rounded-md border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 pb-2"
+                                />
+                            </div>
+                            <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt className="text-center text-sm font-medium text-gray-500">
+                                    Address
+                                </dt>
+                                <dd className=" text-center mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                    <input
+                                        type="text"
+                                        value={profileData.address}
+                                        onChange={(e) =>
+                                            setProfileData((prevState) => ({
+                                                ...prevState,
+                                                address: e.target.value,
+                                            }))
+                                        }
+                                        placeholder="Address"
+                                        className="rounded-md border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 pb-2"
+                                    />
+                                </dd>
+                            </div>
+                        </dl>
                     </div>
-                </section>
+                </div>
+                <div className="mt-4 flex justify-end mr-20">
+                    <a href="/profile" className="px-4 py-2 mr-2 bg-red-500 text-white rounded-md hover:bg-red-600">
+                        Cancel
+                    </a>
+                    <button onClick={updateProfileData} className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600" href="">
+                        Confirm
+                    </button>
+                </div>
             </div>
+            <br></br>
         </>
     );
 };
 
-export default MyOrders;
+export default EditProfile;
 
-if (document.getElementById("myOrders")) {
-    const root = createRoot(document.getElementById("myOrders")).render(
-        <MyOrders />
+if (document.getElementById("editProfile")) {
+    const root = createRoot(document.getElementById("editProfile")).render(
+        <EditProfile />
     );
 }
