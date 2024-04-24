@@ -22,7 +22,7 @@ function MostrarImagen() {
                     "POST",
                     { token: getToken() },
                     token,
-                    "/check-token"
+                    "/check-token",
                 );
                 setLoginStatus(validated.status);
                 consultarStatus(validated.status);
@@ -67,7 +67,7 @@ function MostrarImagen() {
                             onClick: () => (window.location.href = "daisy"),
                         },
                         position: "top-center",
-                    }
+                    },
                 );
                 break;
             case 3:
@@ -79,7 +79,7 @@ function MostrarImagen() {
                             onClick: () => (window.location.href = "sign_up"),
                         },
                         position: "top-center",
-                    }
+                    },
                 );
                 break;
         }
@@ -101,7 +101,7 @@ function MostrarImagen() {
                 "POST",
                 { idImg: idImg, user: getToken(), imgUrl: imgUrl },
                 token,
-                "/save-img"
+                "/save-img",
             ),
             {
                 loading: "Loading...",
@@ -111,17 +111,43 @@ function MostrarImagen() {
                 },
                 error: "Error",
                 closeButton: true,
-            }
+            },
         );
     };
 
     const generarDivs = (datos) => {
-        // Aquí generas los divs utilizando los datos recibidos
-        const divsGenerados = datos.map((imagen) => (
-            <div key={imagen.id}>{mostrarImagenes(imagen)}</div>
-        ));
-        // Actualizas el estado de divsContent con los divs generados
-        setDivsContent(divsGenerados);
+        if (datos.length > 1) {
+            let divsGenerados = [
+                <div
+                    id="real"
+                    className="grid grid-cols-3 place-items-center mx-32"
+                >
+                    {datos.map((imagen) => (
+                        <div key={imagen.id}>{mostrarImagenes(imagen)}</div>
+                    ))}
+                </div>,
+            ];
+            setDivsContent(divsGenerados);
+        } else {
+            const divsGenerados = [
+                <div
+                    id="real"
+                    className="grid grid-cols-1 place-items-center mx-32"
+                >
+                    <img
+                        className="rounded-md border-2 size-64"
+                        src="/img/oops.webp"
+                    ></img>
+                </div>,
+            ];
+            setDivsContent(divsGenerados);
+            toast.error(
+                "Ha habido un error al generar la imagen. Prueba generando otra",
+                {
+                    position: "top-center",
+                },
+            );
+        }
     };
 
     const handleInputChange = (event) => {
@@ -134,7 +160,7 @@ function MostrarImagen() {
                 "POST",
                 dataCrear,
                 token,
-                "/enviar-prompt"
+                "/enviar-prompt",
             );
             generarDivs(urls);
         } catch (error) {
@@ -149,7 +175,7 @@ function MostrarImagen() {
                 "POST",
                 dataEditar,
                 token,
-                "/modi-prompt"
+                "/modi-prompt",
             );
             generarDivs(urls);
             setInputId("");
@@ -234,14 +260,9 @@ function MostrarImagen() {
                 </div>
 
                 {divsContent.length > 0 && divsContent ? (
-                    <div
-                        id="real"
-                        className="grid grid-cols-3 place-items-center mx-32"
-                    >
-                        {divsContent.map((content, index) => (
-                            <div key={index}>{content}</div>
-                        ))}
-                    </div>
+                    divsContent.map((content, index) => (
+                        <div key={index}>{content}</div>
+                    ))
                 ) : (
                     <div className="grid grid-cols-1 place-items-center my-6">
                         <DotLoader color="#1d4ed8" loading />
@@ -357,6 +378,6 @@ function MostrarImagen() {
 }
 if (document.getElementById("MostrarImagen")) {
     createRoot(document.getElementById("MostrarImagen")).render(
-        <MostrarImagen />
+        <MostrarImagen />,
     );
 }

@@ -258,12 +258,38 @@ function GenerateGuidedImage() {
     };
 
     const generarDivs = (datos) => {
-        // Aquí generas los divs utilizando los datos recibidos
-        const divsGenerados = datos.map((imagen) => (
-            <div key={imagen.id}>{mostrarImagenes(imagen)}</div>
-        ));
-        // Actualizas el estado de divsContent con los divs generados
-        setDivsContent(divsGenerados);
+        if (datos.length > 1) {
+            let divsGenerados = [
+                <div
+                    id="real"
+                    className="grid grid-cols-3 place-items-center mx-32"
+                >
+                    {datos.map((imagen) => (
+                        <div key={imagen.id}>{mostrarImagenes(imagen)}</div>
+                    ))}
+                </div>,
+            ];
+            setDivsContent(divsGenerados);
+        } else {
+            const divsGenerados = [
+                <div
+                    id="real"
+                    className="grid grid-cols-1 place-items-center mx-32"
+                >
+                    <img
+                        className="rounded-md border-2 size-64"
+                        src="/img/oops.webp"
+                    ></img>
+                </div>,
+            ];
+            setDivsContent(divsGenerados);
+            toast.error(
+                "Ha habido un error al generar la imagen. Prueba generando otra",
+                {
+                    position: "top-center",
+                },
+            );
+        }
     };
 
     const mostrarImagenes = (imagen) => {
@@ -463,16 +489,13 @@ function GenerateGuidedImage() {
                             Genera ya tu imagen!!
                         </button>
                         {divsContent.length > 0 && divsContent ? (
-                            <div
-                                id="real"
-                                className="grid grid-cols-3 place-items-center mx-32 my-5"
-                            >
-                                {divsContent.map((content, index) => (
-                                    <div key={index}>{content}</div>
-                                ))}
-                            </div>
+                            divsContent.map((content, index) => (
+                                <div key={index}>{content}</div>
+                            ))
                         ) : (
-                            ""
+                            <div className="grid grid-cols-1 place-items-center my-6">
+                                <DotLoader color="#1d4ed8" loading />
+                            </div>
                         )}
                         <div className="flex h-9 justify-center items-center my-4">
                             <div className="flex justify-center items-center gap-2">
