@@ -14,6 +14,7 @@ export default function ProductsMassiveActions() {
     const { setPage, setSteps } = usePage();
     const [isShowingMessage, setShowingMessage] = useState(false);
     const [updateMessage, setUpdateMessage] = useState('');
+    const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
         setPage(t("Products Massive Actions"));
@@ -22,6 +23,10 @@ export default function ProductsMassiveActions() {
             { name: t('Products Massive Actions'), href: '/products-massive-actions', current: true }
         ]);
     }, [setPage, setSteps, t]);
+
+    const handleHideModal = () => {
+        setShowModal(false);
+    };
 
     const [rowData, setRowData] = useState([]);
     const [selectedProducts, setSelectedProducts] = useState(new Set());
@@ -96,7 +101,7 @@ export default function ProductsMassiveActions() {
             .then(() => {
                 setLastUpdated(Date.now());
                 setUpdateMessage(t(`Products updated succesfully.`));
-                setShowingMessage(true);
+                setShowModal(true);
             })
             .catch(error => {
                 console.error("Error updating products", error);
@@ -112,6 +117,8 @@ export default function ProductsMassiveActions() {
         updateMultipleProductMargins(selectedProducts, marginData, token, apiUrl)
             .then(() => {
                 setLastUpdated(Date.now());
+                setUpdateMessage(t(`Products updated succesfully.`));
+                setShowModal(true);
             })
             .catch(error => {
                 console.error("Error updating products", error);
@@ -123,12 +130,8 @@ export default function ProductsMassiveActions() {
             <div>
                 {isLoading ? <Spinner message='Loading Products...' /> : (
                     <div className="overflow-auto">
-                        {isShowingMessage ? (
-                            <div className="flex justify-center items-center w-full h-full mt-4">
-                                <div className="w-1/2">
-                                    <SuccessMessageModal message={updateMessage} />
-                                </div>
-                            </div>
+                        {showModal ? (
+                            <SuccessMessageModal message={updateMessage} onHide={handleHideModal} />
                         ) : null
                         }
                         <div className="mt-4 mb-4">

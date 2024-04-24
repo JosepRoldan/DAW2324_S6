@@ -11,12 +11,16 @@ const ProductDetailsPage = () => {
     const { setPage, setSteps } = usePage();
     const [isShowingMessage, setShowingMessage] = useState(false);
     const [updateMessage, setUpdateMessage] = useState('');
+    const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
         setPage(t("Product Details"));
         setSteps([{ name: t('Products'), href: '/products' }, { name: t("Product Details"), href: `/products/${productId}`, current: true }]);
     }, [setPage, setSteps]);
 
+    const handleHideModal = () => {
+        setShowModal(false);
+    };
 
     const { productId } = useParams();
     const [productData, setProductData] = useState({
@@ -58,14 +62,11 @@ const ProductDetailsPage = () => {
             });
 
             if (response.ok) {
+                setShowModal(true);
                 const data = await response.json();
                 const langFull = language === 'ENG' ? 'English' : language === 'CAT' ? 'Catalan' : 'Spanish';
                 setShowingMessage(false);
-                setTimeout(() => {
-                    setUpdateMessage(t(`The ${langFull} description has been successfully updated.`));
-                    setShowingMessage(true);
-                    setTimeout(() => setShowingMessage(false), 2000);
-                }, 0);
+                setUpdateMessage(t(`The ${langFull} description has been successfully updated.`));
                 console.log('Description updated successfully.');
             } else {
                 const errorData = await response.json();
@@ -73,7 +74,6 @@ const ProductDetailsPage = () => {
             }
         } catch (error) {
             setUpdateMessage(`Error updating description: ${error.message}`);
-            setShowingMessage(true);
             alert(`Error: ${error.message}`);
         }
     };
@@ -124,15 +124,6 @@ const ProductDetailsPage = () => {
         resizable: true,
     };
 
-    const imageColumnDefs = [
-        {
-            field: 'thumb',
-            headerName: 'Thumbnail',
-            cellRenderer: params => `<img src="${params.value}" style="width: 50px; height: 50px;" alt="Product Image" />`,
-        },
-        { field: 'original', headerName: 'Original URL', sortable: true, filter: true },
-    ];
-
     function calculateSalesPrice(priceInSubunit, benefitsMarginPercentage) {
         const benefitsMargin = benefitsMarginPercentage / 100;
         const salesPrice = priceInSubunit + (priceInSubunit * benefitsMargin);
@@ -171,12 +162,8 @@ const ProductDetailsPage = () => {
     return (
         <>
             <div style={{ height: '80vh', width: '100%', overflowY: 'auto' }}>
-                {isShowingMessage ? (
-                    <div className="flex justify-center items-center mt-4">
-                        <div className="w-1/2">
-                            <SuccessMessageModal message={updateMessage} />
-                        </div>
-                    </div>
+                {showModal ? (
+                    <SuccessMessageModal message={updateMessage} onHide={handleHideModal} />
                 ) : null
                 }
                 <div className="flex justify-between mb-4">
