@@ -2,10 +2,6 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
 import { AgGridReact } from 'ag-grid-react';
 import { useNavigate } from 'react-router-dom';
-import { useTranslation } from "react-i18next";
-import { usePage } from '../../contexts/PageContext';
-import React, { useEffect, useState } from 'react'
-
 
 const showUser = ({ data }) => {
   const navigate = useNavigate();
@@ -50,13 +46,8 @@ export const UsersTable = ({ userData }) => {
     { field: 'idRole', headerName: 'Role', filter: true, valueGetter: params => mapRoleIdToString(params.data.idRole) },
 
 
-    { headerName: t('Show'), cellRenderer: showUser }
+    { headerName: 'Show', cellRenderer: showUser }
   ];
-
-  useEffect(() => {
-    setPage(  t("Users") );
-    setSteps([{ name: t("Users"), href: '/users', current: true }]);
-}, [setPage, setSteps, navigate]);
 
   return (
     <>
@@ -64,8 +55,8 @@ export const UsersTable = ({ userData }) => {
         userData.length === 0
           ? <div className="flex items-center mt-10 justify-center">
             <div className="text-center">
-              <p className="text-xl text-gray-800">{t("There are no users created yet.")}</p>
-              <p className="text-md text-gray-600 mt-2">{t("Start creating a new user.")}</p>
+              <p className="text-xl text-gray-800">There are no users created yet.</p>
+              <p className="text-md text-gray-600 mt-2">Start creating a new user.</p>
             </div>
           </div>
           : <div className="align-middle overflow-x-auto shadow overflow-hidden sm:rounded-lg">
