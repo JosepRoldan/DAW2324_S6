@@ -27,7 +27,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('/login', [AuthController::class, 'login']);
-Route::post('/logout', [AuthController::class, 'logout']);
 
 //Group of routes that are authenticated through auth:sanctum
 Route::middleware('auth:sanctum')->group(function () {
@@ -50,6 +49,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/customers/create', [CustomerController::class, 'store'])->name('customer.store');
     Route::put('/customers/{id}', [CustomerController::class, 'update'])->name('customers.update');
     Route::delete('/customers/{id}', [CustomerController::class, 'destroy'])->name('customers.destroy');
+    Route::get('/customers/{id}/orders', [CustomerController::class, 'userOrders'])->name('customers.orders');
 
     Route::get('/users', [UserController::class, 'index']);
 
@@ -63,6 +63,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('users/{id}', [UserController::class, 'destroy']);
 
     Route::get('/users/{id}', [UserController::class, 'show']);
+    Route::post('/logout', [AuthController::class, 'logout']);
 });
 
 // ORDERS

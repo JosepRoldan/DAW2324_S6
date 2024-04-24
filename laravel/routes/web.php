@@ -42,8 +42,7 @@ Route::get('/productscard', function () {return view('productCard');});
 
 //////////////////////SHOP PROCESS////////////////////////
 Route::get('/Cart/Shipping', [BuyingProcessController::class, 'getShoppingOrdreDates'])->name('shipping');
-Route::post('/cart/shipping/data/save', [OrdersController::class, 'saveCartShippingData'])->name('save.shipping.data');
-Route::put('/cart/shipping/data/update', [OrdersController::class, 'updateCartShippingData'])->name('update.shipping.data');
+Route::post('/Cart/Order', [OrdersController::class, 'storeDates'])->name('shopProcessOrder');
 
 Route::get('/Cart/Shipping/PaymentMethod', [BuyingProcessController::class, 'paymentDates'])->name('paymentMethod');
 
@@ -73,8 +72,10 @@ Route::get('/CustomerArea', function () {return view('clientArea');});
 
 Route::get('/myImages', function () {return view('myImages');});
 
-
 Route::get('/profile', function () {return view('profile');});
+
+Route::get('/editProfile', function () {return view('editProfile');});
+
 
 Route::get('/myOrders', function () {return view('myOrders');});
 
@@ -158,6 +159,8 @@ Route::get('/getImages', [MyImagesController::class, 'getUserSavedImages']);
 
 //Profile
 Route::get('/getProfileData', [ProfileController::class, 'getUserProfileData']);
+Route::put('/updateProfileData', [ProfileController::class, 'updateUserProfileData']);
+
 
 //My Orders
 Route::get('/getOrders', [MyOrdersController::class, 'getUserOrders']);

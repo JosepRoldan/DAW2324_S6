@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { useRef } from "react";
 import Spinner from "../Spinner";
+import { useTranslation } from "react-i18next";
+
 /**
  * Renders a section table with benefits data and a chart.
  *
@@ -25,6 +27,7 @@ function SectionTable({ SectionName }) {
   const [years, setYears] = useState([]);
   const [actualYear, setActualYear] = useState(new Date().getFullYear());
   const dropdownRef = useRef(null);
+  const { t } = useTranslation();
 
   /**
    * Function to show a tooltip based on the event target.
@@ -103,54 +106,65 @@ function SectionTable({ SectionName }) {
     });
 
     if (response.status === 200) {
-      setBenefits(response.data);
       var chartDataTemp = [];
       var labelsTemp = [];
+      var orderTemp = [];
 
       for (let i = 0; i < response.data.length; i++) {
         if (response.data[i].month === "January") {
           chartDataTemp[0] = response.data[i].profit;
           labelsTemp[0] = response.data[i].month.substring(0, 3);
+          orderTemp[0] = response.data[i];
+          
         } else if (response.data[i].month === "February") {
           chartDataTemp[1] = response.data[i].profit;
           labelsTemp[1] = response.data[i].month.substring(0, 3);
+          orderTemp[1] = response.data[i];
         } else if (response.data[i].month === "March") {
           chartDataTemp[2] = response.data[i].profit;
           labelsTemp[2] = response.data[i].month.substring(0, 3);
+          orderTemp[2] = response.data[i];
         } else if (response.data[i].month === "April") {
           chartDataTemp[3] = response.data[i].profit;
           labelsTemp[3] = response.data[i].month.substring(0, 3);
+          orderTemp[3] = response.data[i];
         } else if (response.data[i].month === "May") {
           chartDataTemp[4] = response.data[i].profit;
           labelsTemp[4] = response.data[i].month.substring(0, 3);
+          orderTemp[4] = response.data[i];
         } else if (response.data[i].month === "June") {
           chartDataTemp[5] = response.data[i].profit;
           labelsTemp[5] = response.data[i].month.substring(0, 3);
+          orderTemp[5] = response.data[i];
         } else if (response.data[i].month === "July") {
           chartDataTemp[6] = response.data[i].profit;
           labelsTemp[6] = response.data[i].month.substring(0, 3);
+          orderTemp[6] = response.data[i];
         } else if (response.data[i].month === "August") {
           chartDataTemp[7] = response.data[i].profit;
           labelsTemp[7] = response.data[i].month.substring(0, 3);
+          orderTemp[7] = response.data[i];
         } else if (response.data[i].month === "September") {
           chartDataTemp[8] = response.data[i].profit;
           labelsTemp[8] = response.data[i].month.substring(0, 3);
+          orderTemp[8] = response.data[i];
         } else if (response.data[i].month === "October") {
           chartDataTemp[9] = response.data[i].profit;
           labelsTemp[9] = response.data[i].month.substring(0, 3);
+          orderTemp[9] = response.data[i];
         } else if (response.data[i].month === "November") {
           chartDataTemp[10] = response.data[i].profit;
           labelsTemp[10] = response.data[i].month.substring(0, 3);
+          orderTemp[10] = response.data[i];
         } else if (response.data[i].month === "December") {
           chartDataTemp[11] = response.data[i].profit;
           labelsTemp[11] = response.data[i].month.substring(0, 3);
+          orderTemp[11] = response.data[i];
         }
       }
-      console.log(chartDataTemp);
-      console.log(labelsTemp);
-
       setChartData(chartDataTemp);
       setLabels(labelsTemp);
+      setBenefits(orderTemp);
     } else {
       console.log("Bad response");
     }
@@ -185,46 +199,65 @@ function SectionTable({ SectionName }) {
         "Content-Type": "application/json",
       });
       if (response.status === 200) {
-        setBenefits(response.data);
+        var chartDataTemp = [];
+        var labelsTemp = [];
+        var orderTemp = [];
+  
         for (let i = 0; i < response.data.length; i++) {
           if (response.data[i].month === "January") {
-            chartData[0] = response.data[i].profit;
-            labels[0] = response.data[i].month.substring(0, 3);
+            chartDataTemp[0] = response.data[i].profit;
+            labelsTemp[0] = response.data[i].month.substring(0, 3);
+            orderTemp[0] = response.data[i];
+            
           } else if (response.data[i].month === "February") {
-            chartData[1] = response.data[i].profit;
-            labels[1] = response.data[i].month.substring(0, 3);
+            chartDataTemp[1] = response.data[i].profit;
+            labelsTemp[1] = response.data[i].month.substring(0, 3);
+            orderTemp[1] = response.data[i];
           } else if (response.data[i].month === "March") {
-            chartData[2] = response.data[i].profit;
-            labels[2] = response.data[i].month.substring(0, 3);
+            chartDataTemp[2] = response.data[i].profit;
+            labelsTemp[2] = response.data[i].month.substring(0, 3);
+            orderTemp[2] = response.data[i];
           } else if (response.data[i].month === "April") {
-            chartData[3] = response.data[i].profit;
-            labels[3] = response.data[i].month.substring(0, 3);
+            chartDataTemp[3] = response.data[i].profit;
+            labelsTemp[3] = response.data[i].month.substring(0, 3);
+            orderTemp[3] = response.data[i];
           } else if (response.data[i].month === "May") {
-            chartData[4] = response.data[i].profit;
-            labels[4] = response.data[i].month.substring(0, 3);
+            chartDataTemp[4] = response.data[i].profit;
+            labelsTemp[4] = response.data[i].month.substring(0, 3);
+            orderTemp[4] = response.data[i];
           } else if (response.data[i].month === "June") {
-            chartData[5] = response.data[i].profit;
-            labels[5] = response.data[i].month.substring(0, 3);
+            chartDataTemp[5] = response.data[i].profit;
+            labelsTemp[5] = response.data[i].month.substring(0, 3);
+            orderTemp[5] = response.data[i];
           } else if (response.data[i].month === "July") {
-            chartData[6] = response.data[i].profit;
-            labels[6] = response.data[i].month.substring(0, 3);
+            chartDataTemp[6] = response.data[i].profit;
+            labelsTemp[6] = response.data[i].month.substring(0, 3);
+            orderTemp[6] = response.data[i];
           } else if (response.data[i].month === "August") {
-            chartData[7] = response.data[i].profit;
-            labels[7] = response.data[i].month.substring(0, 3);
+            chartDataTemp[7] = response.data[i].profit;
+            labelsTemp[7] = response.data[i].month.substring(0, 3);
+            orderTemp[7] = response.data[i];
           } else if (response.data[i].month === "September") {
-            chartData[8] = response.data[i].profit;
-            labels[8] = response.data[i].month.substring(0, 3);
+            chartDataTemp[8] = response.data[i].profit;
+            labelsTemp[8] = response.data[i].month.substring(0, 3);
+            orderTemp[8] = response.data[i];
           } else if (response.data[i].month === "October") {
-            chartData[9] = response.data[i].profit;
-            labels[9] = response.data[i].month.substring(0, 3);
+            chartDataTemp[9] = response.data[i].profit;
+            labelsTemp[9] = response.data[i].month.substring(0, 3);
+            orderTemp[9] = response.data[i];
           } else if (response.data[i].month === "November") {
-            chartData[10] = response.data[i].profit;
-            labels[10] = response.data[i].month.substring(0, 3);
+            chartDataTemp[10] = response.data[i].profit;
+            labelsTemp[10] = response.data[i].month.substring(0, 3);
+            orderTemp[10] = response.data[i];
           } else if (response.data[i].month === "December") {
-            chartData[11] = response.data[i].profit;
-            labels[11] = response.data[i].month.substring(0, 3);
+            chartDataTemp[11] = response.data[i].profit;
+            labelsTemp[11] = response.data[i].month.substring(0, 3);
+            orderTemp[11] = response.data[i];
           }
         }
+        setChartData(chartDataTemp);
+        setLabels(labelsTemp);
+        setBenefits(orderTemp);
       }
     } catch (error) {
       console.error("Error fetching benefits:", error);
@@ -267,7 +300,7 @@ function SectionTable({ SectionName }) {
           onClick={toggleDropdown}
           className="inline-flex justify-center w-50 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm"
         >
-          Select Year
+          {t("Select Year")}
         </button>
         <div
           id="dropdown-menu"
@@ -292,7 +325,7 @@ function SectionTable({ SectionName }) {
         <div className="relative flex max-w-[650px] h-[550px] w-full flex-col rounded-[10px] border-[1px] border-gray-200 bg-white bg-clip-border shadow-md shadow-[#F3F3F3] dark:border-[#ffffff33] dark:!bg-navy-800 dark:text-white dark:shadow-none">
           <div className="headerContainer">
             <h4 className="text-lg font-bold text-primaryColor columns-3">
-              Table
+               {t("Table")}
             </h4>
             <div className="buttonContainer">
               <Link
@@ -300,7 +333,7 @@ function SectionTable({ SectionName }) {
                 to="/profit=create"
                 style={{ marginLeft: "130px" }}
               >
-                Create
+               {t("Create")}
               </Link>
             </div>
           </div>
@@ -312,37 +345,37 @@ function SectionTable({ SectionName }) {
                     scope="col"
                     className="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
                   >
-                    Year
+                    {t("Year")}
                   </th>
                   <th
                     scope="col"
                     className="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
                   >
-                    Month
+                   {t("Month")}
                   </th>
                   <th
                     scope="col"
                     className="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
                   >
-                    Income
+                    {t("Income")}
                   </th>
                   <th
                     scope="col"
                     className="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
                   >
-                    Expenses
+                    {t("Expenses")}
                   </th>
                   <th
                     scope="col"
                     className="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
                   >
-                    Profit
+                    {t("Profit")}
                   </th>
                   <th
                     scope="col"
                     className="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
                   >
-                    Modify
+                    {t("Modify")}
                   </th>
                 </tr>
               </thead>
@@ -353,7 +386,7 @@ function SectionTable({ SectionName }) {
                       {benefit.year}
                     </td>
                     <td className="py-4 px-6 text-sm font-medium text-gray-900">
-                      {benefit.month}
+                      {t(benefit.month)}
                     </td>
                     <td className="py-4 px-6 text-sm font-medium text-gray-900">
                       {benefit.income} €
@@ -407,16 +440,16 @@ function SectionTable({ SectionName }) {
             <div className="md:flex md:justify-between md:items-center">
               <div>
                 <h2 className="text-xl text-gray-800 font-bold leading-tight">
-                  Chart
+                {t("Chart")}
                 </h2>
                 <p className="mb-2 text-gray-600 text-sm">
-                  Monthly Profit of Year 2024
+                  {t("Monthly Profit of Year 2024")}
                 </p>
               </div>
               <div className="mb-4">
                 <div className="flex items-center">
                   <div className="w-2 h-2 bg-blue-900 hover:bg-blue-800 mr-2 rounded-full"></div>
-                  <div className="text-sm text-gray-700">Profit</div>
+                  <div className="text-sm text-gray-700">{t("Profit")}</div>
                 </div>
               </div>
             </div>
@@ -428,7 +461,7 @@ function SectionTable({ SectionName }) {
                 >
                   <div className="shadow-xs rounded-lg bg-white p-2">
                     <div className="flex items-center justify-between text-sm">
-                      <div>Benefits:</div>
+                      <div>{t("Profit")}</div>
                       <div className="font-bold ml-2">{tooltipContent}</div>
                     </div>
                   </div>
@@ -439,7 +472,7 @@ function SectionTable({ SectionName }) {
                   <div key={index} className="px-2 w-1/6">
                     {data < 0 ? (
                     <div
-                      style={{ height: `${data / 20}px` }}
+                      style={{ height: `${(data * -1) / 20}px` }}
                       className="transition ease-in duration-200 bg-red-900 hover:bg-red-800 relative"
                     >
                       <div className="text-center absolute top-0 left-0 right-0 -mt-6 text-gray-800 text-sm">
@@ -475,7 +508,7 @@ function SectionTable({ SectionName }) {
                         style={{ width: "1px" }}
                       ></div>
                       <div className="text-center absolute top-0 left-0 right-0 mt-3 text-gray-700 text-sm">
-                        {label}
+                        {t(label)}
                       </div>
                     </div>
                   </div>
