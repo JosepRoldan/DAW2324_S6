@@ -91,7 +91,7 @@ export default function ProductsPage() {
   const colDefs = useMemo(
     () => [
       {
-        field: "idOrderPicanova",
+        field: "number_order",
         headerName: "Order Number",
         cellRenderer: undefined,
       },
@@ -101,13 +101,13 @@ export default function ProductsPage() {
         cellRenderer: undefined,
       },
       {
-        field: "surname",
-        headerName: "Customer Surname",
-        cellRenderer: undefined,
-      },
-      {
         field: "datetime",
         headerName: "Order Date",
+      },
+      {
+        field: "totalPrice",
+        headerName: "Total Price",
+        cellRenderer: undefined,
       },
       {
         field: "orderStatus",
