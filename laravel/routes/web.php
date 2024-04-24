@@ -73,8 +73,10 @@ Route::get('/CustomerArea', function () {return view('clientArea');});
 
 Route::get('/myImages', function () {return view('myImages');});
 
-
 Route::get('/profile', function () {return view('profile');});
+
+Route::get('/editProfile', function () {return view('editProfile');});
+
 
 Route::get('/myOrders', function () {return view('myOrders');});
 
@@ -158,6 +160,8 @@ Route::get('/getImages', [MyImagesController::class, 'getUserSavedImages']);
 
 //Profile
 Route::get('/getProfileData', [ProfileController::class, 'getUserProfileData']);
+Route::put('/updateProfileData', [ProfileController::class, 'updateUserProfileData']);
+
 
 //My Orders
 Route::get('/getOrders', [MyOrdersController::class, 'getUserOrders']);

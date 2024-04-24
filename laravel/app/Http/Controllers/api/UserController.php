@@ -122,7 +122,6 @@ class UserController extends Controller
                 'name' => $user->name,
                 'surname' => $user->surname,
                 'email' => $user->email,
-                // Agrega más campos según sea necesario
             ];
 
             return response()->json([

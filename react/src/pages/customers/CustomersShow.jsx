@@ -3,8 +3,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
 import axios from 'axios';
 import { usePage } from '../../contexts/PageContext';
-import Spinner from '../../components/Spinner';
-
 
 const token = localStorage.getItem('token');
 
@@ -22,7 +20,7 @@ export const CustomersShow = () => {
     surname = '-',
     address = '-',
     city = '-',
-    created_at_formatted,
+    created_at,
     customerStatus = '-',
     is_validated = '-',
     mail = '-',
@@ -31,8 +29,13 @@ export const CustomersShow = () => {
     postcode = '-'
   } = customer;
 
-  const [isLoading, setIsLoading] = useState(true);
-
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
 
   const { setPage, setSteps } = usePage();
 
@@ -140,7 +143,7 @@ export const CustomersShow = () => {
             </div>
             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
               <dt className="text-sm font-semibold text-gray-900">{t("Created at")}</dt>
-              <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{created_at_formatted.formatted}</dd>
+              <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{formatDate(created_at)}</dd>
             </div>
             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
               <dt className="text-sm font-semibold text-gray-900">{t("Phone")}</dt>

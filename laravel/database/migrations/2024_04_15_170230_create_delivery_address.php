@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('address_deliveries', function (Blueprint $table) {
             $table->id();
             $table->foreignId('idCustomers')->references('id')->on('customers');
-            $table->string('address', 50);            
+            $table->string('address', 50);
             $table->string('city', 40);
-            $table->string('postcode',6);
+            $table->string('postcode', 6);
             $table->string('state', 50);
             $table->string('country', 40);
             $table->timestamps();
