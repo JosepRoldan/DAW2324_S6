@@ -271,23 +271,17 @@ export default function ShoppingOrder() {
                         <h2 className="uppercase tracking-wide text-lg font-semibold text-gray-700 my-2">
                             Payment Information
                         </h2>
-                        <fieldset className="mb-3 bg-white shadow-lg rounded text-gray-600">
-                            <label className="flex border-b border-gray-200 h-12 py-3 items-center">
-                                <span className="text-right px-2">Card</span>
-                                <input
-                                    name="card"
-                                    className="focus:outline-none px-3 w-full"
-                                    placeholder="Card number MM/YY CVC"
-                                    required
-                                />
-                            </label>
-                        </fieldset>
                     </section>
                     <button
-                        className="submit-button px-4 py-3 rounded-full bg-pink-400 text-white focus:ring focus:outline-none w-full text-xl font-semibold transition-colors"
                         type="submit"
+                        className="inline-flex items-center justify-center bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md"
                     >
-                        Pay {(totalCarrito + shippingPrice).toFixed(2)} €
+                        <img
+                            src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/pp-acceptance-medium.png"
+                            alt="PayPal"
+                            class="inline-block w-18 h-12 mr-2 align-middle"
+                        />
+                        <span className="align-middle">Pay with PayPal</span>
                     </button>
                 </form>
             </div>

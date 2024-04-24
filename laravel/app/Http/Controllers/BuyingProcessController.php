@@ -74,8 +74,10 @@ class BuyingProcessController extends Controller
     }
 
     public function paypal(Request $request){
+        $totalAmount = $request->query('totalAmount'); 
         $provider = new PayPalClient;
         $provider->setApiCredentials(config('paypal'));
+        $provider->setCurrency('EUR');
         $paypalToken = $provider->getAccessToken();
 
         $response = $provider->createOrder([
@@ -87,8 +89,8 @@ class BuyingProcessController extends Controller
             "purchase_units"=> [
               [
                 "amount"=> [
-                    "currency_code"=> "USD",
-                    "value"=> $request->totalAmount
+                    "currency_code"=> "EUR",
+                    "value"=> $totalAmount
                 ]
               ]
             ]
@@ -100,7 +102,17 @@ class BuyingProcessController extends Controller
                 }
             }
 
+        } else {
+            return redirect()->route('processShop.cancel');
         }
+    }
+
+    public function success (Request $request){
+        dd($request);
+    }
+
+    public function cancel (Request $request) {
+
     }
     
 }
