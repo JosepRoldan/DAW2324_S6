@@ -16,8 +16,8 @@ class FastAPIController extends Controller
         try {
             $tokenResponse = $client->request('POST', $urlBase . '/token', [
                 'form_params' => [
-                    'username' => env('API_USER'),
-                    'password' => env('API_PASSWORD')
+                    'username' => env('FASTAPI_USER'),
+                    'password' => env('FASTAPI_PASSWORD')
                 ]
             ]);
 
