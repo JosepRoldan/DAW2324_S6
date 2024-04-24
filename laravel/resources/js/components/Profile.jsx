@@ -233,16 +233,11 @@ const Profile = () => {
                 <div className="flex flex-col items-center justify-center h-full">
                     <img
                         src="/img/fotoPerfil.jpeg"
-                        className="w-32 h-32 rounded-full mb-7"
+                        className="w-32 h-32 rounded-full"
                     />
                     <h2 className="text-xl font-semibold">{profileData.name} {profileData.surname}</h2>
 
                     <p className="text-gray-500">{profileData.mail}</p>
-                    <div className="mt-4">
-                        <a href="../editProfile" className="px-6 py-3 bg-blue-500 text-white rounded-md hover:bg-blue-600">
-                            Edit Profile
-                        </a>
-                    </div>
                     <br></br>
                 </div>
                 <div className="bg-gray-300 overflow-hidden shadow rounded-lg border flex justify-center items-center mx-20">
@@ -284,7 +279,11 @@ const Profile = () => {
                         </dl>
                     </div>
                 </div>
-                <br></br>
+                <div className=" mx-20 py-2.5 mb-2 mt-2 bg-blue-500 text-white text-center rounded-md hover:bg-blue-600">
+                        <a href="../editProfile">
+                            Edit Profile
+                        </a>
+                </div>
             </div>
         </>
     );
