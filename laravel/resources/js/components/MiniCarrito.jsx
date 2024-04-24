@@ -16,6 +16,7 @@ export default function MiniCarrito() {
     if (window.location.pathname === '/carrito') {
       window.location.reload();
     }
+
   };
 
   const total = cartProducts.reduce((acc, product) => acc + parseFloat(product.price) * product.quantity, 0);

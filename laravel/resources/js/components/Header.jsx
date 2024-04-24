@@ -36,6 +36,18 @@ export default function Header() {
         setIsCartOpen((prevState) => !prevState);
     };
 
+    //Funcion para que si hay productos en el  se muestre un badge con la cantidad de productos encima del icono del carrito
+    useEffect(() => {
+        const cartButton = document.getElementById("cartButton");
+        const cartProducts = JSON.parse(localStorage.getItem("products")) || [];
+        if (cartProducts.length > 0) {
+            const badge = document.createElement("span");
+            badge.className = "bg-red-500 text-white rounded-full px-1.5 py-0.5 text-xs absolute -top-2 -right-2 mt-2";
+            badge.textContent = cartProducts.length;
+            cartButton.appendChild(badge);
+        }
+    }, []);
+
     return (
         <Disclosure as="nav" className="bg-blue-zodiac-950">
             {({ open }) => (
