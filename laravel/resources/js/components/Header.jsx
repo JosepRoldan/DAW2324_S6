@@ -46,7 +46,9 @@ export default function Header() {
             badge.textContent = cartProducts.length;
             cartButton.appendChild(badge);
         }
-    }, []);
+    }
+    , []);
+    
 
     return (
         <Disclosure as="nav" className="bg-blue-zodiac-950">
