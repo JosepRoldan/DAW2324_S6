@@ -1,27 +1,20 @@
-export const updateMultipleProducts = async (selectedProducts, updates, token, apiUrl) => {
+export const updateMultipleProductsActive = async (selectedProducts, activeData, token, apiUrl) => {
     if (!selectedProducts.size) {
         console.error('No products selected');
         return;
     }
 
-    // Construir el objeto de carga (payload) según los datos proporcionados
     const payload = {};
-    if (updates.benefitsMargin !== undefined && updates.benefitsMargin.trim() !== "") {
-        const margin = parseFloat(updates.benefitsMargin);
-        if (!isNaN(margin)) {
-            payload.benefits_margin = margin;
-        } else {
-            console.error('Invalid benefits margin value');
-        }
+
+    if (activeData.isActive !== undefined) {
+        payload.is_active = activeData.isActive === 'true';
     }
 
-    // Verificar si hay datos válidos para actualizar
     if (Object.keys(payload).length === 0) {
         console.error('No valid data provided for update');
         return;
     }
 
-    // Actualizar cada producto seleccionado
     const updatePromises = Array.from(selectedProducts).map(productId => {
         return fetch(`${apiUrl}/products/${productId}`, {
             method: 'PUT',
