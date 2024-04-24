@@ -64,9 +64,10 @@ export const DashboardPage = () => {
       });
       if (response.status === 200) {
         var orderstemp = [];
-        for (let i = 0; i < 6; i++) {
+        for (let i = 0; i < 4; i++) {
           orderstemp.push(response.data[i]);
         }
+        console.log(orderstemp);
         setOrders(orderstemp);
       }
     } catch (error) {
@@ -185,9 +186,9 @@ export const DashboardPage = () => {
                   <ul className="divide-y-2 divide-gray-100 overflow-x-auto w-full">
                     {orders.map((order) => (
                       <li className="py-3 flex justify-between text-sm text-gray-500 font-semibold">
-                        <p className="px-4 font-semibold">{order.idOrderPicanova}</p>
-                        <p className="px-4 text-gray-600">{order.datetime}</p>
-                        <p className="px-4 tracking-wider">{order.orderStatus}</p>
+                        <p className="px-4 font-semibold">{}</p>
+                        <p className="px-4 text-gray-600">{}</p>
+                        <p className="px-4 tracking-wider">{}</p>
                       </li>
                     ))}
 

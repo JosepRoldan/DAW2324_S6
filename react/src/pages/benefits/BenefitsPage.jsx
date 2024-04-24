@@ -12,10 +12,10 @@ export const BenefitsPage = () => {
     const { setPage, setSteps } = usePage();
     useEffect(() => {
         setPage(t("Profit"));
-    }, [setPage, navigate]);
+    }, [setPage, t, navigate]);
     return (
         <>
-            <SectionTable SectionName></SectionTable>
+            <SectionTable></SectionTable>
         </>
     )
 }
