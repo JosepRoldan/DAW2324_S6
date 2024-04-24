@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Session;
+use App\Http\Controllers\VerifyEmailController;
 
 class RegisterController extends Controller
 {
@@ -57,6 +58,8 @@ class RegisterController extends Controller
         $registro->addClient($data);
         $token = $data['username'];
         Session::put('token', $token);
+        $verifyEmailController = new VerifyEmailController();
+        $verifyEmailController->sendVerifyLinkEmail($request);
 
         // Redirige a una página de confirmación o a donde sea apropiado
         return redirect()->to('Inicio');
@@ -80,7 +83,7 @@ class RegisterController extends Controller
             }
         } else {
             // No se encontró ningún usuario con el correo electrónico proporcionado
-            return response()->json(['message' => 'Usuario o contraseña incorrecta'], 404);
+            return response()->json(['message' => 'Usuario o contraseña incorrecta'], 401);
         }
     }
     public function logout()

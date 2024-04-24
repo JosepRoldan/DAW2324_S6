@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\BuyingProcessController;
+use App\Http\Controllers\VerifyEmailController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\EnsureTokenIsValid;
 use App\Http\Controllers\RegisterController;
@@ -96,6 +98,10 @@ Route::post('/sign_up', [RegisterController::class, 'store'])->name('customers.s
 Route::get('/forgot', function () {return view('/auth/recover-password');})->name('forgot');
 //Logout
 Route::get('/logout', [RegisterController::class, 'logout'])->name('logout');
+
+//Verificacion Usuario
+Route::post('/send-verification', [VerifyEmailController::class, 'sendVerifyLinkEmail'])->name('send-verification');
+
 
 
 //Reset Password

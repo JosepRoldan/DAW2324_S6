@@ -32,9 +32,7 @@ export default function Login() {
               body: JSON.stringify(formData)
           });
             if (response.status === 401) {
-                toast.error("El nombre de usuario o correo electrónico ya están en uso o hay campos sin rellenar.");
-            }else if(response.status === 411){
-                toast.error("Las contraseña no cumple los requisitos minimos.");
+                toast.error("Usuario o contraseña incorrectos.");
             }else if (response.status === 200) {
                 toast.success("Se ha registrado correctamente!");
                 setTimeout(function() {

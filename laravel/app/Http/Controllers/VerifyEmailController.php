@@ -14,7 +14,7 @@ class VerifyEmailController extends Controller
 {
     public function sendVerifyLinkEmail(Request $request){
         $request->validate([
-            'email' => 'required|email|exists:customers,mail',
+            'email' => 'required|email|',
         ]);
 
         /*Creo un token de seguridad que envio por correo electrónico al usuario que pide un cambio de contraseña,
@@ -37,10 +37,10 @@ class VerifyEmailController extends Controller
         // Busca al usuario por su correo electrónico
         $registro = new Registro();
         $user = $registro->where('mail', $request->email)->first();
-
+        dd($registro);
         // Envía el correo electrónico con el enlace para restablecer la contraseña
         $email = new Mail();
-        $email->setFrom("info@customAIze.org", "Aladdin Powell");
+        $email->setFrom("josemedina@iesmontsia.org", "Aladdin Powell");
         $email->setSubject("Verificación de email CustomAIze");
         $email->addTo($user->mail, "Nombre del Destinatario");
         $email->addContent("text/plain", "Hemos recibido una solicitud de verificación. Haz clic en el siguiente enlace para verificar tu correo electrónico: $resetLink , en caso de que no hayas solicitado una verificación, cambia tu contraseña.");
@@ -50,39 +50,10 @@ class VerifyEmailController extends Controller
         $sendgrid = new SendGrid($apiKey);
         try {
             $response = $sendgrid->send($email);
-            return back()->with('success', 'Se ha enviado un correo electrónico con las instrucciones para restablecer tu contraseña.');
+            return back()->with('success', 'Se ha enviado un correo electrónico con las instrucciones para verificar tu correo electrónico.');
         } catch (\Exception $e) {
             return back()->with('error', 'Error al enviar el correo electrónico: ' . $e->getMessage());
         }
         // Retorna a la vista anterior con un mensaje de éxito
-    }
-    public function showResetForm(Request $request)
-    {
-        return view('auth.passwords.reset')->with(
-            ['token' => $request->token, 'email' => $request->email]
-        );
-    }
-    public function reset(Request $request)
-    {
-        // Obtener el token de la URL
-        $token = $request->query('token');
-
-        // Buscar el token en la base de datos
-        $passwordReset = ResetPasswordToken::where('token', $token)
-                            ->where('created_at', '>=', Carbon::now()->subMinutes(20)) // Validar que el token no haya expirado (20 minutos)
-                            ->first();
-
-        if (!$passwordReset) {
-            // El token no es válido o ha expirado
-            return redirect()->route('password.reset.invalid');
-        }
-
-        // Si el token es válido, obtén el correo electrónico asociado
-        $email = $passwordReset->mail;
-
-        // Ahora puedes usar el correo electrónico como desees
-        // Por ejemplo, pasarlo a una vista o realizar alguna acción con él
-
-        return view('password.reset', ['token' => $token, 'email' => $email]);
     }
 }
