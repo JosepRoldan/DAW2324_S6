@@ -101,6 +101,7 @@ export default function ProductsMassiveActions() {
             .then(() => {
                 setLastUpdated(Date.now());
                 setUpdateMessage(t(`Products updated succesfully.`));
+                setSelectedProducts(new Set());
                 setShowModal(true);
             })
             .catch(error => {
@@ -118,6 +119,7 @@ export default function ProductsMassiveActions() {
             .then(() => {
                 setLastUpdated(Date.now());
                 setUpdateMessage(t(`Products updated succesfully.`));
+                setSelectedProducts(new Set());
                 setShowModal(true);
             })
             .catch(error => {
