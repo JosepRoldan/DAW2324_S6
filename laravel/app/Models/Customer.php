@@ -11,7 +11,7 @@ class Customer extends Model
 
     protected $table = 'customers'; // Nombre de la tabla en la base de datos
 
-    protected $appends = ['created_at_formatted'];
+    // protected $appends = ['created_at_formatted'];
 
 
     protected $fillable = [
@@ -39,23 +39,18 @@ class Customer extends Model
         'membershipDate' => 'datetime',
     ];
 
-    public function getCreatedAtFormattedAttribute()
-    {
-        $createdAt = $this->created_at;
+    // public function getCreatedAtFormattedAttribute()
+    // {
+    //     $createdAt = $this->created_at;
 
-        return [
-            'year' => $createdAt->year,
-            'month' => $createdAt->month,
-            'day' => $createdAt->day,
-            'hour' => $createdAt->hour,
-            'minute' => $createdAt->minute,
-            'second' => $createdAt->second,
-            'formatted' => $createdAt->format('H:i d-m-Y'),
-        ];
-    }
-
-    public function getAddressDelivery ()
-    {
-        return $this->hasOne(AddressDelivery::class, 'idCustomers', 'id');
-    }
+    //     return [
+    //         'year' => $createdAt->year,
+    //         'month' => $createdAt->month,
+    //         'day' => $createdAt->day,
+    //         'hour' => $createdAt->hour,
+    //         'minute' => $createdAt->minute,
+    //         'second' => $createdAt->second,
+    //         'formatted' => $createdAt->format('H:i d-m-Y'),
+    //     ];
+    // }
 }
