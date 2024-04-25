@@ -42,7 +42,7 @@ export const DashboardPage = () => {
         setTotalProfit(response.data.total);
       }
     } catch (error) {
-      console.error("Error fetching benefits:", error.message);
+      // console.error("Error fetching benefits:", error.message);
     } finally {
       setLoading(false);
     }
@@ -67,11 +67,10 @@ export const DashboardPage = () => {
         for (let i = 0; i < 4; i++) {
           orderstemp.push(response.data[i]);
         }
-        console.log(orderstemp);
         setOrders(orderstemp);
       }
     } catch (error) {
-      console.error("Error fetching orders:", error);
+      // console.error("Error fetching orders:", error);
     } finally {
       setLoading(false);
     }
