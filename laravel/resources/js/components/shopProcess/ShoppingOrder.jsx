@@ -46,9 +46,7 @@ export default function ShoppingOrder() {
         setAddress({ ...address, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-
+    const handlePayPalButtonClick = async () => {
         try {
             // Validar los datos del cliente y la dirección
             await validationSchema.validate(
@@ -99,6 +97,28 @@ export default function ShoppingOrder() {
         }
     };
 
+    const handlePayPalCreateOrder = (data, actions) => {
+        // Calcula el total del carrito
+        const totalCarrito = productos.reduce((total, producto) => {
+            return total + parseFloat(producto.price) * producto.quantity;
+        }, 0);
+
+        // Calcula el total final sumando el total del carrito y el precio de envío
+        const totalAmount = totalCarrito + shippingPrice;
+
+        // Devuelve un objeto con la información del pedido, incluido el importe total a cobrar por PayPal
+        return actions.order.create({
+            purchase_units: [
+                {
+                    amount: {
+                        value: totalAmount.toFixed(2), // Importe total a cobrar por PayPal
+                        currency_code: "EUR", // Código de la moneda (puede variar según tu configuración)
+                    },
+                },
+            ],
+        });
+    };
+
     // useEffect para cargar los productos desde el almacenamiento local
     useEffect(() => {
         const productosGuardados =
@@ -122,7 +142,7 @@ export default function ShoppingOrder() {
     return (
         <div className="h-screen grid grid-cols-3">
             <div className="lg:col-span-2 col-span-3 bg-indigo-50 space-y-8 px-12">
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handlePayPalButtonClick}>
                     <section>
                         <h2 className="uppercase tracking-wide text-lg font-semibold text-gray-700 my-2">
                             Customer Date
@@ -272,8 +292,17 @@ export default function ShoppingOrder() {
                             Payment Information
                         </h2>
                     </section>
-                    <PayPalScriptProvider options={{ clientId: "test" }}>
-                        <PayPalButtons onClick={handleSubmit} />
+                    <PayPalScriptProvider
+                        options={{
+                            clientId:
+                                "AUZhCdtjShVz3aPj-29oznCc8DHaY-fRbD9_83qAsarySyCRtDA41lKfkHC-PWglj8mC4YospxgDWzTX",
+                            currency: "EUR",
+                        }}
+                    >
+                        <PayPalButtons
+                            onClick={handlePayPalButtonClick}
+                            createOrder={handlePayPalCreateOrder}
+                        />
                     </PayPalScriptProvider>{" "}
                 </form>
             </div>

@@ -76,35 +76,7 @@ class BuyingProcessController extends Controller
     public function paypal(Request $request){
         $ordersController = new OrdersController();
         $ordersController->storeDates($request);
-                $roundedAmount = round($request->totalAmount, 2);
-        $provider = new PayPalClient;
-        $provider->setApiCredentials(config('paypal'));
-        $provider->setCurrency('EUR');
-        $paypalToken = $provider->getAccessToken();
-        $response = $provider->createOrder([
-            "intent"=> "CAPTURE",
-            "aplication_context" => [
-                "return_url" => route('processShop.success'),
-                "cancel_url" => route('processShop.cancel'),
-            ],
-            "purchase_units"=> [
-              [
-                "amount"=> [
-                    "currency_code"=> "EUR",
-                    "value"=> $roundedAmount
-                ]
-              ]
-            ]
-        ]);
-
-        if (isset($response['id']) && $response['id']!= null ) {
-            foreach ($response['links'] as $link) {
-                if ($link['rel'] == 'approve') {
-                    return redirect()->away($link['href']);
-                }
-            }
-
-        } 
+      
     }
 
     public function success (Request $request){
