@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Customer;
 use Srmklive\PayPal\Services\PayPal as PayPalClient; //per usar paypal
 use Illuminate\Http\Response;
-
+use App\Http\Controllers\OrdersController;
 
 class BuyingProcessController extends Controller
 {
@@ -74,15 +74,16 @@ class BuyingProcessController extends Controller
     }
 
     public function paypal(Request $request){
-        $totalAmount = $request->query('totalAmount'); 
+        $ordersController = new OrdersController();
+        $ordersController->storeDates($request);
+                $roundedAmount = round($request->totalAmount, 2);
         $provider = new PayPalClient;
         $provider->setApiCredentials(config('paypal'));
         $provider->setCurrency('EUR');
         $paypalToken = $provider->getAccessToken();
-
         $response = $provider->createOrder([
             "intent"=> "CAPTURE",
-            "aplicationtion_context" => [
+            "aplication_context" => [
                 "return_url" => route('processShop.success'),
                 "cancel_url" => route('processShop.cancel'),
             ],
@@ -90,29 +91,38 @@ class BuyingProcessController extends Controller
               [
                 "amount"=> [
                     "currency_code"=> "EUR",
-                    "value"=> $totalAmount
+                    "value"=> $roundedAmount
                 ]
               ]
             ]
         ]);
         if (isset($response['id']) && $response['id']!= null ) {
             foreach ($response['links'] as $link) {
-                if ($link['rel'] === 'approve') {
+                if ($link['rel'] == 'approve') {
                     return redirect()->away($link['href']);
                 }
             }
 
-        } else {
-            return redirect()->route('processShop.cancel');
-        }
+        } 
     }
 
     public function success (Request $request){
-        dd($request);
+  
+    // Aquí puedes procesar la respuesta de PayPal según tus necesidades
+    // Por ejemplo, puedes guardar los detalles de la transacción en tu base de datos,
+    // actualizar el estado del pedido, enviar correos electrónicos de confirmación, etc.
+
+    // Por ahora, solo imprimiremos los detalles de la respuesta para fines de depuración
     }
 
     public function cancel (Request $request) {
+{
+    // Aquí puedes realizar cualquier acción que desees cuando una transacción sea cancelada por el usuario
+    // Por ejemplo, puedes redirigir al usuario a una página específica, mostrar un mensaje de cancelación, etc.
 
+    // Por ahora, simplemente redirigiremos al usuario a una página de cancelación
+    //return redirect()->route('Carrito');
+}
     }
     
 }

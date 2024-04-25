@@ -6,6 +6,7 @@ use App\Models\AddressDelivery;
 use App\Models\OrderView;
 use App\Models\Order;
 use App\Models\OrderDetail;
+use Illuminate\Support\Facades\Http;
 
 
 use App\Models\Customer;
@@ -25,7 +26,7 @@ class OrdersController extends Controller
         return view('MyOrders', compact('orders'));
     }
 
-    public function storeDates(Request $request)
+    public function storeDates($request)
     {
         $requestData = $request->validate([
             'customer'=>'required|array',
@@ -91,7 +92,6 @@ class OrdersController extends Controller
                 'shippingPrice'=> $shippingPrice,
             ]);
         }
-        
-        return response()->json(['message' => 'Order data saved successfully']);
+
     }
 }

@@ -77,7 +77,7 @@ export default function ShoppingOrder() {
                 totalAmount: totalAmount, // Agrega el total final al formData
             };
 
-            await axios.post("/Cart/Order", formData, {
+            await axios.post("/shopProccess/paypal", formData, {
                 headers: {
                     "X-CSRF-TOKEN": csrfToken,
                 },
@@ -85,7 +85,6 @@ export default function ShoppingOrder() {
 
             console.log("Order data saved");
             // Aquí puedes agregar lógica adicional después de que se haya guardado la orden, como redireccionar a otra página
-            window.location.href = `/shopProccess/paypal?totalAmount=${totalAmount}`;
         } catch (error) {
             if (error instanceof Yup.ValidationError) {
                 const errors = {};
