@@ -9,6 +9,37 @@
     @vite('resources/js/app.js')
     @vite('resources/css/app.css')
     <link rel="icon" type="image/png" href="../img/logo.png">
+    <style>
+        .fake-message {
+    background-color: red;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+}
+
+.fake-message button {
+    color: white;
+    font-weight: bold;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 1.5rem; /* Cambiar a una unidad relativa */
+    margin-top: 2rem; /* Cambiar a una unidad relativa */
+    position: absolute;
+    top: 1rem; /* Cambiar a una unidad relativa */
+    right: 1rem; /* Cambiar a una unidad relativa */
+    padding: 0.5rem 1rem; /* Cambiar a una unidad relativa */
+}
+
+@media (max-width: 768px) {
+    .fake-message button {
+        font-size: 1.2rem; /* Tamaño de fuente más pequeño para pantallas pequeñas */
+    }
+}
+    </style>
 </head>
 <!-- <div class="text-red-500" id="head"></div> -->
 @if(Session::has('token'))
@@ -31,24 +62,27 @@
 
 <!-- First Section -->
     <div id="header" class="z-40"></div>
-    <div class="w-screen h-screen overflow-hidden relative bg-gradient-to-br from-blue-900 via-purple-600 to-cyan-400">
-  <div class="relative max-w-screen-lg mx-auto grid grid-cols-12 h-full items-center">
-    <div class="col-span-6">
-      <h1 class="text-white font-extrabold text-5xl mb-8">Unleash Your Creativity with AI-Powered Designs</h1>
-      <p class="text-white text-base">
-        At CustomAIze, we blend cutting-edge technology with your imagination to bring your ideas to life. With our innovative platform, you can generate stunning designs using artificial intelligence and transform them into personalized products that reflect your style.
-      </p>
-      <a href="/daisy" class="mt-8 text-white uppercase py-4 text-base font-light px-10 border border-white hover:bg-white hover:bg-opacity-10 inline-block rounded">Start Creating</a>
-    </div>
-    <div class="col-span-6">
-      <img src="img/logo.png" class="z-10 ml-20 max-w-full h-auto">
+    <div class="fake-message">
+    <p>This page is fake, for demonstration purposes only.</p>
+    <button id="closeFakeMessage">x</button>
+   </div>
+    <div class="w-screen h-screen overflow-hidden relative">
+  <img src="/img/inicio.gif" class="absolute inset-0 w-full h-full object-cover object-center z-0" alt="Animated GIF">
+  <div class=" grid ml-24 grid-cols-12 h-full items-center relative z-10">
+    <div class="col-span-12 md:col-span-12 px-0 md:px-6 text-white">  
+      <h1 class="font-extrabold text-[#6F96A6] text-6xl md:text-6xl mb-8 tracking-wider">Unleash Your Creativity with AI-Powered Designs</h1>
+      <a href="/daisy" class="mt-8 uppercase py-4 px-8 md:px-10 border border-white hover:bg-white hover:bg-opacity-10 inline-block rounded text-gray-400 font-semibold">Start Creating</a>
     </div>
   </div>
 </div>
 
+
+</div>
+
 <!-- Carousel Section -->
-<div class="lg:p-8">
-<h2 class="text-center text-2xl md:text-5xl font-semibold text-gray-800 pt-10 pb-10">Community Art Showcase</h2>
+
+<div class="m-10 mx-auto p-16 sm:p-24 lg:p-48 bg-white">
+    
     <!-- Carousel Body -->
     <div class="relative rounded-lg block md:flex items-center bg-gray-100 shadow-xl" style="min-height: 19rem;">
       <div class="relative w-full md:w-2/5 h-full overflow-hidden rounded-t-lg md:rounded-t-none md:rounded-l-lg" style="min-height: 19rem;">
@@ -60,7 +94,7 @@
       </div>
       <div class="w-full md:w-3/5 h-full flex items-center bg-gray-100 rounded-lg">
         <div class="p-12 md:pr-24 md:pl-16 md:py-12">
-          <p class="text-gray-600"><span class="text-gray-900">Jose Tonto</span> is a UK-based fashion retailer that has nearly doubled in size since last year. They integrated Stripe to deliver seamless checkout across mobile and web for customers in 100+ countries, all while automatically combating fraud.</p>
+          <p class="text-gray-600"><span class="text-gray-900">Missguided</span> is a UK-based fashion retailer that has nearly doubled in size since last year. They integrated Stripe to deliver seamless checkout across mobile and web for customers in 100+ countries, all while automatically combating fraud.</p>
           <a class="flex items-baseline mt-3 text-indigo-600 hover:text-indigo-900 focus:text-indigo-900" href="">
             <span>Learn more about our users</span>
             <span class="text-xs ml-1">&#x279c;</span>
@@ -91,7 +125,7 @@
 
 <!-- Third Section -->
 <div class="overflow-hidden bg-white">
-    <div class="col-span-12 md:col-span-6 py-10 md:py-16 bg-gradient-to-r from-purple-700 to-indigo-700 relative before:absolute before:h-full before:w-screen before:bg-[#061F41] before:top-0 before:right-0">
+    <div class="col-span-12 md:col-span-6 py-10 md:py-16 relative bg-[#141415]">
         <div class="relative z-20 pl-5 pr-3 md:pr-5"> <!-- Adjusted padding on the right side -->
             <h2 class="text-white font-black text-3xl md:text-5xl leading-snug mb-3 md:mb-5">Why Choose CustomAIze?</h2> <!-- Adjusted font size and margin bottom -->
             <p class="text-white text-lg md:text-base">
@@ -109,165 +143,50 @@
 <link rel="stylesheet" href="https://cdn.tailgrids.com/tailgrids-fallback.css" />
 
 <!-- ====== Cards Section Start -->
-<section class="pt-10 pb-6">
-   <div class="container">
-      <div class="flex flex-wrap -mx-4">
-         <div class="w-full md:w-1/2 xl:w-1/3 px-4">
-            <div class="bg-white rounded-lg overflow-hidden shadow-md mb-10"> <!-- Aquí se agregó la clase 'shadow-md' para la sombra -->
-               <img
-                  src="https://cdn.tailgrids.com/1.0/assets/images/cards/card-01/image-01.jpg"
-                  alt="image"
-                  class="w-full"
-                  />
-               <div class="p-8 sm:p-9 md:p-7 xl:p-9 text-center">
-                  <h3>
-                     <a
-                        href="javascript:void(0)"
-                        class="
-                        font-semibold
-                        text-dark text-xl
-                        sm:text-[22px]
-                        md:text-xl
-                        lg:text-[22px]
-                        xl:text-xl
-                        2xl:text-[22px]
-                        mb-4
-                        block
-                        hover:text-primary
-                        "
-                        >
-                     50+ Best creative website themes & templates
-                     </a>
-                  </h3>
-                  <p class="text-base text-body-color leading-relaxed mb-7">
-                     Lorem ipsum dolor sit amet pretium consectetur adipiscing
-                     elit. Lorem consectetur adipiscing elit.
-                  </p>
-                  <a
-                     href="javascript:void(0)"
-                     class="
-                     inline-block
-                     py-2
-                     px-7
-                     border border-[#E5E7EB]
-                     rounded-full
-                     text-base text-body-color
-                     font-medium
-                     hover:border-primary hover:bg-primary hover:text-white
-                     transition
-                     "
-                     >
-                  View Details
-                  </a>
-               </div>
+<div class="mt-6 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+    @foreach($topPriorityProducts as $product)
+        <div class="w-full px-4">
+            <div class="bg-white rounded-lg overflow-hidden shadow-md mb-10">
+                <!-- Imagen del producto -->
+                <img src="{{ $product->productImages->first()->original ?? 'https://cdn.tailgrids.com/1.0/assets/images/cards/card-01/image-02.jpg' }}" alt="image" class="w-full">
+                <div class="p-8 sm:p-9 md:p-7 xl:p-9 text-center">
+                    <!-- Título del producto -->
+                    <h3>
+                        <a href="{{ route('products.show', $product->id) }}" class="font-semibold text-dark text-xl sm:text-[22px] md:text-xl lg:text-[22px] xl:text-xl 2xl:text-[22px] mb-4 block hover:text-primary">
+                            {{ $product->name }}
+                        </a>
+                    </h3>
+                    <!-- Descripción del producto -->
+                    <p class="text-base text-body-color leading-relaxed mb-7">
+                    @if( App::getLocale() == 'es' )
+                            {{ $product->ESP_description }}
+                            @elseif( App::getLocale() == 'cat' )
+                            {{ $product->CAT_description }}
+                            @else
+                            {{ $product->ENG_description }}
+                            @endif
+                    </p>
+                    <!-- Enlace para ver detalles -->
+                    <a href="{{ route('products.show', $product->id) }}" class="inline-block py-2 px-7 border border-[#E5E7EB] rounded-full text-base text-body-color font-medium hover:border-primary hover:bg-primary hover:text-white transition">
+                        View Product
+                    </a>
+                </div>
             </div>
-         </div>
-         <div class="w-full md:w-1/2 xl:w-1/3 px-4">
-            <div class="bg-white rounded-lg overflow-hidden shadow-md mb-10"> <!-- Aquí se agregó la clase 'shadow-md' para la sombra -->
-               <img
-                  src="https://cdn.tailgrids.com/1.0/assets/images/cards/card-01/image-02.jpg"
-                  alt="image"
-                  class="w-full"
-                  />
-               <div class="p-8 sm:p-9 md:p-7 xl:p-9 text-center">
-                  <h3>
-                     <a
-                        href="javascript:void(0)"
-                        class="
-                        font-semibold
-                        text-dark text-xl
-                        sm:text-[22px]
-                        md:text-xl
-                        lg:text-[22px]
-                        xl:text-xl
-                        2xl:text-[22px]
-                        mb-4
-                        block
-                        hover:text-primary
-                        "
-                        >
-                     The ultimate UX and UI guide to card design
-                     </a>
-                  </h3>
-                  <p class="text-base text-body-color leading-relaxed mb-7">
-                     Lorem ipsum dolor sit amet pretium consectetur adipiscing
-                     elit. Lorem consectetur adipiscing elit.
-                  </p>
-                  <a
-                     href="javascript:void(0)"
-                     class="
-                     inline-block
-                     py-2
-                     px-7
-                     border border-[#E5E7EB]
-                     rounded-full
-                     text-base text-body-color
-                     font-medium
-                     hover:border-primary hover:bg-primary hover:text-white
-                     transition
-                     "
-                     >
-                  View Details
-                  </a>
-               </div>
-            </div>
-         </div>
-         <div class="w-full md:w-1/2 xl:w-1/3 px-4">
-            <div class="bg-white rounded-lg overflow-hidden shadow-md mb-10"> <!-- Aquí se agregó la clase 'shadow-md' para la sombra -->
-               <img
-                  src="https://cdn.tailgrids.com/1.0/assets/images/cards/card-01/image-03.jpg"
-                  alt="image"
-                  class="w-full"
-                  />
-               <div class="p-8 sm:p-9 md:p-7 xl:p-9 text-center">
-                  <h3>
-                     <a
-                        href="javascript:void(0)"
-                        class="
-                        font-semibold
-                        text-dark text-xl
-                        sm:text-[22px]
-                        md:text-xl
-                        lg:text-[22px]
-                        xl:text-xl
-                        2xl:text-[22px]
-                        mb-4
-                        block
-                        hover:text-primary
-                        "
-                        >
-                     Creative Card Component designs graphic elements
-                     </a>
-                  </h3>
-                  <p class="text-base text-body-color leading-relaxed mb-7">
-                     Lorem ipsum dolor sit amet pretium consectetur adipiscing
-                     elit. Lorem consectetur adipiscing elit.
-                  </p>
-                  <a
-                     href="javascript:void(0)"
-                     class="
-                     inline-block
-                     py-2
-                     px-7
-                     border border-[#E5E7EB]
-                     rounded-full
-                     text-base text-body-color
-                     font-medium
-                     hover:border-primary hover:bg-primary hover:text-white
-                     transition
-                     "
-                     >
-                  View Product
-                  </a>
-               </div>
-            </div>
-         </div>
-      </div>
-   </div>
+        </div>
+        @endforeach
+
+        
+</div>
+</div>
+</div>
 </section>
 
-
 <div id="footer"></div>
+<script>
+   document.getElementById('closeFakeMessage').addEventListener('click', function() {
+   this.parentNode.style.display = 'none';
+   });
+</script>
 </body>
 
 
