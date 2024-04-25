@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import axios from "axios";
 import * as Yup from "yup";
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
 export default function ShoppingOrder() {
     const [customer, setCustomer] = useState({
@@ -271,17 +272,9 @@ export default function ShoppingOrder() {
                             Payment Information
                         </h2>
                     </section>
-                    <button
-                        type="submit"
-                        className="inline-flex items-center justify-center bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md"
-                    >
-                        <img
-                            src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/pp-acceptance-medium.png"
-                            alt="PayPal"
-                            class="inline-block w-18 h-12 mr-2 align-middle"
-                        />
-                        <span className="align-middle">Pay with PayPal</span>
-                    </button>
+                    <PayPalScriptProvider options={{ clientId: "test" }}>
+                        <PayPalButtons onClick={handleSubmit} />
+                    </PayPalScriptProvider>{" "}
                 </form>
             </div>
             <div className="col-span-1 bg-white lg:block hidden">

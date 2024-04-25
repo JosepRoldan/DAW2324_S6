@@ -96,6 +96,7 @@ class BuyingProcessController extends Controller
               ]
             ]
         ]);
+
         if (isset($response['id']) && $response['id']!= null ) {
             foreach ($response['links'] as $link) {
                 if ($link['rel'] == 'approve') {
