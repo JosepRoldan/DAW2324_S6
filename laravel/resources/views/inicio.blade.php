@@ -158,7 +158,13 @@
                     </h3>
                     <!-- Descripción del producto -->
                     <p class="text-base text-body-color leading-relaxed mb-7">
-                        {{ $product->ENG_description ?? $product->CAT_description ?? $product->ESP_description }}
+                    @if( App::getLocale() == 'es' )
+                            {{ $product->ESP_description }}
+                            @elseif( App::getLocale() == 'cat' )
+                            {{ $product->CAT_description }}
+                            @else
+                            {{ $product->ENG_description }}
+                            @endif
                     </p>
                     <!-- Enlace para ver detalles -->
                     <a href="{{ route('products.show', $product->id) }}" class="inline-block py-2 px-7 border border-[#E5E7EB] rounded-full text-base text-body-color font-medium hover:border-primary hover:bg-primary hover:text-white transition">

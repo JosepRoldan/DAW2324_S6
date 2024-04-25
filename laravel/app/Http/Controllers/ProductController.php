@@ -51,6 +51,7 @@ class ProductController extends Controller
         ]);
     }
 
+    //Metodos Para la pagina de inicio
     public function inicio()
     {
         // Llama al método topPriorityProducts para obtener los productos de mayor prioridad
