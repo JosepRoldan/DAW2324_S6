@@ -68,9 +68,9 @@
    </div>
     <div class="w-screen h-screen overflow-hidden relative">
   <img src="/img/inicio.gif" class="absolute inset-0 w-full h-full object-cover object-center z-0" alt="Animated GIF">
-  <div class="max-w-screen-lg grid ml-24 grid-cols-12 h-full items-center relative z-10">
-    <div class="col-span-12 md:col-span-6 px-0 md:px-6 text-white">  
-      <h1 class="font-extrabold text-[#6F96A6] text-5xl md:text-6xl mb-8 tracking-wider">Unleash Your Creativity with AI-Powered Designs</h1>
+  <div class=" grid ml-24 grid-cols-12 h-full items-center relative z-10">
+    <div class="col-span-12 md:col-span-12 px-0 md:px-6 text-white">  
+      <h1 class="font-extrabold text-[#6F96A6] text-6xl md:text-6xl mb-8 tracking-wider">Unleash Your Creativity with AI-Powered Designs</h1>
       <a href="/daisy" class="mt-8 uppercase py-4 px-8 md:px-10 border border-white hover:bg-white hover:bg-opacity-10 inline-block rounded text-gray-400 font-semibold">Start Creating</a>
     </div>
   </div>
@@ -143,132 +143,36 @@
 <link rel="stylesheet" href="https://cdn.tailgrids.com/tailgrids-fallback.css" />
 
 <!-- ====== Cards Section Start -->
-@foreach($topPriorityProducts() as $product)
-    <div class="w-full md:w-1/2 xl:w-1/3 px-4">
-        <div class="bg-white rounded-lg overflow-hidden shadow-md mb-10">
-            <!-- Imagen del producto -->
-            <img src="{{ $product->productImages->first()->original ?? 'placeholder.jpg' }}" alt="image" class="w-full">
-            <div class="p-8 sm:p-9 md:p-7 xl:p-9 text-center">
-                <!-- Título del producto -->
-                <h3>
-                    <a href="{{ route('products.show', $product->id) }}" class="font-semibold text-dark text-xl sm:text-[22px] md:text-xl lg:text-[22px] xl:text-xl 2xl:text-[22px] mb-4 block hover:text-primary">
-                        {{ $product->name }}
+<div class="mt-6 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+    @foreach($topPriorityProducts as $product)
+        <div class="w-full px-4">
+            <div class="bg-white rounded-lg overflow-hidden shadow-md mb-10">
+                <!-- Imagen del producto -->
+                <img src="{{ $product->productImages->first()->original ?? 'https://cdn.tailgrids.com/1.0/assets/images/cards/card-01/image-02.jpg' }}" alt="image" class="w-full">
+                <div class="p-8 sm:p-9 md:p-7 xl:p-9 text-center">
+                    <!-- Título del producto -->
+                    <h3>
+                        <a href="{{ route('products.show', $product->id) }}" class="font-semibold text-dark text-xl sm:text-[22px] md:text-xl lg:text-[22px] xl:text-xl 2xl:text-[22px] mb-4 block hover:text-primary">
+                            {{ $product->name }}
+                        </a>
+                    </h3>
+                    <!-- Descripción del producto -->
+                    <p class="text-base text-body-color leading-relaxed mb-7">
+                        {{ $product->ENG_description ?? $product->CAT_description ?? $product->ESP_description }}
+                    </p>
+                    <!-- Enlace para ver detalles -->
+                    <a href="{{ route('products.show', $product->id) }}" class="inline-block py-2 px-7 border border-[#E5E7EB] rounded-full text-base text-body-color font-medium hover:border-primary hover:bg-primary hover:text-white transition">
+                        View Product
                     </a>
-                </h3>
-                <!-- Descripción del producto -->
-                <p class="text-base text-body-color leading-relaxed mb-7">
-                    {{ $product->ENG_description ?? $product->CAT_description ?? $product->ESP_description }}
-                </p>
-                <!-- Enlace para ver detalles -->
-                <a href="{{ route('products.show', $product->id) }}" class="inline-block py-2 px-7 border border-[#E5E7EB] rounded-full text-base text-body-color font-medium hover:border-primary hover:bg-primary hover:text-white transition">
-                    View Details
-                </a>
+                </div>
             </div>
         </div>
-    </div>
-@endforeach
-         <div class="w-full md:w-1/2 xl:w-1/3 px-4">
-            <div class="bg-white rounded-lg overflow-hidden shadow-md mb-10"> <!-- Aquí se agregó la clase 'shadow-md' para la sombra -->
-               <img
-                  src="https://cdn.tailgrids.com/1.0/assets/images/cards/card-01/image-02.jpg"
-                  alt="image"
-                  class="w-full"
-                  />
-               <div class="p-8 sm:p-9 md:p-7 xl:p-9 text-center">
-                  <h3>
-                     <a
-                        href="javascript:void(0)"
-                        class="
-                        font-semibold
-                        text-dark text-xl
-                        sm:text-[22px]
-                        md:text-xl
-                        lg:text-[22px]
-                        xl:text-xl
-                        2xl:text-[22px]
-                        mb-4
-                        block
-                        hover:text-primary
-                        "
-                        >
-                     The ultimate UX and UI guide to card design
-                     </a>
-                  </h3>
-                  <p class="text-base text-body-color leading-relaxed mb-7">
-                     Lorem ipsum dolor sit amet pretium consectetur adipiscing
-                     elit. Lorem consectetur adipiscing elit.
-                  </p>
-                  <a
-                     href="javascript:void(0)"
-                     class="
-                     inline-block
-                     py-2
-                     px-7
-                     border border-[#E5E7EB]
-                     rounded-full
-                     text-base text-body-color
-                     font-medium
-                     hover:border-primary hover:bg-primary hover:text-white
-                     transition
-                     "
-                     >
-                  View Details
-                  </a>
-               </div>
-            </div>
-         </div>
-         <div class="w-full md:w-1/2 xl:w-1/3 px-4">
-            <div class="bg-white rounded-lg overflow-hidden shadow-md mb-10"> <!-- Aquí se agregó la clase 'shadow-md' para la sombra -->
-               <img
-                  src="https://cdn.tailgrids.com/1.0/assets/images/cards/card-01/image-03.jpg"
-                  alt="image"
-                  class="w-full"
-                  />
-               <div class="p-8 sm:p-9 md:p-7 xl:p-9 text-center">
-                  <h3>
-                     <a
-                        href="javascript:void(0)"
-                        class="
-                        font-semibold
-                        text-dark text-xl
-                        sm:text-[22px]
-                        md:text-xl
-                        lg:text-[22px]
-                        xl:text-xl
-                        2xl:text-[22px]
-                        mb-4
-                        block
-                        hover:text-primary
-                        "
-                        >
-                     Creative Card Component designs graphic elements
-                     </a>
-                  </h3>
-                  <p class="text-base text-body-color leading-relaxed mb-7">
-                     Lorem ipsum dolor sit amet pretium consectetur adipiscing
-                     elit. Lorem consectetur adipiscing elit.
-                  </p>
-                  <a
-                     href="javascript:void(0)"
-                     class="
-                     inline-block
-                     py-2
-                     px-7
-                     border border-[#E5E7EB]
-                     rounded-full
-                     text-base text-body-color
-                     font-medium
-                     hover:border-primary hover:bg-primary hover:text-white
-                     transition
-                     "
-                     >
-                  View Product
-                  </a>
-               </div>
-            </div>
-         </div>
-      </div>
-   </div>
+        @endforeach
+
+        
+</div>
+</div>
+</div>
 </section>
 
 <div id="footer"></div>
