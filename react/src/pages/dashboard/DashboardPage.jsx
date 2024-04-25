@@ -183,8 +183,8 @@ export const DashboardPage = () => {
                     <Link to={"/orders"} className="px-4 py-2 text-xs bg-blue-100 text-blue-900 rounded uppercase tracking-wider font-semibold hover:bg-blue-300">{t("More")}</Link>
                   </div>
                   <ul className="divide-y-2 divide-gray-100 overflow-x-auto w-full">
-                    {orders.map((order) => (
-                      <li className="py-3 flex justify-between text-sm text-gray-500 font-semibold">
+                    {orders.map((order, i) => (
+                      <li className="py-3 flex justify-between text-sm text-gray-500 font-semibold" key={i}>
                         <p className="px-4 font-semibold">{}</p>
                         <p className="px-4 text-gray-600">{}</p>
                         <p className="px-4 tracking-wider">{}</p>
