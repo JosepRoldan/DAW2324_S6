@@ -21,33 +21,24 @@ function PayPalCheckout() {
         });
     }
 
-    function onApprove(data) {
-        return fetch("/my-server/capture-paypal-order", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                orderID: data.orderID,
-            }),
-        })
-            .then((response) => response.json())
-            .then((orderData) => {
-                const name = orderData.payer.name.given_name;
-                alert(`Transaction completed by ${name}`);
-            });
+    function onApprove(data, actions) {
+        alert(`Transaction completed by ${totalAmount}`);
+        // Redirigir a otra ruta después de que la transacción se haya completado con éxito
+        window.location.href = "/Inicio";
+        // Cerrar la ventana de PayPal
     }
 
     return (
         <PayPalScriptProvider
             options={{
-                clientId:
+                "client-id":
                     "AUZhCdtjShVz3aPj-29oznCc8DHaY-fRbD9_83qAsarySyCRtDA41lKfkHC-PWglj8mC4YospxgDWzTX",
                 currency: "EUR", // Especificar la moneda aquí
             }}
         >
             <PayPalButtons
                 createOrder={(data, actions) => createOrder(data, actions)}
+                onApprove={onApprove}
             />
         </PayPalScriptProvider>
     );

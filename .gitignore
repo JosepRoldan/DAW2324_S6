@@ -6,3 +6,4 @@ laravel/package-lock.json
 
 .gitignore
 laravel/storage/framework/sessions/*
+laravel/storage/framework/*
