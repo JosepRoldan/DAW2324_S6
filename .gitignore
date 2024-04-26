@@ -3,6 +3,6 @@ __pycache__/
 node_modules
 laravel/package-lock.json
 .vscode/
-laravel/storage/framework/sessions/OuixG7N04RcB0rIe1RntJiWvsLSVqQbIfVxGrsHJ
-laravel/storage/framework/sessions/qRZQKIsadQ4e1952WIKbc9OqFDBMsTIoqciXs5nu
+
 .gitignore
+laravel/storage/framework/sessions/*
