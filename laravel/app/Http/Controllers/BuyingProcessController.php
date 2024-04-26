@@ -3,17 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Hash;
-use App\Models\BuyingProcess;
-use App\Models\ShoppingCart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\DB;
 use App\Models\Customer;
-use App\Models\Order;
-use App\Models\ShoppingCartItems;
+use Srmklive\PayPal\Services\PayPal as PayPalClient; //per usar paypal
 use Illuminate\Http\Response;
-
+use App\Http\Controllers\OrdersController;
 
 class BuyingProcessController extends Controller
 {
@@ -76,6 +71,31 @@ class BuyingProcessController extends Controller
             //Si ha encontrado una orden vamos a details
             return view('processShop.shipping', ['customer' => $customer, 'address' => $address,'errorMessage'=>'']);
         } 
+    }
+
+    public function paypal(Request $request){
+            $totalAmount = $request['totalAmount'];
+            return view('processShop.payment',['totalAmount'=>$totalAmount]);
+      
+    }
+
+    public function success (Request $request){
+  
+    // Aquí puedes procesar la respuesta de PayPal según tus necesidades
+    // Por ejemplo, puedes guardar los detalles de la transacción en tu base de datos,
+    // actualizar el estado del pedido, enviar correos electrónicos de confirmación, etc.
+
+    // Por ahora, solo imprimiremos los detalles de la respuesta para fines de depuración
+    }
+
+    public function cancel (Request $request) {
+{
+    // Aquí puedes realizar cualquier acción que desees cuando una transacción sea cancelada por el usuario
+    // Por ejemplo, puedes redirigir al usuario a una página específica, mostrar un mensaje de cancelación, etc.
+
+    // Por ahora, simplemente redirigiremos al usuario a una página de cancelación
+    //return redirect()->route('Carrito');
+}
     }
     
 }
