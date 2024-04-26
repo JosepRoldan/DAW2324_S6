@@ -63,7 +63,12 @@ export const DashboardPage = () => {
         "Content-Type": "application/json",
       });
       if (response.status === 200) {
-        setOrders(response.data);
+        var orderstemp = [];
+        for (let i = 0; i < 4; i++) {
+          orderstemp.push(response.data[i]);
+        }
+        console.log(orderstemp);
+        setOrders(orderstemp);
       }
     } catch (error) {
       console.error("Error fetching orders:", error);
@@ -85,10 +90,11 @@ export const DashboardPage = () => {
                 <div className="flex flex-col space-y-6 md:h-full md:justify-between">
                   <div className="flex justify-between">
                     <span className="text-xs text-gray-500 font-semibold uppercase tracking-wider">
-                      Admin Account
+                      {t("Admin Account")}
                     </span>
                     <span className="text-xs text-gray-500 font-semibold uppercase tracking-wider">
-                      Available Funds
+                    {t("Total Yearly Profit")}
+                      
                     </span>
                   </div>
                   <div className="flex gap-2 md:gap-4 justify-between items-center">
@@ -101,11 +107,11 @@ export const DashboardPage = () => {
                   </div>
                   <div className="flex gap-2 md:gap-4">
                     <Link to="/profit" className="buttonDash">
-                      See more
+                    {t("See more")}
                     </Link>
                     <Link to={"/orders"}
                       className="bg-blue-50 px-5 py-3 w-full text-center md:w-auto rounded-lg text-blue-900 text-xs tracking-wider font-semibold hover:bg-blue-900 hover:text-white">
-                      Check latest orders
+                     {t("Check latest orders")}
                     </Link>
                   </div>
                 </div>
@@ -113,10 +119,10 @@ export const DashboardPage = () => {
               <div
                 className="col-span-2 p-6 rounded-2xl bg-gradient-to-r from-blue-900 to-blue-800 flex flex-col justify-between">
                 <div className="flex flex-col space-y-2">
-                  <h2 className="text-white font-bold text-lg">Overview of your account</h2>
+                  <h2 className="text-white font-bold text-lg">{t("Overview of your account")}</h2>
                   <p className="text-gray-100 text-sm md:text-base leading-tight max-w-sm">
                     {/* eslint-disable-next-line react/no-unescaped-entities*/}
-                    This dashboard provides a quick and easy way to see what's going on in your account. It also includes specialized areas with more detailed information.
+                   {t("This dashboard provides a quick and easy way to see what's going on in your account. It also includes specialized areas with more detailed information.")}
                   </p>
                 </div>
                 <div className="flex justify-between items-end">
@@ -127,12 +133,12 @@ export const DashboardPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 px-4 xl:p-0 gap-4 xl:gap-6">
               <div className="col-span-1 md:col-span-2 lg:col-span-4 flex justify-between">
                 <h2 className="text-xs md:text-sm text-gray-700 font-bold tracking-wide md:tracking-wider">
-                  General Overview of company profit</h2>
+                  {t("General Overview of company profit")}</h2>
               </div>
               <div className="bg-white p-6 rounded-xl border border-gray-50">
                 <div className="flex justify-between items-start">
                   <div className="flex flex-col">
-                    <p className="text-xs text-gray-600 tracking-wide">Daily Profit</p>
+                    <p className="text-xs text-gray-600 tracking-wide">{t("Daily Profit")}</p>
                     <h3 className="mt-1 text-lg text-blue-900 font-bold">€ {Math.round(totalProfit / 365)}</h3>
                   </div>
                   <div className="bg-blue-900 p-2 md:p-1 xl:p-2 rounded-md">
@@ -142,7 +148,7 @@ export const DashboardPage = () => {
               <div className="bg-white p-6 rounded-xl border border-gray-50">
                 <div className="flex justify-between items-start">
                   <div className="flex flex-col">
-                    <p className="text-xs text-gray-600 tracking-wide">Weekly Profit</p>
+                    <p className="text-xs text-gray-600 tracking-wide">{t("Weekly Profit")}</p>
                     <h3 className="mt-1 text-lg text-green-500 font-bold">€ {Math.round(totalProfit / 52)}</h3>
                   </div>
                   <div className="bg-green-500 p-2 md:p-1 xl:p-2 rounded-md">
@@ -152,7 +158,7 @@ export const DashboardPage = () => {
               <div className="bg-white p-6 rounded-xl border border-gray-50">
                 <div className="flex justify-between items-start">
                   <div className="flex flex-col">
-                    <p className="text-xs text-gray-600 tracking-wide">Monthly Profit</p>
+                    <p className="text-xs text-gray-600 tracking-wide">{t("Monthly Profit")}</p>
                     <h3 className="mt-1 text-lg text-yellow-500 font-bold">€ {Math.round(totalProfit / 12)}</h3>
                   </div>
                   <div className="bg-yellow-500 p-2 md:p-1 xl:p-2 rounded-md">
@@ -162,7 +168,7 @@ export const DashboardPage = () => {
               <div className="bg-white p-6 rounded-xl border border-gray-50">
                 <div className="flex justify-between items-start">
                   <div className="flex flex-col">
-                    <p className="text-xs text-gray-600 tracking-wide">Yearly Profit</p>
+                    <p className="text-xs text-gray-600 tracking-wide">{t("Yearly Profit")}</p>
                     <h3 className="mt-1 text-lg text-indigo-500 font-bold">€ {totalProfit}</h3>
                   </div>
                   <div className="bg-indigo-500 p-2 md:p-1 xl:p-2 rounded-md">
@@ -174,24 +180,15 @@ export const DashboardPage = () => {
               <div className="grid grid-cols-1 md:grid-cols-5 items-start px-4 xl:p-0 gap-y-4 md:gap-6">
                 <div className="col-span-3 bg-white p-6 rounded-xl border border-gray-50 flex flex-col space-y-6">
                   <div className="flex justify-between items-center">
-                    <h2 className="text-sm text-gray-600 font-bold tracking-wide">Latest Orders</h2>
-                    <Link to={"/orders"} className="px-4 py-2 text-xs bg-blue-100 text-blue-900 rounded uppercase tracking-wider font-semibold hover:bg-blue-300">More</Link>
+                    <h2 className="text-sm text-gray-600 font-bold tracking-wide">{t("Latest Orders")}</h2>
+                    <Link to={"/orders"} className="px-4 py-2 text-xs bg-blue-100 text-blue-900 rounded uppercase tracking-wider font-semibold hover:bg-blue-300">{t("More")}</Link>
                   </div>
                   <ul className="divide-y-2 divide-gray-100 overflow-x-auto w-full">
                     {orders.map((order) => (
-                      // eslint-disable-next-line react/jsx-key
                       <li className="py-3 flex justify-between text-sm text-gray-500 font-semibold">
-                        <p className="px-4 font-semibold">{order.idOrderPicanova}</p>
-                        <p className="px-4 text-gray-600">{order.datetime}</p>
-                        <p className="px-4 tracking-wider">{order.orderStatus}</p>
-                        <p className="md:text-base text-gray-800 flex items-center gap-2">
-                          16.90
-                          <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                              d="M19 9l-7 7-7-7" />
-                          </svg>
-                        </p>
+                        <p className="px-4 font-semibold">{}</p>
+                        <p className="px-4 text-gray-600">{}</p>
+                        <p className="px-4 tracking-wider">{}</p>
                       </li>
                     ))}
 

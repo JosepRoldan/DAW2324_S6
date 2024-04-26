@@ -1,4 +1,8 @@
+import { useTranslation } from "react-i18next";
+
 export const SalesPriceCellRenderer = ({ data }) => {
+    const { t } = useTranslation();
+
     function calculateSalesPrice(priceInSubunit, benefitsMarginPercentage) {
         const benefitsMargin = benefitsMarginPercentage / 100;
         const salesPrice = priceInSubunit + (priceInSubunit * benefitsMargin);

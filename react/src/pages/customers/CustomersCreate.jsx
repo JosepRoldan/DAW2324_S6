@@ -22,7 +22,7 @@ export const CustomersCreate = () => {
     postcode: '',
     // country: '',
     status: '',
-    is_validated: false
+    is_validated: '',
   });
 
 
@@ -84,6 +84,14 @@ export const CustomersCreate = () => {
 
     if (formData.password !== formData.passwordConfirm) {
       newErrors.passwordConfirm = t("Passwords must match");
+    }
+
+    if (!formData.status) {
+      newErrors.status = (t("Please select an account status."));
+    }
+
+    if (!formData.is_validated) {
+      newErrors.is_validated = (t("Please select whether the account is validated or not."));
     }
 
     setErrors(newErrors);
@@ -387,6 +395,7 @@ export const CustomersCreate = () => {
                         </label>
                       </div>
                     </div>
+                    {renderErrorForField('status')}
                   </fieldset>
 
                   <fieldset>
@@ -422,6 +431,7 @@ export const CustomersCreate = () => {
                         </label>
                       </div>
                     </div>
+                    {renderErrorForField('is_validated')}
                   </fieldset>
                 </div>
               </div>

@@ -4,16 +4,23 @@ import { AgGridReact } from 'ag-grid-react';
 import Spinner from '../../components/Spinner';
 import { useTranslation } from "react-i18next";
 import { usePage } from '../../contexts/PageContext';
+import SuccessMessageModal from '../../components/SuccessMessageModal';
 
 const ProductDetailsPage = () => {
     const { t } = useTranslation();
     const { setPage, setSteps } = usePage();
+    const [isShowingMessage, setShowingMessage] = useState(false);
+    const [updateMessage, setUpdateMessage] = useState('');
+    const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
         setPage(t("Product Details"));
         setSteps([{ name: t('Products'), href: '/products' }, { name: t("Product Details"), href: `/products/${productId}`, current: true }]);
     }, [setPage, setSteps]);
 
+    const handleHideModal = () => {
+        setShowModal(false);
+    };
 
     const { productId } = useParams();
     const [productData, setProductData] = useState({
@@ -55,17 +62,21 @@ const ProductDetailsPage = () => {
             });
 
             if (response.ok) {
+                setShowModal(true);
                 const data = await response.json();
+                const langFull = language === 'ENG' ? 'English' : language === 'CAT' ? 'Catalan' : 'Spanish';
+                setShowingMessage(false);
+                setUpdateMessage(t(`The ${langFull} description has been successfully updated.`));
                 console.log('Description updated successfully.');
             } else {
                 const errorData = await response.json();
                 console.log(`Error: ${errorData.message}`);
             }
         } catch (error) {
+            setUpdateMessage(`Error updating description: ${error.message}`);
             alert(`Error: ${error.message}`);
         }
     };
-
 
     useEffect(() => {
         const fetchData = async () => {
@@ -113,15 +124,6 @@ const ProductDetailsPage = () => {
         resizable: true,
     };
 
-    const imageColumnDefs = [
-        {
-            field: 'thumb',
-            headerName: 'Thumbnail',
-            cellRenderer: params => `<img src="${params.value}" style="width: 50px; height: 50px;" alt="Product Image" />`,
-        },
-        { field: 'original', headerName: 'Original URL', sortable: true, filter: true },
-    ];
-
     function calculateSalesPrice(priceInSubunit, benefitsMarginPercentage) {
         const benefitsMargin = benefitsMarginPercentage / 100;
         const salesPrice = priceInSubunit + (priceInSubunit * benefitsMargin);
@@ -160,6 +162,10 @@ const ProductDetailsPage = () => {
     return (
         <>
             <div style={{ height: '80vh', width: '100%', overflowY: 'auto' }}>
+                {showModal ? (
+                    <SuccessMessageModal message={updateMessage} onHide={handleHideModal} />
+                ) : null
+                }
                 <div className="flex justify-between mb-4">
                     <div className="w-1/3 pr-2">
                         <label htmlFor="ENG_description" className="block text-sm font-medium text-gray-700">Product Description (English)</label>

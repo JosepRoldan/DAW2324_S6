@@ -18,6 +18,15 @@ DB_PASSWORD=rootpwd
 
 APP_URL=http://localhost
 SANCTUM_STATEFUL_DOMAINS=http://localhost:8080,http://127.0.0.1:8080,http://localhost:3000,http://127.0.0.1:3000
+
+PICANOVA_API_KEY=1234
+DALL_E_API_KEY=1234
+BIGJPG_API_KEY=1234
+GOOGLE_TAG_MANAGER=1234
+
+FASTAPI_USER=someuser
+FASTAPI_PASSWORD=somepassword
+FASTAPI_URL=http://fastapi:8003
 ```
 
 # Go to the `React` folder:

@@ -239,9 +239,9 @@ const Profile = () => {
 
                     <p className="text-gray-500">{profileData.mail}</p>
                     <div className="mt-4">
-                        <button className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+                        <a href="../editProfile" className="px-6 py-3 bg-blue-500 text-white rounded-md hover:bg-blue-600">
                             Edit Profile
-                        </button>
+                        </a>
                     </div>
                     <br></br>
                 </div>
@@ -250,20 +250,21 @@ const Profile = () => {
                         <dl className="sm:divide-y sm:divide-gray-200">
                             <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                 <dt className="text-center text-sm font-medium text-gray-500">
-                                    Full name
-                                </dt>
-                                <dd className="text-center text-center mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                {profileData.name} {profileData.surname}
-                                </dd>
-                            </div>
-                            <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt className="text-center text-sm font-medium text-gray-500">
                                     Email address
                                 </dt>
                                 <dd className="text-center mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                                     {profileData.mail}
                                 </dd>
                             </div>
+                            <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt className="text-center text-sm font-medium text-gray-500">
+                                    Full name
+                                </dt>
+                                <dd className="text-center text-center mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                {profileData.name} {profileData.surname}
+                                </dd>
+                            </div>
+                            
                             <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                 <dt className="text-center text-sm font-medium text-gray-500">
                                     Phone number
