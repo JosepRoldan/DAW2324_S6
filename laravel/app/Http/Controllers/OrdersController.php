@@ -92,6 +92,5 @@ class OrdersController extends Controller
                 'shippingPrice'=> $shippingPrice,
             ]);
         }
-        return response()->json(['message' => 'Order data saved successfully']);
     }
 }

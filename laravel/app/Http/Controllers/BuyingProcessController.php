@@ -74,8 +74,8 @@ class BuyingProcessController extends Controller
     }
 
     public function paypal(Request $request){
-        $ordersController = new OrdersController();
-        $ordersController->storeDates($request);
+            $totalAmount = $request['totalAmount'];
+            return view('processShop.payment',['totalAmount'=>$totalAmount]);
       
     }
 
