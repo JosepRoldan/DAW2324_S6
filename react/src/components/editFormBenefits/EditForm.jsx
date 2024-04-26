@@ -56,7 +56,7 @@ const handleKeyPress = (event) => {
       setYear(response.data.year);
 
     } catch (error) {
-      console.error('Error deleting resource:', error);
+      // console.error('Error deleting resource:', error);
     } finally {
       setLoadingForm(false); 
     }
@@ -133,7 +133,7 @@ const handleKeyPress = (event) => {
       }
     } catch (error) {
       setAlertError(true);
-      console.error("Error:", error);
+      // console.error("Error:", error);
     } finally {
       setLoadingForm(false);
     }
