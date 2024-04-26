@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import axios from "axios";
 import * as Yup from "yup";
-import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
 export default function ShoppingOrder() {
     const [customer, setCustomer] = useState({
@@ -46,7 +45,9 @@ export default function ShoppingOrder() {
         setAddress({ ...address, [e.target.name]: e.target.value });
     };
 
-    const handlePayPalButtonClick = async () => {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
         try {
             // Validar los datos del cliente y la dirección
             await validationSchema.validate(
@@ -76,7 +77,7 @@ export default function ShoppingOrder() {
                 totalAmount: totalAmount, // Agrega el total final al formData
             };
 
-            await axios.post("/shopProccess/paypal", formData, {
+            await axios.post("/Cart/Order", formData, {
                 headers: {
                     "X-CSRF-TOKEN": csrfToken,
                 },
@@ -95,28 +96,6 @@ export default function ShoppingOrder() {
                 console.error("Error saving order data:", error);
             }
         }
-    };
-
-    const handlePayPalCreateOrder = (data, actions) => {
-        // Calcula el total del carrito
-        const totalCarrito = productos.reduce((total, producto) => {
-            return total + parseFloat(producto.price) * producto.quantity;
-        }, 0);
-
-        // Calcula el total final sumando el total del carrito y el precio de envío
-        const totalAmount = totalCarrito + shippingPrice;
-
-        // Devuelve un objeto con la información del pedido, incluido el importe total a cobrar por PayPal
-        return actions.order.create({
-            purchase_units: [
-                {
-                    amount: {
-                        value: totalAmount.toFixed(2), // Importe total a cobrar por PayPal
-                        currency_code: "EUR", // Código de la moneda (puede variar según tu configuración)
-                    },
-                },
-            ],
-        });
     };
 
     // useEffect para cargar los productos desde el almacenamiento local
@@ -142,7 +121,7 @@ export default function ShoppingOrder() {
     return (
         <div className="h-screen grid grid-cols-3">
             <div className="lg:col-span-2 col-span-3 bg-indigo-50 space-y-8 px-12">
-                <form onSubmit={handlePayPalButtonClick}>
+                <form onSubmit={handleSubmit}>
                     <section>
                         <h2 className="uppercase tracking-wide text-lg font-semibold text-gray-700 my-2">
                             Customer Date
@@ -292,18 +271,12 @@ export default function ShoppingOrder() {
                             Payment Information
                         </h2>
                     </section>
-                    <PayPalScriptProvider
-                        options={{
-                            clientId:
-                                "AUZhCdtjShVz3aPj-29oznCc8DHaY-fRbD9_83qAsarySyCRtDA41lKfkHC-PWglj8mC4YospxgDWzTX",
-                            currency: "EUR",
-                        }}
+                    <button
+                        className="submit-button px-4 py-3 rounded-full bg-pink-400 text-white focus:ring focus:outline-none w-full text-xl font-semibold transition-colors"
+                        type="submit"
                     >
-                        <PayPalButtons
-                            onClick={handlePayPalButtonClick}
-                            createOrder={handlePayPalCreateOrder}
-                        />
-                    </PayPalScriptProvider>{" "}
+                        Pay {(totalCarrito + shippingPrice).toFixed(2)} €
+                    </button>
                 </form>
             </div>
             <div className="col-span-1 bg-white lg:block hidden">

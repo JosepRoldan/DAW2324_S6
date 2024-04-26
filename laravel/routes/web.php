@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\api\OrderController;
 use App\Http\Controllers\BuyingProcessController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\EnsureTokenIsValid;
@@ -42,7 +43,10 @@ Route::get('/productscard', function () {return view('productCard');});
 
 //////////////////////SHOP PROCESS////////////////////////
 Route::get('/Cart/Shipping', [BuyingProcessController::class, 'getShoppingOrdreDates'])->name('shipping');
-Route::post('/Cart/Order', [OrdersController::class, 'storeDates'])->name('shopProcessOrder');
+Route::get('/Cart/payment', function(){
+    return view('shopProcess.payment');
+})->name('shopProcess.payment');
+Route::post('/Cart/Order', [OrdersController::class, 'storeDates'])->name('processShop.orderCreate');
 
 Route::post('/shopProccess/paypal', [BuyingProcessController::class, 'paypal'])->name('processShop.paypal');
 Route::get('/shopProccess/success', [BuyingProcessController::class, 'success'])->name('processShop.success');

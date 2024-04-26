@@ -26,7 +26,7 @@ class OrdersController extends Controller
         return view('MyOrders', compact('orders'));
     }
 
-    public function storeDates($request)
+    public function storeDates(Request $request)
     {
         $requestData = $request->validate([
             'customer'=>'required|array',
@@ -88,10 +88,10 @@ class OrdersController extends Controller
                 'quantity' => $product['quantity'],
                 'priceEach' => $product['price'],
                 'totalPrice' => $totalAmount,
-                'productDetails' => 'Valor predeterminado', // Proporciona un valor ya se hara
+                'idVariant' => $product['idVariant'], // Proporciona un valor ya se hara
                 'shippingPrice'=> $shippingPrice,
             ]);
         }
-
+        return response()->json(['message' => 'Order data saved successfully']);
     }
 }
