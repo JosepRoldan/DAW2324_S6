@@ -64,7 +64,8 @@ Route::get('/guidedGeneratedImage', function () {
 Route::get('/productscard', function () {
     return view('productCard');
 });
-Route::get('/Inicio', function () {return view('inicio');});
+Route::get('/Inicio', [ProductController::class, 'inicio'])->name('inicio');
+
 
 Route::get('/product', function () {return view('product');});
 
