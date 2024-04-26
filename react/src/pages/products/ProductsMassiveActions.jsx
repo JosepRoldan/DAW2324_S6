@@ -4,27 +4,37 @@ import Spinner from '../../components/Spinner';
 import { PriceRangeCellRenderer } from '../../components/tables/products/cellRenderers/PriceRangeCellRenderer';
 import { SalesPriceCellRenderer } from '../../components/tables/products/cellRenderers/SalesPriceCellRenderer';
 import { usePage } from '../../contexts/PageContext';
-import { updateMultipleProducts } from '../../api/updateMultipleProducts';
+import { useTranslation } from "react-i18next";
+import { updateMultipleProductsActive } from '../../api/updateMultipleProductsActive';
+import { updateMultipleProductMargins } from '../../api/updateMultipleProductMargins';
+import SuccessMessageModal from '../../components/SuccessMessageModal';
 
 export default function ProductsMassiveActions() {
+    const { t } = useTranslation();
     const { setPage, setSteps } = usePage();
+    const [isShowingMessage, setShowingMessage] = useState(false);
+    const [updateMessage, setUpdateMessage] = useState('');
+    const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
-        setPage("Products Massive Actions");
+        setPage(t("Products Massive Actions"));
         setSteps([
-            { name: 'Products', href: '/products' },
-            { name: 'Products Massive Actions', href: '/products-massive-actions', current: true }
+            { name: t('Products'), href: '/products' },
+            { name: t('Products Massive Actions'), href: '/products-massive-actions', current: true }
         ]);
-    }, [setPage, setSteps]);
+    }, [setPage, setSteps, t]);
+
+    const handleHideModal = () => {
+        setShowModal(false);
+    };
 
     const [rowData, setRowData] = useState([]);
     const [selectedProducts, setSelectedProducts] = useState(new Set());
     const [isLoading, setIsLoading] = useState(true);
-    const [benefitsMargin, setBenefitsMargin] = useState('');  // Nuevo estado para el margen de beneficios
-    const [isActive, setIsActive] = useState('true');  // Nuevo estado para el estado activo/inactivo
+    const [benefitsMargin, setBenefitsMargin] = useState('');
+    const [isActive, setIsActive] = useState('true');
     const [lastUpdated, setLastUpdated] = useState(Date.now());
 
-    // Cargar datos de productos
     useEffect(() => {
         const token = localStorage.getItem('token');
         fetch(`${import.meta.env.VITE_API_URL}/products`, {
@@ -81,79 +91,92 @@ export default function ProductsMassiveActions() {
         setIsActive(e.target.value);
     };
 
-    const handleUpdateClick = () => {
-        if (selectedProducts.size === 0) {
-            console.log("No products selected");
-            return;
-        }
-
+    const handleMassiveUpdateForActiveProducts = () => {
         const token = localStorage.getItem('token');
         const apiUrl = import.meta.env.VITE_API_URL;
-
-        updateMultipleProducts(selectedProducts, benefitsMargin, token, apiUrl)
-            .then(() => {
-                console.log("All selected products updated successfully");
-            })
-            .catch(error => {
-                console.error("Error updating products", error);
-            });
-    };
-
-    const handleMassiveUpdate = () => {
-        if (selectedProducts.size === 0) {
-            console.log("No products selected");
-            return;
-        }
-
-        const token = localStorage.getItem('token');
-        const apiUrl = import.meta.env.VITE_API_URL;
-        const updateData = {
-            benefitsMargin: benefitsMargin,  // Asume que benefitsMargin es una variable de estado
-            isActive: isActive               // Asume que isActive es una variable de estado
+        const activeData = {
+            isActive: isActive
         };
-
-        updateMultipleProducts(selectedProducts, updateData, token, apiUrl)
+        updateMultipleProductsActive(selectedProducts, activeData, token, apiUrl)
             .then(() => {
-                console.log("All selected products updated successfully");
-                // Opcional: recargar datos de productos u otras acciones post-actualización
+                setLastUpdated(Date.now());
+                setUpdateMessage(t(`Products updated succesfully.`));
+                setSelectedProducts(new Set());
+                setShowModal(true);
             })
             .catch(error => {
                 console.error("Error updating products", error);
             });
-    };
+    }
 
+    const handleMassiveUpdateForBenefitsMargin = () => {
+        const token = localStorage.getItem('token');
+        const apiUrl = import.meta.env.VITE_API_URL;
+        const marginData = {
+            benefitsMargin: benefitsMargin
+        };
+        updateMultipleProductMargins(selectedProducts, marginData, token, apiUrl)
+            .then(() => {
+                setLastUpdated(Date.now());
+                setUpdateMessage(t(`Products updated succesfully.`));
+                setSelectedProducts(new Set());
+                setShowModal(true);
+            })
+            .catch(error => {
+                console.error("Error updating products", error);
+            });
+    }
 
     return (
         <>
             <div>
                 {isLoading ? <Spinner message='Loading Products...' /> : (
                     <div className="overflow-auto">
-                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px', marginTop: '10px' }}>
-                            <div>
-                                <label htmlFor="benefitsMargin">New Benefits Margin (%): </label>
+                        {showModal ? (
+                            <SuccessMessageModal message={updateMessage} onHide={handleHideModal} />
+                        ) : null
+                        }
+                        <div className="mt-4 mb-4">
+                            <div className="flex items-center">
+                                <label htmlFor="benefitsMargin" className="block text-sm font-medium text-gray-700 mr-2">
+                                    {t("New Benefits Margin")} (%):
+                                </label>
                                 <input
                                     type="text"
                                     id="benefitsMargin"
                                     value={benefitsMargin}
                                     onChange={handleMarginChange}
-                                    style={{ marginRight: '20px' }}
+                                    className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-50 sm:text-sm border-gray-300 rounded-md mr-2"
                                 />
+                                <button
+                                    onClick={handleMassiveUpdateForBenefitsMargin}
+                                    className="px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-lg">
+                                    {t("Save Margin")}
+                                </button>
                             </div>
-                            <div>
-                                <label htmlFor="isActive">Product Status: </label>
+
+                            <div className="flex items-center mt-4">
+                                <label htmlFor="isActive" className="block text-sm font-medium text-gray-700 mr-2">
+                                    {t("Product Status:")}
+                                </label>
                                 <select
-                                    value={isActive}
-                                    onChange={(e) => setIsActive(e.target.value)}
+                                    id="isActive"
+                                    onChange={(e) => handleIsActiveChange(e)}  // Cambio aquí: asignar el manejador de eventos al select.
+                                    className="block w-50 pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
                                 >
-                                    <option> - </option>
-                                    <option value="true">Active</option>
-                                    <option value="false">Inactive</option>
+                                    <option value="">{t("Select status")}</option>
+                                    <option value="true">{t("Active")}</option>
+                                    <option value="false">{t("Inactive")}</option>
                                 </select>
+                                <button
+                                    onClick={handleMassiveUpdateForActiveProducts}
+                                    className="ml-2 px-4 py-2 bg-green-500 hover:bg-green-700 text-white font-bold rounded-lg">
+                                    {t("Toggle Status")}
+                                </button>
                             </div>
-                            <button onClick={handleMassiveUpdate}>
-                                Save Changes
-                            </button>
+
                         </div>
+
                         <table className="w-full text-left table-fixed border-collapse mb-10">
                             <thead>
                                 <tr>
@@ -162,15 +185,14 @@ export default function ProductsMassiveActions() {
                                             type="checkbox"
                                             onChange={handleSelectAllClick}
                                             checked={rowData.length > 0 && selectedProducts.size === rowData.length}
-                                        // Recuerda: la propiedad "indeterminate" no es soportada directamente por JSX. Se necesita manejar con refs o efectos.
                                         />
                                     </th>
-                                    <th className="w-2/12 px-4 py-2 border border-gray-300">Image</th>
-                                    <th className="w-3/12 px-4 py-2 border border-gray-300">Product Name</th>
-                                    <th className="w-1/12 px-4 py-2 border border-gray-300">Active</th>
-                                    <th className="w-2/12 px-4 py-2 border border-gray-300">Price Range</th>
-                                    <th className="w-2/12 px-4 py-2 border border-gray-300">Benefits Margin</th>
-                                    <th className="w-2/12 px-4 py-2 border border-gray-300">Sales Price</th>
+                                    <th className="w-2/12 px-4 py-2 border border-gray-300">{t("Image")}</th>
+                                    <th className="w-3/12 px-4 py-2 border border-gray-300">{t("Product Name")}</th>
+                                    <th className="w-1/12 px-4 py-2 border border-gray-300">{t("Active")}</th>
+                                    <th className="w-2/12 px-4 py-2 border border-gray-300">{t("Price Range")}</th>
+                                    <th className="w-2/12 px-4 py-2 border border-gray-300">{t("Benefits Margin")}</th>
+                                    <th className="w-2/12 px-4 py-2 border border-gray-300">{t("Sales Price")}</th>
                                 </tr>
                             </thead>
                             <tbody>

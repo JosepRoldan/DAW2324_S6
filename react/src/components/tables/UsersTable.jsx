@@ -25,13 +25,25 @@ const showUser = ({ data }) => {
 
 export const UsersTable = ({ userData }) => {
 
+  const mapRoleIdToString = (roleId) => {
+    switch (roleId) {
+      case 1:
+        return "Admin";
+      case 2:
+        return "Account Manager";
+      case 3:
+        return "Customer Support";
+      default:
+        return "No tiene Role"; 
+    }
+  };
+
   const colDefs = [
     { field: 'name', headerName: 'Name', filter: true },
     { field: 'surname', headerName: 'Surname', filter: true },
     { field: 'user', headerName: 'Username', filter: true  },
     { field: 'email', headerName: 'Email', filter: true  },
-    //{ field: 'role', headerName: 'Email', filter: true  },
-
+    { field: 'idRole', headerName: 'Role', filter: true, valueGetter: params => mapRoleIdToString(params.data.idRole) },
 
 
     { headerName: 'Show', cellRenderer: showUser }
