@@ -85,7 +85,6 @@ export default function ShoppingOrder() {
 
             console.log("Order data saved");
             // Aquí puedes agregar lógica adicional después de que se haya guardado la orden, como redireccionar a otra página
-            window.location.href = "/Cart/payment?totalAmount={totalAmount}";
         } catch (error) {
             if (error instanceof Yup.ValidationError) {
                 const errors = {};

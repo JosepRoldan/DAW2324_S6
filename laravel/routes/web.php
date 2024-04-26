@@ -44,9 +44,8 @@ Route::get('/productscard', function () {return view('productCard');});
 //////////////////////SHOP PROCESS////////////////////////
 Route::get('/Cart/Shipping', [BuyingProcessController::class, 'getShoppingOrdreDates'])->name('shipping');
 Route::get('/Cart/payment', function(){
-    return view('processShop.payment');
+    return view('shopProcess.payment');
 })->name('shopProcess.payment');
-
 Route::post('/Cart/Order', [OrdersController::class, 'storeDates'])->name('processShop.orderCreate');
 
 Route::post('/shopProccess/paypal', [BuyingProcessController::class, 'paypal'])->name('processShop.paypal');
