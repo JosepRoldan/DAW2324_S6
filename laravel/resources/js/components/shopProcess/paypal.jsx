@@ -6,14 +6,27 @@ function PayPalCheckout() {
     const totalAmount = parseFloat(
         document.getElementById("data").getAttribute("data"),
     );
+    console.log(totalAmount);
+    const accessToken = "REPLACE_WITH_YOUR_ACCESS_TOKEN";
 
     function createOrder(data, actions) {
         return actions.order.create({
             purchase_units: [
                 {
                     amount: {
-                        value: totalAmount.toFixed(2), // Importe total a cobrar por PayPal
-                        currency_code: "EUR", // Código de la moneda (puede variar según tu configuración)
+                        currency_code: "EUR",
+                        value: totalAmount,
+                    },
+                    payment_source: {
+                        paypal: {
+                            experience_context: {
+                                brand_name: "EXAMPLE INC",
+                                locale: "en-US",
+                                user_action: "PAY_NOW",
+                                return_url: "https://example.com/returnUrl",
+                                cancel_url: "https://example.com/cancelUrl",
+                            },
+                        },
                     },
                 },
             ],
@@ -21,9 +34,12 @@ function PayPalCheckout() {
     }
 
     function onApprove(data, actions) {
-        alert(`Transaction completed by ${totalAmount}`);
-        // Redirigir a otra ruta después de que la transacción se haya completado con éxito
-        window.location.href = "/Inicio";
+        return actions.order.capture().then(function (details) {
+            alert(`Transaction completed by ${totalAmount}`);
+            // Redirigir a otra ruta después de que la transacción se haya completado con éxito
+            window.location.href = "/Inicio";
+            // Cerrar la ventana de PayPal
+        });
     }
 
     return (
@@ -34,17 +50,10 @@ function PayPalCheckout() {
                 currency: "EUR", // Especificar la moneda aquí
             }}
         >
-            <div className="flex justify-center items-center h-full">
-                <PayPalButtons
-                    style={{
-                        layout: "vertical",
-                        shape: "rect",
-                        height: 50,
-                    }}
-                    createOrder={(data, actions) => createOrder(data, actions)}
-                    onApprove={onApprove}
-                />
-            </div>
+            <PayPalButtons
+                createOrder={(data, actions) => createOrder(data, actions)}
+                onApprove={(data, actions) => onApprove(data, actions)}
+            />
         </PayPalScriptProvider>
     );
 }
