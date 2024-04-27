@@ -6,7 +6,6 @@ function PayPalCheckout() {
     const totalAmount = parseFloat(
         document.getElementById("data").getAttribute("data"),
     );
-    console.log(totalAmount);
 
     function createOrder(data, actions) {
         return actions.order.create({
@@ -25,7 +24,6 @@ function PayPalCheckout() {
         alert(`Transaction completed by ${totalAmount}`);
         // Redirigir a otra ruta después de que la transacción se haya completado con éxito
         window.location.href = "/Inicio";
-        // Cerrar la ventana de PayPal
     }
 
     return (
@@ -36,10 +34,17 @@ function PayPalCheckout() {
                 currency: "EUR", // Especificar la moneda aquí
             }}
         >
-            <PayPalButtons
-                createOrder={(data, actions) => createOrder(data, actions)}
-                onApprove={onApprove}
-            />
+            <div className="flex justify-center items-center h-full">
+                <PayPalButtons
+                    style={{
+                        layout: "vertical",
+                        shape: "rect",
+                        height: 50,
+                    }}
+                    createOrder={(data, actions) => createOrder(data, actions)}
+                    onApprove={onApprove}
+                />
+            </div>
         </PayPalScriptProvider>
     );
 }
