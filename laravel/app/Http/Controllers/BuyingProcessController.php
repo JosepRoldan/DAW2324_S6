@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Customer;
 use Srmklive\PayPal\Services\PayPal as PayPalClient; //per usar paypal
 use Illuminate\Http\Response;
+use App\Http\Controllers\OrdersController;
 
 class BuyingProcessController extends Controller
 {
