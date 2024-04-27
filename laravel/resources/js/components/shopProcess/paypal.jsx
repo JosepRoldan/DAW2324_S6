@@ -6,7 +6,13 @@ function PayPalCheckout() {
     const totalAmount = parseFloat(
         document.getElementById("data").getAttribute("data"),
     );
-    console.log(totalAmount);
+
+    const initialOptions = {
+        clientId:
+            "AUZhCdtjShVz3aPj-29oznCc8DHaY-fRbD9_83qAsarySyCRtDA41lKfkHC-PWglj8mC4YospxgDWzTX",
+        currency: "EUR",
+        intent: "capture",
+    };
 
     function createOrder(data, actions) {
         return actions.order.create({
@@ -29,16 +35,9 @@ function PayPalCheckout() {
     }
 
     return (
-        <PayPalScriptProvider
-            options={{
-                "client-id":
-                    "AUZhCdtjShVz3aPj-29oznCc8DHaY-fRbD9_83qAsarySyCRtDA41lKfkHC-PWglj8mC4YospxgDWzTX",
-                currency: "EUR", // Especificar la moneda aquí
-            }}
-        >
+        <PayPalScriptProvider options={initialOptions}>
             <PayPalButtons
                 createOrder={(data, actions) => createOrder(data, actions)}
-                onApprove={onApprove}
             />
         </PayPalScriptProvider>
     );
