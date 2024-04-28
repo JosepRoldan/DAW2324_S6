@@ -50,10 +50,22 @@ function PayPalCheckout() {
                 currency: "EUR", // Especificar la moneda aquí
             }}
         >
-            <PayPalButtons
-                createOrder={(data, actions) => createOrder(data, actions)}
-                onApprove={(data, actions) => onApprove(data, actions)}
-            />
+            <div className="container mx-auto mr-12 p-12">
+                <div className="justify-center items-center mx-auto">
+                    <PayPalButtons
+                        createOrder={(data, actions) =>
+                            createOrder(data, actions)
+                        }
+                        onApprove={(data, actions) => onApprove(data, actions)}
+                        style={{
+                            color: "gold",
+                            shape: "rect",
+                            label: "paypal",
+                            tagline: false,
+                        }} // Estilos personalizados para los botones PayPal
+                    />
+                </div>
+            </div>
         </PayPalScriptProvider>
     );
 }
