@@ -14,9 +14,22 @@ function PayPalCheckout() {
         return actions.order.create({
             purchase_units: [
                 {
+                    reference_id: "23",
                     amount: {
                         currency_code: "EUR",
                         value: totalAmount,
+                    },
+                    shipping: {
+                        name: {
+                            full_name: "Perico Palotes",
+                        },
+                        address: {
+                            address_line_1: "C/Madrid 35",
+                            admin_area_2: "Amposta",
+                            admin_area_1: "Tarragona",
+                            postal_code: "43870",
+                            country_code: "ES",
+                        },
                     },
                 },
             ],
