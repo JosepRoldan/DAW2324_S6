@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { createRoot } from "react-dom/client";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
@@ -8,6 +8,7 @@ function PayPalCheckout() {
     );
     console.log(totalAmount);
     const accessToken = "REPLACE_WITH_YOUR_ACCESS_TOKEN";
+    const [paymentCompleted, setPaymentCompleted] = useState(false);
 
     function createOrder(data, actions) {
         return actions.order.create({
@@ -17,17 +18,6 @@ function PayPalCheckout() {
                         currency_code: "EUR",
                         value: totalAmount,
                     },
-                    payment_source: {
-                        paypal: {
-                            experience_context: {
-                                brand_name: "EXAMPLE INC",
-                                locale: "en-US",
-                                user_action: "PAY_NOW",
-                                return_url: "https://example.com/returnUrl",
-                                cancel_url: "https://example.com/cancelUrl",
-                            },
-                        },
-                    },
                 },
             ],
         });
@@ -35,10 +25,8 @@ function PayPalCheckout() {
 
     function onApprove(data, actions) {
         return actions.order.capture().then(function (details) {
-            alert(`Transaction completed by ${totalAmount}`);
-            // Redirigir a otra ruta después de que la transacción se haya completado con éxito
-            window.location.href = "/Inicio";
-            // Cerrar la ventana de PayPal
+            setPaymentCompleted(true);
+            // Redirigir a la página de inicio u otra página después del pago exitoso
         });
     }
 
@@ -52,18 +40,28 @@ function PayPalCheckout() {
         >
             <div className="container mx-auto mr-12 p-12">
                 <div className="justify-center items-center mx-auto">
-                    <PayPalButtons
-                        createOrder={(data, actions) =>
-                            createOrder(data, actions)
-                        }
-                        onApprove={(data, actions) => onApprove(data, actions)}
-                        style={{
-                            color: "gold",
-                            shape: "rect",
-                            label: "paypal",
-                            tagline: false,
-                        }} // Estilos personalizados para los botones PayPal
-                    />
+                    {!paymentCompleted && (
+                        <PayPalButtons
+                            createOrder={(data, actions) =>
+                                createOrder(data, actions)
+                            }
+                            onApprove={(data, actions) =>
+                                onApprove(data, actions)
+                            }
+                            style={{
+                                color: "gold",
+                                shape: "rect",
+                                label: "paypal",
+                                tagline: false,
+                            }}
+                        />
+                    )}
+                    {paymentCompleted && (
+                        <div>
+                            <p>Tu pago se ha completado exitosamente.</p>
+                            {/* Aquí puedes agregar más contenido o redirigir al usuario */}
+                        </div>
+                    )}
                 </div>
             </div>
         </PayPalScriptProvider>
