@@ -92,5 +92,6 @@ class OrdersController extends Controller
                 'shippingPrice'=> $shippingPrice,
             ]);
         }
+        return response()->json(['orderId' => $order->id]);
     }
 }

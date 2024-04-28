@@ -3,18 +3,17 @@ import { createRoot } from "react-dom/client";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
 function PayPalCheckout() {
-    const totalAmount = parseFloat(
-        document.getElementById("data").getAttribute("data"),
-    );
-    console.log(totalAmount);
-    const accessToken = "REPLACE_WITH_YOUR_ACCESS_TOKEN";
+    const totalAmount = document.getElementById("totalAmount").value;
+    const orderId = document.getElementById("orderId").value;
+
+    console.log(orderId);
     const [paymentCompleted, setPaymentCompleted] = useState(false);
 
     function createOrder(data, actions) {
         return actions.order.create({
             purchase_units: [
                 {
-                    reference_id: "23",
+                    reference_id: orderId,
                     amount: {
                         currency_code: "EUR",
                         value: totalAmount,
@@ -71,8 +70,11 @@ function PayPalCheckout() {
                     )}
                     {paymentCompleted && (
                         <div>
+                            {
+                                (window.location.href =
+                                    "/shopProccess/success?orderId=" + orderId)
+                            }
                             <p>Tu pago se ha completado exitosamente.</p>
-                            {/* Aquí puedes agregar más contenido o redirigir al usuario */}
                         </div>
                     )}
                 </div>

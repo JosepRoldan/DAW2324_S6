@@ -6,9 +6,8 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Customer;
-use Srmklive\PayPal\Services\PayPal as PayPalClient; //per usar paypal
-use Illuminate\Http\Response;
-use App\Http\Controllers\OrdersController;
+use App\Models\Order;
+
 
 class BuyingProcessController extends Controller
 {
@@ -75,17 +74,31 @@ class BuyingProcessController extends Controller
 
     public function paypal(Request $request){
             $totalAmount = $request['totalAmount'];
-            return view('processShop.payment',['totalAmount'=>$totalAmount]);
+            $orderId = $request['orderId'];
+            return view('processShop.payment',['totalAmount'=>$totalAmount,'orderId'=>$orderId]);
       
     }
 
-    public function success (Request $request){
-  
-    // Aquí puedes procesar la respuesta de PayPal según tus necesidades
-    // Por ejemplo, puedes guardar los detalles de la transacción en tu base de datos,
-    // actualizar el estado del pedido, enviar correos electrónicos de confirmación, etc.
+    public function success(Request $request)
+    {
+        // Obtener el orderId de la solicitud
+        $orderId = $request->orderId;
 
-    // Por ahora, solo imprimiremos los detalles de la respuesta para fines de depuración
+        // Buscar la orden en la base de datos por su orderId
+        $order = Order::find($orderId);
+
+        // Verificar si se encontró la orden
+        if ($order) {
+            // Actualizar el estado de la orden a "inProgress"
+            $order->orderStatus = 'InProgress';
+            $order->save();
+
+            // Opcional: puedes devolver una respuesta JSON u otra respuesta según tus necesidades
+            return response()->json(['message' => 'Order status updated successfully'], 200);
+        } else {
+            // Si la orden no se encuentra, puedes devolver un mensaje de error
+            return response()->json(['error' => 'Order not found'], 404);
+        }
     }
 
     public function cancel (Request $request) {
