@@ -11,12 +11,11 @@ export const UsersEdit = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { state } = useLocation();
-  //const showModal = () => setIsModalOpen(true);
-  //const hideModal = () => setIsModalOpen(false);
   const { setPage, setSteps } = usePage();
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [isErrorModalOpen , setIsErrorModalOpen] = useState(false);
   const users = state?.users;
 
   const userId = users.id;
@@ -38,9 +37,10 @@ export const UsersEdit = () => {
     name: users.name || '',
     surname: users.surname || '',
     user: users.user || '',
-    //newPasswordConfirm: '',
     email: users.email || '',
-    idRole: users.idRole || ''
+    idRole: users.idRole || '',
+    password: '',
+    passwordConfirm: '',
   });
 
   const [errorMessages, setErrorMessages] = useState({
@@ -52,40 +52,49 @@ export const UsersEdit = () => {
     general: ''
   });
 
-  const validateField = (name, value) => {
-    const specialCharactersRegex = /[<>;'"&]/;
-    if (specialCharactersRegex.test(value)) {
-      return 'No se permiten caracteres especiales en este campo.';
-    }
-    return '';
-  };
 
   const validateForm = () => {
     const errors = {};
   
     if (!formData.name) {
-      errors.name = 'El nombre es obligatorio';
+      errors.name = t('Name is required');
     }
     if (!formData.surname) {
-      errors.surname = 'El apellido es obligatorio';
+      errors.surname = t('Last name is required');
     }
     if (!formData.user) {
-      errors.user = 'El nombre de usuario es obligatorio';
+      errors.user = t('Username is mandatory');
     }
     if (!formData.email) {
-      errors.email = 'El correo electrónico es obligatorio';
+      errors.email = t('Email is required');
     } else {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(formData.email)) {
-        errors.email = 'Formato de correo electrónico no válido.';
+        errors.email = t('Invalid email format');
       }
     }
-    /*if (!formData.password) {
-      errors.password = 'La contraseña es obligatoria';
-    } else if (formData.password.length < 6) {
-      errors.password = 'La contraseña debe tener al menos 6 caracteres.';
+    
+    // Verificar si el campo de contraseña se ha modificado
+    if (formData.password.trim() !== '') {
+      if (formData.password.length < 6) {
+        errors.password = t('Password must be at least 6 characters long');
+      }
+
+      // Verificar si se ha ingresado confirmación de contraseña
+      if (formData.passwordConfirm.trim() !== '') {
+        if (formData.password !== formData.passwordConfirm) {
+          errors.passwordConfirm = t('Passwords do not match');
+        }
+      }
+     
     }
-  */
+     // Validar caracteres especiales en la contraseña
+     if (formData.password.trim() !== '') {
+     const specialCharactersRegex = /[<>;'"&]/;
+     if (specialCharactersRegex.test(formData.password)) {
+       errors.password = t('No special characters are allowed in the password.');
+     }
+    }
     return errors;
   };
 
@@ -94,6 +103,9 @@ export const UsersEdit = () => {
       setIsDeleteModalOpen(true);
     } else if (modalType === 'update') {
       setIsUpdateModalOpen(true);
+    } else if (modalType === 'error') {
+      setIsErrorModalOpen(true);
+
     }
   };
 
@@ -102,44 +114,71 @@ export const UsersEdit = () => {
       setIsDeleteModalOpen(false);
     } else if (modalType === 'update') {
       setIsUpdateModalOpen(false);
+    } else if (modalType === 'error') {
+      setIsErrorModalOpen(false);
+
     }
   };
-
-
-
-
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    
-    // Validate the field and set the appropriate error message.
-    const errorMessage = validateField(name, value);
-    setErrorMessages({ ...errorMessages, [name]: errorMessage });
 
+    const fieldErrorMessage = validateField(name, value);
+    if (value.trim() === '' && formData[name].trim() !== '') {
+      setErrorMessages({ ...errorMessages, [name]: t('This field cannot be empty') });
+      return;
+    }
+    setErrorMessages({ ...errorMessages, [name]: fieldErrorMessage });
+
+    if (!fieldErrorMessage){
+      const formErrors = validateForm();
+      setErrorMessages({ ...errorMessages, ...formErrors });
+
+    }
   }
+
+  const validateField = (name, value) => {
+    const specialCharactersRegex = /[<>;'"&]/;
+    if (specialCharactersRegex.test(value)) {
+      return t('No special characters are allowed in this field.');
+    }
+    return '';
+  };
 
   const onSubmit = async (userId) => {
-    //e.preventDefault();
-
     const fieldErrors = validateForm();
-
-    // Check if there are any field errors
-  if (Object.keys(fieldErrors).length > 0) {
-    setErrorMessages({ ...fieldErrors });
-    return;
-  }
-
-  // Check for special characters in each field
-  const isSafeInput = (input) => {
-    const regex = /[<>;'"&]/;
-    return !regex.test(input);
-  };
+    setErrorMessages((prevErrorMessages) => ({
+      ...prevErrorMessages,
+      ...fieldErrors,
+    }));
   
-  if (!isSafeInput(formData.name) || !isSafeInput(formData.surname) || !isSafeInput(formData.user) || !isSafeInput(formData.email) || !isSafeInput(formData.password)) {
-    setErrorMessages({ general: 'Los campos contienen caracteres no permitidos.' });
-    return;
-  }
+    if (Object.keys(fieldErrors).length > 0) {
+      return;
+    }
+
+    const validateSpecialCharacters = () => {
+      const invalidFields = {};
+      for (const [fieldName, fieldValue] of Object.entries(formData)) {
+        const errorMessage = validateField(fieldName, fieldValue);
+        if (errorMessage) {
+          invalidFields[fieldName] = errorMessage;
+        }
+      }
+      return invalidFields;
+    };
+  
+    const specialCharacterErrors = validateSpecialCharacters();
+  
+    setErrorMessages((prevErrorMessages) => ({
+      ...prevErrorMessages,
+      ...specialCharacterErrors,
+    }));
+  
+    if (Object.keys(specialCharacterErrors).length > 0) {
+      return;
+    }
+  
 
     try {
       console.log("entro al try")
@@ -155,11 +194,9 @@ export const UsersEdit = () => {
       if (response.ok) { 
         navigate('/users');
       } else {
-        // Manejo de errores en caso de que la respuesta no sea exitosa
         console.error('Error:', response.statusText);
       }
     } catch (error) {
-      // Manejo de errores en caso de que ocurra un error durante la solicitud
       console.error('Error:', error);
     }
   }
@@ -195,6 +232,24 @@ export const UsersEdit = () => {
   return (
 
     <>
+    {isErrorModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
+          <div className="bg-white p-4 sm:p-6 lg:p-8 shadow-xl rounded-lg">
+            <h3 className="text-lg font-medium leading-6 text-gray-900">
+              {t("Ups, you have a mistake in the form")}
+            </h3>
+            <div className="mt-4 flex justify-end">
+              <button
+                type="button"
+                className="mr-2 inline-flex justify-center rounded-md border border-transparent px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-500"
+                onClick={() => hideModal('error')}              >
+                {t("Cancel")}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {isDeleteModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
           <div className="bg-white p-4 sm:p-6 lg:p-8 shadow-xl rounded-lg">
@@ -278,8 +333,8 @@ export const UsersEdit = () => {
                         onChange={handleChange}
                         className={`block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 ${
                           errorMessages.name ? 'border-red-500' : ''
-                        }`}                      />
-                      {errorMessages.name && (<span className="text-sm text-red-500">{errorMessages.name}</span>)}                      
+                        }`}/>
+                      {errorMessages.name && (<span className="text-sm text-red-500">{errorMessages.name}</span>)}
                     </div>
                   </div>
 
@@ -339,7 +394,7 @@ export const UsersEdit = () => {
               </p>
             </div>
 
-            <div className="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2">
+            <div className="bg-white shadow-sm ring-1 ring-grayPeluche-900/5 sm:rounded-xl md:col-span-2">
               <div className="px-4 py-6 sm:p-8">
                 <div className="max-w-2xl space-y-10">
                   <div className="grid max-w-3xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
@@ -384,7 +439,7 @@ export const UsersEdit = () => {
   }`}
 />
 {errorMessages.user && (
-  <span className="text-sm text-red-500">{errorMessages.user}</span>
+  <span className="text-sm text-red-500">{t(errorMessages.user)}</span>
 )}
                       </div>
                     </div>
@@ -398,12 +453,15 @@ export const UsersEdit = () => {
                         <input
                           type="password"
                           name="password"
-                          value={formData.newPassword}
+                          value={formData.password}
                           onChange={handleChange}
                           id="password"
                           autoComplete="new-password"
                           className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         />
+                        {errorMessages.password && (
+  <span className="text-sm text-red-500">{t(errorMessages.password)}</span>
+)}
                       </div>
                     </div>
 
@@ -415,12 +473,15 @@ export const UsersEdit = () => {
                         <input
                           type="password"
                           name="passwordConfirm"
-                          value={formData.newPasswordConfirm}
+                          value={formData.passwordConfirm}
                           onChange={handleChange}
                           id="passwordConfirm"
                           autoComplete="new-password"
                           className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         />
+                        {errorMessages.passwordConfirm && (
+  <span className="text-sm text-red-500">{t(errorMessages.passwordConfirm)}</span>
+)}
                       </div>
                     </div>
                   </div>
@@ -527,7 +588,6 @@ export const UsersEdit = () => {
           </div>
 
           <div className="px-4 py-4 sm:px-6 flex justify-between items-center">
-            {/* Botón a la izquierda */}
             <button type="button" onClick={() => showModal('delete')}
               className="inline-flex justify-center rounded-md bg-red-600 px-3 py-2 text-md font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 mr-2">
@@ -537,16 +597,24 @@ export const UsersEdit = () => {
               {t("Delete User")}
             </button>
 
-            {/* Contenedor para los botones de la derecha */}
             <div className="flex justify-end">
               <button type="button" onClick={() => navigate(-1)}
                 className="inline-flex justify-center rounded-md bg-indigo-400 px-3 py-2 text-md font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900">
                 {t("Cancel")}
               </button>
     
-              <button type="button" onClick={() => showModal('update')}
-                className="inline-flex justify-center rounded-md ml-2 bg-teal-400 px-3 py-2 text-md font-semibold text-blue-900 shadow-sm hover:bg-teal-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900">
-                {t("Update")}
+              <button type="button" onClick={() => {
+                    const fieldErrors = validateForm();
+                    console.log(fieldErrors)
+                    if (Object.keys(fieldErrors).length === 0) {
+                      showModal('update');
+                    } else {
+                      showModal('error');
+                    }
+                  }}
+                  className="inline-flex justify-center rounded-md ml-2 bg-teal-400 px-3 py-2 text-md font-semibold text-blue-900 shadow-sm hover:bg-teal-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900"
+              >
+              {t("Update")}
               </button>
               
             </div>

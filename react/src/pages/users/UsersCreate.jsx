@@ -45,11 +45,11 @@ export const UsersCreate = () => {
     // Field validation required
     if (!formData.name || !formData.surname || !formData.user || !formData.email || !formData.password) {
       setErrorMessages({
-        name: !formData.name ? 'The name is mandatory' : '',
-        surname: !formData.surname ? 'The surname is mandatory' : '',
-        user: !formData.user ? 'Username is mandatory' : '',
-        email: !formData.email ? 'Email is mandatory' : '',
-        password: !formData.password ? 'Password is mandatory' : ''
+        name: !formData.name ? t('The name is mandatory') : '',
+        surname: !formData.surname ? t('The surname is mandatory') : '',
+        user: !formData.user ? t('Username is mandatory') : '',
+        email: !formData.email ? t('Email is mandatory') : '',
+        password: !formData.password ? t('Password is mandatory') : ''
       });
       return;
     }
@@ -57,13 +57,13 @@ export const UsersCreate = () => {
     // Email format validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
-      setErrorMessages({ ...errorMessages, email: 'Invalid e-mail format.' });
+      setErrorMessages({ ...errorMessages, email: t('Invalid e-mail format.') });
       return;
     }
 
     // Validation of minimum password length
     if (formData.password.length < 6) {
-      setErrorMessages({ ...errorMessages, password: 'The password must be at least 6 characters long.' });
+      setErrorMessages({ ...errorMessages, password: t('The password must be at least 6 characters long.') });
       return;
     }
 
@@ -74,7 +74,7 @@ export const UsersCreate = () => {
     }
 
     if (!isSafeInput(formData.name) || !isSafeInput(formData.surname) || !isSafeInput(formData.user) || !isSafeInput(formData.email) || !isSafeInput(formData.password)) {
-      setErrorMessages({ ...errorMessages, general: 'Fields contain characters that are not allowed.' });
+      setErrorMessages({ ...errorMessages, general: t('Fields contain characters that are not allowed.')});
       return;
     }
 
