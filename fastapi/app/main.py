@@ -132,7 +132,7 @@ async def editar_imagen(infoEdit: infoEdit,
 async def generateImagesChat(infoImatge: infoImatge, 
                              api_key: str = Security(get_api_key)):
     response = client.images.generate(
-          model="dall-e-24",
+          model="dall-e-2",
           prompt=infoImatge.prompt,
           n=3,
           size="256x256"
