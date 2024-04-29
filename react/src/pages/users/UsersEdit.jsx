@@ -89,10 +89,12 @@ export const UsersEdit = () => {
      
     }
      // Validar caracteres especiales en la contraseña
+     if (formData.password.trim() !== '') {
      const specialCharactersRegex = /[<>;'"&]/;
      if (specialCharactersRegex.test(formData.password)) {
        errors.password = t('No special characters are allowed in the password.');
      }
+    }
     return errors;
   };
 
