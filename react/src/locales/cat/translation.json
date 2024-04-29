@@ -182,6 +182,9 @@
   "The Spanish description has been successfully updated.": "La descripció en espanyol s'ha desat correctament.",
   "The Catalan description has been successfully updated.": "La descripció en català s'ha desat correctament.",
   "The English description has been successfully updated.": "La descripció en anglès s'ha desat correctament.",
-  "Products updated succesfully.": "Productes actualitzats correctament."
+  "Products updated succesfully.": "Productes actualitzats correctament.",
+  "No special characters are allowed in this field.": "No es permeten caràcters especials en aquest camp.",
+  "This field cannot be empty": "Aquest camp no pot estar buit"
+
   
 }

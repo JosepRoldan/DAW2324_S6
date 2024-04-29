@@ -105,17 +105,11 @@ export const UsersEdit = () => {
     }
   };
 
-
-
-
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    console.log("handleChange set data", formData)
-    // Validate the field and set the appropriate error message.
+
     const fieldErrorMessage = validateField(name, value);
-      // Si el campo está vacío y el valor anterior no estaba vacío, mostramos el mensaje de error
     if (value.trim() === '' && formData[name].trim() !== '') {
       setErrorMessages({ ...errorMessages, [name]: t('This field cannot be empty') });
       return;
@@ -127,15 +121,10 @@ export const UsersEdit = () => {
       setErrorMessages({ ...errorMessages, ...formErrors });
 
     }
-
-
-    console.log("problemas del handleChange", fieldErrorMessage);
-
   }
 
   const validateField = (name, value) => {
     const specialCharactersRegex = /[<>;'"&]/;
-    console.log(`Validating field: ${name} with value: ${value}`);
     if (specialCharactersRegex.test(value)) {
       return t('No special characters are allowed in this field.');
     }
@@ -144,22 +133,17 @@ export const UsersEdit = () => {
 
   const onSubmit = async (userId) => {
     const fieldErrors = validateForm();
-    console.log("Errors:", fieldErrors);
-    // Check if there are any field errors
     setErrorMessages((prevErrorMessages) => ({
       ...prevErrorMessages,
       ...fieldErrors,
     }));
   
-    // Verificar si hay algún error en los campos
     if (Object.keys(fieldErrors).length > 0) {
       return;
     }
-  
 
     const validateSpecialCharacters = () => {
       const invalidFields = {};
-      // Validar cada campo
       for (const [fieldName, fieldValue] of Object.entries(formData)) {
         const errorMessage = validateField(fieldName, fieldValue);
         if (errorMessage) {
@@ -170,15 +154,12 @@ export const UsersEdit = () => {
     };
   
     const specialCharacterErrors = validateSpecialCharacters();
-    console.log("Special Character Errors:", specialCharacterErrors);
   
-    // Actualizar mensajes de error con los errores de caracteres especiales
     setErrorMessages((prevErrorMessages) => ({
       ...prevErrorMessages,
       ...specialCharacterErrors,
     }));
   
-    // Verificar si hay errores de caracteres especiales
     if (Object.keys(specialCharacterErrors).length > 0) {
       return;
     }
@@ -198,11 +179,9 @@ export const UsersEdit = () => {
       if (response.ok) { 
         navigate('/users');
       } else {
-        // Manejo de errores en caso de que la respuesta no sea exitosa
         console.error('Error:', response.statusText);
       }
     } catch (error) {
-      // Manejo de errores en caso de que ocurra un error durante la solicitud
       console.error('Error:', error);
     }
   }
