@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Http\Request;
 use App\Models\Benefits;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 
 class BenefitsController extends Controller
@@ -18,7 +19,9 @@ class BenefitsController extends Controller
      * @return Some_Return_Value
      */
     public function index()
-    {
+    {   
+        $userId = Auth::id();
+        
         $benefits = Benefits::all();
         $currentYear = date('Y');
         $total = DB::table('benefits')
