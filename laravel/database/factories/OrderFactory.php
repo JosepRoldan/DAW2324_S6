@@ -19,7 +19,7 @@ class OrderFactory extends Factory
             'address' => $this->faker->address,
             'totalPrice' => $this->faker->randomFloat(2, 10, 500),
             'datetime' => $this->faker->dateTimeThisYear(),
-            'orderStatus' => $this->faker->randomElement(['pending', 'processing', 'completed']),
+            'orderStatus' => $this->faker->randomElement(['PreOrder', 'InProgress', 'Sent', 'Delivered', 'Canceled']),
         ];
     }
 }

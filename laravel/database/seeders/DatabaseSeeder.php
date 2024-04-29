@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
             BenefitsTableSeeder::class,
             //SettingSeeder::class,
             CustomerSeeder::class,
-            OrderDetailSeeder::class,
+            //OrderDetailSeeder::class,
         ]);
     }
 }
