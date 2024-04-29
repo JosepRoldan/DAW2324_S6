@@ -11,8 +11,6 @@ export const UsersEdit = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { state } = useLocation();
-  //const showModal = () => setIsModalOpen(true);
-  //const hideModal = () => setIsModalOpen(false);
   const { setPage, setSteps } = usePage();
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -567,7 +565,6 @@ export const UsersEdit = () => {
           </div>
 
           <div className="px-4 py-4 sm:px-6 flex justify-between items-center">
-            {/* Botón a la izquierda */}
             <button type="button" onClick={() => showModal('delete')}
               className="inline-flex justify-center rounded-md bg-red-600 px-3 py-2 text-md font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 mr-2">
@@ -577,7 +574,6 @@ export const UsersEdit = () => {
               {t("Delete User")}
             </button>
 
-            {/* Contenedor para los botones de la derecha */}
             <div className="flex justify-end">
               <button type="button" onClick={() => navigate(-1)}
                 className="inline-flex justify-center rounded-md bg-indigo-400 px-3 py-2 text-md font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900">
@@ -590,7 +586,6 @@ export const UsersEdit = () => {
                     if (Object.keys(fieldErrors).length === 0) {
                       showModal('update');
                     } else {
-                      // Mostrar modal de error
                       showModal('error');
                     }
                   }}
