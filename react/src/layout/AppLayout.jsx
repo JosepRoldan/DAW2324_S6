@@ -82,7 +82,7 @@ export default function AppLayout({ children }) {
       ];
       break;
     default:
-          navigate("/login");
+      navigate("/login");
       break;
   }
 

@@ -1,5 +1,5 @@
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useEffect,useState } from 'react';
+import { useEffect, useState } from 'react';
 const token = localStorage.getItem('token');
 import { useTranslation } from "react-i18next";
 import { usePage } from '../../contexts/PageContext';
@@ -48,7 +48,7 @@ export const UsersEdit = () => {
 
   const validateForm = () => {
     const errors = {};
-  
+
     if (!formData.name) {
       errors.name = 'El nombre es obligatorio';
     }
@@ -98,7 +98,7 @@ export const UsersEdit = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    
+
     // Validate the field and set the appropriate error message.
     const errorMessage = validateField(name, value);
     setErrorMessages({ ...errorMessages, [name]: errorMessage });
@@ -111,21 +111,21 @@ export const UsersEdit = () => {
     const fieldErrors = validateForm();
 
     // Check if there are any field errors
-  if (Object.keys(fieldErrors).length > 0) {
-    setErrorMessages({ ...fieldErrors });
-    return;
-  }
+    if (Object.keys(fieldErrors).length > 0) {
+      setErrorMessages({ ...fieldErrors });
+      return;
+    }
 
-  // Check for special characters in each field
-  const isSafeInput = (input) => {
-    const regex = /[<>;'"&]/;
-    return !regex.test(input);
-  };
-  
-  if (!isSafeInput(formData.name) || !isSafeInput(formData.surname) || !isSafeInput(formData.user) || !isSafeInput(formData.email) || !isSafeInput(formData.password)) {
-    setErrorMessages({ general: 'Los campos contienen caracteres no permitidos.' });
-    return;
-  }
+    // Check for special characters in each field
+    const isSafeInput = (input) => {
+      const regex = /[<>;'"&]/;
+      return !regex.test(input);
+    };
+
+    if (!isSafeInput(formData.name) || !isSafeInput(formData.surname) || !isSafeInput(formData.user) || !isSafeInput(formData.email) || !isSafeInput(formData.password)) {
+      setErrorMessages({ general: 'Los campos contienen caracteres no permitidos.' });
+      return;
+    }
 
     try {
       console.log("entro al try")
@@ -138,7 +138,7 @@ export const UsersEdit = () => {
         body: JSON.stringify(formData),
       });
 
-      if (response.ok) { 
+      if (response.ok) {
         navigate('/users');
       } else {
         // Manejo de errores en caso de que la respuesta no sea exitosa
@@ -176,7 +176,7 @@ export const UsersEdit = () => {
   useEffect(() => {
     setPage(t("Users"));
     setSteps([{ name: t('Users'), href: '/users' }, { name: t("Edit User"), href: '/users/create', current: true }]);
-}, [setPage, setSteps, navigate]);
+  }, [setPage, setSteps, navigate]);
 
   return (
 
@@ -215,11 +215,11 @@ export const UsersEdit = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
           <div className="bg-white p-4 sm:p-6 lg:p-8 shadow-xl rounded-lg">
             <h3 className="text-lg font-medium leading-6 text-gray-900">
-            {t("Confirm Update")}
+              {t("Confirm Update")}
             </h3>
             <div className="mt-2">
               <p className="text-sm text-gray-500">
-              {t("Are you sure you want to update this user?")} 
+                {t("Are you sure you want to update this user?")}
               </p>
             </div>
             <div className="mt-4 flex justify-end">
@@ -262,10 +262,9 @@ export const UsersEdit = () => {
                         id="name"
                         value={formData.name}
                         onChange={handleChange}
-                        className={`block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 ${
-                          errorMessages.name ? 'border-red-500' : ''
-                        }`}                      />
-                      {errorMessages.name && (<span className="text-sm text-red-500">{errorMessages.name}</span>)}                      
+                        className={`block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 ${errorMessages.name ? 'border-red-500' : ''
+                          }`} />
+                      {errorMessages.name && (<span className="text-sm text-red-500">{errorMessages.name}</span>)}
                     </div>
                   </div>
 
@@ -281,9 +280,8 @@ export const UsersEdit = () => {
                         value={formData.surname}
                         onChange={handleChange}
                         autoComplete="family-name"
-                        className={`block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 ${
-                          errorMessages.surname ? 'border-red-500' : ''
-                        }`}
+                        className={`block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 ${errorMessages.surname ? 'border-red-500' : ''
+                          }`}
                       />
                       {errorMessages.surname && (
                         <span className="text-sm text-red-500">{errorMessages.surname}</span>
@@ -303,9 +301,8 @@ export const UsersEdit = () => {
                         value={formData.email}
                         onChange={handleChange}
                         autoComplete="email"
-                        className={`block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 ${
-                          errorMessages.email ? 'border-red-500' : ''
-                        }`}
+                        className={`block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 ${errorMessages.email ? 'border-red-500' : ''
+                          }`}
                       />
                       {errorMessages.email && (
                         <span className="text-sm text-red-500">{errorMessages.email}</span>
@@ -341,13 +338,12 @@ export const UsersEdit = () => {
                           value={formData.user}
                           onChange={handleChange}
                           type="text"
-                          className={`block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 ${
-    errorMessages.user ? 'border-red-500' : ''
-  }`}
-/>
-{errorMessages.user && (
-  <span className="text-sm text-red-500">{errorMessages.user}</span>
-)}
+                          className={`block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 ${errorMessages.user ? 'border-red-500' : ''
+                            }`}
+                        />
+                        {errorMessages.user && (
+                          <span className="text-sm text-red-500">{errorMessages.user}</span>
+                        )}
                       </div>
                     </div>
 
@@ -490,8 +486,11 @@ export const UsersEdit = () => {
 
           <div className="px-4 py-4 sm:px-6 flex justify-between items-center">
             {/* Botón a la izquierda */}
-            <button type="button" onClick={() => showModal('delete')}
-              className="inline-flex justify-center rounded-md bg-red-600 px-3 py-2 text-md font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900">
+            <button
+              type="button"
+              onClick={() => showModal('delete')}
+              className="inline-flex items-center bg-red-700 hover:bg-red-900 rounded-full text-white border-2 border-primary px-6 pb-[6px] pt-2 text-xs font-medium uppercase leading-normal text-primary transition duration-150 ease-in-out hover:border-primary-accent-300 hover:bg-primary-50/50 hover:text-primary-accent-300 focus:border-primary-600 focus:bg-primary-50/50 focus:text-primary-600 focus:outline-none focus:ring-0 active:border-primary-700 active:text-primary-700 motion-reduce:transition-none dark:text-primary-500 dark:hover:bg-blue-950 dark:focus:bg-blue-950"
+            >
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 mr-2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
               </svg>
@@ -502,15 +501,15 @@ export const UsersEdit = () => {
             {/* Contenedor para los botones de la derecha */}
             <div className="flex justify-end">
               <button type="button" onClick={() => navigate(-1)}
-                className="inline-flex justify-center rounded-md bg-indigo-400 px-3 py-2 text-md font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900">
-                {t("Cancel")}
+                className="inline-flex items-center bg-gray-700 hover:bg-gray-900 rounded-full text-white border-2 border-primary px-6 pb-[6px] pt-2 text-xs font-medium uppercase leading-normal text-primary transition duration-150 ease-in-out hover:border-primary-accent-300 hover:bg-primary-50/50 hover:text-primary-accent-300 focus:border-primary-600 focus:bg-primary-50/50 focus:text-primary-600 focus:outline-none focus:ring-0 active:border-primary-700 active:text-primary-700 motion-reduce:transition-none dark:text-primary-500 dark:hover:bg-blue-950 dark:focus:bg-blue-950"
+              >{t("Cancel")}
               </button>
-    
+
               <button type="button" onClick={() => showModal('update')}
-                className="inline-flex justify-center rounded-md ml-2 bg-teal-400 px-3 py-2 text-md font-semibold text-blue-900 shadow-sm hover:bg-teal-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900">
-                {t("Update")}
+                className="inline-flex items-center bg-blue-900 hover:bg-blue-800 rounded-full text-white border-2 border-primary px-6 pb-[6px] pt-2 text-xs font-medium uppercase leading-normal text-primary transition duration-150 ease-in-out hover:border-primary-accent-300 hover:bg-primary-50/50 hover:text-primary-accent-300 focus:border-primary-600 focus:bg-primary-50/50 focus:text-primary-600 focus:outline-none focus:ring-0 active:border-primary-700 active:text-primary-700 motion-reduce:transition-none dark:text-primary-500 dark:hover:bg-blue-950 dark:focus:bg-blue-950"
+              >{t("Update")}
               </button>
-              
+
             </div>
           </div>
 
