@@ -117,6 +117,12 @@
   "Actions": "Accions",
   "Width (cm)": "Amplada (cm)",
   "Height (cm)": "Alçada (cm)",
+  "Products Massive Actions": "Accions Massives de Productes",
+  "New Benefits Margin": "Nou Marge de Beneficis",
+  "Save Margin": "Desar Marge",
+  "Product Status:": "Estat del Producte:",
+  "Select status": "Selecciona l'estat",
+  "Toggle Status": "Canvia l'estat",
   "Select Year": "Selecciona l'any",
   "Table": "Taula",
   "Year": "Any",
@@ -172,15 +178,6 @@
   "More": "Més",
   "Please insert your user": "Per favor, inserta el teu usuari",
   "Please insert your password": "Per favor, inserta la teva contrasenya",
-  "Create User": "Crea Usuari",
-  "Show User": "Mostra Usuari",
-  "Confirm Update": "Confirmeu l'actualització",
-  "Are you sure you want to update this user?": "Esteu segur que voleu actualitzar aquest usuari?",
-  "Delete": "Suprimeix",
-  "Go back": "Ves enrere",
-  "My profile": "El meu perfil", 
-  "Sign out": "Tanca la sessió",
-  "The name is mandatory": "El nom és obligatori",
   "Dashboard": "Panell"
  
 }

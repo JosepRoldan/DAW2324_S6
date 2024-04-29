@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\api\OrderController;
 use App\Http\Controllers\BuyingProcessController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\EnsureTokenIsValid;
@@ -42,11 +43,13 @@ Route::get('/productscard', function () {return view('productCard');});
 
 //////////////////////SHOP PROCESS////////////////////////
 Route::get('/Cart/Shipping', [BuyingProcessController::class, 'getShoppingOrdreDates'])->name('shipping');
-Route::post('/Cart/Order', [OrdersController::class, 'storeDates'])->name('shopProcessOrder');
+Route::get('/Cart/payment/',[BuyingProcessController::class,'paypal'])->name('shopProcess.payment');
+Route::post('/Cart/Order', [OrdersController::class, 'storeDates'])->name('processShop.orderCreate');
 
-Route::get('/Cart/Shipping/PaymentMethod', [BuyingProcessController::class, 'paymentDates'])->name('paymentMethod');
+Route::get('/shopProccess/success', [BuyingProcessController::class, 'success'])->name('processShop.success');
+Route::get('/shopProccess/cancel', [BuyingProcessController::class, 'cancel'])->name('processShop.cancel');
 
-Route::get('/Cart/Shipping/Details',[BuyingProcessController::class, 'detailsDates'])->name('details');
+
 Route::get('/Cart/Shipping/guess', function () {
     return view('processShop.guess');
 });
@@ -64,7 +67,8 @@ Route::get('/guidedGeneratedImage', function () {
 Route::get('/productscard', function () {
     return view('productCard');
 });
-Route::get('/Inicio', function () {return view('inicio');});
+Route::get('/Inicio', [ProductController::class, 'inicio'])->name('inicio');
+
 
 Route::get('/product', function () {return view('product');});
 
