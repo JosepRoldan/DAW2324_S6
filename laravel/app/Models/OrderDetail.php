@@ -14,7 +14,7 @@ class OrderDetail extends Model
         'idProduct',
         'idGI',
         'productName', 
-        'productDetails', 
+        'idVariant', 
         'quantity',
         'priceEach',
         'totalPrice',

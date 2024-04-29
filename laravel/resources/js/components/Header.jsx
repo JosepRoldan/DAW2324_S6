@@ -3,27 +3,30 @@ import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { createRoot } from "react-dom/client";
 import { ShoppingCartIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import MiniCarrito from "./MiniCarrito";
-import React, { useEffect } from 'react';
-import LanguageSelector from './LanguageSelector';
-
+import React, { useEffect } from "react";
+import LanguageSelector from "./LanguageSelector";
 
 const navigation = [
-    { name: 'Home', href: 'Inicio', current: false },
-    { name: 'Products', href: '../products', current: false },
-    { name: 'Generate Image', href: '../daisy', current: false },
-    { name: 'Generate Guided Image', href: '../guidedGeneratedImage', current: false },
-]
-
+    { name: "Home", href: "Inicio", current: false },
+    { name: "Products", href: "../products", current: false },
+    { name: "Generate Image", href: "../daisy", current: false },
+    {
+        name: "Generate Guided Image",
+        href: "../guidedGeneratedImage",
+        current: false,
+    },
+    { name: "FAQ", href: "../faq", current: false },
+];
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
 }
 
 
-
 export default function Header() {
     const [isCartOpen, setIsCartOpen] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [cartProducts, setCartProducts] = useState(0);
     useEffect(() => {
         // Verificar si hay una sesión activa al cargar el componente
         const token = document.getElementById("token");
@@ -32,12 +35,30 @@ export default function Header() {
         }
     }, []);
 
-    const handleCartClick = () => {
+    const handleCartAdd = () => {
         setIsCartOpen((prevState) => !prevState);
+        const cartProducts = JSON.parse(localStorage.getItem("products")) || [];
+        setCartProducts(cartProducts.length);
+        console.log(cartProducts.length)
+
     };
 
+
+    //Funcion para que si hay productos en el  se muestre un badge con la cantidad de productos encima del icono del carrito
+    useEffect(() => {
+        const cartProducts = JSON.parse(localStorage.getItem("products")) || [];
+        setCartProducts(cartProducts.length);
+    }
+    , [cartProducts]);
+
+    window.addEventListener("storage", () => {
+        console.log("storage event");
+    
+    });
+
+
     return (
-        <Disclosure as="nav" className="bg-blue-zodiac-950">
+        <Disclosure as="nav" className="bg-[#141415]">
             {({ open }) => (
                 <>
                     <div className="mx-auto max-w-10xl px-2 sm:px-6 lg:px-8">
@@ -88,17 +109,16 @@ export default function Header() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="flex-1 flex justify-center px-2 lg:ml-6 lg:justify-end">
-                            </div>
+                            <div className="flex-1 flex justify-center px-2 lg:ml-6 lg:justify-end"></div>
                             <div>
-                            <LanguageSelector></LanguageSelector>   
+                                <LanguageSelector></LanguageSelector>
                             </div>
                             <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                                 <button
                                     id="cartButton"
                                     type="button"
                                     className="relative rounded-full p-1 text-gray-400 hover:text-white focus:outline-none"
-                                    onClick={handleCartClick}
+                                    onClick={handleCartAdd}
                                 >
                                     <span className="absolute -inset-1.5" />
                                     <span className="sr-only">View cart</span>
@@ -106,14 +126,17 @@ export default function Header() {
                                         className="h-8 w-8"
                                         aria-hidden="true"
                                     />
-                                </button>
-
+                                    {cartProducts> 0 ? <span className="bg-red-500 text-white rounded-full px-1.5 py-0.5 text-xs absolute -top-2 -right-2 mt-2">{cartProducts}</span>: ""}
+                                </button> 
+                                        
                                 {/* Profile dropdown */}
                                 <Menu as="div" className="relative ml-3">
                                     <div>
                                         <Menu.Button className="relative rounded-full p-1 text-gray-400 hover:text-white focus:outline-none">
                                             <span className="absolute -inset-1.5" />
-                                            <span className="sr-only">Open user menu</span>
+                                            <span className="sr-only">
+                                                Open user menu
+                                            </span>
                                             <img
                                                 className="h-8 w-8 rounded-full ml-3"
                                                 src="/img/fotoPerfil.jpeg"
@@ -135,7 +158,12 @@ export default function Header() {
                                                 {({ active }) => (
                                                     <a
                                                         href="/profile"
-                                                        className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                                                        className={classNames(
+                                                            active
+                                                                ? "bg-gray-100"
+                                                                : "",
+                                                            "block px-4 py-2 text-sm text-gray-700"
+                                                        )}
                                                     >
                                                         Your Profile
                                                     </a>
@@ -144,10 +172,21 @@ export default function Header() {
                                             <Menu.Item>
                                                 {({ active }) => (
                                                     <a
-                                                        href={isLoggedIn ? "logout" : "login"}
-                                                        className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                                                        href={
+                                                            isLoggedIn
+                                                                ? "logout"
+                                                                : "login"
+                                                        }
+                                                        className={classNames(
+                                                            active
+                                                                ? "bg-gray-100"
+                                                                : "",
+                                                            "block px-4 py-2 text-sm text-gray-700"
+                                                        )}
                                                     >
-                                                        {isLoggedIn ? "Sign out" : "Sign in"}
+                                                        {isLoggedIn
+                                                            ? "Sign out"
+                                                            : "Sign in"}
                                                     </a>
                                                 )}
                                             </Menu.Item>

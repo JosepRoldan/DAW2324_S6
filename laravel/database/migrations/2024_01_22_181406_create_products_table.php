@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('ENG_description')->nullable();
             $table->string('CAT_description')->nullable();
             $table->string('ESP_description')->nullable();
-            $table->integer('priority')->nullable()->unique();
+            $table->integer('priority')->nullable();
             $table->timestamps();
         });
     }

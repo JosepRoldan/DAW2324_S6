@@ -205,15 +205,16 @@
             var variantSelect = document.getElementById('variantSelect');
             var selectedVariant = variantSelect.options[variantSelect.selectedIndex];
             producto.price = selectedVariant.getAttribute('data-price');
-            
+            producto.idVariant = selectedVariant.getAttribute('data-variant-id');
+                        
             const cartButton = document.getElementById('cartButton');
-            cartButton.click();
-
+            
             // Agregar el producto seleccionado a la lista
             products.push(producto);
 
             // Guardar la lista actualizada en el Local Storage
             localStorage.setItem('products', JSON.stringify(products));
+            cartButton.click();
         }
 </script>
 

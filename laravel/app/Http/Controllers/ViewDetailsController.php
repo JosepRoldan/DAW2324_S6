@@ -5,22 +5,26 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\ViewDetailsModel;
 use App\Models\MyOrdersModel;
-use App\Models\ProfileModel;
-use App\Models\ProductDetails;
+use App\Models\ProductDetail;
+use App\Models\GeneratedImages;
+use Illuminate\Support\Facades\Session;
 
 
 
 class ViewDetailsController extends Controller
 {
-    public function getDetailsData()
+    public function getDetailsData(Request $request)
     {
 
-        $userId=1;
-
-        $details = MyOrdersModel::join('orderDetails', 'orders.id', '=', 'orderDetails.idOrder')
-            ->join('customers', 'customers.idCustomers', '=', 'orders.idCustomers')
-            ->select('orderDetails.*', 'orders.datetime', 'orders.orderStatus', 'customers.name', 'customers.surname','customers.address')
-            ->where('customers.idCustomers', $userId)
+        $token = Session::get('token');
+        
+        $details = MyOrdersModel::join('orders_details', 'orders.id', '=', 'orders_details.idOrder')
+            ->join('customers', 'customers.id', '=', 'orders.idCustomers')
+            ->join('product_details', 'product_details.variant_id', '=', 'orders_details.idVariant') 
+            ->join('generatedImages', 'generatedImages.idGI', '=', 'orders_details.idGi')
+            ->select('orders_details.*', 'customers.surname', 'customers.name as name', 'product_details.name as variant', 'generatedImages.prompt', 'orders.datetime', 'orders.orderStatus')
+            ->where('customers.username', $token)
+            ->where('orders_details.idOrder', $request->idOrder)
             ->get();
 
         return response()->json($details);

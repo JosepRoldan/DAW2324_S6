@@ -16,7 +16,8 @@ export const UsersCreate = () => {
     surname: '',
     user: '',
     email: '',
-    password: ''
+    password: '',
+    idRole: ''
   });
 
   const [errorMessages, setErrorMessages] = useState({
@@ -24,7 +25,9 @@ export const UsersCreate = () => {
     surname: '',
     user: '',
     email: '',
-    password: ''
+    password: '',
+    idRole: ''
+
   });
 
   const handleChange = (e) => {
@@ -42,11 +45,11 @@ export const UsersCreate = () => {
     // Field validation required
     if (!formData.name || !formData.surname || !formData.user || !formData.email || !formData.password) {
       setErrorMessages({
-        name: !formData.name ? 'The name is mandatory' : '',
-        surname: !formData.surname ? 'The surname is mandatory' : '',
-        user: !formData.user ? 'Username is mandatory' : '',
-        email: !formData.email ? 'Email is mandatory' : '',
-        password: !formData.password ? 'Password is mandatory' : ''
+        name: !formData.name ? t('The name is mandatory') : '',
+        surname: !formData.surname ? t('The surname is mandatory') : '',
+        user: !formData.user ? t('Username is mandatory') : '',
+        email: !formData.email ? t('Email is mandatory') : '',
+        password: !formData.password ? t('Password is mandatory') : ''
       });
       return;
     }
@@ -54,13 +57,13 @@ export const UsersCreate = () => {
     // Email format validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
-      setErrorMessages({ ...errorMessages, email: 'Invalid e-mail format.' });
+      setErrorMessages({ ...errorMessages, email: t('Invalid e-mail format.') });
       return;
     }
 
     // Validation of minimum password length
     if (formData.password.length < 6) {
-      setErrorMessages({ ...errorMessages, password: 'The password must be at least 6 characters long.' });
+      setErrorMessages({ ...errorMessages, password: t('The password must be at least 6 characters long.') });
       return;
     }
 
@@ -71,7 +74,7 @@ export const UsersCreate = () => {
     }
 
     if (!isSafeInput(formData.name) || !isSafeInput(formData.surname) || !isSafeInput(formData.user) || !isSafeInput(formData.email) || !isSafeInput(formData.password)) {
-      setErrorMessages({ ...errorMessages, general: 'Fields contain characters that are not allowed.' });
+      setErrorMessages({ ...errorMessages, general: t('Fields contain characters that are not allowed.')});
       return;
     }
 
@@ -190,6 +193,28 @@ export const UsersCreate = () => {
               <div className="px-4 py-6 sm:p-8">
                 <div className="max-w-2xl space-y-10">
                   <div className="grid max-w-3xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+
+                  <div className="sm:col-span-4">
+                      <label htmlFor="user" className="block text-sm font-medium leading-6 text-gray-900">
+                      {t("Role")}
+                      </label>
+                      <div className="mt-2">
+                        <select                          id="idRole"
+                          name="idRole"
+                          value={formData.idRole}
+                          onChange={handleChange}
+                          type="text"
+                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        >
+                          <option value="">Selecciona un rol</option>
+                          <option value="1">Administrador</option>
+                          <option value="2">Manager Account</option>
+                          <option value="3">Customer Support</option>
+                        </select>
+                        {errorMessages.idRole && <div className="text-red-600 text-sm mt-1">{errorMessages.idRole}</div>}
+
+                      </div>
+                    </div>
 
                     <div className="sm:col-span-4">
                       <label htmlFor="user" className="block text-sm font-medium leading-6 text-gray-900">

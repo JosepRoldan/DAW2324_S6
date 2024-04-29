@@ -20,8 +20,10 @@ class BenefitsController extends Controller
     public function index()
     {
         $benefits = Benefits::all();
-        $total = DB::table('benefits')->sum('profit');
-
+        $currentYear = date('Y');
+        $total = DB::table('benefits')
+            ->whereYear('created_at', $currentYear)
+            ->sum('profit');
 
         return response()->json(['benefits' => $benefits, 'total' => $total]);
     }

@@ -233,29 +233,16 @@ const Profile = () => {
                 <div className="flex flex-col items-center justify-center h-full">
                     <img
                         src="/img/fotoPerfil.jpeg"
-                        className="w-32 h-32 rounded-full mb-7"
+                        className="w-32 h-32 rounded-full"
                     />
                     <h2 className="text-xl font-semibold">{profileData.name} {profileData.surname}</h2>
 
                     <p className="text-gray-500">{profileData.mail}</p>
-                    <div className="mt-4">
-                        <button className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
-                            Edit Profile
-                        </button>
-                    </div>
                     <br></br>
                 </div>
                 <div className="bg-gray-300 overflow-hidden shadow rounded-lg border flex justify-center items-center mx-20">
                     <div className="justify-center border-t border-gray-200 px-4 py-5 sm:p-0">
                         <dl className="sm:divide-y sm:divide-gray-200">
-                            <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt className="text-center text-sm font-medium text-gray-500">
-                                    Full name
-                                </dt>
-                                <dd className="text-center text-center mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                {profileData.name} {profileData.surname}
-                                </dd>
-                            </div>
                             <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                 <dt className="text-center text-sm font-medium text-gray-500">
                                     Email address
@@ -264,6 +251,15 @@ const Profile = () => {
                                     {profileData.mail}
                                 </dd>
                             </div>
+                            <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt className="text-center text-sm font-medium text-gray-500">
+                                    Full name
+                                </dt>
+                                <dd className="text-center text-center mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                {profileData.name} {profileData.surname}
+                                </dd>
+                            </div>
+                            
                             <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                 <dt className="text-center text-sm font-medium text-gray-500">
                                     Phone number
@@ -283,7 +279,11 @@ const Profile = () => {
                         </dl>
                     </div>
                 </div>
-                <br></br>
+                <div className=" mx-20 py-2.5 mb-2 mt-2 bg-blue-500 text-white text-center rounded-md hover:bg-blue-600">
+                        <a href="../editProfile">
+                            Edit Profile
+                        </a>
+                </div>
             </div>
         </>
     );
