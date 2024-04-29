@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Benefits;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-
+use App\Models\User;
 
 class BenefitsController extends Controller
 {
@@ -21,14 +21,22 @@ class BenefitsController extends Controller
     public function index()
     {   
         $userId = Auth::id();
+        $userRole = User::find($userId)->role;
         
-        $benefits = Benefits::all();
-        $currentYear = date('Y');
-        $total = DB::table('benefits')
-            ->whereYear('created_at', $currentYear)
-            ->sum('profit');
+         // Verificar el rol del usuario y decidir si mostrar la sección de beneficios
+        if ($userRole->id === 3) {
+            // El usuario tiene un rol que no permite mostrar la sección de beneficios
+            return response()->json(['message' => 'No tiene permiso para ver la sección de beneficios'], 403);
+        } else {
+            // El usuario tiene un rol que permite mostrar la sección de beneficios
+            $benefits = Benefits::all();
+            $currentYear = date('Y');
+            $total = DB::table('benefits')
+                ->whereYear('created_at', $currentYear)
+                ->sum('profit');
 
-        return response()->json(['benefits' => $benefits, 'total' => $total]);
+            return response()->json(['benefits' => $benefits, 'total' => $total]);
+        }
     }
 
     /**

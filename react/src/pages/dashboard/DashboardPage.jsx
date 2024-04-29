@@ -14,6 +14,8 @@ export const DashboardPage = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
   const [totalProfit, setTotalProfit] = useState(0);
+  const [showAdminAccount, setShowAdminAccount] = useState(true);
+  const [showCompanyProfit, setShowCompanyProfit] = useState(true);
   const token = localStorage.getItem("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
@@ -42,6 +44,8 @@ export const DashboardPage = () => {
         setTotalProfit(response.data.total);
       }
     } catch (error) {
+      setShowAdminAccount(false);
+      setShowCompanyProfit(false);
       // console.error("Error fetching benefits:", error.message);
     } finally {
       setLoading(false);
@@ -84,17 +88,22 @@ export const DashboardPage = () => {
         ) : (
           <div className="container mx-w-6xl mx-auto py-4">
           <div className="flex flex-col space-y-8">
+          {!loading && showAdminAccount && showCompanyProfit && (
             <div className="grid grid-cols-1 md:grid-cols-4 xl:grid-cols-5 px-4 xl:p-0 gap-y-4 md:gap-6">
               <div className="md:col-span-2 xl:col-span-3 bg-white p-6 rounded-2xl border border-gray-50">
                 <div className="flex flex-col space-y-6 md:h-full md:justify-between">
                   <div className="flex justify-between">
+                  {loading || showAdminAccount ? ( 
                     <span className="text-xs text-gray-500 font-semibold uppercase tracking-wider">
                       {t("Admin Account")}
                     </span>
+                  ) : null }
+                  {loading || showCompanyProfit ? (
                     <span className="text-xs text-gray-500 font-semibold uppercase tracking-wider">
                     {t("Total Yearly Profit")}
                       
                     </span>
+                  ) : null }
                   </div>
                   <div className="flex gap-2 md:gap-4 justify-between items-center">
                     <div className="flex flex-col space-y-4">
@@ -129,6 +138,7 @@ export const DashboardPage = () => {
               </div>
 
             </div>
+          )}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 px-4 xl:p-0 gap-4 xl:gap-6">
               <div className="col-span-1 md:col-span-2 lg:col-span-4 flex justify-between">
                 <h2 className="text-xs md:text-sm text-gray-700 font-bold tracking-wide md:tracking-wider">
