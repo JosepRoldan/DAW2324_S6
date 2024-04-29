@@ -121,7 +121,7 @@ class BuyingProcessController extends Controller
         $email->addContent("text/plain", "Gracias por su compra.");
 
         // Configuración de SendGrid
-        $apiKey = env('SENDGRID_API_KEY');
+        $apiKey  = config('buyprocess.mail.mail');
         $sendgrid = new SendGrid($apiKey);
         try {
             $response = $sendgrid->send($email);

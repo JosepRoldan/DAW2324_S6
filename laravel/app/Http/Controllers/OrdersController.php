@@ -6,13 +6,8 @@ use App\Models\AddressDelivery;
 use App\Models\OrderView;
 use App\Models\Order;
 use App\Models\OrderDetail;
-use Illuminate\Support\Facades\Http;
-
-
 use App\Models\Customer;
-
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 
 class OrdersController extends Controller

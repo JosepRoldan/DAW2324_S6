@@ -4,20 +4,32 @@ namespace App\Http\Controllers;
 
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
+use App\Models\Order; 
 
 class FastAPIController extends Controller
 {
     public function sendToFastAPI(Request $request)
     {
         $client = new Client();
-        $urlBase = 'http://fastapi:8003';
+        $urlBase = config('buyprocess.fastapi.url');
 
+        $orderId = $request->orderId;
+        $order = Order::find($orderId);
+
+        // Verificar si se encontró la orden
+        if (!$order) {
+            return response()->json([
+                'success' => false,
+                'error' => 'Order not found'
+            ]);
+        }
         // Intentar obtener el token
         try {
             $tokenResponse = $client->request('POST', $urlBase . '/token', [
                 'form_params' => [
-                    'username' => 'alumne',
-                    'password' => '2b8af5289aa93fc62eae989b4dcc9725'
+                    'username' => config('buyprocess.fastapi.user'),
+                    'password' => config('buyprocess.fastapi.password')
+
                 ]
             ]);
 
@@ -38,7 +50,7 @@ class FastAPIController extends Controller
             "customs_shipping_costs" => 5.99,
             "shipping" => [
                 "email" => "john.doe@example.com",
-                "firstname" => "John",
+                "firstname" => $order->name,
                 "lastname" => "Doe",
                 "company" => "Picanova GmbH",
                 "street_primary" => "Hohenzollernring 25",
