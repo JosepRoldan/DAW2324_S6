@@ -3,3 +3,7 @@ __pycache__/
 node_modules
 laravel/package-lock.json
 .vscode/
+
+.gitignore
+laravel/storage/framework/sessions/*
+laravel/storage/framework/*

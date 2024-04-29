@@ -76,7 +76,7 @@ export const Login = () => {
          navigate('/dashboard');
       }
     } catch (error) {
-      console.error("Error logging in:", error);
+      // console.error("Error logging in:", error);
       setAlert(true);
     }finally{
       setLoading(false);
