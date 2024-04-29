@@ -25,20 +25,24 @@
 
     @extends($layout)
     @section('content')
-        <body class="bg-gray-100">
-            <h1>@lang('passwords.password_recovery')</h1>
-            <form action="{{ route('password.reset') }}" method="POST" onsubmit="return validarFormulario();">
-                @csrf <!-- Agrega el token CSRF -->
-                <input type="hidden" name="token" value="{{ $token }}"> <!-- Agrega un campo oculto para el token -->
+        <body class="bg-gray-100 w-full">
+            <div class=" my-10 flex flex-col items-center justify-center">
+                <div class="bg-slate-200 w-2/4 text-center p-8 rounded shadow-md ">
+                    <h1 class=" text-black text-2xl mb-2 ">@lang('passwords.password_recovery')</h1>
+                    <form action="{{ route('password.reset') }}" method="POST" onsubmit="return validarFormulario();">
+                        @csrf <!-- Agrega el token CSRF -->
+                        <input type="hidden" name="token" value="{{ $token }}"> <!-- Agrega un campo oculto para el token -->
 
-                <label for="nueva_contraseña">@lang('passwords.new_password'):</label><br>
-                <input type="password" id="nueva_contraseña" name="nueva_contraseña" required><br><br>
+                        <label class=" text-slate-800 " for="nueva_contraseña">@lang('passwords.new_password'):</label><br>
+                        <input class=" text-slate-800 border-slate-400 " type="password" id="nueva_contraseña" name="nueva_contraseña" required><br><br>
 
-                <label for="confirmar_contraseña">@lang('passwords.confirm_new_password'):</label><br>
-                <input type="password" id="confirmar_contraseña" name="confirmar_contraseña" required><br><br>
+                        <label class=" text-slate-800 " for="confirmar_contraseña">@lang('passwords.confirm_new_password'):</label><br>
+                        <input class=" text-slate-800 border-slate-400 " type="password" id="confirmar_contraseña" name="confirmar_contraseña" required><br><br>
 
-                <button type="submit">@lang('passwords.change_password')</button>
-            </form>
+                        <button class=" text-slate-800 p-3 rounded-md bg-slate-300 " type="submit">@lang('passwords.change_password')</button>
+                    </form>
+                </div>
+            </div>
         </body>
     @endsection
 </html>
