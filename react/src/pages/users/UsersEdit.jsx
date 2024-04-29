@@ -37,9 +37,10 @@ export const UsersEdit = () => {
     name: users.name || '',
     surname: users.surname || '',
     user: users.user || '',
-    //newPasswordConfirm: '',
     email: users.email || '',
-    idRole: users.idRole || ''
+    idRole: users.idRole || '',
+    password: '',
+    passwordConfirm: '',
   });
 
   const [errorMessages, setErrorMessages] = useState({
@@ -72,12 +73,26 @@ export const UsersEdit = () => {
         errors.email = t('Invalid email format');
       }
     }
-    /*if (!formData.password) {
-      errors.password = 'La contraseña es obligatoria';
-    } else if (formData.password.length < 6) {
-      errors.password = 'La contraseña debe tener al menos 6 caracteres.';
+    
+    // Verificar si el campo de contraseña se ha modificado
+    if (formData.password.trim() !== '') {
+      if (formData.password.length < 6) {
+        errors.password = t('Password must be at least 6 characters long');
+      }
+
+      // Verificar si se ha ingresado confirmación de contraseña
+      if (formData.passwordConfirm.trim() !== '') {
+        if (formData.password !== formData.passwordConfirm) {
+          errors.passwordConfirm = t('Passwords do not match');
+        }
+      }
+     
     }
-  */
+     // Validar caracteres especiales en la contraseña
+     const specialCharactersRegex = /[<>;'"&]/;
+     if (specialCharactersRegex.test(formData.password)) {
+       errors.password = t('No special characters are allowed in the password.');
+     }
     return errors;
   };
 
@@ -436,12 +451,15 @@ export const UsersEdit = () => {
                         <input
                           type="password"
                           name="password"
-                          value={formData.newPassword}
+                          value={formData.password}
                           onChange={handleChange}
                           id="password"
                           autoComplete="new-password"
                           className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         />
+                        {errorMessages.password && (
+  <span className="text-sm text-red-500">{t(errorMessages.password)}</span>
+)}
                       </div>
                     </div>
 
@@ -453,12 +471,15 @@ export const UsersEdit = () => {
                         <input
                           type="password"
                           name="passwordConfirm"
-                          value={formData.newPasswordConfirm}
+                          value={formData.passwordConfirm}
                           onChange={handleChange}
                           id="passwordConfirm"
                           autoComplete="new-password"
                           className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         />
+                        {errorMessages.passwordConfirm && (
+  <span className="text-sm text-red-500">{t(errorMessages.passwordConfirm)}</span>
+)}
                       </div>
                     </div>
                   </div>
