@@ -112,6 +112,7 @@
     "Actions": "Acciones",
     "Width (cm)": "Anchura (cm)",
     "Height (cm)": "Altura (cm)",
+    "Fields contain characters that are not allowed.": "Los campos contienen caracteres no permitidos.",
 
   "Select Year": "Selecciona el año",
   "Table": "Tabla",

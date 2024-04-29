@@ -112,15 +112,30 @@ export const UsersEdit = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    
+    console.log("handleChange set data", formData)
     // Validate the field and set the appropriate error message.
-    const errorMessage = validateField(name, value);
-    setErrorMessages({ ...errorMessages, [name]: errorMessage });
+    const fieldErrorMessage = validateField(name, value);
+      // Si el campo está vacío y el valor anterior no estaba vacío, mostramos el mensaje de error
+    if (value.trim() === '' && formData[name].trim() !== '') {
+      setErrorMessages({ ...errorMessages, [name]: t('This field cannot be empty') });
+      return;
+    }
+    setErrorMessages({ ...errorMessages, [name]: fieldErrorMessage });
+
+    if (!fieldErrorMessage){
+      const formErrors = validateForm();
+      setErrorMessages({ ...errorMessages, ...formErrors });
+
+    }
+
+
+    console.log("problemas del handleChange", fieldErrorMessage);
 
   }
 
   const validateField = (name, value) => {
     const specialCharactersRegex = /[<>;'"&]/;
+    console.log(`Validating field: ${name} with value: ${value}`);
     if (specialCharactersRegex.test(value)) {
       return t('No special characters are allowed in this field.');
     }
@@ -128,26 +143,46 @@ export const UsersEdit = () => {
   };
 
   const onSubmit = async (userId) => {
-    //e.preventDefault();
-
     const fieldErrors = validateForm();
-
+    console.log("Errors:", fieldErrors);
     // Check if there are any field errors
-  if (Object.keys(fieldErrors).length > 0) {
-    setErrorMessages({ ...fieldErrors });
-    return;
-  }
-
-  // Check for special characters in each field
-  const isSafeInput = (input) => {
-    const regex = /[<>;'"&]/;
-    return !regex.test(input);
-  };
+    setErrorMessages((prevErrorMessages) => ({
+      ...prevErrorMessages,
+      ...fieldErrors,
+    }));
   
-  if (!isSafeInput(formData.name) || !isSafeInput(formData.surname) || !isSafeInput(formData.user) || !isSafeInput(formData.email) || !isSafeInput(formData.password)) {
-    setErrorMessages({ general: 'Los campos contienen caracteres no permitidos.' });
-    return;
-  }
+    // Verificar si hay algún error en los campos
+    if (Object.keys(fieldErrors).length > 0) {
+      return;
+    }
+  
+
+    const validateSpecialCharacters = () => {
+      const invalidFields = {};
+      // Validar cada campo
+      for (const [fieldName, fieldValue] of Object.entries(formData)) {
+        const errorMessage = validateField(fieldName, fieldValue);
+        if (errorMessage) {
+          invalidFields[fieldName] = errorMessage;
+        }
+      }
+      return invalidFields;
+    };
+  
+    const specialCharacterErrors = validateSpecialCharacters();
+    console.log("Special Character Errors:", specialCharacterErrors);
+  
+    // Actualizar mensajes de error con los errores de caracteres especiales
+    setErrorMessages((prevErrorMessages) => ({
+      ...prevErrorMessages,
+      ...specialCharacterErrors,
+    }));
+  
+    // Verificar si hay errores de caracteres especiales
+    if (Object.keys(specialCharacterErrors).length > 0) {
+      return;
+    }
+  
 
     try {
       console.log("entro al try")
@@ -304,8 +339,8 @@ export const UsersEdit = () => {
                         onChange={handleChange}
                         className={`block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 ${
                           errorMessages.name ? 'border-red-500' : ''
-                        }`}                      />
-                      {errorMessages.name && (<span className="text-sm text-red-500">{errorMessages.name}</span>)}                      
+                        }`}/>
+                      {errorMessages.name && (<span className="text-sm text-red-500">{errorMessages.name}</span>)}
                     </div>
                   </div>
 
@@ -572,6 +607,7 @@ export const UsersEdit = () => {
     
               <button type="button" onClick={() => {
                     const fieldErrors = validateForm();
+                    console.log(fieldErrors)
                     if (Object.keys(fieldErrors).length === 0) {
                       showModal('update');
                     } else {

@@ -90,12 +90,12 @@
     "Update": "Update",
     "User Information": "User Information",
     "Edit User": "Edit User",
-    "Username is mandatory": "El nombre de usuario es obligatorio",
-    "No special characters are allowed in this field.": "No se permiten caracteres especiales en este campo.",
-    "Name is required": "El nombre es obligatorio",
-    "Last name is required": "El apellido es obligatorio",
-    "Email is required": "El correo electrónico es obligatorio",
-    "Invalid email format": "Formato de correo electrónico no válido.",
+    "Username is mandatory": "Username is mandatory",
+    "No special characters are allowed in this field.": "No special characters are allowed in this field.",
+    "Name is required": "Name is required",
+    "Last name is required": "Last name is required",
+    "Email is required": "Email is required",
+    "Invalid email format": "Invalid email format",
     "Close sidebar": "Close sidebar",
     "Settings": "Settings",
     "Open sidebar": "Open sidebar",
@@ -104,5 +104,6 @@
     "Edit": "Edit",
     "Your teams": "Your teams",
     "DASHBOARD": "DASHBOARD",
-    "The name is mandatory": "The name is mandatory"
+    "The name is mandatory": "The name is mandatory",
+    "Fields contain characters that are not allowed.": "Fields contain characters that are not allowed."
 }
