@@ -42,7 +42,7 @@ export const DashboardPage = () => {
         setTotalProfit(response.data.total);
       }
     } catch (error) {
-      console.error("Error fetching benefits:", error.message);
+      // console.error("Error fetching benefits:", error.message);
     } finally {
       setLoading(false);
     }
@@ -63,10 +63,14 @@ export const DashboardPage = () => {
         "Content-Type": "application/json",
       });
       if (response.status === 200) {
-        setOrders(response.data);
+        var orderstemp = [];
+        for (let i = 0; i < 4; i++) {
+          orderstemp.push(response.data[i]);
+        }
+        setOrders(orderstemp);
       }
     } catch (error) {
-      console.error("Error fetching orders:", error);
+      // console.error("Error fetching orders:", error);
     } finally {
       setLoading(false);
     }
@@ -179,20 +183,11 @@ export const DashboardPage = () => {
                     <Link to={"/orders"} className="px-4 py-2 text-xs bg-blue-100 text-blue-900 rounded uppercase tracking-wider font-semibold hover:bg-blue-300">{t("More")}</Link>
                   </div>
                   <ul className="divide-y-2 divide-gray-100 overflow-x-auto w-full">
-                    {orders.map((order) => (
-                      // eslint-disable-next-line react/jsx-key
-                      <li className="py-3 flex justify-between text-sm text-gray-500 font-semibold">
-                        <p className="px-4 font-semibold">{order.idOrderPicanova}</p>
-                        <p className="px-4 text-gray-600">{order.datetime}</p>
-                        <p className="px-4 tracking-wider">{order.orderStatus}</p>
-                        <p className="md:text-base text-gray-800 flex items-center gap-2">
-                          16.90
-                          <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                              d="M19 9l-7 7-7-7" />
-                          </svg>
-                        </p>
+                    {orders.map((order, i) => (
+                      <li className="py-3 flex justify-between text-sm text-gray-500 font-semibold" key={i}>
+                        <p className="px-4 font-semibold">{}</p>
+                        <p className="px-4 text-gray-600">{}</p>
+                        <p className="px-4 tracking-wider">{}</p>
                       </li>
                     ))}
 

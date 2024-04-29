@@ -6,7 +6,6 @@ import { useCookies } from "react-cookie";
 import { useTranslation } from "react-i18next";
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-import LanguageSwitcher from "../../components/LanguageSwitcher";
 import translationEN from "/src/locales/eng/translation.json";
 import translationCA from "/src/locales/cat/translation.json";
 import translationES from "/src/locales/esp/translation.json";
@@ -77,7 +76,7 @@ export const Login = () => {
          navigate('/dashboard');
       }
     } catch (error) {
-      console.error("Error logging in:", error);
+      // console.error("Error logging in:", error);
       setAlert(true);
     }finally{
       setLoading(false);
@@ -107,11 +106,6 @@ export const Login = () => {
   return (
     
     <div className="antialiased background-login">
-      <div className="float-right">
-      <LanguageSwitcher />
-      </div>
-
-      
       <div className="container px-6 mx-auto">
         <div className="flex flex-col text-center md:text-left md:flex-row h-screen justify-evenly md:items-center">
           <div className="flex pl-20 flex-col w-full">

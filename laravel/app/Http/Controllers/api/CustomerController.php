@@ -5,6 +5,8 @@ namespace App\Http\Controllers\api;
 use App\Models\Customer;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Models\Order;
+
 
 
 class CustomerController extends Controller
@@ -28,6 +30,10 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
+
+
+
+
         // Validate the input data
         $validatedData = $request->validate([
             'name' => 'required|max:255',
@@ -146,6 +152,17 @@ class CustomerController extends Controller
         ];
 
         return response()->json($response, 200);
+    }
+    public function userOrders($customerId)
+    {
+        // Buscar al cliente por su ID
+        $customer = Customer::findOrFail($customerId);
+
+        // Obtener todos los pedidos asociados al cliente
+        $orders = Order::where('idCustomers', $customerId)->get();
+
+        // Retornar los pedidos del cliente
+        return response()->json(['customer' => $customer, 'orders' => $orders]);
     }
 
     /**
