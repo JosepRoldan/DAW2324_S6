@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\GeneratedImages;
 use App\Models\OrderDetail;
 use App\Models\Product;
 use App\Models\ProductDetail;
@@ -15,7 +16,7 @@ class OrderDetailFactory extends Factory
     public function definition()
     {
         $product = Product::inRandomOrder()->first(); // Obtener un producto aleatorio
-
+        $generatedImage = GeneratedImages::inRandomOrder()->first();
         // Obtener el detalle del producto asociado
         $productDetail = ProductDetail::where('id', $product->id)
             ->inRandomOrder()
@@ -30,7 +31,7 @@ class OrderDetailFactory extends Factory
         return [
             'idOrder' => $order->id, // Hace referencia a la id de la tabla orders
             'idProduct' => $product->id,
-            'idGI' => $product->idGI, // Asigna el ID del grupo de inventario del producto
+            'idGI' => $generatedImage->idGI, // Asigna el ID del grupo de inventario del producto
             'productName' => $product->name,
             'idVariant' => $productDetail->variant_id, // Asigna el ID de variante del producto
             'quantity' => $this->faker->numberBetween(1, 10), // Cantidad aleatoria entre 1 y 10

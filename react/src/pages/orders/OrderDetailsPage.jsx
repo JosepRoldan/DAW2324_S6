@@ -1,171 +1,110 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import AppLayout from "../../layout/AppLayout";
-import useOrdersData from "../../hooks/useOrders";
+import React, { useState, useEffect } from "react";
 
-const steps = [
-  { name: "Orders", href: "/orders", current: false },
-  { name: "Order Details", href: "/", current: true },
-];
+function OrderDetailsPage() {
+  const [orderDetails, setOrderDetails] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-// Define the functional component for the OrderDetailsPage
-import { useTranslation } from "react-i18next";
-import i18n from "i18next";
-import { initReactI18next } from "react-i18next";
-import translationEN from "/src/locales/eng/translation.json";
-import translationCA from "/src/locales/cat/translation.json";
-import translationES from "/src/locales/esp/translation.json";
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_API_URL}/OrderDetails/${id}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setOrderDetails(data);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching data: ", error);
+        setIsLoading(false);
+      });
+  }, []);
 
-const resources = {
-  eng: {
-    translation: translationEN,
-  },
-  cat: {
-    translation: translationCA,
-  },
-  esp: {
-    translation: translationES,
-  },
-};
-
-i18n.use(initReactI18next).init({
-  resources,
-  lng: "eng",
-  fallbackLng: "eng",
-  interpolation: {
-    escapeValue: false,
-  },
-});
-
-const OrderDetailsPage = () => {
-  // Extract the idOrder from the URL parameters using the useParams hook
-  const { t } = useTranslation();
-  const { idOrder } = useParams();
-
-  // Use the custom hook useOrdersData to fetch order details based on the idOrder
-  const {
-    rowData: ordersDetails, // Extract rowData from the custom hook response
-  } = useOrdersData(`${import.meta.env.VITE_API_URL}/OrderDetails/${idOrder}`);
-
-  // // Render loading state if data is still loading
-  // if (loading) {
-  //   return <div>Loading...</div>;
-  // }
-
-  // // Render error message if there's an error during data fetching
-  // if (error) {
-  //   return <div>Error: {error.message}</div>;
-  // }
-
-  // Render the UI for the OrderDetailsPage
   return (
-    <>
-      <body className="bg-gray-100 font-sans">
-        <header className="container mx-auto py-4">
-          <h1 className="text-3xl font-bold text-center bg-black rounded-md text-white mb-4">
-            Order Details
-          </h1>
-          <address className="float-left font-sm font-bold text-lg mr-4">
-            <p>CustomAIze</p>
-          </address>
-          <span className="block float-right w-40 h-auto mr-24">
-            <img
-              alt="CustomAIze"
-              src="/LogoCustomAIze.png"
-              className="rounded w-full h-auto"
-            />
-          </span>
-          <div className="clearfix"></div>
-        </header>
-        <article className="container mx-auto py-4">
-          <address className="float-left font-lg font-bold">
-            <p></p>
-          </address>
-          <address className="float-left font-lg font-bold">
-            <p></p>
-          </address>
-
-          <table className="w-full mb-8">
-            <tr>
-              <th className="w-1/4">Order Number</th>
-              <td className="w-3/4">{idOrder}</td>
-            </tr>
-            <tr>
-              <th>Date</th>
-              <td>{}</td>
-            </tr>
-            <tr>
-              <th>Amount Due</th>
-              <td>
-                <span className="text-green-500">TOTAL</span>
-                <span className="text-green-500">€</span>
-              </td>
-            </tr>
-          </table>
-
-          <table className="w-full mb-8">
-            <thead>
+    <body className="bg-gray-100 font-sans">
+      <header className="container mx-auto py-4">
+        <h1 className="text-3xl font-bold text-center bg-black rounded-md text-white mb-4">
+          Order Details
+        </h1>
+        <address className="float-left font-sm font-bold text-lg mr-4">
+          <p>CustomAIze</p>
+        </address>
+        <span className="block float-right w-40 h-auto mr-24">
+          <img
+            alt="CustomAIze"
+            src="/LogoCustomAIze.png"
+            className="rounded w-full h-auto"
+          />
+        </span>
+        <div className="clearfix"></div>
+      </header>
+      <article className="container mx-auto py-4">
+        {!isLoading && orderDetails && (
+          <>
+            <table className="w-full mb-8">
               <tr>
-                <th>Item</th>
-                <th>Description</th>
-                <th>Quantity</th>
-                <th>Price</th>
+                <th className="w-1/4">Order Number</th>
+                <td className="w-3/4">{orderDetails[0].idOrder}</td>
               </tr>
-            </thead>
-            <tbody>
-              <tr className="text-center">
+            </table>
+
+            <table className="w-full mb-8 text-center">
+              <thead>
+                <tr>
+                  <th>Item</th>
+                  <th>Quantity</th>
+                  <th>Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                {orderDetails.map((order) => (
+                  <tr key={order.id}>
+                    <td className="text-left">
+                      <span>{order.productName}</span>
+                    </td>
+                    <td>{order.quantity}</td>
+                    <td>
+                      <span className="text-green-500">€</span>
+                      <span className="text-green-500">{order.totalPrice}</span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+            <table className="w-full mb-8">
+              <tr>
+                <th>Total</th>
                 <td>
-                  <a className="cut">-</a>
-                  <span>Front End Consultation</span>
-                </td>
-                <td>Experience Review</td>
-                <td></td>
-                <td>
-                  <span className="text-green-500">$</span>
-                  <span className="text-green-500">600.00</span>
+                  <span className="text-green-500">
+                    €{/* Agregar el total del pedido */}
+                  </span>
                 </td>
               </tr>
-            </tbody>
-          </table>
-
-          <table className="w-full mb-8">
-            <tr>
-              <th>Total</th>
-              <td>
-                <span className="text-green-500">$</span>
-                <span className="text-green-500">600.00</span>
-              </td>
-            </tr>
-            <tr>
-              <th>Amount Paid</th>
-              <td>
-                <span className="text-red-500">$</span>
-                <span className="text-red-500">0.00</span>
-              </td>
-            </tr>
-            <tr>
-              <th>Balance Due</th>
-              <td>
-                <span className="text-green-500">$</span>
-                <span className="text-green-500">600.00</span>
-              </td>
-            </tr>
-          </table>
-        </article>
-
-        <aside className="container mx-auto py-4">
-          <h1 className="text-2xl font-bold mb-4">Additional Notes</h1>
-          <div>
-            <p className="text-lg">
-              A finance charge of 1.5% will be made on unpaid balances after 30
-              days.
-            </p>
-          </div>
-        </aside>
-      </body>
-    </>
+              <tr>
+                <th>Amount Paid</th>
+                <td>
+                  <span className="text-red-500">
+                    €{/* Agregar la cantidad pagada */}
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <th>Balance Due</th>
+                <td>
+                  <span className="text-green-500">
+                    €{/* Calcular y agregar el saldo debido */}
+                  </span>
+                </td>
+              </tr>
+            </table>
+          </>
+        )}
+      </article>
+    </body>
   );
-};
+}
 
-// Export the OrderDetailsPage component as the default export
 export default OrderDetailsPage;
