@@ -10,14 +10,14 @@ class FastAPIController extends Controller
     public function sendToFastAPI(Request $request)
     {
         $client = new Client();
-        $urlBase = env('FASTAPI_URL');
+        $urlBase = 'http://localhost:8003';
 
         // Intentar obtener el token
         try {
             $tokenResponse = $client->request('POST', $urlBase . '/token', [
                 'form_params' => [
-                    'username' => env('FASTAPI_USER'),
-                    'password' => env('FASTAPI_PASSWORD')
+                    'username' => 'alumne',
+                    'password' => '2b8af5289aa93fc62eae989b4dcc9725'
                 ]
             ]);
 

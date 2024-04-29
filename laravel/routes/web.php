@@ -15,7 +15,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MyOrdersController;
 use App\Http\Controllers\ViewDetailsController;
 use App\Http\Controllers\CookieController;
-
+use App\Http\Controllers\FastAPIController;
 use App\Http\Controllers\LanguageController;
 
 
@@ -54,6 +54,8 @@ Route::get('/Cart/Shipping/guess', function () {
     return view('processShop.guess');
 });
 
+
+Route::post('/shopProccess/picanova',[FastAPIController::class,'sendToFastAPI'])->name('processShop.picanova');
 ////////////////////////////////////////
 
 Route::get('/products', function () {
