@@ -130,8 +130,8 @@ export default function AppLayout({ children }) {
   };
 
   const userNavigation = [
-    { name: "My profile", action: "My profile" },
-    { name: "Sign out", action: "Sign out" },
+    { name: t("My profile"), action: "My profile" },
+    { name: t("Sign out"), action: "Sign out" },
   ];
 
   const UserNavigation = (action) => {

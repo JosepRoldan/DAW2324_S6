@@ -46,7 +46,7 @@ export const UserPage = () => {
     }, []);
 
     useEffect(() => {
-        setPage(t("Users"));
+        setPage(  t("Users") );
         setSteps([{ name: t("Users"), href: '/users', current: true }]);
     }, [setPage, setSteps, navigate]);
 
@@ -70,7 +70,7 @@ export const UserPage = () => {
             <div className="flex flex-col my-3">
                 {
                     isLoading
-                        ? <Spinner message='Loading Users...' />
+                        ? <Spinner message={t ('Loading Users...')} />
                         :
                         <UsersTable userData={userData} />
                 }
