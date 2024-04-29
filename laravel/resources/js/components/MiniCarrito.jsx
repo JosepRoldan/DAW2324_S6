@@ -11,13 +11,14 @@ export default function MiniCarrito() {
     const updatedCart = cartProducts.filter((product) => product.id !== productId);
     setCartProducts(updatedCart);
     localStorage.setItem('products', JSON.stringify(updatedCart));
-
-    // Recargar pagina en caso que la url sea ../carrito para que se actualice el carrito
-    if (window.location.pathname === '/carrito') {
-      window.location.reload();
-    }
+    window.location.reload();
+  
 
   };
+
+  window.addEventListener('storage', () => {
+    console.log('storage event'); 
+  });
 
   const total = cartProducts.reduce((acc, product) => acc + parseFloat(product.price) * product.quantity, 0);
 
