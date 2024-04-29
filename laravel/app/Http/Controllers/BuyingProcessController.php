@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Customer;
 use App\Models\Order;
-
+use SendGrid\Mail\Mail;
+use SendGrid;
 
 class BuyingProcessController extends Controller
 {
@@ -92,6 +93,7 @@ class BuyingProcessController extends Controller
             // Actualizar el estado de la orden a "inProgress"
             $order->orderStatus = 'InProgress';
             $order->save();
+            $this->sendMailConfirm();
 
             // Opcional: puedes devolver una respuesta JSON u otra respuesta según tus necesidades
             return response()->json(['message' => 'Order status updated successfully'], 200);
@@ -109,6 +111,24 @@ class BuyingProcessController extends Controller
     // Por ahora, simplemente redirigiremos al usuario a una página de cancelación
     //return redirect()->route('Carrito');
 }
+    }
+
+    public function sendMailConfirm() {
+        $email = new Mail();
+        $email->setFrom("josemedina@iesmontsia.org", "Aladdin Powell");
+        $email->setSubject("Cambio de contraseña CustomAIze");
+        $email->addTo('paulacruzado@iesmontsia.org', "Nombre del Destinatario");
+        $email->addContent("text/plain", "Gracias por su compra.");
+
+        // Configuración de SendGrid
+        $apiKey = env('SENDGRID_API_KEY');
+        $sendgrid = new SendGrid($apiKey);
+        try {
+            $response = $sendgrid->send($email);
+            return response()->json(['message' => 'Order status updated successfully'], 200);
+        } catch (\Exception $e) {
+            return back()->with('error', 'Error al enviar el correo electrónico: ' . $e->getMessage());
+        }
     }
     
 }

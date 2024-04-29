@@ -54,8 +54,11 @@ Route::get('/Cart/Shipping/guess', function () {
     return view('processShop.guess');
 });
 
-
+//pedido a picanova ruta
 Route::get('/shopProccess/picanova',[FastAPIController::class,'sendToFastAPI'])->name('processShop.picanova');
+
+//enviament de mail de confirmacio pedido
+Route::get('shopProccess/mail', [BuyingProcessController::class, 'sendMailConfirm'])->name('processShop.mail');
 ////////////////////////////////////////
 
 Route::get('/products', function () {

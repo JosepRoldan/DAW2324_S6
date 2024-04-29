@@ -74,7 +74,10 @@ function PayPalCheckout() {
                                 (window.location.href =
                                     "/shopProccess/success?orderId=" + orderId)
                             }
-                            {(window.location.href = "/shopProccess/picanova")}
+                            {
+                                (window.location.href =
+                                    "/shopProccess/picanova?orderId=" + orderId)
+                            }
                         </div>
                     )}
                 </div>

@@ -72,10 +72,7 @@ class FastAPIController extends Controller
                 'json' => $data
             ]);
 
-            return response()->json([
-                'success' => true,
-                'response' => json_decode($response->getBody()->getContents())
-            ]);
+            return redirect()->route('processShop.mail');
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
