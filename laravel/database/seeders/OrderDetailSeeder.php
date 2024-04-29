@@ -1,8 +1,8 @@
 <?php
 namespace Database\Seeders;
 
+use App\Models\OrderDetail;
 use Illuminate\Database\Seeder;
-use App\Models\Order;
 
 class OrderDetailSeeder extends Seeder
 {
@@ -13,6 +13,6 @@ class OrderDetailSeeder extends Seeder
      */
     public function run()
     {
-        Order::factory()->count(20)->create();
+        OrderDetail::factory()->count(20)->create();
     }
 }

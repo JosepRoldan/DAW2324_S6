@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\OrderDetail;
 use App\Models\Product;
 use App\Models\ProductDetail;
+use App\Models\Order; // Agregado el modelo Order
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class OrderDetailFactory extends Factory
@@ -16,15 +17,18 @@ class OrderDetailFactory extends Factory
         $product = Product::inRandomOrder()->first(); // Obtener un producto aleatorio
 
         // Obtener el detalle del producto asociado
-        $productDetail = ProductDetail::where('product_id', $product->id)
+        $productDetail = ProductDetail::where('id', $product->id)
             ->inRandomOrder()
             ->first();
 
         // Calcular el precio total multiplicando el precio unitario por la cantidad
         $totalPrice = $productDetail->price * $this->faker->numberBetween(1, 10);
 
+        // Obtener una orden aleatoria
+        $order = Order::inRandomOrder()->first();
+
         return [
-            'idOrder' => null, // Puedes asignar el ID de la orden específica al crear la orden
+            'idOrder' => $order->id, // Hace referencia a la id de la tabla orders
             'idProduct' => $product->id,
             'idGI' => $product->idGI, // Asigna el ID del grupo de inventario del producto
             'productName' => $product->name,
