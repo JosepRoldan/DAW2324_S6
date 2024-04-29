@@ -67,7 +67,7 @@ function SectionTable({ SectionName }) {
     getYears();
 
     document.addEventListener("mousedown", handleClickOutside);
-    
+
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -115,7 +115,7 @@ function SectionTable({ SectionName }) {
           chartDataTemp[0] = response.data[i].profit;
           labelsTemp[0] = response.data[i].month.substring(0, 3);
           orderTemp[0] = response.data[i];
-          
+
         } else if (response.data[i].month === "February") {
           chartDataTemp[1] = response.data[i].profit;
           labelsTemp[1] = response.data[i].month.substring(0, 3);
@@ -191,9 +191,8 @@ function SectionTable({ SectionName }) {
     setLoading(true);
 
     try {
-      const url = `${
-        import.meta.env.VITE_API_URL
-      }/getBenefitsByYear/${actualYear}`;
+      const url = `${import.meta.env.VITE_API_URL
+        }/getBenefitsByYear/${actualYear}`;
       const response = await axios.get(url, {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -202,13 +201,13 @@ function SectionTable({ SectionName }) {
         var chartDataTemp = [];
         var labelsTemp = [];
         var orderTemp = [];
-  
+
         for (let i = 0; i < response.data.length; i++) {
           if (response.data[i].month === "January") {
             chartDataTemp[0] = response.data[i].profit;
             labelsTemp[0] = response.data[i].month.substring(0, 3);
             orderTemp[0] = response.data[i];
-            
+
           } else if (response.data[i].month === "February") {
             chartDataTemp[1] = response.data[i].profit;
             labelsTemp[1] = response.data[i].month.substring(0, 3);
@@ -291,234 +290,233 @@ function SectionTable({ SectionName }) {
   return (
     <div className="flex flex-col h-[100vh] divContainer">
       {loading ? (
-     <Spinner message='Loading...' />
+        <Spinner message='Loading...' />
       ) : (
         <div>
-        <div className="relative group mb-10">
-        <button
-          id="dropdown-button"
-          onClick={toggleDropdown}
-          className="inline-flex justify-center w-50 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm"
-        >
-          {t("Select Year")}
-        </button>
-        <div
-          id="dropdown-menu"
-          ref={dropdownRef}  
-          className={`z-10 absolute left-0 mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 p-1 space-y-1 ${
-            isOpen ? "" : "hidden"
-          }`}
-        >
-          {years.map((year, i) => (
-            <a
-              key={i}
-              onClick={() => handleYearClick(year)}
-              className="block px-4 py-2 text-gray-700 hover:bg-gray-100 active:bg-blue-100 cursor-pointer rounded-md"
+          <div className="relative group mb-10">
+            <button
+              id="dropdown-button"
+              onClick={toggleDropdown}
+              className="inline-flex justify-center w-50 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm"
             >
-              {year}
-            </a>
-          ))}
-        </div>
-      </div>
-
-      <div className="flex">
-        <div className="relative flex max-w-[650px] h-[550px] w-full flex-col rounded-[10px] border-[1px] border-gray-200 bg-white bg-clip-border shadow-md shadow-[#F3F3F3] dark:border-[#ffffff33] dark:!bg-navy-800 dark:text-white dark:shadow-none">
-          <div className="headerContainer">
-            <h4 className="text-lg font-bold text-primaryColor columns-3">
-               {t("Table")}
-            </h4>
-            <div className="buttonContainer">
-              <Link
-                className="bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-full transition duration-300"
-                to="/profit=create"
-                style={{ marginLeft: "130px" }}
-              >
-               {t("Create")}
-              </Link>
-            </div>
-          </div>
-          <div className="scrollit relative flex max-w-[650px] h-[550px] w-full flex-col rounded-[10px] border-[1px] border-gray-200 bg-softGray bg-clip-border shadow-md shadow-[#F3F3F3] dark:border-[#ffffff33] dark:!bg-navy-800 dark:text-white dark:shadow-none">
-            <table className="table divide-y divide-gray-200">
-              <thead className="bg-gray-100">
-                <tr>
-                  <th
-                    scope="col"
-                    className="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
-                  >
-                    {t("Year")}
-                  </th>
-                  <th
-                    scope="col"
-                    className="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
-                  >
-                   {t("Month")}
-                  </th>
-                  <th
-                    scope="col"
-                    className="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
-                  >
-                    {t("Income")}
-                  </th>
-                  <th
-                    scope="col"
-                    className="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
-                  >
-                    {t("Expenses")}
-                  </th>
-                  <th
-                    scope="col"
-                    className="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
-                  >
-                    {t("Profit")}
-                  </th>
-                  <th
-                    scope="col"
-                    className="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
-                  >
-                    {t("Modify")}
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y">
-                {benefits.map((benefit, i) => (
-                  <tr key={benefit.id}>
-                    <td className="py-4 px-6 text-sm font-medium text-gray-900">
-                      {benefit.year}
-                    </td>
-                    <td className="py-4 px-6 text-sm font-medium text-gray-900">
-                      {t(benefit.month)}
-                    </td>
-                    <td className="py-4 px-6 text-sm font-medium text-gray-900">
-                      {benefit.income} €
-                    </td>
-                    <td className="py-4 px-6 text-sm font-medium text-gray-900">
-                      -{benefit.expense} €
-                    </td>
-                    <td className="py-4 px-6 text-sm font-medium text-gray-900">
-                      {benefit.profit}€
-                    </td>
-                    <td className="py-4 px-6 text-sm font-medium text-gray-900 flex">
-                      <Link to={`/profit=edit/${benefit.id}`}>
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                          className="w-5 h-5"
-                        >
-                          <path d="m5.433 13.917 1.262-3.155A4 4 0 0 1 7.58 9.42l6.92-6.918a2.121 2.121 0 0 1 3 3l-6.92 6.918c-.383.383-.84.685-1.343.886l-3.154 1.262a.5.5 0 0 1-.65-.65Z" />
-                          <path d="M3.5 5.75c0-.69.56-1.25 1.25-1.25H10A.75.75 0 0 0 10 3H4.75A2.75 2.75 0 0 0 2 5.75v9.5A2.75 2.75 0 0 0 4.75 18h9.5A2.75 2.75 0 0 0 17 15.25V10a.75.75 0 0 0-1.5 0v5.25c0 .69-.56 1.25-1.25 1.25h-9.5c-.69 0-1.25-.56-1.25-1.25v-9.5Z" />
-                        </svg>
-                      </Link>
-                      <button
-                        className="text-gray-900"
-                        onClick={() => deleteBenefits(benefit.id)}
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                          className="w-5 h-5"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M8.75 1A2.75 2.75 0 0 0 6 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 1 0 .23 1.482l.149-.022.841 10.518A2.75 2.75 0 0 0 7.596 19h4.807a2.75 2.75 0 0 0 2.742-2.53l.841-10.52.149.023a.75.75 0 0 0 .23-1.482A41.03 41.03 0 0 0 14 4.193V3.75A2.75 2.75 0 0 0 11.25 1h-2.5ZM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4ZM8.58 7.72a.75.75 0 0 0-1.5.06l.3 7.5a.75.75 0 1 0 1.5-.06l-.3-7.5Zm4.34.06a.75.75 0 1 0-1.5-.06l-.3 7.5a.75.75 0 1 0 1.5.06l.3-7.5Z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        {/* Aqui pintamos el grafico */}
-        <div className="relative flex max-w-[600px] h-[350px] w-full flex-col ml-4 rounded-[10px]">
-          <div className="shadow p-6 rounded-lg bg-white">
-            <div className="md:flex md:justify-between md:items-center">
-              <div>
-                <h2 className="text-xl text-gray-800 font-bold leading-tight">
-                {t("Chart")}
-                </h2>
-                <p className="mb-2 text-gray-600 text-sm">
-                  {t("Monthly Profit of Year 2024")}
-                </p>
-              </div>
-              <div className="mb-4">
-                <div className="flex items-center">
-                  <div className="w-2 h-2 bg-blue-900 hover:bg-blue-800 mr-2 rounded-full"></div>
-                  <div className="text-sm text-gray-700">{t("Profit")}</div>
-                </div>
-              </div>
-            </div>
-            <div className="line my-8 relative">
-              {tooltipOpen && (
-                <div
-                  className="p-0 m-0 z-10 shadow-lg rounded-lg absolute h-auto block"
-                  style={{ bottom: `${tooltipY}px`, left: `${tooltipX}px` }}
+              {t("Select Year")}
+            </button>
+            <div
+              id="dropdown-menu"
+              ref={dropdownRef}
+              className={`z-10 absolute left-0 mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 p-1 space-y-1 ${isOpen ? "" : "hidden"
+                }`}
+            >
+              {years.map((year, i) => (
+                <a
+                  key={i}
+                  onClick={() => handleYearClick(year)}
+                  className="block px-4 py-2 text-gray-700 hover:bg-gray-100 active:bg-blue-100 cursor-pointer rounded-md"
                 >
-                  <div className="shadow-xs rounded-lg bg-white p-2">
-                    <div className="flex items-center justify-between text-sm">
-                      <div>{t("Profit")}</div>
-                      <div className="font-bold ml-2">{tooltipContent}</div>
+                  {year}
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex">
+            <div className="relative flex max-w-[650px] h-[550px] w-full flex-col rounded-[10px] border-[1px] border-gray-200 bg-white bg-clip-border shadow-md shadow-[#F3F3F3] dark:border-[#ffffff33] dark:!bg-navy-800 dark:text-white dark:shadow-none">
+              <div className="headerContainer">
+                <h4 className="text-lg font-bold text-primaryColor columns-3">
+                  {t("Table")}
+                </h4>
+                <div className="buttonContainer">
+                  <Link
+                    class="inline-block bg-blue-900 hover:bg-blue-800 rounded-full text-white border-2 border-primary px-6 pb-[6px] pt-2 text-xs font-medium uppercase leading-normal text-primary transition duration-150 ease-in-out hover:border-primary-accent-300 hover:bg-primary-50/50 hover:text-primary-accent-300 focus:border-primary-600 focus:bg-primary-50/50 focus:text-primary-600 focus:outline-none focus:ring-0 active:border-primary-700 active:text-primary-700 motion-reduce:transition-none dark:text-primary-500 dark:hover:bg-blue-950 dark:focus:bg-blue-950"
+                    to="/profit=create"
+                    style={{ marginLeft: "130px" }}
+                  >
+                    {t("Create")}
+                  </Link>
+                </div>
+              </div>
+              <div className="scrollit relative flex max-w-[650px] h-[550px] w-full flex-col rounded-[10px] border-[1px] border-gray-200 bg-softGray bg-clip-border shadow-md shadow-[#F3F3F3] dark:border-[#ffffff33] dark:!bg-navy-800 dark:text-white dark:shadow-none">
+                <table className="table divide-y divide-gray-200">
+                  <thead className="bg-gray-100">
+                    <tr>
+                      <th
+                        scope="col"
+                        className="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
+                      >
+                        {t("Year")}
+                      </th>
+                      <th
+                        scope="col"
+                        className="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
+                      >
+                        {t("Month")}
+                      </th>
+                      <th
+                        scope="col"
+                        className="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
+                      >
+                        {t("Income")}
+                      </th>
+                      <th
+                        scope="col"
+                        className="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
+                      >
+                        {t("Expenses")}
+                      </th>
+                      <th
+                        scope="col"
+                        className="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
+                      >
+                        {t("Profit")}
+                      </th>
+                      <th
+                        scope="col"
+                        className="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
+                      >
+                        {t("Modify")}
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y">
+                    {benefits.map((benefit, i) => (
+                      <tr key={benefit.id}>
+                        <td className="py-4 px-6 text-sm font-medium text-gray-900">
+                          {benefit.year}
+                        </td>
+                        <td className="py-4 px-6 text-sm font-medium text-gray-900">
+                          {t(benefit.month)}
+                        </td>
+                        <td className="py-4 px-6 text-sm font-medium text-gray-900">
+                          {benefit.income} €
+                        </td>
+                        <td className="py-4 px-6 text-sm font-medium text-gray-900">
+                          -{benefit.expense} €
+                        </td>
+                        <td className="py-4 px-6 text-sm font-medium text-gray-900">
+                          {benefit.profit}€
+                        </td>
+                        <td className="py-4 px-6 text-sm font-medium text-gray-900 flex">
+                          <Link to={`/profit=edit/${benefit.id}`}>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                              className="w-5 h-5"
+                            >
+                              <path d="m5.433 13.917 1.262-3.155A4 4 0 0 1 7.58 9.42l6.92-6.918a2.121 2.121 0 0 1 3 3l-6.92 6.918c-.383.383-.84.685-1.343.886l-3.154 1.262a.5.5 0 0 1-.65-.65Z" />
+                              <path d="M3.5 5.75c0-.69.56-1.25 1.25-1.25H10A.75.75 0 0 0 10 3H4.75A2.75 2.75 0 0 0 2 5.75v9.5A2.75 2.75 0 0 0 4.75 18h9.5A2.75 2.75 0 0 0 17 15.25V10a.75.75 0 0 0-1.5 0v5.25c0 .69-.56 1.25-1.25 1.25h-9.5c-.69 0-1.25-.56-1.25-1.25v-9.5Z" />
+                            </svg>
+                          </Link>
+                          <button
+                            className="text-gray-900"
+                            onClick={() => deleteBenefits(benefit.id)}
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                              className="w-5 h-5"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M8.75 1A2.75 2.75 0 0 0 6 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 1 0 .23 1.482l.149-.022.841 10.518A2.75 2.75 0 0 0 7.596 19h4.807a2.75 2.75 0 0 0 2.742-2.53l.841-10.52.149.023a.75.75 0 0 0 .23-1.482A41.03 41.03 0 0 0 14 4.193V3.75A2.75 2.75 0 0 0 11.25 1h-2.5ZM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4ZM8.58 7.72a.75.75 0 0 0-1.5.06l.3 7.5a.75.75 0 1 0 1.5-.06l-.3-7.5Zm4.34.06a.75.75 0 1 0-1.5-.06l-.3 7.5a.75.75 0 1 0 1.5.06l.3-7.5Z"
+                                clipRule="evenodd"
+                              />
+                            </svg>
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* Aqui pintamos el grafico */}
+            <div className="relative flex max-w-[600px] h-[350px] w-full flex-col ml-4 rounded-[10px]">
+              <div className="shadow p-6 rounded-lg bg-white">
+                <div className="md:flex md:justify-between md:items-center">
+                  <div>
+                    <h2 className="text-xl text-gray-800 font-bold leading-tight">
+                      {t("Chart")}
+                    </h2>
+                    <p className="mb-2 text-gray-600 text-sm">
+                      {t("Monthly Profit of Year 2024")}
+                    </p>
+                  </div>
+                  <div className="mb-4">
+                    <div className="flex items-center">
+                      <div className="w-2 h-2 bg-blue-900 hover:bg-blue-800 mr-2 rounded-full"></div>
+                      <div className="text-sm text-gray-700">{t("Profit")}</div>
                     </div>
                   </div>
                 </div>
-              )}
-              <div className="flex -mx-2 items-end mb-2">
-                {chartData?.map((data, index) => (
-                  <div key={index} className="px-2 w-1/6">
-                    {data < 0 ? (
+                <div className="line my-8 relative">
+                  {tooltipOpen && (
                     <div
-                      style={{ height: `${(data * -1) / 20}px` }}
-                      className="transition ease-in duration-200 bg-red-900 hover:bg-red-800 relative"
+                      className="p-0 m-0 z-10 shadow-lg rounded-lg absolute h-auto block"
+                      style={{ bottom: `${tooltipY}px`, left: `${tooltipX}px` }}
                     >
-                      <div className="text-center absolute top-0 left-0 right-0 -mt-6 text-gray-800 text-sm">
-                        {data}
+                      <div className="shadow-xs rounded-lg bg-white p-2">
+                        <div className="flex items-center justify-between text-sm">
+                          <div>{t("Profit")}</div>
+                          <div className="font-bold ml-2">{tooltipContent}</div>
+                        </div>
                       </div>
                     </div>
-                    ) : (
-                      <div
-                      style={{ height: `${data / 20}px` }}
-                      className="transition ease-in duration-200 bg-blue-900 hover:bg-blue-800 relative"
-                    >
-                      <div className="text-center absolute top-0 left-0 right-0 -mt-6 text-gray-800 text-sm">
-                        {data}
+                  )}
+                  <div className="flex -mx-2 items-end mb-2">
+                    {chartData?.map((data, index) => (
+                      <div key={index} className="px-2 w-1/6">
+                        {data < 0 ? (
+                          <div
+                            style={{ height: `${(data * -1) / 20}px` }}
+                            className="transition ease-in duration-200 bg-red-900 hover:bg-red-800 relative"
+                          >
+                            <div className="text-center absolute top-0 left-0 right-0 -mt-6 text-gray-800 text-sm">
+                              {data}
+                            </div>
+                          </div>
+                        ) : (
+                          <div
+                            style={{ height: `${data / 20}px` }}
+                            className="transition ease-in duration-200 bg-blue-900 hover:bg-blue-800 relative"
+                          >
+                            <div className="text-center absolute top-0 left-0 right-0 -mt-6 text-gray-800 text-sm">
+                              {data}
+                            </div>
+                          </div>
+                        )}
                       </div>
-                    </div>
-                    )}
+                    ))}
                   </div>
-                ))}
-              </div>
-              <div
-                className="border-t border-gray-400 mx-auto"
-                style={{
-                  height: "1px",
-                  width: `${100 - (1 / chartData.length) * 100 + 3}%`,
-                }}
-              ></div>
-              <div className="flex -mx-2 items-end">
-                {labels?.map((label, index) => (
-                  <div key={index} className="px-2 w-1/6">
-                    <div className="bg-red-600 relative">
-                      <div
-                        className="text-center absolute top-0 left-0 right-0 h-2 -mt-px bg-gray-400 mx-auto"
-                        style={{ width: "1px" }}
-                      ></div>
-                      <div className="text-center absolute top-0 left-0 right-0 mt-3 text-gray-700 text-sm">
-                        {t(label)}
+                  <div
+                    className="border-t border-gray-400 mx-auto"
+                    style={{
+                      height: "1px",
+                      width: `${100 - (1 / chartData.length) * 100 + 3}%`,
+                    }}
+                  ></div>
+                  <div className="flex -mx-2 items-end">
+                    {labels?.map((label, index) => (
+                      <div key={index} className="px-2 w-1/6">
+                        <div className="bg-red-600 relative">
+                          <div
+                            className="text-center absolute top-0 left-0 right-0 h-2 -mt-px bg-gray-400 mx-auto"
+                            style={{ width: "1px" }}
+                          ></div>
+                          <div className="text-center absolute top-0 left-0 right-0 mt-3 text-gray-700 text-sm">
+                            {t(label)}
+                          </div>
+                        </div>
                       </div>
-                    </div>
+                    ))}
                   </div>
-                ))}
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      </div>
       )}
 
     </div>
