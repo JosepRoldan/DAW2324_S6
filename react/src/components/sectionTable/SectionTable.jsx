@@ -260,7 +260,7 @@ function SectionTable({ SectionName }) {
         setBenefits(orderTemp);
       }
     } catch (error) {
-      console.error("Error fetching benefits:", error);
+      // console.error("Error fetching benefits:", error);
     } finally {
       setLoading(false);
     }
@@ -281,7 +281,7 @@ function SectionTable({ SectionName }) {
         console.log("Resource deleted successfully:", response.data);
       }
     } catch (error) {
-       console.error("Error deleting resource:", error);
+      //  console.error("Error deleting resource:", error);
     } finally {
       getBenefits(...benefits);
       setLoading(false);
