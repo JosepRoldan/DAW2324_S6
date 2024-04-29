@@ -92,7 +92,6 @@ class BuyingProcessController extends Controller
             // Actualizar el estado de la orden a "inProgress"
             $order->orderStatus = 'InProgress';
             $order->save();
-            redirect()->route('processShop.picanova', ['orderId'=>$orderId]);
 
             // Opcional: puedes devolver una respuesta JSON u otra respuesta según tus necesidades
             return response()->json(['message' => 'Order status updated successfully'], 200);

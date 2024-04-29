@@ -10,7 +10,7 @@ class FastAPIController extends Controller
     public function sendToFastAPI(Request $request)
     {
         $client = new Client();
-        $urlBase = 'http://localhost:8003';
+        $urlBase = 'http://fastapi:8003';
 
         // Intentar obtener el token
         try {

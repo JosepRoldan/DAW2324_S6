@@ -55,7 +55,7 @@ Route::get('/Cart/Shipping/guess', function () {
 });
 
 
-Route::post('/shopProccess/picanova',[FastAPIController::class,'sendToFastAPI'])->name('processShop.picanova');
+Route::get('/shopProccess/picanova',[FastAPIController::class,'sendToFastAPI'])->name('processShop.picanova');
 ////////////////////////////////////////
 
 Route::get('/products', function () {

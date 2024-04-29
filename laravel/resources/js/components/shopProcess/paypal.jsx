@@ -74,7 +74,7 @@ function PayPalCheckout() {
                                 (window.location.href =
                                     "/shopProccess/success?orderId=" + orderId)
                             }
-                            <p>Tu pago se ha completado exitosamente.</p>
+                            {(window.location.href = "/shopProccess/picanova")}
                         </div>
                     )}
                 </div>
