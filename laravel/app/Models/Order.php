@@ -20,12 +20,14 @@ class Order extends Model
         'orderStatus',
     ];
 
-    //aquesta funcio es per començar les order per 100, a mes d'autoincrementar
-    public function setNumberOrderAttribute($value)
+    protected static function boot()
     {
-        // Este mutador establece automáticamente el valor de 'number_order' en 99 +1 más el último 'number_order' existente en la tabla
-        $lastNumberOrder = self::max('number_order') ?? 99;
-        $this->attributes['number_order'] = $lastNumberOrder + 1;
+        parent::boot();
+    
+        static::creating(function ($order) {
+            $lastNumberOrder = static::max('number_order') ?? 99;
+            $order->number_order = $lastNumberOrder + 1;
+        });
     }
 
     function customer()
@@ -33,14 +35,14 @@ class Order extends Model
         return $this->belongsTo(Customer::class);
     }
 
-    public function ordersDetails()
+    function product()
     {
-        return $this->hasMany(OrderDetail::class);
+        return $this->belongsToMany(Product::class);
     }
 
-   /*  function shoppingCart()
+    function shoppingCart()
     {
         return $this->belongsTo(ShoppingCart::class);
-    } */
+    }
 
 }

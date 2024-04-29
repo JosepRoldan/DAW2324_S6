@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\api\OrderController;
 use App\Http\Controllers\BuyingProcessController;
 use App\Http\Controllers\VerifyEmailController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -15,10 +16,9 @@ use App\Http\Controllers\MyImagesController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MyOrdersController;
 use App\Http\Controllers\ViewDetailsController;
-
+use App\Http\Controllers\CookieController;
 
 use App\Http\Controllers\LanguageController;
-
 
 
 /*
@@ -44,13 +44,14 @@ Route::get('/daisy', function () {return view('daisy');})->name('daisy');
 Route::get('/productscard', function () {return view('productCard');});
 
 //////////////////////SHOP PROCESS////////////////////////
-Route::get('/Cart/Shipping', [BuyingProcessController::class, 'shippingDates'])->name('shipping');
-Route::post('/cart/shipping/data/save', [OrdersController::class, 'saveCartShippingData'])->name('save.shipping.data');
-Route::put('/cart/shipping/data/update', [OrdersController::class, 'updateCartShippingData'])->name('update.shipping.data');
+Route::get('/Cart/Shipping', [BuyingProcessController::class, 'getShoppingOrdreDates'])->name('shipping');
+Route::get('/Cart/payment/',[BuyingProcessController::class,'paypal'])->name('shopProcess.payment');
+Route::post('/Cart/Order', [OrdersController::class, 'storeDates'])->name('processShop.orderCreate');
 
-Route::get('/Cart/Shipping/PaymentMethod', [BuyingProcessController::class, 'paymentDates'])->name('paymentMethod');
+Route::get('/shopProccess/success', [BuyingProcessController::class, 'success'])->name('processShop.success');
+Route::get('/shopProccess/cancel', [BuyingProcessController::class, 'cancel'])->name('processShop.cancel');
 
-Route::get('/Cart/Shipping/Details',[BuyingProcessController::class, 'detailsDates'])->name('details');
+
 Route::get('/Cart/Shipping/guess', function () {
     return view('processShop.guess');
 });
@@ -68,7 +69,8 @@ Route::get('/guidedGeneratedImage', function () {
 Route::get('/productscard', function () {
     return view('productCard');
 });
-Route::get('/Inicio', function () {return view('inicio');});
+Route::get('/Inicio', [ProductController::class, 'inicio'])->name('inicio');
+
 
 Route::get('/verificacion', function () {return view('verificacion');})->name('verification');
 
@@ -78,8 +80,10 @@ Route::get('/CustomerArea', function () {return view('clientArea');});
 
 Route::get('/myImages', function () {return view('myImages');});
 
-
 Route::get('/profile', function () {return view('profile');});
+
+Route::get('/editProfile', function () {return view('editProfile');});
+
 
 Route::get('/myOrders', function () {return view('myOrders');});
 
@@ -133,8 +137,6 @@ Route::get('/product/{product}', [ProductController::class, 'show'])->name('show
 Route::post('/enviar-prompt', [MostrarImagenesController::class, 'enviarPrompt']);
 Route::post('/modi-prompt', [MostrarImagenesController::class, 'modiPrompt']);
 
-Route::post('/save-img', [MostrarImagenesController::class, 'saveImg']);
-
 Route::get('/redirect-from-image', [RedirectController::class, 'redirectFromImage']);
 
 //Footer
@@ -169,6 +171,8 @@ Route::get('/getImages', [MyImagesController::class, 'getUserSavedImages']);
 
 //Profile
 Route::get('/getProfileData', [ProfileController::class, 'getUserProfileData']);
+Route::put('/updateProfileData', [ProfileController::class, 'updateUserProfileData']);
+
 
 //My Orders
 Route::get('/getOrders', [MyOrdersController::class, 'getUserOrders']);
@@ -181,3 +185,6 @@ Route::get('/legalnotice', function () {return view('footer.legalnotice');});
 //Header
 Route::post('/change-language', [LanguageController::class, 'changeLanguage']);
 Route::get('/current-language', [LanguageController::class, 'currentLanguage']);
+
+//Token
+Route::post('/check-token', [CookieController::class, 'checkToken']);

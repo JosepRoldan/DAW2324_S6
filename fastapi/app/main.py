@@ -11,6 +11,7 @@ import json
 import openai
 from openai import OpenAI
 from sqlalchemy.orm import Session
+from prometheus_fastapi_instrumentator import Instrumentator
 # IMPORTS FROM OUR FILES
 from app.database import SessionLocal, engine
 from app.picanova.products_picanova import fetch_products_from_api, insert_products
@@ -23,6 +24,7 @@ from app.models.country_model import Country
 from app.security import get_api_key
 
 app = FastAPI()
+Instrumentator().instrument(app=app).expose(app=app)
 
 load_dotenv()
 credentials = os.getenv("CREDENTIALS")
@@ -31,7 +33,7 @@ client = OpenAI(api_key=os.environ.get("API_KEY_DALLE"),)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost"],
+    allow_origins=["http://localhost:8000,http://localhost:3000"],
     allow_credentials=True,
     allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["*"],
@@ -106,10 +108,10 @@ async def editar_imagen(infoEdit: infoEdit,
     try:
         ruta = await guardar_imagen(infoEdit.url ,infoEdit.idImg)
         print("Ruta de la imagen guardada:", ruta)
-        with open("temp/" + ruta + ".png", "rb") as image_file:
+        with open(f"app/openai/temp/{ruta}.png", "rb") as image_file:
             response =  client.images.create_variation(
                 image=image_file,
-                n=2,
+                n=3,
                 size="256x256"
             )
         print("Imagen abierta")

@@ -19,3 +19,5 @@ python-jose[pyjwt]
 pytest
 pytest-asyncio
 mysqlclient
+aiofiles
+prometheus-fastapi-instrumentator

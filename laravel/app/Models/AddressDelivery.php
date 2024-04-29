@@ -9,7 +9,7 @@ class AddressDelivery extends Model
 {
     use HasFactory;
 
-    protected $table = 'delivery_address';
+    protected $table = 'address_deliveries';
     protected $fillable = [
         'idCustomers',
         'address',
@@ -21,6 +21,6 @@ class AddressDelivery extends Model
 
     public function customer()
     {
-        return $this->belongsTo(Customer::class, 'idCustomers', 'idCustomers');
+        return $this->belongsTo(Customer::class, 'id', 'idCustomers');
     }
 }

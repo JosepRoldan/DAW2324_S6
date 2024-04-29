@@ -12,20 +12,22 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('customers', function (Blueprint $table) {
-            $table->id('idCustomers');
+            $table->id();
             $table->string('name')->nullable();
             $table->string('surname')->nullable();
             $table->string('username')->unique();
             $table->string('password');
             $table->string('mail')->unique();
-            $table->integer('phone')->nullable();
+            $table->string('phone')->nullable();
             $table->string('address')->nullable();
-            $table->integer('postcode')->nullable();
-            $table->string('country')->nullable();
+            $table->string('postcode')->nullable();
+            $table->string('city')->nullable();
+            $table->string('idCountry')->nullable();
+            $table->boolean('is_validated')->default(false);
+            $table->timestamps();
             $table->timestamp('membershipDate')->nullable();
-            // El usuario por defecto es Inactive, por lo que no puede usar las funcionalidades hasta verificarse.
             $table->enum('customerStatus', ['Active', 'Inactive', 'Banned', 'Deleted'])->default('Inactive');
-        });    
+        });
     }
 
     /**

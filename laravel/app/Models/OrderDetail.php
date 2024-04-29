@@ -7,13 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class OrderDetail extends Model
 {
     protected $table = 'orders_details'; // Nombre de la vista en la base de datos
+    public $timestamps = false;
 
     protected $fillable = [
         'idOrder',
         'idProduct',
         'idGI',
         'productName', 
-        'productDetails', 
+        'idVariant', 
         'quantity',
         'priceEach',
         'totalPrice',

@@ -3,17 +3,16 @@
 
 @section('content')
     <section>
-        <div class=" text-center mb-10 m-5">
-            <ul class=" align-middle steps">
+        <div class="text-center mb-10 m-5">
+            <ul class="align-middle steps">
                 <li class="step step-primary">Card Shop</li>
-                <li class="step step-primary">Shipping address</li>
-                <li class="step">Details</li>
+                <li class="step step-primary">Details</li>
                 <li class="step">Payment</li>
             </ul>
         </div>
     </section>
 @php
-    $shippingPrice=10;
+    $shippingPrice = 10;
 @endphp
 <head>
     <style>
@@ -37,6 +36,11 @@
         }
     </style>
 </head>
-<div id = "shoppingOrder"></div>
+    <div id="data" 
+        data-address="{{ $address ? $address->toJson() : '{}' }}" 
+        data-customer="{{ $customer->toJson() }}">
+    </div>
+
+<div id="shoppingOrder"></div>
 
 @endsection

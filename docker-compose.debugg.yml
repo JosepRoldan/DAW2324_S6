@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+  fastapi-vscode-debug-setup:
+    build: ./fastapi
+    ports:
+      - 8004:8004
+      - 5678:5678
+    volumes:
+      - ./fastapi/app:/code/app
+    command:
+      [
+        "sh",
+        "-c",
+        "pip install debugpy -t /tmp && python /tmp/debugpy --wait-for-client --listen 0.0.0.0:5678 -m uvicorn app.main:app --host 0.0.0.0 --port 8004 --reload"
+      ]
+    environment:
+      - APP_MESSAGE=Hello debugger

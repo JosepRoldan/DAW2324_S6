@@ -10,7 +10,10 @@
     @vite('resources/css/app.css')
     <link rel="icon" type="image/png" href="../img/logocompleto.png">
 </head>
-
+@if(Session::has('token'))
+<!-- EJEMPLO PARA MOSTRAR EL CONTENIDO DE LA VARIABLE DE SESION EN LA PLANTILLA BLADE <p>Bienvenido, {{ Session::get('token') }}</p> -->
+    <input type="hidden" id="token" value="{{ Session::get('token') }}">
+@endif
 <body>
     <meta name="token" content="{{ csrf_token() }}">
 

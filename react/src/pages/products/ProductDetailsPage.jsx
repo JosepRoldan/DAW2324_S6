@@ -1,43 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { AgGridReact } from 'ag-grid-react';
-import AppLayout from '../../layout/AppLayout';
 import Spinner from '../../components/Spinner';
 import { useTranslation } from "react-i18next";
-import i18n from "i18next";
-import { initReactI18next } from "react-i18next";
-import translationEN from "/src/locales/eng/translation.json";
-import translationCA from "/src/locales/cat/translation.json";
-import translationES from "/src/locales/esp/translation.json";
-
-const resources = {
-    eng: {
-        translation: translationEN,
-    },
-    cat: {
-        translation: translationCA,
-    },
-    esp: {
-        translation: translationES,
-    },
-};
-
-i18n.use(initReactI18next).init({
-    resources,
-    lng: "eng",
-    fallbackLng: "eng",
-    interpolation: {
-        escapeValue: false,
-    },
-});
-
-const steps = [
-    { name: 'Products', href: '/products', current: false },
-    { name: 'Product Details', href: '/', current: true },
-]
+import { usePage } from '../../contexts/PageContext';
+import SuccessMessageModal from '../../components/SuccessMessageModal';
 
 const ProductDetailsPage = () => {
     const { t } = useTranslation();
+    const { setPage, setSteps } = usePage();
+    const [isShowingMessage, setShowingMessage] = useState(false);
+    const [updateMessage, setUpdateMessage] = useState('');
+    const [showModal, setShowModal] = useState(false);
+
+    useEffect(() => {
+        setPage(t("Product Details"));
+        setSteps([{ name: t('Products'), href: '/products' }, { name: t("Product Details"), href: `/products/${productId}`, current: true }]);
+    }, [setPage, setSteps]);
+
+    const handleHideModal = () => {
+        setShowModal(false);
+    };
+
     const { productId } = useParams();
     const [productData, setProductData] = useState({
         product: null,
@@ -78,18 +62,21 @@ const ProductDetailsPage = () => {
             });
 
             if (response.ok) {
+                setShowModal(true);
                 const data = await response.json();
+                const langFull = language === 'ENG' ? 'English' : language === 'CAT' ? 'Catalan' : 'Spanish';
+                setShowingMessage(false);
+                setUpdateMessage(t(`The ${langFull} description has been successfully updated.`));
                 console.log('Description updated successfully.');
             } else {
                 const errorData = await response.json();
                 console.log(`Error: ${errorData.message}`);
             }
         } catch (error) {
-            // Manejo de errores de red
+            setUpdateMessage(`Error updating description: ${error.message}`);
             alert(`Error: ${error.message}`);
         }
     };
-
 
     useEffect(() => {
         const fetchData = async () => {
@@ -137,15 +124,6 @@ const ProductDetailsPage = () => {
         resizable: true,
     };
 
-    const imageColumnDefs = [
-        {
-            field: 'thumb',
-            headerName: 'Thumbnail',
-            cellRenderer: params => `<img src="${params.value}" style="width: 50px; height: 50px;" alt="Product Image" />`,
-        },
-        { field: 'original', headerName: 'Original URL', sortable: true, filter: true },
-    ];
-
     function calculateSalesPrice(priceInSubunit, benefitsMarginPercentage) {
         const benefitsMargin = benefitsMarginPercentage / 100;
         const salesPrice = priceInSubunit + (priceInSubunit * benefitsMargin);
@@ -169,12 +147,12 @@ const ProductDetailsPage = () => {
     }
 
     const detailColumnDefs = [
-        { field: 'name', headerName: 'Name', sortable: true, filter: true },
-        { field: 'format_width', headerName: 'Width (cm)', sortable: true, filter: true },
-        { field: 'format_height', headerName: 'Height (cm)', sortable: true, filter: true },
-        { field: 'formatted_price', headerName: 'Price', sortable: true, filter: true },
-        { valueGetter: benefitsMarginValueGetter, headerName: 'Benefits margin', sortable: true, filter: true },
-        { cellRenderer: SalesPriceCellRenderer, headerName: 'Sales price', sortable: true, filter: true },
+        { field: 'name', headerName: t('Name'), sortable: true, filter: true },
+        { field: 'format_width', headerName: t('Width (cm)'), sortable: true, filter: true },
+        { field: 'format_height', headerName: t('Height (cm)'), sortable: true, filter: true },
+        { field: 'formatted_price', headerName: t('Price'), sortable: true, filter: true },
+        { valueGetter: benefitsMarginValueGetter, headerName: t('Benefits Margin'), sortable: true, filter: true },
+        { cellRenderer: SalesPriceCellRenderer, headerName: t('Sales Price'), sortable: true, filter: true },
     ];
 
     if (error) {
@@ -182,8 +160,12 @@ const ProductDetailsPage = () => {
     }
 
     return (
-        <AppLayout Page={"Product Details"} Steps={steps}>
+        <>
             <div style={{ height: '80vh', width: '100%', overflowY: 'auto' }}>
+                {showModal ? (
+                    <SuccessMessageModal message={updateMessage} onHide={handleHideModal} />
+                ) : null
+                }
                 <div className="flex justify-between mb-4">
                     <div className="w-1/3 pr-2">
                         <label htmlFor="ENG_description" className="block text-sm font-medium text-gray-700">Product Description (English)</label>
@@ -245,7 +227,7 @@ const ProductDetailsPage = () => {
                         )}
                 </div>
             </div>
-        </AppLayout>
+        </>
     );
 };
 
