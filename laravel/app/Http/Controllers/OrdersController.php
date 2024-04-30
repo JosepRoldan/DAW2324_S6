@@ -12,14 +12,14 @@ use Illuminate\Http\Request;
 
 class OrdersController extends Controller
 {
-    public function OrdersTable()
-    {
-        // Obtener los datos de la vista de pedidos
-        $orders = OrderView::all();
+    // public function OrdersTable()
+    // {
+    //     // Obtener los datos de la vista de pedidos
+    //     //$orders = OrderView::all();
 
-        // Pasar los datos a la vista
-        return view('MyOrders', compact('orders'));
-    }
+    //     // Pasar los datos a la vista
+    //     return view('MyOrders', compact('orders'));
+    // }
 
     public function storeDates(Request $request)
     {
