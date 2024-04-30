@@ -14,8 +14,10 @@ export const DashboardPage = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
   const [totalProfit, setTotalProfit] = useState(0);
+  const [showManagerAccount, setShowManagerAccount] = useState(true);
   const [showAdminAccount, setShowAdminAccount] = useState(true);
   const [showCompanyProfit, setShowCompanyProfit] = useState(true);
+  const [showTitleAdmin, setShowTitleAdmin] = useState(true);
   const token = localStorage.getItem("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
@@ -42,6 +44,13 @@ export const DashboardPage = () => {
       if (response.status === 200) {
         setBenefits(response.data.benefits);
         setTotalProfit(response.data.total);
+        if (response.data.customerManager === true) {
+          setShowManagerAccount(true);  
+          setShowTitleAdmin(false);       
+        } else {
+          setShowAdminAccount(true);
+          setShowManagerAccount(false);
+        }
       }
     } catch (error) {
       setShowAdminAccount(false);
@@ -93,11 +102,18 @@ export const DashboardPage = () => {
               <div className="md:col-span-2 xl:col-span-3 bg-white p-6 rounded-2xl border border-gray-50">
                 <div className="flex flex-col space-y-6 md:h-full md:justify-between">
                   <div className="flex justify-between">
-                  {loading || showAdminAccount ? ( 
-                    <span className="text-xs text-gray-500 font-semibold uppercase tracking-wider">
-                      {t("Admin Account")}
-                    </span>
+                  {loading || showTitleAdmin ? ( 
+                      <span className="text-xs text-gray-500 font-semibold uppercase tracking-wider">
+                          {t("Admin Account")}
+                      </span>
                   ) : null }
+
+                  {loading || showManagerAccount ? ( 
+                      <span className="text-xs text-gray-500 font-semibold uppercase tracking-wider">
+                          {t("Manager Account")}
+                      </span>
+                  ) : null }
+
                   {loading || showCompanyProfit ? (
                     <span className="text-xs text-gray-500 font-semibold uppercase tracking-wider">
                     {t("Total Yearly Profit")}
@@ -139,6 +155,8 @@ export const DashboardPage = () => {
 
             </div>
           )}
+          {!loading && showAdminAccount && showCompanyProfit && (
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 px-4 xl:p-0 gap-4 xl:gap-6">
               <div className="col-span-1 md:col-span-2 lg:col-span-4 flex justify-between">
                 <h2 className="text-xs md:text-sm text-gray-700 font-bold tracking-wide md:tracking-wider">
@@ -185,6 +203,7 @@ export const DashboardPage = () => {
                 </div>
               </div>
             </div>
+          )}
             {orders && (
               <div className="grid grid-cols-1 md:grid-cols-5 items-start px-4 xl:p-0 gap-y-4 md:gap-6">
                 <div className="col-span-3 bg-white p-6 rounded-xl border border-gray-50 flex flex-col space-y-6">

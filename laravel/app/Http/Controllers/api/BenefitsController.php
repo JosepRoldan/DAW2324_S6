@@ -27,7 +27,18 @@ class BenefitsController extends Controller
         if ($userRole->id === 3) {
             // El usuario tiene un rol que no permite mostrar la sección de beneficios
             return response()->json(['message' => 'No tiene permiso para ver la sección de beneficios'], 403);
-        } else {
+        } 
+        if ($userRole->id === 2){
+            $customerManager = true;
+            $benefits = Benefits::all();
+            $currentYear = date('Y');
+            $total = DB::table('benefits')
+                ->whereYear('created_at', $currentYear)
+                ->sum('profit');
+
+            return response()->json(['benefits' => $benefits, 'total' => $total, 'customerManager' => $customerManager]);
+        } 
+        else {
             // El usuario tiene un rol que permite mostrar la sección de beneficios
             $benefits = Benefits::all();
             $currentYear = date('Y');
