@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { AgGridReact } from 'ag-grid-react';
-import ButtonToggle from '../ButtonToggle';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 
@@ -29,10 +28,6 @@ const AgGridTable = ({ rowData, columnDefs }) => {
     setGridColumnApi(params.columnApi);
   };
 
-  const handleToggleEdit = () => {
-    setIsEditingEnabled(!isEditingEnabled);
-  };
-
   const defaultColDef = {
     filter: true,
     editable: isEditingEnabled,
@@ -50,9 +45,7 @@ const AgGridTable = ({ rowData, columnDefs }) => {
 
   return (
     <div>
-      <div className="flex justify-end">
-        <ButtonToggle onToggle={handleToggleEdit} />
-      </div>
+
       <div className="ag-theme-alpine" style={{ height: 400, width: '100%' }}>
         <AgGridReact
           rowData={rowData}
