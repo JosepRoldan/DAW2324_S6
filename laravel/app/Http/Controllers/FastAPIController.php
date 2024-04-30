@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use App\Models\Order; 
+use App\Models\Customer; 
+
 
 class FastAPIController extends Controller
 {
@@ -15,6 +17,8 @@ class FastAPIController extends Controller
 
         $orderId = $request->orderId;
         $order = Order::find($orderId);
+        $customer = Customer::find($order->idCustomers);
+        $address = $customer->getAddressDelivery;
 
         // Verificar si se encontró la orden
         if (!$order) {
@@ -49,15 +53,15 @@ class FastAPIController extends Controller
             "shipping_method" => "DHL",
             "customs_shipping_costs" => 5.99,
             "shipping" => [
-                "email" => "john.doe@example.com",
+                "email" => $customer->mail,
                 "firstname" => $order->name,
                 "lastname" => "Doe",
                 "company" => "Picanova GmbH",
-                "street_primary" => "Hohenzollernring 25",
-                "street_secondary" => "Apt 18",
-                "city" => "Cologne",
-                "postcode" => "50672",
-                "country_id" => 276,
+                "street_primary" => $address->address,
+                "street_secondary" => "",
+                "city" => 'Amposta',
+                "postcode" => $address->postcode,
+                "country_id" => 724,
                 "region_id" => null,
                 "telephone" => "+49221669979922"
             ],
