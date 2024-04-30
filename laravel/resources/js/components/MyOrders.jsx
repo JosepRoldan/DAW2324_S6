@@ -111,7 +111,6 @@ const MyOrders = () => {
             .get("/getOrders")
             .then((response) => {
                 setOrder(response.data);
-                console.log(response.data);
             })
             .catch((error) => {
                 console.error("Error al obtener las ordenes:", error);
@@ -120,6 +119,7 @@ const MyOrders = () => {
 
     let orderNumber = 1;
 
+    console.log(order);
     return (
         <>
             <nav className="fixed top-30 left-0 w-full h-full border-r border-b bg-blue-zodiac-900 space-y-0 sm:w-80 ">
@@ -283,9 +283,9 @@ const MyOrders = () => {
                                             </tr>
                                         </thead>
 
-                                        {order.map((order, index) => (
+                                        {order.map((order) => (
                                             <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-                                                <tr>
+                                                <tr id={order.id}>
                                                     <td className="px-4 py-4 text-sm font-medium text-gray-700 dark:text-gray-200 whitespace-nowrap">
                                                         <div className="inline-flex items-center gap-x-3">
                                                             <span>
@@ -346,7 +346,7 @@ const MyOrders = () => {
                                                     </td>
                                                 </tr>
                                             </tbody>
-                                        ))}
+                                         ))}
                                     </table>
                                 </div>
                             </div>
