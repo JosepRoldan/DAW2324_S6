@@ -115,8 +115,8 @@ class BuyingProcessController extends Controller
 
     public function sendMailConfirm() {
         $email = new Mail();
-        $email->setFrom("josemedina@iesmontsia.org", "Aladdin Powell");
-        $email->setSubject("Pedido realizado CustomAIze");
+        $email->setFrom("josemedina@iesmontsia.org", "CustomAIze");
+        $email->setSubject("Pedido realizado");
         $email->addTo('paulacruzado@iesmontsia.org', "Nombre del Destinatario");
         $email->addContent("text/plain", "Gracias por su compra.");
 
