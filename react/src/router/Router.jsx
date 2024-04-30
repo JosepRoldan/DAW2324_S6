@@ -66,7 +66,7 @@ export const Router = () => {
         <Route path="/customers/create" element={<CustomersCreate />} />
         <Route strict path="/customers/:customerId" element={<CustomersShow />} />
         <Route path="/customers/:customerId/edit" element={<CustomersEdit />} />
-        <Route path="/customers/:customerId/orders" element={<CustomersOrders />} />
+        <Route path="/customers/:customerId/customerOrders" element={<CustomersOrders />} />
       // PRODUCTS
         <Route path="products" element={<ProductsPage />} />
         <Route path="/products-massive-actions" element={<ProductsMassiveActions />} />
