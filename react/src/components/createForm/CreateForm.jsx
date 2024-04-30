@@ -1,6 +1,6 @@
 import "./CreateForm.css";
 import React, { useState } from "react";
-import { Link,useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../sectionTable/alert.scss";
 import Spinner from "../Spinner";
@@ -36,7 +36,7 @@ const CreateForm = ({ section }) => {
       isValid = false;
       newErrors.month = t("Month is required");
     }
- 
+
     if (
       isNaN(parseFloat(income)) ||
       !isFinite(income) ||
@@ -57,11 +57,11 @@ const CreateForm = ({ section }) => {
     if (isNaN(parseInt(year)) || !isFinite(year) || parseInt(year) <= 0) {
       isValid = false;
       newErrors.year = t("Year must be a number greater than 0");
-    } 
+    }
 
 
     if (isValid) {
-       handleCreate(month, income, expense, profit, year);
+      handleCreate(month, income, expense, profit, year);
     } else {
       setErrors(newErrors);
       setLoadingForm(false);
@@ -71,10 +71,10 @@ const CreateForm = ({ section }) => {
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
       setLoadingForm(true);
-       validate();
+      validate();
     }
-  
-    if(event.key === 'Escape'){
+
+    if (event.key === 'Escape') {
       navigate('/profit');
     }
   };
@@ -113,11 +113,11 @@ const CreateForm = ({ section }) => {
     <div className="bg-gray-100 flex items-center justify-left">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full">
         <div className="flex items-center space-x-2 mb-6">
-        {loadingForm &&(
-                      <div className="mr-2">
-                      <div className="h-5 w-5 border-t-transparent border-solid animate-spin rounded-full border-black border-4"></div>
-                      </div>
-                      )}
+          {loadingForm && (
+            <div className="mr-2">
+              <div className="h-5 w-5 border-t-transparent border-solid animate-spin rounded-full border-black border-4"></div>
+            </div>
+          )}
           <h1 className="text-xl font-semibold">{t("Create form for Profit")}</h1>
         </div>
         <p className="text-sm text-gray-600 mb-6">{t("Insert the following data:")}</p>
@@ -196,30 +196,32 @@ const CreateForm = ({ section }) => {
           </div>
           <div id="passwordCriteria" className="text-sm space-y-2">
             <ul className="list-disc pl-5 space-y-1 text-red-500">
-            {errors.income && (
+              {errors.income && (
                 <li>{errors.income}</li>
-            )}
-            {errors.month && (
-               <li>{t(errors.month)}</li>
-            )}
-             {errors.expense && (
-            <li>{errors.expense}</li>
-            )}
-            {errors.year && (
-              <li>{errors.year}</li>
-            )}
+              )}
+              {errors.month && (
+                <li>{t(errors.month)}</li>
+              )}
+              {errors.expense && (
+                <li>{errors.expense}</li>
+              )}
+              {errors.year && (
+                <li>{errors.year}</li>
+              )}
             </ul>
-            
+
           </div>
           <div className="flex justify-between">
-            <Link to={"/profit"} className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-full hover:bg-gray-300 focus:outline-none focus:ring focus:border-blue-300">
-            {t("Discard")}
+            <Link to={"/profit"}
+              class="inline-block bg-gray-700 hover:bg-gray-900 rounded-full text-white border-2 border-primary px-6 pb-[6px] pt-2 text-xs font-medium uppercase leading-normal text-primary transition duration-150 ease-in-out hover:border-primary-accent-300 hover:bg-primary-50/50 hover:text-primary-accent-300 focus:border-primary-600 focus:bg-primary-50/50 focus:text-primary-600 focus:outline-none focus:ring-0 active:border-primary-700 active:text-primary-700 motion-reduce:transition-none dark:text-primary-500 dark:hover:bg-blue-950 dark:focus:bg-blue-950"
+            >
+              {t("Discard")}
             </Link>
             <button
-              className="bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-full transition duration-300"
+              class="inline-block bg-blue-900 hover:bg-blue-800 rounded-full text-white border-2 border-primary px-6 pb-[6px] pt-2 text-xs font-medium uppercase leading-normal text-primary transition duration-150 ease-in-out hover:border-primary-accent-300 hover:bg-primary-50/50 hover:text-primary-accent-300 focus:border-primary-600 focus:bg-primary-50/50 focus:text-primary-600 focus:outline-none focus:ring-0 active:border-primary-700 active:text-primary-700 motion-reduce:transition-none dark:text-primary-500 dark:hover:bg-blue-950 dark:focus:bg-blue-950"
               onClick={() => validate()}
             >
-               {t("Create")}
+              {t("Create")}
             </button>
           </div>
         </div>
