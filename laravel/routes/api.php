@@ -57,9 +57,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('users/{id}', [UserController::class, 'destroy']);
     Route::get('/users/{id}', [UserController::class, 'show']);
     Route::post('/logout', [AuthController::class, 'logout']);
+    // ORDERS
+    Route::get('/orders', [OrderController::class, 'index']);
+    Route::get('/OrderDetails', [OrderDetailsController::class, 'index']);
+    Route::get('/OrderDetails/{id}', [OrderDetailsController::class, 'show']);
 });
 
-// ORDERS
-Route::get('/orders', [OrderController::class, 'index']);
-Route::get('/OrderDetails', [OrderDetailsController::class, 'index']);
-Route::get('/OrderDetails/{id}', [OrderDetailsController::class, 'show']);
+

@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import AgGridTable from '../../components/table/TableSimple';
-import EditButton from './EditButton';
 import { useTranslation } from "react-i18next";
 import { usePage } from '../../contexts/PageContext';
 
@@ -37,7 +36,6 @@ const SettingPage = () => {
   const columnDefs = [
     { headerName: t('Name'), field: t('config')},
     { headerName: t('Value'), field: t('value'), },
-    { cellRenderer: EditButton, editable: false, cellStyle: { 'fontWeight': 'bold', 'color': 'green' }}
   ];
 
   return (

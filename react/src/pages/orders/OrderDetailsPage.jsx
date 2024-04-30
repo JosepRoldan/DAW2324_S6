@@ -4,8 +4,15 @@ function OrderDetailsPage() {
   const [orderDetails, setOrderDetails] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  const token = localStorage.getItem("token");
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/OrderDetails/4`)
+    fetch(`${import.meta.env.VITE_API_URL}/OrderDetails/4`, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -78,25 +85,7 @@ function OrderDetailsPage() {
               <tr>
                 <th>Total</th>
                 <td>
-                  <span className="text-green-500">
-                    €{/* Agregar el total del pedido */}
-                  </span>
-                </td>
-              </tr>
-              <tr>
-                <th>Amount Paid</th>
-                <td>
-                  <span className="text-red-500">
-                    €{/* Agregar la cantidad pagada */}
-                  </span>
-                </td>
-              </tr>
-              <tr>
-                <th>Balance Due</th>
-                <td>
-                  <span className="text-green-500">
-                    €{/* Calcular y agregar el saldo debido */}
-                  </span>
+                  <span className="text-green-500">€ 281,55</span>
                 </td>
               </tr>
             </table>

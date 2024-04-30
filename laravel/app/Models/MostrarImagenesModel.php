@@ -38,11 +38,21 @@ class MostrarImagenesModel extends Model
             ],
         ]);
         
-        return json_decode($response->getBody()->getContents(),true);
+        // Verificar el código de estado de la respuesta
+        $statusCode = $response->getStatusCode();
+        $body = json_decode($response->getBody()->getContents(), true);
+
+        if ($statusCode === 200) {
+            // La solicitud se procesó correctamente, devolver los datos
+            return $body;
+        } else {
+            // La solicitud falló, devolver el mensaje de error
+            return ['error' => 'Error en la solicitud: ' . $statusCode];
+        }
 
     } catch (\Exception $e) {
-        // Manejar la excepción adecuadamente y devolver un objeto de respuesta consistente
-        return ['error del modelo generate' => $e->getMessage()];
+        // Si ocurre una excepción, devolver el mensaje de error
+        return ['error' => 'Error del modelo generate: ' . $e->getMessage()];
     }
     }
 
