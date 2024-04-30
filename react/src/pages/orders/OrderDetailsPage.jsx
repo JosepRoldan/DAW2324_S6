@@ -4,8 +4,15 @@ function OrderDetailsPage() {
   const [orderDetails, setOrderDetails] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  const token = localStorage.getItem("token");
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/OrderDetails/4`)
+    fetch(`${import.meta.env.VITE_API_URL}/OrderDetails/4`, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
