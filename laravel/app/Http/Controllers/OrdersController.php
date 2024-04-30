@@ -6,25 +6,20 @@ use App\Models\AddressDelivery;
 use App\Models\OrderView;
 use App\Models\Order;
 use App\Models\OrderDetail;
-use Illuminate\Support\Facades\Http;
-
-
 use App\Models\Customer;
-
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 
 class OrdersController extends Controller
 {
-    public function OrdersTable()
-    {
-        // Obtener los datos de la vista de pedidos
-        $orders = OrderView::all();
+    // public function OrdersTable()
+    // {
+    //     // Obtener los datos de la vista de pedidos
+    //     //$orders = OrderView::all();
 
-        // Pasar los datos a la vista
-        return view('MyOrders', compact('orders'));
-    }
+    //     // Pasar los datos a la vista
+    //     return view('MyOrders', compact('orders'));
+    // }
 
     public function storeDates(Request $request)
     {
@@ -92,5 +87,6 @@ class OrdersController extends Controller
                 'shippingPrice'=> $shippingPrice,
             ]);
         }
+        return response()->json(['orderId' => $order->id]);
     }
 }
