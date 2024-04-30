@@ -67,8 +67,8 @@ class OrdersController extends Controller
         // Crea una nueva orden
         $order = Order::create([
             'idCustomers' => $customer->id,
-            'name' => $customer->name." ".$customer->surname,
-            'address' => $deliveryAddress->address." ".$deliveryAddress->city." ".$deliveryAddress->postcode." ".$deliveryAddress->state." ".$deliveryAddress->country,
+            'name' => $customer->name."; ".$customer->surname,
+            'address' => $deliveryAddress->address."; ".$deliveryAddress->city."; ".$deliveryAddress->postcode."; ".$deliveryAddress->state."; ".$deliveryAddress->country,
             'totalPrice' => $totalAmount,
             'datetime' => now(),
         ]);
