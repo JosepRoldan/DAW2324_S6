@@ -125,10 +125,13 @@ class BuyingProcessController extends Controller
         $sendgrid = new SendGrid($apiKey);
         try {
             $response = $sendgrid->send($email);
-            return response()->json(['message' => 'Order status updated successfully'], 200);
+            return redirect()->route('processShop.complet');
         } catch (\Exception $e) {
             return back()->with('error', 'Error al enviar el correo electrónico: ' . $e->getMessage());
         }
     }
     
+    public function complet() {
+        return view('processShop.paySuccess');
+    }
 }

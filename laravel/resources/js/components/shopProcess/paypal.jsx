@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
@@ -8,6 +8,16 @@ function PayPalCheckout() {
 
     console.log(orderId);
     const [paymentCompleted, setPaymentCompleted] = useState(false);
+
+    useEffect(() => {
+        if (paymentCompleted) {
+            window.location.href = "/shopProccess/success?orderId=" + orderId;
+            // Redirección a mandar Inprogress
+
+            // Redirección a la página de picanova
+            window.location.href = "/shopProccess/picanova?orderId=" + orderId;
+        }
+    }, [paymentCompleted, orderId]);
 
     function createOrder(data, actions) {
         return actions.order.create({
@@ -38,7 +48,6 @@ function PayPalCheckout() {
     function onApprove(data, actions) {
         return actions.order.capture().then(function (details) {
             setPaymentCompleted(true);
-            // Redirigir a la página de inicio u otra página después del pago exitoso
         });
     }
 
@@ -47,7 +56,7 @@ function PayPalCheckout() {
             options={{
                 "client-id":
                     "AUZhCdtjShVz3aPj-29oznCc8DHaY-fRbD9_83qAsarySyCRtDA41lKfkHC-PWglj8mC4YospxgDWzTX",
-                currency: "EUR", // Especificar la moneda aquí
+                currency: "EUR",
             }}
         >
             <div className="container mx-auto mr-12 p-12">
@@ -67,18 +76,6 @@ function PayPalCheckout() {
                                 tagline: false,
                             }}
                         />
-                    )}
-                    {paymentCompleted && (
-                        <div>
-                            {
-                                (window.location.href =
-                                    "/shopProccess/success?orderId=" + orderId)
-                            }
-                            {
-                                (window.location.href =
-                                    "/shopProccess/picanova?orderId=" + orderId)
-                            }
-                        </div>
                     )}
                 </div>
             </div>
