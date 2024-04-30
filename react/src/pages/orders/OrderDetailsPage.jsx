@@ -5,7 +5,7 @@ function OrderDetailsPage() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/OrderDetails/${id}`)
+    fetch(`${import.meta.env.VITE_API_URL}/OrderDetails/4`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
