@@ -117,11 +117,13 @@ class UserController extends Controller
     {
         try {
             $user = User::findOrFail($userId);
+            $userRole = $user->role->roleName;
 
             $userData = [
                 'name' => $user->name,
                 'surname' => $user->surname,
                 'email' => $user->email,
+                'role' => $userRole,
             ];
 
             return response()->json([
