@@ -67,6 +67,7 @@ SET GLOBAL log_bin_trust_function_creators = 1;
 # Seed the database:
 In the laravel shell:
 ```diff
+  php artisan config:clear
 - php artisan migrate:fresh --seed
 + php artisan db:seed --class=DatabaseSeeder
 ```

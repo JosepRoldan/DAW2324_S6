@@ -4,13 +4,13 @@ namespace App\Http\Controllers\api;
 
 use Illuminate\Http\Request;
 use App\Models\Order;
-use App\Models\OrderDetails;
+use App\Models\OrderDetail;
 
 class OrderDetailsController extends Controller
 {
     public function index()
     {
-        $orders = OrderDetails::all();
+        $orders = OrderDetail::all();
 
         return response()->json($orders);
     }
@@ -18,7 +18,7 @@ class OrderDetailsController extends Controller
     public function show($id)
     {
         // Utiliza where() en lugar de find()
-        $orderDetails = OrderDetails::where('idOrder', $id)->get();
+        $orderDetails = OrderDetail::where('idOrder', $id)->get();
 
         if ($orderDetails->count() > 0) {
             return response()->json($orderDetails);
