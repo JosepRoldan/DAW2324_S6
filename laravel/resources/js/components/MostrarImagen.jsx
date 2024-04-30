@@ -34,6 +34,7 @@ function MostrarImagen() {
         fetchData();
     }, []);
 
+    const [mostrarInfo, setMostrarInfo] = useState(false);
     const [mostrarDiv, setMostrarDiv] = useState(0);
     const [divsContent, setDivsContent] = useState([]);
     const [inputValue, setInputValue] = useState("");
@@ -184,12 +185,16 @@ function MostrarImagen() {
         }
     };
 
+    // const ayudaGuardar = () => {
+    //     toast.info()
+    // }
+
     //Muestra la array de imagenes que le pasemos.
     const mostrarImagenes = (imagen) => {
         return (
             <div
                 id="imatgeGenerada"
-                className="size-60 relative rounded-md p-2 grid place-content-center "
+                className="size-60 relative rounded-md p-2 grid place-content-center"
             >
                 <button
                     onClick={() => guardarImatge(imagen.id, imagen.url)}
@@ -225,7 +230,6 @@ function MostrarImagen() {
                         </g>
                     </svg>
                 </button>
-
                 <button
                     onClick={() => seleccionarImg(imagen.url, imagen.id)}
                     className="rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -244,12 +248,76 @@ function MostrarImagen() {
                 id="generació_imatge"
                 className={mostrarDiv == 1 ? "" : "hidden"}
             >
-                <div className="grid grid-cols-1 place-items-center">
+                <div className="flex justify-center my-3 gap-4">
                     <a href="daisy">
-                        <button className="btn btn-ghost">
+                        <button className="btn my-2">
                             Generar otro prompt
                         </button>
                     </a>
+                    {divsContent.length > 0 ? (
+                        <button
+                            onClick={() =>
+                                toast.info(
+                                    "Guarda tus imagenes con el simbolo de guardadp",
+                                    {
+                                        icon: (
+                                            <div className="p-2">
+                                                <svg
+                                                    width="16px"
+                                                    height="16px"
+                                                    viewBox="0 0 1024 1024"
+                                                    className="icon"
+                                                    version="1.1"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    fill="#000000"
+                                                >
+                                                    <g
+                                                        id="SVGRepo_bgCarrier"
+                                                        strokeWidth="0"
+                                                    ></g>
+                                                    <g
+                                                        id="SVGRepo_tracerCarrier"
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        stroke="#CCCCCC"
+                                                        strokeWidth="61.44"
+                                                    >
+                                                        <path
+                                                            d="M789.333333 917.333333l-277.333333-128-277.333333 128V192c0-46.933333 38.4-85.333333 85.333333-85.333333h384c46.933333 0 85.333333 38.4 85.333333 85.333333v725.333333z"
+                                                            fill="#e7fc00"
+                                                        ></path>
+                                                    </g>
+                                                    <g id="SVGRepo_iconCarrier">
+                                                        <path
+                                                            d="M789.333333 917.333333l-277.333333-128-277.333333 128V192c0-46.933333 38.4-85.333333 85.333333-85.333333h384c46.933333 0 85.333333 38.4 85.333333 85.333333v725.333333z"
+                                                            fill="#e7fc00"
+                                                        ></path>
+                                                    </g>
+                                                </svg>
+                                            </div>
+                                        ),
+                                    },
+                                )
+                            }
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.5"
+                                stroke="currentColor"
+                                class="w-6 h-6"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"
+                                />
+                            </svg>
+                        </button>
+                    ) : (
+                        ""
+                    )}
                 </div>
                 <div className="grid grid-cols-1 place-items-center">
                     <ul className="steps">
