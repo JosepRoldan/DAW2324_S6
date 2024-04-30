@@ -1,20 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
 function PayPalCheckout() {
-    const totalAmount = parseFloat(
-        document.getElementById("data").getAttribute("data"),
-    );
-    console.log(totalAmount);
-    const accessToken = "REPLACE_WITH_YOUR_ACCESS_TOKEN";
+    const totalAmount = document.getElementById("totalAmount").value;
+    const orderId = document.getElementById("orderId").value;
+
+    console.log(orderId);
     const [paymentCompleted, setPaymentCompleted] = useState(false);
+
+    useEffect(() => {
+        if (paymentCompleted) {
+            window.location.href = "/shopProccess/success?orderId=" + orderId;
+            // Redirección a mandar Inprogress
+
+            // Redirección a la página de picanova
+            window.location.href = "/shopProccess/picanova?orderId=" + orderId;
+        }
+    }, [paymentCompleted, orderId]);
 
     function createOrder(data, actions) {
         return actions.order.create({
             purchase_units: [
                 {
-                    reference_id: "23",
+                    reference_id: orderId,
                     amount: {
                         currency_code: "EUR",
                         value: totalAmount,
@@ -39,7 +48,6 @@ function PayPalCheckout() {
     function onApprove(data, actions) {
         return actions.order.capture().then(function (details) {
             setPaymentCompleted(true);
-            // Redirigir a la página de inicio u otra página después del pago exitoso
         });
     }
 
@@ -48,7 +56,7 @@ function PayPalCheckout() {
             options={{
                 "client-id":
                     "AUZhCdtjShVz3aPj-29oznCc8DHaY-fRbD9_83qAsarySyCRtDA41lKfkHC-PWglj8mC4YospxgDWzTX",
-                currency: "EUR", // Especificar la moneda aquí
+                currency: "EUR",
             }}
         >
             <div className="container mx-auto mr-12 p-12">
@@ -68,12 +76,6 @@ function PayPalCheckout() {
                                 tagline: false,
                             }}
                         />
-                    )}
-                    {paymentCompleted && (
-                        <div>
-                            <p>Tu pago se ha completado exitosamente.</p>
-                            {/* Aquí puedes agregar más contenido o redirigir al usuario */}
-                        </div>
                     )}
                 </div>
             </div>
