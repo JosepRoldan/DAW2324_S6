@@ -78,25 +78,7 @@ function OrderDetailsPage() {
               <tr>
                 <th>Total</th>
                 <td>
-                  <span className="text-green-500">
-                    €{/* Agregar el total del pedido */}
-                  </span>
-                </td>
-              </tr>
-              <tr>
-                <th>Amount Paid</th>
-                <td>
-                  <span className="text-red-500">
-                    €{/* Agregar la cantidad pagada */}
-                  </span>
-                </td>
-              </tr>
-              <tr>
-                <th>Balance Due</th>
-                <td>
-                  <span className="text-green-500">
-                    €{/* Calcular y agregar el saldo debido */}
-                  </span>
+                  <span className="text-green-500">€ 281,55</span>
                 </td>
               </tr>
             </table>
