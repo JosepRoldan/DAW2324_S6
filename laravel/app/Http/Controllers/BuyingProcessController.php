@@ -96,7 +96,7 @@ class BuyingProcessController extends Controller
             $this->sendMailConfirm();
 
             // Opcional: puedes devolver una respuesta JSON u otra respuesta según tus necesidades
-            return response()->json(['message' => 'Order status updated successfully'], 200);
+            return redirect()->route('processShop.picanova',['orderId' => $order->id]);       
         } else {
             // Si la orden no se encuentra, puedes devolver un mensaje de error
             return response()->json(['error' => 'Order not found'], 404);

@@ -15,7 +15,7 @@ function PayPalCheckout() {
             // Redirección a mandar Inprogress
 
             // Redirección a la página de picanova
-            window.location.href = "/shopProccess/picanova?orderId=" + orderId;
+            //window.location.href = "/shopProccess/picanova?orderId=" + orderId;
         }
     }, [paymentCompleted, orderId]);
 
