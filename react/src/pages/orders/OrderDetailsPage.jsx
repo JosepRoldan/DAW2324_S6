@@ -35,7 +35,7 @@ function OrderDetailsPage() {
         <h1 className="text-3xl font-bold text-center bg-black rounded-md text-white mb-4">
           Order Details
         </h1>
-        <address className="float-left font-sm font-bold text-lg mr-4">
+        <address className="float-left font-sm font-bold text-4xl mr-4">
           <p>CustomAIze</p>
         </address>
         <span className="block float-right w-40 h-auto mr-24">
@@ -50,7 +50,7 @@ function OrderDetailsPage() {
       <article className="container mx-auto py-4">
         {!isLoading && orderDetails && (
           <>
-            <table className="w-full mb-8">
+            <table className="w-full mb-8 text-lg bg-black text-white rounded-md">
               <tr>
                 <th className="w-1/4">Order Number</th>
                 <td className="w-3/4">{orderDetails[0].idOrder}</td>
@@ -59,7 +59,7 @@ function OrderDetailsPage() {
 
             <table className="w-full mb-8 text-center">
               <thead>
-                <tr>
+                <tr className="bg-primaryColor text-white border-2 border-black">
                   <th>Item</th>
                   <th>Quantity</th>
                   <th>Price</th>
@@ -67,13 +67,13 @@ function OrderDetailsPage() {
               </thead>
               <tbody>
                 {orderDetails.map((order) => (
-                  <tr key={order.id}>
-                    <td className="text-left">
+                  <tr key={order.id} className="border-2 border-black">
+                    <td className="text-left border-2 border-black">
                       <span>{order.productName}</span>
                     </td>
-                    <td>{order.quantity}</td>
+                    <td className="border-2 border-black">{order.quantity}</td>
                     <td>
-                      <span className="text-green-500">€</span>
+                      <span className="text-green-500 ">€</span>
                       <span className="text-green-500">{order.totalPrice}</span>
                     </td>
                   </tr>
@@ -82,10 +82,13 @@ function OrderDetailsPage() {
             </table>
 
             <table className="w-full mb-8">
-              <tr>
-                <th>Total</th>
-                <td>
-                  <span className="text-green-500">€ 281,55</span>
+              <tr className="">
+                <td></td>
+                <th className="border-2 border-black text-right">
+                  <span className="mr-4">Total</span>
+                </th>
+                <td className="text-center border-2 border-black">
+                  <span className="text-green-500 ">€ 281,55</span>
                 </td>
               </tr>
             </table>
