@@ -22,5 +22,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         View::share('layout', 'layout.app');
+	\Illuminate\Support\Facades\URL::forceScheme('https');
     }
 }

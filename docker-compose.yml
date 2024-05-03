@@ -10,16 +10,6 @@ services:
     depends_on:
       - mysql
 
-  react:
-    build:
-      context: ./react
-      dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
-    volumes:
-      - "./react:/app"
-      - "/app/node_modules"
-
   mysql:
     image: 'mysql'
     environment:
