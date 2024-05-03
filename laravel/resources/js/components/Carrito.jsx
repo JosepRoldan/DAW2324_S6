@@ -23,7 +23,7 @@ export default function Carrito() {
             <thead>
               <tr className="bg-gray-300 text-black">
                 <th className="w-1/4 py-2 px-4 border border-gray-300">Product</th>
-                <th className="w-1/4 py-2 px-4 border border-gray-300">Generated Image</th>
+                <th className="w-1/4 py-2 px-4 border border-gray-300">Image</th>
                 <th className="w-1/4 py-2 px-4 border border-gray-300">Price</th>
                 <th className="w-1/4 py-2 px-4 border border-gray-300">Quantity</th>
                 <th className="w-1/4 py-2 px-4 border border-gray-300">Total</th>
@@ -33,7 +33,7 @@ export default function Carrito() {
             <tbody>
               {items.map((item) => (
                 <tr key={item.id} className="border border-gray-300">
-                  <td className="py-2 px-4 border border-gray-300 text-center"><img src={item.image} className="w-20 h-20 object-cover mx-auto" alt={item.image} /></td>
+                  <td className="py-2 px-4 border border-gray-300 text-center">{item.name}</td>
                   <td className="py-2 px-4 border border-gray-300 text-center"><img src={item.image} className="w-20 h-20 object-cover mx-auto" alt={item.image} /></td>
                   <td className="py-2 px-4 border border-gray-300 text-center">{item.price} €</td>
                   <td className="py-2 px-4 border border-gray-300 ">
@@ -90,9 +90,11 @@ export default function Carrito() {
         <div className="mt-4 text-right">
           <strong>Total: {total.toFixed(2)}€</strong>
         </div>
-        <button>
-          <a href="../Cart/Shipping" className="flex items-center justify-center  border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700">Checkout</a>
-        </button>
+        <div className="flex justify-end mt-4">
+          <button>
+            <a href="../Cart/Shipping" className="flex items-center justify-center  border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700">Checkout</a>
+          </button>
+        </div>
       </div>
     </div>
   );
