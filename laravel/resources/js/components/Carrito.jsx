@@ -2,15 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 
 export default function Carrito() {
-  const [items, setItems] = useState((JSON.parse(localStorage.getItem('products')) || []))
+  const [items, setItems] = useState((JSON.parse(localStorage.getItem('products')) || []));
 
   const total = items.reduce((acc, item) => acc + parseFloat(item.price) * item.quantity, 0);
 
-  const handleEliminar = (itemId) => {
-    const updatedCartItems = items.filter(item => item.id !== itemId);
+  const handleEliminar = (itemId, itemVariantId) => {
+    const updatedCartItems = items.filter(item => item.id !== itemId || item.idVariant !== itemVariantId);
     setItems(updatedCartItems);
-    // Eliminar del localStorage también
     localStorage.setItem('products', JSON.stringify(updatedCartItems));
+    window.location.reload();
   };
 
   return (
@@ -41,12 +41,17 @@ export default function Carrito() {
                       <button
                         className="bg-gray-200 px-2 py-1 mr-2"
                         onClick={() => {
-                          const updatedItems = [...items];
-                          const index = updatedItems.findIndex((i) => i.id === item.id);
-                          if (index !== -1 && updatedItems[index].quantity > 1) {
-                            updatedItems[index].quantity -= 1;
-                            setItems(updatedItems);
-                          }
+                          const updatedItems = items.map((cartItem) => {
+                            if (cartItem.id === item.id && cartItem.idVariant === item.idVariant) {
+                              return {
+                                ...cartItem,
+                                quantity: cartItem.quantity > 1 ? cartItem.quantity - 1 : 1,
+                              };
+                            }
+                            return cartItem;
+                          });
+                          setItems(updatedItems);
+                          localStorage.setItem('products', JSON.stringify(updatedItems));
                         }}
                       >
                         -
@@ -55,12 +60,17 @@ export default function Carrito() {
                       <button
                         className="bg-gray-200 px-2 py-1 ml-2"
                         onClick={() => {
-                          const updatedItems = [...items];
-                          const index = updatedItems.findIndex((i) => i.id === item.id);
-                          if (index !== -1) {
-                            updatedItems[index].quantity += 1;
-                            setItems(updatedItems);
-                          }
+                          const updatedItems = items.map((cartItem) => {
+                            if (cartItem.id === item.id && cartItem.idVariant === item.idVariant) {
+                              return {
+                                ...cartItem,
+                                quantity: cartItem.quantity + 1,
+                              };
+                            }
+                            return cartItem;
+                          });
+                          setItems(updatedItems);
+                          localStorage.setItem('products', JSON.stringify(updatedItems));
                         }}
                       >
                         +
@@ -69,7 +79,7 @@ export default function Carrito() {
                   </td>
                   <td className="py-2 px-4 border border-gray-300 text-center">{(parseFloat(item.price) * item.quantity).toFixed(2)} €</td>
                   <td className="py-8 px-4 flex justify-center">
-                    <button className="bg-black text-white rounded-md border px-2 py-1 hover:bg-gray-800 transition duration-300" onClick={() => handleEliminar(item.id)}>Delete</button>
+                    <button className="bg-black text-white rounded-md border px-2 py-1 hover:bg-gray-800 transition duration-300" onClick={() => handleEliminar(item.id, item.idVariant)}>Delete</button>
                   </td>
                 </tr>
               ))}

@@ -99,6 +99,17 @@ const MyOrders = () => {
     const [isProfileActive, setIsProfileActive] = useState(false);
     const [order, setOrder] = useState([]);
 
+    const enviarNumeroDeOrden = (numeroOrden) => {
+        axios
+            .post("/guardarOrden", { numeroOrden })
+            .then((response) => {
+                console.log(response.data);
+            })
+            .catch((error) => {
+                console.error("Error al enviar el número de orden:", error);
+            });
+    };
+
     useEffect(() => {
         const handleProfile = (e) => {
             if (profileRef.current && !profileRef.current.contains(e.target))
@@ -117,9 +128,8 @@ const MyOrders = () => {
             });
     }, []);
 
-    let orderNumber = 1;
-
     console.log(order);
+
     return (
         <>
             <nav className="fixed top-30 left-0 w-full h-full border-r border-b bg-blue-zodiac-900 space-y-0 sm:w-80 ">
@@ -289,7 +299,10 @@ const MyOrders = () => {
                                                     <td className="px-4 py-4 text-sm font-medium text-gray-700 dark:text-gray-200 whitespace-nowrap">
                                                         <div className="inline-flex items-center gap-x-3">
                                                             <span>
-                                                                #{orderNumber ++} 
+                                                                #
+                                                                {
+                                                                    order.number_order
+                                                                }
                                                             </span>
                                                         </div>
                                                     </td>
@@ -333,10 +346,9 @@ const MyOrders = () => {
                                                             <a
                                                                 href="/viewDetails"
                                                                 className="text-blue-700 transition-colors duration-200 dark:hover:text-indigo-500 dark:text-gray-300 hover:text-indigo-500 focus:outline-none"
+                                                                onClick={() => enviarNumeroDeOrden(order.id)}
                                                             >
-                                                                <button className="focus:outline-none">
-                                                                    View Details
-                                                                </button>
+                                                                View Details
                                                             </a>
 
                                                             <button className="text-blue-700 transition-colors duration-200 hover:text-indigo-500 focus:outline-none">
@@ -346,7 +358,7 @@ const MyOrders = () => {
                                                     </td>
                                                 </tr>
                                             </tbody>
-                                         ))}
+                                        ))}
                                     </table>
                                 </div>
                             </div>
@@ -362,6 +374,6 @@ export default MyOrders;
 
 if (document.getElementById("myOrders")) {
     const root = createRoot(document.getElementById("myOrders")).render(
-        <MyOrders />
+        <MyOrders />,
     );
 }
