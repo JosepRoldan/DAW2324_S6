@@ -39,6 +39,10 @@ class Customer extends Model
         'membershipDate' => 'datetime',
     ];
 
+     public function getAddressDelivery ()
+    {
+        return $this->hasOne(AddressDelivery::class, 'idCustomers', 'id');
+    }
     // public function getCreatedAtFormattedAttribute()
     // {
     //     $createdAt = $this->created_at;

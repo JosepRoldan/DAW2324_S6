@@ -14,16 +14,16 @@ export default function Carrito() {
   };
 
   return (
-    <div className="container mx-auto mt-8">
+    <div className="container mx-auto mt-8 mb-10">
       <div className="bg-white p-6 shadow-xl border border-gray-300 mx-4">
-        <h1 className="text-4xl font-bold mb-4 text-black">Shopping card</h1>
+        <h1 className="text-4xl font-bold mb-7 text-black">Shopping Cart</h1>
 
         <div className="overflow-x-auto">
           <table className="w-full table-fixed">
             <thead>
               <tr className="bg-gray-300 text-black">
                 <th className="w-1/4 py-2 px-4 border border-gray-300">Product</th>
-                <th className="w-1/4 py-2 px-4 border border-gray-300">Image</th>
+                <th className="w-1/4 py-2 px-4 border border-gray-300">Generated Image</th>
                 <th className="w-1/4 py-2 px-4 border border-gray-300">Price</th>
                 <th className="w-1/4 py-2 px-4 border border-gray-300">Quantity</th>
                 <th className="w-1/4 py-2 px-4 border border-gray-300">Total</th>
@@ -33,7 +33,7 @@ export default function Carrito() {
             <tbody>
               {items.map((item) => (
                 <tr key={item.id} className="border border-gray-300">
-                  <td className="py-2 px-4 border border-gray-300 text-center">{item.variant}</td>
+                  <td className="py-2 px-4 border border-gray-300 text-center"><img src={item.image} className="w-20 h-20 object-cover mx-auto" alt={item.image} /></td>
                   <td className="py-2 px-4 border border-gray-300 text-center"><img src={item.image} className="w-20 h-20 object-cover mx-auto" alt={item.image} /></td>
                   <td className="py-2 px-4 border border-gray-300 text-center">{item.price} €</td>
                   <td className="py-2 px-4 border border-gray-300 ">

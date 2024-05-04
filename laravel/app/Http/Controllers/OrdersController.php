@@ -6,24 +6,20 @@ use App\Models\AddressDelivery;
 use App\Models\OrderView;
 use App\Models\Order;
 use App\Models\OrderDetail;
-use App\Models\DeliveryAddress;
-
 use App\Models\Customer;
-
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 
 class OrdersController extends Controller
 {
-    public function OrdersTable()
-    {
-        // Obtener los datos de la vista de pedidos
-        $orders = OrderView::all();
+    // public function OrdersTable()
+    // {
+    //     // Obtener los datos de la vista de pedidos
+    //     //$orders = OrderView::all();
 
-        // Pasar los datos a la vista
-        return view('MyOrders', compact('orders'));
-    }
+    //     // Pasar los datos a la vista
+    //     return view('MyOrders', compact('orders'));
+    // }
 
     public function storeDates(Request $request)
     {
@@ -71,8 +67,8 @@ class OrdersController extends Controller
         // Crea una nueva orden
         $order = Order::create([
             'idCustomers' => $customer->id,
-            'name' => $customer->name." ".$customer->surname,
-            'address' => $deliveryAddress->address." ".$deliveryAddress->city." ".$deliveryAddress->postcode." ".$deliveryAddress->state." ".$deliveryAddress->country,
+            'name' => $customer->name."; ".$customer->surname,
+            'address' => $deliveryAddress->address."; ".$deliveryAddress->city."; ".$deliveryAddress->postcode."; ".$deliveryAddress->state."; ".$deliveryAddress->country,
             'totalPrice' => $totalAmount,
             'datetime' => now(),
         ]);
@@ -87,11 +83,10 @@ class OrdersController extends Controller
                 'quantity' => $product['quantity'],
                 'priceEach' => $product['price'],
                 'totalPrice' => $totalAmount,
-                'productDetails' => 'Valor predeterminado', // Proporciona un valor ya se hara
+                'idVariant' => $product['idVariant'], // Proporciona un valor ya se hara
                 'shippingPrice'=> $shippingPrice,
             ]);
         }
-
-        return response()->json(['message' => 'Order data saved successfully']);
-    }    
+        return response()->json(['orderId' => $order->id]);
+    }
 }

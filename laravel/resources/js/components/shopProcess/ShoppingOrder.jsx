@@ -20,12 +20,15 @@ export default function ShoppingOrder() {
     const [productos, setProductos] = useState([]);
     const shippingPrice = 10; // Hardcode para el precio de envío
     const [validationErrors, setValidationErrors] = useState({});
+    const [orderId, setOrderId] = useState(null);
 
     // Esquema de validación utilizando Yup
     const validationSchema = Yup.object().shape({
         name: Yup.string().required("Name is required"),
         surname: Yup.string().required("Surname is required"),
-        mail: Yup.string().email("Invalid email address").required("Email is required"),
+        mail: Yup.string()
+            .email("Invalid email address")
+            .required("Email is required"),
         address: Yup.string().required("Address is required"),
         city: Yup.string().required("City is required"),
         state: Yup.string().required("State is required"),
@@ -48,7 +51,10 @@ export default function ShoppingOrder() {
 
         try {
             // Validar los datos del cliente y la dirección
-            await validationSchema.validate({ ...customer, ...address }, { abortEarly: false });
+            await validationSchema.validate(
+                { ...customer, ...address },
+                { abortEarly: false },
+            );
 
             const csrfToken = document.head.querySelector(
                 'meta[name="csrf-token"]',
@@ -72,12 +78,24 @@ export default function ShoppingOrder() {
                 totalAmount: totalAmount, // Agrega el total final al formData
             };
 
-            await axios.post("/Cart/Order", formData, {
-                headers: {
-                    "X-CSRF-TOKEN": csrfToken,
-                },
-            });
-
+            axios
+                .post("/Cart/Order", formData, {
+                    headers: {
+                        "X-CSRF-TOKEN": csrfToken,
+                    },
+                })
+                .then((response) => {
+                    const orderId = response.data.orderId; // Acceder al orderId desde la respuesta
+                    setOrderId(orderId); // Establecer orderId en el estado
+                    console.log("Order data saved");
+                    console.log(orderId); // Imprimir el orderId
+                    // Redireccionar a la página de pago con el ID de la orden y el totalAmount
+                    window.location.href =
+                        "/Cart/payment?totalAmount=" +
+                        totalAmount +
+                        "&orderId=" +
+                        orderId;
+                });
             console.log("Order data saved");
             // Aquí puedes agregar lógica adicional después de que se haya guardado la orden, como redireccionar a otra página
         } catch (error) {
@@ -136,7 +154,11 @@ export default function ShoppingOrder() {
                                     onChange={handleCustomerChange}
                                     required
                                 />
-                                {validationErrors.name && <p className="text-red-500">{validationErrors.name}</p>}
+                                {validationErrors.name && (
+                                    <p className="text-red-500">
+                                        {validationErrors.name}
+                                    </p>
+                                )}
                             </div>
                             <div className="flex sm:w-2/4 xl:w-1/4 border-gray-200 py-3">
                                 <label className="text-right px-2">
@@ -149,7 +171,11 @@ export default function ShoppingOrder() {
                                     onChange={handleCustomerChange}
                                     required
                                 />
-                                {validationErrors.surname && <p className="text-red-500">{validationErrors.surname}</p>}
+                                {validationErrors.surname && (
+                                    <p className="text-red-500">
+                                        {validationErrors.surname}
+                                    </p>
+                                )}
                             </div>
                         </div>
                         <div className=" p-4 relative flex flex-col sm:flex-row sm:items-center bg-white shadow rounded-md">
@@ -163,7 +189,11 @@ export default function ShoppingOrder() {
                                     onChange={handleCustomerChange}
                                     required
                                 />
-                                {validationErrors.mail && <p className="text-red-500">{validationErrors.mail}</p>}
+                                {validationErrors.mail && (
+                                    <p className="text-red-500">
+                                        {validationErrors.mail}
+                                    </p>
+                                )}
                             </label>
                         </div>
                     </section>
@@ -181,7 +211,11 @@ export default function ShoppingOrder() {
                                     onChange={handleAddressChange}
                                     required
                                 />
-                                {validationErrors.address && <p className="text-red-500">{validationErrors.address}</p>}
+                                {validationErrors.address && (
+                                    <p className="text-red-500">
+                                        {validationErrors.address}
+                                    </p>
+                                )}
                             </label>
                             <label className="flex border-b border-gray-200 h-12 py-3 items-center">
                                 <span className="text-right px-2">City</span>
@@ -192,7 +226,11 @@ export default function ShoppingOrder() {
                                     onChange={handleAddressChange}
                                     required
                                 />
-                                {validationErrors.city && <p className="text-red-500">{validationErrors.city}</p>}
+                                {validationErrors.city && (
+                                    <p className="text-red-500">
+                                        {validationErrors.city}
+                                    </p>
+                                )}
                             </label>
                             <label className="flex border-b border-gray-200 h-12 py-3 items-center">
                                 <span className="text-right px-2">State</span>
@@ -203,7 +241,11 @@ export default function ShoppingOrder() {
                                     onChange={handleAddressChange}
                                     required
                                 />
-                                {validationErrors.state && <p className="text-red-500">{validationErrors.state}</p>}
+                                {validationErrors.state && (
+                                    <p className="text-red-500">
+                                        {validationErrors.state}
+                                    </p>
+                                )}
                             </label>
                             <label className="inline-flex w-2/4 border-gray-200 py-3">
                                 <span className="text-right px-2">ZIP</span>
@@ -214,7 +256,11 @@ export default function ShoppingOrder() {
                                     onChange={handleAddressChange}
                                     required
                                 />
-                                {validationErrors.postcode && <p className="text-red-500">{validationErrors.postcode}</p>}
+                                {validationErrors.postcode && (
+                                    <p className="text-red-500">
+                                        {validationErrors.postcode}
+                                    </p>
+                                )}
                             </label>
                             <label className="flex border-b border-gray-200 h-12 py-3 items-center">
                                 <span className="text-right px-2">Country</span>
@@ -225,7 +271,11 @@ export default function ShoppingOrder() {
                                     onChange={handleAddressChange}
                                     required
                                 />
-                                {validationErrors.country && <p className="text-red-500">{validationErrors.country}</p>}
+                                {validationErrors.country && (
+                                    <p className="text-red-500">
+                                        {validationErrors.country}
+                                    </p>
+                                )}
                             </label>
                         </fieldset>
                     </section>
@@ -233,17 +283,6 @@ export default function ShoppingOrder() {
                         <h2 className="uppercase tracking-wide text-lg font-semibold text-gray-700 my-2">
                             Payment Information
                         </h2>
-                        <fieldset className="mb-3 bg-white shadow-lg rounded text-gray-600">
-                            <label className="flex border-b border-gray-200 h-12 py-3 items-center">
-                                <span className="text-right px-2">Card</span>
-                                <input
-                                    name="card"
-                                    className="focus:outline-none px-3 w-full"
-                                    placeholder="Card number MM/YY CVC"
-                                    required
-                                />
-                            </label>
-                        </fieldset>
                     </section>
                     <button
                         className="submit-button px-4 py-3 rounded-full bg-pink-400 text-white focus:ring focus:outline-none w-full text-xl font-semibold transition-colors"

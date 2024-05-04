@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\api\OrderController;
 use App\Http\Controllers\BuyingProcessController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\EnsureTokenIsValid;
@@ -14,7 +15,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MyOrdersController;
 use App\Http\Controllers\ViewDetailsController;
 use App\Http\Controllers\CookieController;
-
+use App\Http\Controllers\FastAPIController;
 use App\Http\Controllers\LanguageController;
 
 
@@ -42,15 +43,26 @@ Route::get('/productscard', function () {return view('productCard');});
 
 //////////////////////SHOP PROCESS////////////////////////
 Route::get('/Cart/Shipping', [BuyingProcessController::class, 'getShoppingOrdreDates'])->name('shipping');
-Route::post('/Cart/Order', [OrdersController::class, 'storeDates'])->name('shopProcessOrder');
+Route::get('/Cart/payment/',[BuyingProcessController::class,'paypal'])->name('shopProcess.payment');
+Route::post('/Cart/Order', [OrdersController::class, 'storeDates'])->name('processShop.orderCreate');
 
-Route::get('/Cart/Shipping/PaymentMethod', [BuyingProcessController::class, 'paymentDates'])->name('paymentMethod');
+//route paypal well
+Route::get('/shopProccess/success', [BuyingProcessController::class, 'success'])->name('processShop.success');
+Route::get('/shopProccess/cancel', [BuyingProcessController::class, 'cancel'])->name('processShop.cancel');
 
-Route::get('/Cart/Shipping/Details',[BuyingProcessController::class, 'detailsDates'])->name('details');
+
 Route::get('/Cart/Shipping/guess', function () {
     return view('processShop.guess');
 });
 
+//pedido a picanova ruta
+Route::get('/shopProccess/picanova',[FastAPIController::class,'sendToFastAPI'])->name('processShop.picanova');
+
+//enviament de mail de confirmacio pedido
+Route::get('shopProccess/mail', [BuyingProcessController::class, 'sendMailConfirm'])->name('processShop.mail');
+
+//route payment complet well
+Route::get('/shopProccess/complet', [BuyingProcessController::class, 'complet'])->name('processShop.complet');
 ////////////////////////////////////////
 
 Route::get('/products', function () {

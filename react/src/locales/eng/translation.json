@@ -80,6 +80,9 @@
     "Please enter a username.": "Please enter a username.",
     "Please enter a password.": "Please enter a password.",
     "Passwords must match": "Passwords must match",
+    "Order Number": "Order Number",
+    "Order Details": "Order Details",
+    "Date": "Date",
     "Password must be at least 6 characters long.": "Password must be at least 6 characters long.",
     "Please select an account status.": "Please select an account status.",
     "Please select whether the account is validated or not.": "Please select whether the account is validated or not.",
@@ -90,6 +93,12 @@
     "Update": "Update",
     "User Information": "User Information",
     "Edit User": "Edit User",
+    "Username is mandatory": "Username is mandatory",
+    "No special characters are allowed in this field.": "No special characters are allowed in this field.",
+    "Name is required": "Name is required",
+    "Last name is required": "Last name is required",
+    "Email is required": "Email is required",
+    "Invalid email format": "Invalid email format",
     "Close sidebar": "Close sidebar",
     "Settings": "Settings",
     "Open sidebar": "Open sidebar",
@@ -97,5 +106,7 @@
     "Download": "Download",
     "Edit": "Edit",
     "Your teams": "Your teams",
-    "DASHBOARD": "DASHBOARD"
+    "DASHBOARD": "DASHBOARD",
+    "The name is mandatory": "The name is mandatory",
+    "Fields contain characters that are not allowed.": "Fields contain characters that are not allowed."
 }

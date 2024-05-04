@@ -22,9 +22,11 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
 }
 
+
 export default function Header() {
     const [isCartOpen, setIsCartOpen] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [cartProducts, setCartProducts] = useState(0);
     useEffect(() => {
         // Verificar si hay una sesión activa al cargar el componente
         const token = document.getElementById("token");
@@ -33,9 +35,27 @@ export default function Header() {
         }
     }, []);
 
-    const handleCartClick = () => {
+    const handleCartAdd = () => {
         setIsCartOpen((prevState) => !prevState);
+        const cartProducts = JSON.parse(localStorage.getItem("products")) || [];
+        setCartProducts(cartProducts.length);
+        console.log(cartProducts.length)
+
     };
+
+
+    //Funcion para que si hay productos en el  se muestre un badge con la cantidad de productos encima del icono del carrito
+    useEffect(() => {
+        const cartProducts = JSON.parse(localStorage.getItem("products")) || [];
+        setCartProducts(cartProducts.length);
+    }
+    , [cartProducts]);
+
+    window.addEventListener("storage", () => {
+        console.log("storage event");
+    
+    });
+
 
     return (
         <Disclosure as="nav" className="bg-[#141415]">
@@ -98,7 +118,7 @@ export default function Header() {
                                     id="cartButton"
                                     type="button"
                                     className="relative rounded-full p-1 text-gray-400 hover:text-white focus:outline-none"
-                                    onClick={handleCartClick}
+                                    onClick={handleCartAdd}
                                 >
                                     <span className="absolute -inset-1.5" />
                                     <span className="sr-only">View cart</span>
@@ -106,8 +126,9 @@ export default function Header() {
                                         className="h-8 w-8"
                                         aria-hidden="true"
                                     />
-                                </button>
-
+                                    {cartProducts> 0 ? <span className="bg-red-500 text-white rounded-full px-1.5 py-0.5 text-xs absolute -top-2 -right-2 mt-2">{cartProducts}</span>: ""}
+                                </button> 
+                                        
                                 {/* Profile dropdown */}
                                 <Menu as="div" className="relative ml-3">
                                     <div>

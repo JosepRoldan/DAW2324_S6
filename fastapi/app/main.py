@@ -111,7 +111,7 @@ async def editar_imagen(infoEdit: infoEdit,
         with open(f"app/openai/temp/{ruta}.png", "rb") as image_file:
             response =  client.images.create_variation(
                 image=image_file,
-                n=3,
+                n=2,
                 size="256x256"
             )
         print("Imagen abierta")
