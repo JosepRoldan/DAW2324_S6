@@ -258,7 +258,7 @@ function MostrarImagen() {
                         <button
                             onClick={() =>
                                 toast.info(
-                                    "Guarda tus imagenes con el simbolo de guardadp",
+                                    "Guarda tus imagenes con el simbolo de guardado",
                                     {
                                         icon: (
                                             <div className="p-2">
