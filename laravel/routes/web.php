@@ -176,6 +176,7 @@ Route::put('/updateProfileData', [ProfileController::class, 'updateUserProfileDa
 
 
 //My Orders
+Route::post('/obtenerDetallesOrden', [ViewDetailsController::class, 'getDetailsData']);
 Route::get('/getOrders', [MyOrdersController::class, 'getUserOrders']);
 Route::get('/getUserProfileData', [MyOrdersController::class, 'getUserProfileData']);
 
