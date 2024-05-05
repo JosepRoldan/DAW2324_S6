@@ -101,7 +101,7 @@ const MyOrders = () => {
 
     const enviarNumeroDeOrden = (numeroOrden) => {
         axios
-            .post("/guardarOrden", { numeroOrden })
+            .post("/obtenerDetallesOrden", { numeroOrden })
             .then((response) => {
                 console.log(response.data);
             })
