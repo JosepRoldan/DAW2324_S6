@@ -43,22 +43,6 @@
     </style>
 </head>
 <!-- <div class="text-red-500" id="head"></div> -->
-@if(Session::has('token'))
-<!-- EJEMPLO PARA MOSTRAR EL CONTENIDO DE LA VARIABLE DE SESION EN LA PLANTILLA BLADE <p>Bienvenido, {{ Session::get('token') }}</p> -->
-    <input type="hidden" id="token" value="{{ Session::get('token') }}">
-@endif
-<!-- @if(Session::has('token'))
-    <script>
-        window.isLoggedIn = true; // Variable JavaScript que indica que el usuario está autenticado
-    </script>
-@else
-    <script>
-        window.isLoggedIn = false; // Variable JavaScript que indica que el usuario no está autenticado
-    </script>
-@endif
-<script>
-    window.isLoggedIn = {{ Auth::check() ? 'true' : 'false' }};
-</script> -->
 <body>
 
 <!-- First Section -->

@@ -51,10 +51,13 @@ class ForgotPasswordController extends Controller
         $email->addContent("text/plain", "Ha solicitado un restablecimiento de contraseña. Haz clic en el siguiente enlace para cambiar tu contraseña: $resetLink , en caso de que no has solicitado un restablecimiento de contraseña, puedes ignorar este correo electrónico.");
 
         // Configuración de SendGrid
-        $apiKey = env('SENDGRID_API_KEY');
+        $apiKey = config('configuration.SENDGRID_API_KEY');
         $sendgrid = new SendGrid($apiKey);
         try {
             $response = $sendgrid->send($email);
+            print $response->statusCode() . "\n";
+            print_r($response->headers());
+            print $response->body() . "\n";
             return back()->with('success', 'Se ha enviado un correo electrónico con las instrucciones para restablecer tu contraseña.');
         } catch (\Exception $e) {
             return back()->with('error', 'Error al enviar el correo electrónico: ' . $e->getMessage());
@@ -91,5 +94,4 @@ class ForgotPasswordController extends Controller
         return view('password.reset', ['token' => $token, 'email' => $email]);
     }
 }
-
 

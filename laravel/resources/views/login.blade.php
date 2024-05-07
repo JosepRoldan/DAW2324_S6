@@ -12,9 +12,11 @@
 </head>
 
 <body>
-    <div id="header"></div>
-    <div id="login"></div>
-    <div id="footer"></div>
+    @extends($layout)
+
+    @section('content')
+        <div id="login"></div>
+    @endsection
 </body>
 
 </html>
