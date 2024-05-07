@@ -8,13 +8,16 @@
     @viteReactRefresh
     @vite('resources/js/app.js')
     @vite('resources/css/app.css')
-    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
 <body>
-    <div id="header"></div>
+
+    @extends($layout)
+
+    @section('content')
     <div id="registro"></div>
-    <div id="footer"></div>
+    @endsection
+
 </body>
 
 </html>

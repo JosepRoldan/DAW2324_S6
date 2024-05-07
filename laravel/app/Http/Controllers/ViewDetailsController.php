@@ -14,9 +14,11 @@ use Illuminate\Support\Facades\Session;
 class ViewDetailsController extends Controller
 {
     public function getDetailsData(Request $request)
+          
     {
 
         $token = Session::get('token');
+        // $numeroOrden = $request->input('numeroOrden');
         
         $details = MyOrdersModel::join('orders_details', 'orders.id', '=', 'orders_details.idOrder')
             ->join('customers', 'customers.id', '=', 'orders.idCustomers')
@@ -24,7 +26,7 @@ class ViewDetailsController extends Controller
             ->join('generatedImages', 'generatedImages.idGI', '=', 'orders_details.idGi')
             ->select('orders_details.*', 'customers.surname', 'customers.name as name', 'product_details.name as variant', 'generatedImages.prompt', 'orders.datetime', 'orders.orderStatus')
             ->where('customers.username', $token)
-            ->where('orders_details.idOrder', $request->idOrder)
+            ->where('orders_details.idOrder', 1)
             ->get();
 
         return response()->json($details);

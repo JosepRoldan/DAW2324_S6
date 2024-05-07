@@ -6,8 +6,13 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Mi Sitio')</title>
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    <link rel="icon" type="image/png" href="../img/logocompleto.png">
     <!--Favicon-->
+    <link rel="icon" type="image/png" href="../img/logocompleto.png">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    @if(Session::has('token'))
+        <!-- EJEMPLO PARA MOSTRAR EL CONTENIDO DE LA VARIABLE DE SESION EN LA PLANTILLA BLADE <p>Bienvenido, {{ Session::get('token') }}</p> -->
+        <input type="hidden" id="token" value="{{ Session::get('token') }}">
+    @endif
     <script src="https://cdn.userway.org/widget.js" data-account="6lyLjka116"></script>
     <script src="{{ asset('js/app.js') }}"></script>
     @viteReactRefresh

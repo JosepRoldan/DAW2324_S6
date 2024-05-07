@@ -2,11 +2,18 @@ import React, { useEffect, useState, useMemo } from "react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import { AgGridReact } from "ag-grid-react";
-import AppLayout from "../../layout/AppLayout";
-import { Link } from "react-router-dom";
-import useOrdersData from "../../hooks/useOrders";
+import ButtonFetchProductsAPI from "../../components/ButtonFetchProductsAPI";
+import ButtonToggle from "../../components/ButtonToggle";
+import { PriceRangeCellRenderer } from "../../components/tables/products/cellRenderers/PriceRangeCellRenderer";
+import { ImageCellRenderer } from "../../components/tables/products/cellRenderers/ImageCellRenderer";
+import { EditProductCellRenderer } from "../../components/tables/products/cellRenderers/EditProductCellRenderer";
+import { ProductIsActiveCellRenderer } from "../../components/tables/products/cellRenderers/ProductIsActiveCellRenderer";
+import { updateProductDetails } from "../../api/updateProductDetails";
+import Spinner from "../../components/Spinner";
+import { useTranslation } from "react-i18next";
+import { usePage } from "../../contexts/PageContext";
+import { useNavigate } from "react-router-dom";
 
-// EditOrder Component
 const EditOrder = ({ data }) => {
   return (
     <a href={`/orders/${data.id}`}>
@@ -29,79 +36,111 @@ const EditOrder = ({ data }) => {
     </a>
   );
 };
-const steps = [{ name: "Orders", href: "/orders", current: true }];
-// OrdersPage Component
-const OrdersPage = () => {
-  // Define the API URL for fetching orders data
-  const apiUrl = `${import.meta.env.VITE_API_URL}/orders`;
 
-  // Use the custom hook to fetch orders data
-  const { rowData, loading, error } = useOrdersData(apiUrl);
+export default function ProductsPage() {
+  const { t } = useTranslation();
+  const { setPage, setSteps } = usePage();
 
-  // Define column definitions for the AgGridReact component
-  const colDefs = [
-    {
-      field: "idOrderPicanova",
-      headerName: "Order ID",
-      cellRenderer: undefined,
-    },
-    {
-      field: "idCustomer",
-      headerName: "Customer ID",
-      cellRenderer: undefined,
-    },
-    {
-      field: "datetime",
-      headerName: "Order Date",
-    },
-    {
-      field: "orderStatus",
-      headerName: "Order Status",
-      cellRenderer: undefined,
-    },
-    {
-      headerName: "Details",
-      cellRenderer: EditOrder,
-    },
-  ];
+  const navigate = useNavigate();
 
-  // Define default column definition using useMemo to avoid unnecessary re-renders
+  useEffect(() => {
+    setPage(t("Orders"));
+    setSteps([{ name: t("Orders"), href: "/orders", current: true }]);
+  }, [setPage, setSteps, navigate, t]);
+
+  const [rowData, setRowData] = useState([]);
+
+  const [isEditable, setIsEditable] = useState(false);
+
+  const [isLoading, setIsLoading] = useState(true);
+
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_API_URL}/orders`, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((result) => result.json())
+      .then((data) => {
+        setRowData(data);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching data: ", error);
+        setIsLoading(false);
+      });
+  }, []);
+
   const defaultColDef = useMemo(
     () => ({
       filter: true,
-      editable: false,
+      editable: isEditable,
+      resizable: true,
     }),
-    []
+    [isEditable]
   );
 
-  // // Render loading state if data is still loading
-  // if (loading) {
-  //   return <div>Loading...</div>;
-  // }
+  const autoSizeStrategy = {
+    type: "fitCellContents",
+  };
 
-  // // Render error message if there's an error during data fetching
-  // if (error) {
-  //   return <div>Error: {error.message}</div>;
-  // }
+  const colDefs = useMemo(
+    () => [
+      {
+        field: "number_order",
+        headerName: "Order Number",
+        cellRenderer: undefined,
+      },
+      {
+        field: "name",
+        headerName: "Customer Name",
+        cellRenderer: undefined,
+      },
+      {
+        field: "datetime",
+        headerName: "Order Date",
+      },
+      {
+        field: "totalPrice",
+        headerName: "Total Price",
+        cellRenderer: undefined,
+      },
+      {
+        field: "orderStatus",
+        headerName: "Order Status",
+        cellRenderer: undefined,
+      },
+      {
+        headerName: "Details",
+        cellRenderer: EditOrder,
+      },
+    ],
+    [isEditable, t]
+  );
 
-  // Render the AgGridReact component with fetched data and column definitions
   return (
     <>
       <div
         className="ag-theme-quartz mt-4"
-        style={{ width: "100%", height: "80vh" }}
+        style={{ width: "100%", height: "75vh" }}
       >
-        <AgGridReact
-          rowData={rowData}
-          defaultColDef={defaultColDef}
-          columnDefs={colDefs}
-          pagination={true}
-          rowSelection="multiple"
-        />
+        {isLoading ? (
+          <Spinner message="Loading Orders..." />
+        ) : (
+          <>
+            <AgGridReact
+              rowData={rowData}
+              defaultColDef={defaultColDef}
+              columnDefs={colDefs}
+              pagination={true}
+            />
+          </>
+        )}
       </div>
     </>
   );
-};
-
-// Export the OrdersPage component
-export default OrdersPage;
+}

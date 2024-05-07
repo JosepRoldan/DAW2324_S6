@@ -7,21 +7,20 @@ import React, { useEffect } from "react";
 import LanguageSelector from "./LanguageSelector";
 
 const navigation = [
-    { name: "Home", href: "Inicio", current: false },
-    { name: "Products", href: "../products", current: false },
-    { name: "Generate Image", href: "../daisy", current: false },
+    { name: "Home", href: "/Inicio", current: false },
+    { name: "Products", href: "/products", current: false },
+    { name: "Generate Image", href: "/daisy", current: false },
     {
         name: "Generate Guided Image",
-        href: "../guidedGeneratedImage",
+        href: "/guidedGeneratedImage",
         current: false,
     },
-    { name: "FAQ", href: "../faq", current: false },
+    { name: "FAQ", href: "/faq", current: false },
 ];
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
 }
-
 
 export default function Header() {
     const [isCartOpen, setIsCartOpen] = useState(false);
@@ -39,23 +38,18 @@ export default function Header() {
         setIsCartOpen((prevState) => !prevState);
         const cartProducts = JSON.parse(localStorage.getItem("products")) || [];
         setCartProducts(cartProducts.length);
-        console.log(cartProducts.length)
-
+        console.log(cartProducts.length);
     };
-
 
     //Funcion para que si hay productos en el  se muestre un badge con la cantidad de productos encima del icono del carrito
     useEffect(() => {
         const cartProducts = JSON.parse(localStorage.getItem("products")) || [];
         setCartProducts(cartProducts.length);
-    }
-    , [cartProducts]);
+    }, [cartProducts]);
 
     window.addEventListener("storage", () => {
         console.log("storage event");
-    
     });
-
 
     return (
         <Disclosure as="nav" className="bg-[#141415]">
@@ -95,7 +89,7 @@ export default function Header() {
                                                     menu.current
                                                         ? "bg-gray-900 text-white"
                                                         : "text-white hover:bg-gray-600 hover:text-white",
-                                                    "rounded-md px-1 py-1 text-sm font-medium mt-2"
+                                                    "rounded-md px-1 py-1 text-sm font-medium mt-2",
                                                 )}
                                                 aria-current={
                                                     menu.current
@@ -126,9 +120,15 @@ export default function Header() {
                                         className="h-8 w-8"
                                         aria-hidden="true"
                                     />
-                                    {cartProducts> 0 ? <span className="bg-red-500 text-white rounded-full px-1.5 py-0.5 text-xs absolute -top-2 -right-2 mt-2">{cartProducts}</span>: ""}
-                                </button> 
-                                        
+                                    {cartProducts > 0 ? (
+                                        <span className="bg-red-500 text-white rounded-full px-1.5 py-0.5 text-xs absolute -top-2 -right-2 mt-2">
+                                            {cartProducts}
+                                        </span>
+                                    ) : (
+                                        ""
+                                    )}
+                                </button>
+
                                 {/* Profile dropdown */}
                                 <Menu as="div" className="relative ml-3">
                                     <div>
@@ -162,7 +162,7 @@ export default function Header() {
                                                             active
                                                                 ? "bg-gray-100"
                                                                 : "",
-                                                            "block px-4 py-2 text-sm text-gray-700"
+                                                            "block px-4 py-2 text-sm text-gray-700",
                                                         )}
                                                     >
                                                         Your Profile
@@ -181,7 +181,7 @@ export default function Header() {
                                                             active
                                                                 ? "bg-gray-100"
                                                                 : "",
-                                                            "block px-4 py-2 text-sm text-gray-700"
+                                                            "block px-4 py-2 text-sm text-gray-700",
                                                         )}
                                                     >
                                                         {isLoggedIn
@@ -208,7 +208,7 @@ export default function Header() {
                                         menu.current
                                             ? "bg-gray-900 text-white"
                                             : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                                        "block rounded-md px-3 py-2 text-base font-medium"
+                                        "block rounded-md px-3 py-2 text-base font-medium",
                                     )}
                                     aria-current={
                                         menu.current ? "page" : undefined
