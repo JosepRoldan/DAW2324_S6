@@ -34,6 +34,9 @@ use App\Http\Controllers\LanguageController;
 //LANGUAGE
 use App\Http\Controllers\TranslationController;
 
+
+Route::redirect('/', '/Inicio');
+
 Route::get('/translations/{lang}', [TranslationController::class, 'getTranslations']);
 
 
@@ -72,7 +75,6 @@ Route::get('/productscard', function () {
 Route::get('/Inicio', [ProductController::class, 'inicio'])->name('inicio');
 
 
-Route::get('/verificacion', function () {return view('verificacion');})->name('verification');
 
 Route::get('/product', function () {return view('product');});
 
@@ -103,9 +105,13 @@ Route::get('/forgot', function () {return view('/auth/recover-password');})->nam
 //Logout
 Route::get('/logout', [RegisterController::class, 'logout'])->name('logout');
 
-//Verificacion Usuario
-Route::post('/send-verification', [VerifyEmailController::class, 'sendVerifyLinkEmail'])->name('send-verification');
-
+//VERIFICACION USUARIO
+Route::get('/verificacion', function () {return view('verificacion');})->name('verification');
+// Ruta para enviar el correo electrónico de verificación después del registro
+Route::post('/send-verification', [VerifyEmailController::class, 'sendVerificationEmailAfterRegister'])->name('send.verification.email.after.register');
+// Ruta para confirmar el correo electrónico después del registro
+Route::get('/confirmar-correo', [VerifyEmailController::class, 'confirmEmail'])->name('confirm.email');
+Route::get('/verificacion-correcta', function () {return view('verificacion-correcta');});
 
 
 //Reset Password

@@ -20,7 +20,7 @@ class RegisterController extends Controller
     }
     public function store(Request $request)
     {
-
+        $email = $request->input('mail');
         $rules = [
             'username' => 'required|unique:customers',
             'password' => ['required', 'regex:/^(?=.*[!@#$%^&*()\-_=+{};:,<.>]).{8,}$/'], // Al menos 8 caracteres y al menos un carácter especial
@@ -31,7 +31,6 @@ class RegisterController extends Controller
         $errors = $validator->errors();
         // $isMissingField = $errors->has('username') || $errors->has('password') || $errors->has('mail');
 
-        
 
         if (
             $validator->fails() && ($errors->has('username') || $errors->has('mail'))
@@ -56,11 +55,10 @@ class RegisterController extends Controller
 
         $registro = new Registro();
         $registro->addClient($data);
+        app(VerifyEmailController::class)->sendVerificationEmailAfterRegister($email);
+        
         $token = $data['username'];
         Session::put('token', $token);
-        $verifyEmailController = new VerifyEmailController();
-        $verifyEmailController->sendVerifyLinkEmail($request);
-
         // Redirige a una página de confirmación o a donde sea apropiado
         return redirect()->to('Inicio');
     }

@@ -10,8 +10,8 @@ export function useForm(initialState) {
   const handleSubmit = async (e, toast) => {
     e.preventDefault();
     try {
+      console.log("llega al paso 1");
       const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-      
       const response = await fetch('/sign_up', { 
           method: 'POST',
           headers: {
@@ -20,6 +20,7 @@ export function useForm(initialState) {
           },
           body: JSON.stringify(formData)
       });
+      console.log("llega al paso 2");
       if (response.status === 401) {
           toast.error("El nombre de usuario o correo electrónico ya están en uso, o los campos están incompletos. Asegúrate de que el correo electrónico proporcionado sea válido y único");
       }if (response.status === 411) {
