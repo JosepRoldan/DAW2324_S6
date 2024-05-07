@@ -21,7 +21,8 @@ const EditOrder = ({ data }) => {
     navigate(`/orders/${data.id}`);
   };
   return (
-    <svg onClick={handleClick}
+    <svg
+      onClick={handleClick}
       style={{
         display: "flex",
         justifyContent: "center",
@@ -95,30 +96,30 @@ export default function ProductsPage() {
     () => [
       {
         field: "number_order",
-        headerName: "Order Number",
+        headerName: t("Order Number"),
         cellRenderer: undefined,
       },
       {
         field: "name",
-        headerName: "Customer Name",
+        headerName: t("Customer Name"),
         cellRenderer: undefined,
       },
       {
         field: "datetime",
-        headerName: "Order Date",
+        headerName: t("Order Date"),
       },
       {
         field: "totalPrice",
-        headerName: "Total Price",
+        headerName: t("Total Price"),
         cellRenderer: undefined,
       },
       {
         field: "orderStatus",
-        headerName: "Order Status",
+        headerName: t("Order Status"),
         cellRenderer: undefined,
       },
       {
-        headerName: "Details",
+        headerName: t("Details"),
         cellRenderer: EditOrder,
       },
     ],
