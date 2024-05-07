@@ -83,16 +83,9 @@ function GenerateGuidedImage() {
         console.log(status);
         switch (status) {
             case 2:
-                toast.info(
-                    "Valida tu cuenta aquí para poder generar imágenes.",
-                    {
-                        action: {
-                            label: "Hazlo aquí",
-                            onClick: () => (window.location.href = "daisy"),
-                        },
-                        position: "top-center",
-                    },
-                );
+                toast.info("Valida tu cuenta para poder generar imágenes.", {
+                    position: "top-center",
+                });
                 break;
             case 3:
                 toast.info(
@@ -109,7 +102,7 @@ function GenerateGuidedImage() {
         }
     };
     const params = useURLParams();
-    const [loading, setLoading] = useState("");
+    const [loading, setLoading] = useState(false);
     const [divsContent, setDivsContent] = useState([]);
     const [inputValue, setInputValue] = useState("");
     const [inputImg, setInputImg] = useState("");
@@ -224,13 +217,19 @@ function GenerateGuidedImage() {
 
     const handleButtonClick = async () => {
         try {
-            setDivsContent([]);
+            setLoading(true);
+            setDivsContent(
+                <div className="grid grid-cols-1 place-items-center my-6">
+                    <DotLoader color="#1d4ed8" loading />
+                </div>,
+            );
             const urls = await enviarPrompt(
                 "POST",
                 dataCrear,
                 token,
                 "/enviar-prompt",
             );
+            setLoading(false);
             generarDivs(urls);
         } catch (error) {
             console.error("Error en la petición:", error);
@@ -486,6 +485,7 @@ function GenerateGuidedImage() {
                                 onClick={() => {
                                     handleButtonClick();
                                 }}
+                                disabled={loading ? "disabled" : ""}
                             >
                                 Genera ya tu imagen!!
                             </button>
@@ -554,15 +554,11 @@ function GenerateGuidedImage() {
                                 ""
                             )}
                         </div>
-                        {divsContent.length > 0 && divsContent ? (
-                            divsContent.map((content, index) => (
-                                <div key={index}>{content}</div>
-                            ))
-                        ) : (
-                            <div className="grid grid-cols-1 place-items-center my-6">
-                                <DotLoader color="#1d4ed8" loading />
-                            </div>
-                        )}
+                        {divsContent.length > 1 && divsContent
+                            ? divsContent.map((content, index) => (
+                                  <div key={index}>{content}</div>
+                              ))
+                            : divsContent}
                         <div className="flex h-9 justify-center items-center my-4">
                             <div className="flex justify-center items-center gap-2">
                                 <button

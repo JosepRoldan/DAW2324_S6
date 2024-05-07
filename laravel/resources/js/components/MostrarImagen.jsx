@@ -60,16 +60,9 @@ function MostrarImagen() {
         console.log(status);
         switch (status) {
             case 2:
-                toast.info(
-                    "Valida tu cuenta aquí para poder generar imágenes.",
-                    {
-                        action: {
-                            label: "Hazlo aquí",
-                            onClick: () => (window.location.href = "daisy"),
-                        },
-                        position: "top-center",
-                    },
-                );
+                toast.info("Valida tu cuenta para poder generar imágenes.", {
+                    position: "top-center",
+                });
                 break;
             case 3:
                 toast.info(
@@ -157,6 +150,7 @@ function MostrarImagen() {
 
     const handleButtonClick = async () => {
         try {
+            setInputId();
             const urls = await enviarPrompt(
                 "POST",
                 dataCrear,
@@ -171,6 +165,7 @@ function MostrarImagen() {
 
     const handleButtonClick2 = async () => {
         try {
+            setInputId();
             setDivsContent([]);
             const urls = await enviarPrompt(
                 "POST",
@@ -179,7 +174,6 @@ function MostrarImagen() {
                 "/modi-prompt",
             );
             generarDivs(urls);
-            setInputId("");
         } catch (error) {
             console.error("Error en la petición:", error);
         }
