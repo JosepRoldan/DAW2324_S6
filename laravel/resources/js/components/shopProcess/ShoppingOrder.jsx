@@ -20,6 +20,7 @@ export default function ShoppingOrder() {
     const [productos, setProductos] = useState([]);
     const shippingPrice = 10; // Hardcode para el precio de envío
     const [validationErrors, setValidationErrors] = useState({});
+    const [orderId, setOrderId] = useState(null);
 
     // Esquema de validación utilizando Yup
     const validationSchema = Yup.object().shape({
@@ -77,15 +78,26 @@ export default function ShoppingOrder() {
                 totalAmount: totalAmount, // Agrega el total final al formData
             };
 
-            await axios.post("/Cart/Order", formData, {
-                headers: {
-                    "X-CSRF-TOKEN": csrfToken,
-                },
-            });
-
+            axios
+                .post("/Cart/Order", formData, {
+                    headers: {
+                        "X-CSRF-TOKEN": csrfToken,
+                    },
+                })
+                .then((response) => {
+                    const orderId = response.data.orderId; // Acceder al orderId desde la respuesta
+                    setOrderId(orderId); // Establecer orderId en el estado
+                    console.log("Order data saved");
+                    console.log(orderId); // Imprimir el orderId
+                    // Redireccionar a la página de pago con el ID de la orden y el totalAmount
+                    window.location.href =
+                        "/Cart/payment?totalAmount=" +
+                        totalAmount +
+                        "&orderId=" +
+                        orderId;
+                });
             console.log("Order data saved");
             // Aquí puedes agregar lógica adicional después de que se haya guardado la orden, como redireccionar a otra página
-            window.location.href = "/Cart/payment/" + totalAmount;
         } catch (error) {
             if (error instanceof Yup.ValidationError) {
                 const errors = {};

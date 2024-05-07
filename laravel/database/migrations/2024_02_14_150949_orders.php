@@ -18,6 +18,7 @@ return new class extends Migration
             $table->decimal('totalPrice');
             $table->timestamp('datetime');
             $table->enum('orderStatus', ['PreOrder', 'InProgress', 'Sent', 'Delivered', 'Canceled'])->default('PreOrder');
+
         });
     }
 

@@ -197,25 +197,35 @@
 
     const products = JSON.parse(localStorage.getItem('products')) || [];
 
-        function agregarProducto(producto) {
-            // Obtener la lista de productos del Local Storage
-            let productos = JSON.parse(localStorage.getItem('products')) || [];
+    function agregarProducto(producto) {
+    // Obtener la lista de productos del Local Storage
+    let productos = JSON.parse(localStorage.getItem('products')) || [];
 
-            // Get variant price
-            var variantSelect = document.getElementById('variantSelect');
-            var selectedVariant = variantSelect.options[variantSelect.selectedIndex];
-            producto.price = selectedVariant.getAttribute('data-price');
-            producto.idVariant = selectedVariant.getAttribute('data-variant-id');
-                        
-            const cartButton = document.getElementById('cartButton');
-            
-            // Agregar el producto seleccionado a la lista
-            products.push(producto);
+    // Get variant price
+    var variantSelect = document.getElementById('variantSelect');
+    var selectedVariant = variantSelect.options[variantSelect.selectedIndex];
+    producto.price = selectedVariant.getAttribute('data-price');
+    producto.idVariant = selectedVariant.getAttribute('data-variant-id');
+    
+    const cartButton = document.getElementById('cartButton');
+    
+    // Verificar si el producto ya existe en la lista
+    const productoExistente = productos.find(item => item.id === producto.id && item.idVariant === producto.idVariant);
 
-            // Guardar la lista actualizada en el Local Storage
-            localStorage.setItem('products', JSON.stringify(products));
-            cartButton.click();
-        }
+    if (productoExistente) {
+        // Si el producto ya existe, mostrar un mensaje o realizar alguna acción
+        console.log('El producto ya está en la lista.');
+        return; // No agregamos el producto nuevamente
+    }
+
+    // Agregar el producto seleccionado a la lista
+    productos.push(producto);
+
+    // Guardar la lista actualizada en el Local Storage
+    localStorage.setItem('products', JSON.stringify(productos));
+    cartButton.click();
+}
+
 </script>
 
 </html>

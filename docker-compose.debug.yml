@@ -1,0 +1,85 @@
+version: "3.8"
+services:
+  laravel:
+    image: docker.io/bitnami/laravel:10
+    ports:
+      - "8000:8000"
+    volumes:
+      - "./laravel:/app"
+    depends_on:
+      - mysql
+
+  react:
+    build:
+      context: ./react
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - "./react:/app"
+      - "/app/node_modules"
+
+  mysql:
+    image: "mysql"
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpwd
+      - MYSQL_DATABASE=customAIze
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=userpwd
+    volumes:
+      - "mysql_data:/var/lib/mysql"
+    ports:
+      - "3306:3306"
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      - PMA_HOST=mysql
+      - PMA_PORT=3306
+    ports:
+      - "8080:80"
+    depends_on:
+      - mysql
+
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./fastapi/app/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+
+  grafana:
+    image: grafana/grafana
+    environment:
+      GF_SERVER_HTTP_PORT: "4000"
+      GF_SECURITY_ADMIN: admin
+      GF_SECURIDY_ADMIN_PASSWORD: admin
+    ports:
+      - "4000:4000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+    depends_on:
+      - prometheus
+
+  fastapi-vscode-debug-setup:
+    build:
+      context: ./fastapi
+      dockerfile: Dockerfile
+    ports:
+      - 8003:8003
+      - 5678:5678
+    volumes:
+      - ./fastapi/app:/code/app
+    command:
+      [
+        "sh",
+        "-c",
+        "pip install debugpy -t /tmp && python /tmp/debugpy --wait-for-client --listen 0.0.0.0:5678 -m uvicorn app.main:app --host 0.0.0.0 --port 8003 --reload",
+      ]
+    environment:
+      - APP_MESSAGE=Hello debugger
+
+volumes:
+  mysql_data:
+    driver: local
+  grafana-data:

@@ -23,7 +23,9 @@ export const CustomersOrders = () => {
 
     useEffect(() => {
         setPage(t("Customers"));
-        setSteps([{ name: t('Customers'), href: '/customers', current: true }]);
+        setSteps([{ name: t('Customers'), href: '/customers', current: true },
+        { name: `${customer.username}`, current: true }
+        ]);
     }, [setPage, setSteps, t]);
 
     useEffect(() => {
@@ -36,7 +38,7 @@ export const CustomersOrders = () => {
                     "Content-Type": "application/json",
                     'Authorization': `Bearer ${token}`,
                 };
-                const response = await axios.get(`${import.meta.env.VITE_API_URL}/customers/${customer.id}/orders`, { headers });
+                const response = await axios.get(`${import.meta.env.VITE_API_URL}/customers/${customer.id}/customerOrders`, { headers });
                 setOrders(response.data);
             } catch (error) {
                 console.error("There was an error fetching the orders:", error);

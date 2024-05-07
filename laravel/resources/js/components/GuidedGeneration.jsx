@@ -67,7 +67,7 @@ function GenerateGuidedImage() {
                     "POST",
                     { token: getToken() },
                     token,
-                    "/check-token"
+                    "/check-token",
                 );
                 setLoginStatus(validated.status);
                 consultarStatus(validated.status);
@@ -91,7 +91,7 @@ function GenerateGuidedImage() {
                             onClick: () => (window.location.href = "daisy"),
                         },
                         position: "top-center",
-                    }
+                    },
                 );
                 break;
             case 3:
@@ -103,12 +103,13 @@ function GenerateGuidedImage() {
                             onClick: () => (window.location.href = "sign_up"),
                         },
                         position: "top-center",
-                    }
+                    },
                 );
                 break;
         }
     };
     const params = useURLParams();
+    const [loading, setLoading] = useState("");
     const [divsContent, setDivsContent] = useState([]);
     const [inputValue, setInputValue] = useState("");
     const [inputImg, setInputImg] = useState("");
@@ -182,7 +183,7 @@ function GenerateGuidedImage() {
                     <button
                         onClick={() => {
                             setSelected(
-                                document.getElementById("inputId").value
+                                document.getElementById("inputId").value,
                             );
                             cambiarSet();
                         }}
@@ -223,11 +224,12 @@ function GenerateGuidedImage() {
 
     const handleButtonClick = async () => {
         try {
+            setDivsContent([]);
             const urls = await enviarPrompt(
                 "POST",
                 dataCrear,
                 token,
-                "/enviar-prompt"
+                "/enviar-prompt",
             );
             generarDivs(urls);
         } catch (error) {
@@ -241,7 +243,7 @@ function GenerateGuidedImage() {
                 "POST",
                 { idImg: idImg, user: getToken(), imgUrl: imgUrl },
                 token,
-                "/save-img"
+                "/save-img",
             ),
             {
                 loading: "Loading...",
@@ -251,17 +253,43 @@ function GenerateGuidedImage() {
                 },
                 error: "Error",
                 closeButton: true,
-            }
+            },
         );
     };
 
     const generarDivs = (datos) => {
-        // Aquí generas los divs utilizando los datos recibidos
-        const divsGenerados = datos.map((imagen) => (
-            <div key={imagen.id}>{mostrarImagenes(imagen)}</div>
-        ));
-        // Actualizas el estado de divsContent con los divs generados
-        setDivsContent(divsGenerados);
+        if (datos.length > 1) {
+            let divsGenerados = [
+                <div
+                    id="real"
+                    className="grid grid-cols-3 place-items-center mx-32"
+                >
+                    {datos.map((imagen) => (
+                        <div key={imagen.id}>{mostrarImagenes(imagen)}</div>
+                    ))}
+                </div>,
+            ];
+            setDivsContent(divsGenerados);
+        } else {
+            const divsGenerados = [
+                <div
+                    id="real"
+                    className="grid grid-cols-1 place-items-center mx-32"
+                >
+                    <img
+                        className="rounded-md border-2 size-64"
+                        src="/img/oops.webp"
+                    ></img>
+                </div>,
+            ];
+            setDivsContent(divsGenerados);
+            toast.error(
+                "Ha habido un error al generar la imagen. Prueba generando otra",
+                {
+                    position: "top-center",
+                },
+            );
+        }
     };
 
     const mostrarImagenes = (imagen) => {
@@ -272,21 +300,36 @@ function GenerateGuidedImage() {
             >
                 <button
                     onClick={() => guardarImatge(imagen.id, imagen.url)}
-                    className="absolute top-0 right-0 mt-2 mr-2 hover:scale-110 "
+                    className="absolute -top-0.5 right-0 mr-2 hover:scale-110 "
                 >
                     <svg
+                        width="32px"
+                        height="32px"
+                        viewBox="0 0 1024 1024"
+                        className="icon"
+                        version="1.1"
                         xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth="1.5"
-                        stroke="currentColor"
-                        className="w-6 h-6 fill-blue-400 hover:fill-blue-500"
+                        fill="#000000"
                     >
-                        <path
+                        <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                        <g
+                            id="SVGRepo_tracerCarrier"
                             strokeLinecap="round"
                             strokeLinejoin="round"
-                            d="M16.5 3.75V16.5L12 14.25 7.5 16.5V3.75m9 0H18A2.25 2.25 0 0 1 20.25 6v12A2.25 2.25 0 0 1 18 20.25H6A2.25 2.25 0 0 1 3.75 18V6A2.25 2.25 0 0 1 6 3.75h1.5m9 0h-9"
-                        />
+                            stroke="#CCCCCC"
+                            strokeWidth="61.44"
+                        >
+                            <path
+                                d="M789.333333 917.333333l-277.333333-128-277.333333 128V192c0-46.933333 38.4-85.333333 85.333333-85.333333h384c46.933333 0 85.333333 38.4 85.333333 85.333333v725.333333z"
+                                fill="#e7fc00"
+                            ></path>
+                        </g>
+                        <g id="SVGRepo_iconCarrier">
+                            <path
+                                d="M789.333333 917.333333l-277.333333-128-277.333333 128V192c0-46.933333 38.4-85.333333 85.333333-85.333333h384c46.933333 0 85.333333 38.4 85.333333 85.333333v725.333333z"
+                                fill="#e7fc00"
+                            ></path>
+                        </g>
                     </svg>
                 </button>
 
@@ -341,13 +384,6 @@ function GenerateGuidedImage() {
             <Toaster richColors />
 
             <div className="grid grid-cols-1 ">
-                <div className="grid grid-cols-1 place-items-center">
-                    <ul className="steps">
-                        <li className="step step-primary">Elige tu soporte</li>
-                        <li className="step step-primary">Crea tu imagen</li>
-                        <li className="step">Continua con tu compra</li>
-                    </ul>
-                </div>
                 <div className="grid grid-cols-2 my-2">
                     {divMostrat == 5 ? (
                         ""
@@ -391,17 +427,35 @@ function GenerateGuidedImage() {
                 </div>
                 {/* Div que muestra los estilos de la imagen */}
                 <div className={divMostrat == 1 ? "" : "hidden"}>
+                    <div className="flex my-5 justify-center">
+                        <p class="text-lg font-bold">Elige un estilo</p>
+                    </div>
                     {generarOpciones(imageStyle, style, setStyle)}
                 </div>
                 {/* Div que muestra el color principal de la imagen */}
                 <div className={divMostrat == 2 ? "" : "hidden"}>
+                    <div className="flex my-5 justify-center">
+                        <p class="text-lg font-bold">
+                            Elige el sentimiento que transmita tu imagen
+                        </p>
+                    </div>
                     {generarOpciones(imageFeel, feel, setFeel)}
                 </div>
                 <div className={divMostrat == 3 ? "" : "hidden"}>
+                    <div className="flex my-5 justify-center">
+                        <p class="text-lg font-bold">
+                            Elige el elemento principal
+                        </p>
+                    </div>
                     {generarOpciones(imageElement, element, setElement)}
                 </div>
                 {/* Div que muestra la eleccion de color de la imagen */}
                 <div className={divMostrat == 4 ? "" : "hidden"}>
+                    <div className="flex my-5 justify-center">
+                        <p class="text-lg font-bold">
+                            Elige el color principal de tu imagen
+                        </p>
+                    </div>
                     <div className="flex my-5 justify-center h-full">
                         <div dir="ltr">
                             <div className="rounded-s-xl artboard artboard-horizontal phone-1 bg-gray-100 w-1/2 grid place-content-center">
@@ -435,17 +489,12 @@ function GenerateGuidedImage() {
                             Genera ya tu imagen!!
                         </button>
                         {divsContent.length > 0 && divsContent ? (
-                            <div
-                                id="real"
-                                className="grid grid-cols-3 place-items-center mx-32 my-5"
-                            >
-                                {divsContent.map((content, index) => (
-                                    <div key={index}>{content}</div>
-                                ))}
-                            </div>
+                            divsContent.map((content, index) => (
+                                <div key={index}>{content}</div>
+                            ))
                         ) : (
-                            <div className="grid grid-cols-1 place-items-center">
-                                <span className="loading loading-infinity loading-lg"></span>
+                            <div className="grid grid-cols-1 place-items-center my-6">
+                                <DotLoader color="#1d4ed8" loading />
                             </div>
                         )}
                         <div className="flex h-9 justify-center items-center my-4">
@@ -508,6 +557,6 @@ function GenerateGuidedImage() {
 }
 if (document.getElementById("GenerateGuidedImage")) {
     createRoot(document.getElementById("GenerateGuidedImage")).render(
-        <GenerateGuidedImage />
+        <GenerateGuidedImage />,
     );
 }
