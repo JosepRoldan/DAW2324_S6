@@ -32,14 +32,12 @@ export default function Login() {
               body: JSON.stringify(formData)
           });
             if (response.status === 401) {
-                toast.error("El correo electrónico o la contraseña son incorrectos.");
+                toast.error("Usuario o contraseña incorrectos.");
             }else if (response.status === 200) {
-                toast.success("¡Inicio de sesión exitoso!");
+                toast.success("Se ha registrado correctamente!");
                 setTimeout(function() {
                     window.location.href = 'Inicio';
                 }, 2000); // 2000 milisegundos = 2 segundos
-            }else if (response.status === 404) {
-                toast.error("¡Introduce los datos de inicio!");
             }
        
       } catch (error) {
@@ -51,14 +49,14 @@ export default function Login() {
     return (
     <>
         <Toaster richColors position="top-center"  />
-            <section className="h-full bg-neutral-200 dark:bg-neutral-700">
-                <div className="container h-full p-10">
-                    <div className="g-6 flex h-full flex-wrap items-center justify-center text-neutral-800 dark:text-neutral-200">
+            <section className="h-full bg-neutral-200">
+                <div className="container h-full">
+                    <div className="g-6 flex h-full flex-wrap items-center justify-center text-neutral-800">
                         <div className="w-full">
-                            <div className="block rounded-lg bg-white shadow-lg dark:bg-neutral-800">
+                            <div className="block rounded-lg bg-white shadow-lg">
                                 <div className="g-0 lg:flex lg:flex-wrap">
                                     <div className="px-4 md:px-0 lg:w-6/12">
-                                        <div className="md:mx-6 md:p-12">
+                                        <div className="ml-72 p-12 -mr-72">
                                             <div className="text-center">
                                                 <img
                                                     className="mx-auto w-48"
@@ -73,11 +71,11 @@ export default function Login() {
                                             <form onSubmit={handleSubmit}>
                                                 <p className="mb-4">Por favor, inicia sesión</p>
                                                 <TEInput
-                                                    type="email"
                                                     name="mail"
                                                     value={formData.email}
                                                     onChange={handleChange}
                                                     label="Correo Electrónico"
+                                                    style={{ color: "black" }}
                                                     className="mb-4 text-black"
                                                 ></TEInput>
                                                 <TEInput
@@ -87,6 +85,7 @@ export default function Login() {
                                                     onChange={handleChange}
                                                     label="Contraseña"
                                                     className="mb-4"
+                                                    style={{ color: "black" }}
                                                 ></TEInput>
 
                                                 <div className="mb-12 pb-1 pt-1 text-center">
@@ -103,7 +102,7 @@ export default function Login() {
                                                         </button>
                                                     </TERipple>
 
-                                                    <a href="#!">Términos y condiciones</a><br></br>
+                                                    <a href="termsandconditions">Términos y condiciones</a><br></br>
                                                     <a href="forgot">Recuperar contraseña</a>
                                                 </div>
 
@@ -121,15 +120,6 @@ export default function Login() {
                                                 </div>
                                             </form>
                                         </div>
-                                    </div>
-
-                                    <div
-                                        className="flex items-center rounded-b-lg lg:w-6/12 lg:rounded-r-lg lg:rounded-bl-none"
-                                        style={{
-                                            background:
-                                                "linear-gradient(to right, #512a8b, #7646b7, #9f6fc4, #c49ee3, #add8e6)",
-                                        }}
-                                    >
                                     </div>
                                 </div>
                             </div>

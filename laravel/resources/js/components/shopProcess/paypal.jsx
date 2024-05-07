@@ -11,11 +11,9 @@ function PayPalCheckout() {
 
     useEffect(() => {
         if (paymentCompleted) {
+            localStorage.removeItem("products"); //borro carrito
             window.location.href = "/shopProccess/success?orderId=" + orderId;
             // Redirección a mandar Inprogress
-
-            // Redirección a la página de picanova
-            window.location.href = "/shopProccess/picanova?orderId=" + orderId;
         }
     }, [paymentCompleted, orderId]);
 

@@ -6,6 +6,8 @@ import {useForm} from '../hook_Login_Register.js';
 
 
 export default function Register() {
+    const [successMessage, setSuccessMessage] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
     const handleRedirect = () => {
         window.location.href = '/login';
       };
@@ -15,14 +17,16 @@ export default function Register() {
         mail: '',
         password: ''
     });
+   
+    
 
    return (  <>
         <Toaster richColors position="top-center"  />
-            <section className="h-full bg-neutral-200 dark:bg-neutral-700">
+            <section className="h-full bg-neutral-200">
                 <div className="container h-full p-10">
-                    <div className="g-6 flex h-full flex-wrap items-center justify-center text-neutral-800 dark:text-neutral-200">
+                    <div className="g-6 flex h-full flex-wrap items-center justify-center text-neutral-800">
                         <div className="w-full">
-                            <div className="block rounded-lg bg-white shadow-lg dark:bg-neutral-800">
+                            <div className="block rounded-lg bg-white shadow-lg">
                                 <div className="g-0 lg:flex lg:flex-wrap">
                                     <div className="px-4 md:px-0 lg:w-6/12">
                                         <div className="md:mx-6 md:p-12">
@@ -45,15 +49,16 @@ export default function Register() {
                                                     value={formData.username}
                                                     onChange={handleChange}
                                                     label="Nombre de Usuario"
+                                                    style={{ color: "black" }}
                                                     className="mb-4"
                                                 ></TEInput>
                                                 <TEInput
-                                                    type="email"
                                                     name="mail"
                                                     value={formData.email}
                                                     onChange={handleChange}
                                                     label="Correo Electrónico"
                                                     className="mb-4 text-black"
+                                                    style={{ color: "black" }}
                                                 ></TEInput>
                                                 <TEInput
                                                     type="password"
@@ -61,6 +66,7 @@ export default function Register() {
                                                     value={formData.password}
                                                     onChange={handleChange}
                                                     label="Contraseña"
+                                                    style={{ color: "black" }}
                                                     className="mb-4"
                                                 ></TEInput>
 
@@ -78,7 +84,7 @@ export default function Register() {
                                                         </button>
                                                     </TERipple>
 
-                                                    <a href="#!">Términos y condiciones</a>
+                                                    <a href="termsandconditions">Términos y condiciones</a>
                                                 </div>
 
                                                 <div className="flex items-center justify-between pb-6">

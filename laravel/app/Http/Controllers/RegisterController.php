@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Session;
+use App\Http\Controllers\VerifyEmailController;
 
 class RegisterController extends Controller
 {
@@ -19,10 +20,10 @@ class RegisterController extends Controller
     }
     public function store(Request $request)
     {
-
+        $email = $request->input('mail');
         $rules = [
             'username' => 'required|unique:customers',
-            'password' => 'required',
+            'password' => ['required', 'regex:/^(?=.*[!@#$%^&*()\-_=+{};:,<.>]).{8,}$/'], // Al menos 8 caracteres y al menos un carácter especial
             'mail' => 'required|email|unique:customers',
         ];
 
@@ -30,7 +31,6 @@ class RegisterController extends Controller
         $errors = $validator->errors();
         // $isMissingField = $errors->has('username') || $errors->has('password') || $errors->has('mail');
 
-        
 
         if (
             $validator->fails() && ($errors->has('username') || $errors->has('mail'))
@@ -41,6 +41,8 @@ class RegisterController extends Controller
             ($request->has(!'username') || $request->has(!'mail') || $request->has(!'password'))
         ) {
             return response()->json(null, 400);
+        }elseif ($validator->fails() || strlen($request->input('password')) < 8) {
+            return response()->json(null, 411);
         }
 
 
@@ -53,17 +55,20 @@ class RegisterController extends Controller
 
         $registro = new Registro();
         $registro->addClient($data);
+        app(VerifyEmailController::class)->sendVerificationEmailAfterRegister($email);
+        
         $token = $data['username'];
         Session::put('token', $token);
-
         // Redirige a una página de confirmación o a donde sea apropiado
-        return redirect()->to('/home');
+        return redirect()->to('Inicio');
     }
 
     public function login(Request $request){
         $email = $request->input('mail');
         $password = $request->input('password');
         $user = DB::table('customers')->where('mail', $email)->first();
+        // Añadir comprobación de si el usuario tiene la cuenta activada.
+        $verificacion = DB::table('customers')->where('mail', $email)->first();
         if ($user) {
             // Verificar la contraseña
             if (Hash::check($password, $user->password)) {
@@ -76,7 +81,7 @@ class RegisterController extends Controller
             }
         } else {
             // No se encontró ningún usuario con el correo electrónico proporcionado
-            return response()->json(['message' => 'Usuario o contraseña incorrecta'], 404);
+            return response()->json(['message' => 'Usuario o contraseña incorrecta'], 401);
         }
     }
     public function logout()

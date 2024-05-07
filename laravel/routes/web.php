@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\api\OrderController;
 use App\Http\Controllers\BuyingProcessController;
+use App\Http\Controllers\VerifyEmailController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\EnsureTokenIsValid;
 use App\Http\Controllers\RegisterController;
@@ -31,6 +33,9 @@ use App\Http\Controllers\LanguageController;
 */
 //LANGUAGE
 use App\Http\Controllers\TranslationController;
+
+
+Route::redirect('/', '/Inicio');
 
 Route::get('/translations/{lang}', [TranslationController::class, 'getTranslations']);
 
@@ -79,6 +84,7 @@ Route::get('/productscard', function () {
 Route::get('/Inicio', [ProductController::class, 'inicio'])->name('inicio');
 
 
+
 Route::get('/product', function () {return view('product');});
 
 Route::get('/CustomerArea', function () {return view('clientArea');});
@@ -108,6 +114,15 @@ Route::get('/forgot', function () {return view('/auth/recover-password');})->nam
 //Logout
 Route::get('/logout', [RegisterController::class, 'logout'])->name('logout');
 
+//VERIFICACION USUARIO
+Route::get('/verificacion', function () {return view('verificacion');})->name('verification');
+// Ruta para enviar el correo electrónico de verificación después del registro
+Route::post('/send-verification', [VerifyEmailController::class, 'sendVerificationEmailAfterRegister'])->name('send.verification.email.after.register');
+// Ruta para confirmar el correo electrónico después del registro
+Route::get('/confirmar-correo', [VerifyEmailController::class, 'confirmEmail'])->name('confirm.email');
+Route::get('/verificacion-correcta', function () {return view('verificacion-correcta');});
+
+
 //Reset Password
 use App\Models\ResetPasswordToken;
 use App\Http\Controllers\ForgotPasswordController;
@@ -118,7 +133,6 @@ Route::get('/forgot-password', [ForgotPasswordController::class, 'showForgotPass
 Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
 Route::get('/passwords/reset/{token}', function ($token) {return view('auth.passwords.reset', ['token' => $token]);})->name('password.reset.form');
 Route::get('/error-reset', function () {return view('error-reset');})->name('error.route');
-
 
 
 // PRODUCTS
@@ -176,6 +190,7 @@ Route::put('/updateProfileData', [ProfileController::class, 'updateUserProfileDa
 
 
 //My Orders
+Route::post('/obtenerDetallesOrden', [ViewDetailsController::class, 'getDetailsData']);
 Route::get('/getOrders', [MyOrdersController::class, 'getUserOrders']);
 Route::get('/getUserProfileData', [MyOrdersController::class, 'getUserProfileData']);
 
