@@ -161,7 +161,7 @@ export default function ShoppingOrder() {
                                 )}
                             </div>
                             <div className="flex sm:w-2/4 xl:w-1/4 border-gray-200 py-3">
-                                <label className="text-right px-2">
+                                <label className="text-right pl-24">
                                     Surname
                                 </label>
                                 <input

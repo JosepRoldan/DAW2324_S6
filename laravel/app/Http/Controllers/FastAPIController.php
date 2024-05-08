@@ -70,7 +70,6 @@ class FastAPIController extends Controller
             ],
             "items" => []
         ];
-
         // Agregar detalles de la orden a la sección de items
         foreach ($details as $detail) {        
             $data['items'][] = [
@@ -82,6 +81,7 @@ class FastAPIController extends Controller
                 "options" => []
             ];
         }
+        dd($data);
 
         // Intentar enviar los datos con el token de autenticación
         try {

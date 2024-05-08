@@ -13,12 +13,11 @@ use Illuminate\Support\Facades\Session;
 
 class ViewDetailsController extends Controller
 {
-    public function getDetailsData(Request $request)
+    public function getDetailsData()
           
     {
 
         $token = Session::get('token');
-        // $numeroOrden = $request->input('numeroOrden');
         
         $details = MyOrdersModel::join('orders_details', 'orders.id', '=', 'orders_details.idOrder')
             ->join('customers', 'customers.id', '=', 'orders.idCustomers')
