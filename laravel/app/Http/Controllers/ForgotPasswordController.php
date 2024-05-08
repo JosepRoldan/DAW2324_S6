@@ -45,7 +45,7 @@ class ForgotPasswordController extends Controller
 
         // Envía el correo electrónico con el enlace para restablecer la contraseña
         $email = new Mail();
-        $email->setFrom("josemedina@iesmontsia.org", "Aladdin Powell");
+        $email->setFrom("josemedina@iesmontsia.org", "Info CustomAIze");
         $email->setSubject("Cambio de contraseña CustomAIze");
         $email->addTo($user->mail, "Nombre del Destinatario");
         $email->addContent("text/plain", "Ha solicitado un restablecimiento de contraseña. Haz clic en el siguiente enlace para cambiar tu contraseña: $resetLink , en caso de que no has solicitado un restablecimiento de contraseña, puedes ignorar este correo electrónico.");

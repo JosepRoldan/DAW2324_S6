@@ -13,7 +13,11 @@
 </head>
 
 <body>
-<div id="header"></div> 
+@extends($layout)
+
+@section('content')
+
+
     <body>    
         <div class="container flex flex-col mx-auto">
             <div class="w-full draggable">
@@ -54,8 +58,7 @@
             </div>
         </div>
     </body>
-<html>
-<div id="footer"></div>
+@endsection
 </body>
 
 

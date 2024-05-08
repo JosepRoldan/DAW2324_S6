@@ -13,6 +13,11 @@
 <!-- <div class="text-red-500" id="head"></div> -->
 
 <body>
+@extends($layout)
+
+@section('content')
+
+
 <div id="header"></div> 
     <div class="container mx-auto py-10 px-5">
         <div class="max-w-6xl mx-auto bg-white text-gray-800 rounded-lg shadow-md overflow-hidden">
@@ -72,7 +77,7 @@
         </div>
     </div>
 </html>
-<div id="footer"></div>
+@endsection
 </body>
 
 

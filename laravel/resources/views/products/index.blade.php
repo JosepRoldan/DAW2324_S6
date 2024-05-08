@@ -12,7 +12,10 @@
 </head>
 
 <body class="font-roboto">
-  <div id="header"></div>
+  @extends($layout)
+
+@section('content')
+
 
 
   <div class="bg-white flex flex-col justify-center items-start min-h-screen">
@@ -125,7 +128,8 @@
   </div>
 
 
-  <div id="footer"></div>
+  @endsection
+
 
 
 

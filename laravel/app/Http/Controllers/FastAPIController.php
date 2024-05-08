@@ -81,7 +81,6 @@ class FastAPIController extends Controller
                 "options" => []
             ];
         }
-        dd($data);
 
         // Intentar enviar los datos con el token de autenticación
         try {

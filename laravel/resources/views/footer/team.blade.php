@@ -13,7 +13,11 @@
 <!-- <div class="text-red-500" id="head"></div> -->
 
 <body>
-<div id="header"></div> 
+@extends($layout)
+
+@section('content')
+
+
 <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-4 py-12">
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <div class="w-full bg-white rounded-lg sahdow-lg overflow-hidden flex flex-col justify-center items-center">
@@ -72,7 +76,7 @@
         </div>
     </div>
 </section>
-<div id="footer"></div>
+@endsection
 </body>
 
 </html>

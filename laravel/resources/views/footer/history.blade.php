@@ -13,11 +13,15 @@
 <!-- <div class="text-red-500" id="head"></div> -->
 
 <body>
-<div id="header"></div> 
+@extends($layout)
+
+@section('content')
+
+
 <div class="flex justify-center items-center p-20">
     <h1 class="text-3xl font-bold mb-5">Coming Soon...</h1>
 </div>
-<div id="footer" class="fixed bottom-0 w-full"></div>
+@endsection
 </body>
 
 

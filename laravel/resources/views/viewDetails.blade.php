@@ -12,8 +12,13 @@
 </head>
 
 <body class="font-roboto">
-    <div id="header" class="sticky top-0" style="z-index: 10;"></div>
+    @extends($layout)
+
+@section('content')
+
     <div id="viewDetails"></div>
+    @endsection
+
 </body>
 
 </html>

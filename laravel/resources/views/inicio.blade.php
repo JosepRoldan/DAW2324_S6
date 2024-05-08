@@ -46,7 +46,9 @@
 <body>
 
 <!-- First Section -->
-<div id="header" class="z-40"></div>
+@extends($layout)
+
+@section('content')
 <div class="fake-message">
 <p>@lang('home.fake')</p>
   <button id="closeFakeMessage">x</button>
@@ -148,7 +150,7 @@
 </div>
 
 
-<div id="footer"></div>
+@endsection
 <script>
    document.getElementById('closeFakeMessage').addEventListener('click', function() {
    this.parentNode.style.display = 'none';

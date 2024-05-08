@@ -13,7 +13,9 @@
 <!-- <div class="text-red-500" id="head"></div> -->
 
 <body>
-<div id="header"></div> 
+@extends($layout)
+
+@section('content')
 <div class="py-16">  
   <div class="container m-auto px-6 text-gray-600 md:px-12 xl:px-6">
       <div class="space-y-6 md:space-y-0 md:flex md:gap-6 lg:items-center lg:gap-12">
@@ -29,7 +31,7 @@
       </div>  
   </div>
 </div>
-<div id="footer"></div>
+@endsection
 </body>
 
 

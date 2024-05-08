@@ -34,7 +34,7 @@ class VerifyEmailController extends Controller
     
         // Crea el correo electrónico de verificación
         $email = new Mail();
-        $email->setFrom("josemedina@iesmontsia.org", "Tu Nombre");
+        $email->setFrom("josemedina@iesmontsia.org", "Info CustomAIze");
         $email->setSubject("Verificación de Correo Electrónico");
         $email->addTo($userEmail);
         $email->addContent("text/plain", "Por favor, haz clic en el siguiente enlace para verificar tu correo electrónico: $verificationLink");

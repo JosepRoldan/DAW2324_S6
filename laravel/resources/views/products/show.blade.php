@@ -40,7 +40,9 @@
 </head>
 <!-- <div class="text-red-500" id="head"></div> -->
 
-<div id="header"></div>
+@extends($layout)
+
+@section('content')
 
 <body>
     <div class="bg-white">
@@ -145,7 +147,7 @@
                 </div>
             </div>
         </div>
-        <div id="footer"></div>
+@endsection
     </div>
 
 </body>

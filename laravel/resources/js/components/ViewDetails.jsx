@@ -111,7 +111,7 @@ const ViewDetails = () => {
         axios
             .get("/viewDetailsOrder")
             .then((response) => {
-                setDetails(response.data[0]);
+                setDetails(response.data);
                 console.log(response.data);
             })
             .catch((error) => {
@@ -217,23 +217,6 @@ const ViewDetails = () => {
                         <br></br>
                         <br></br>
                         <br></br>
-                        <div className="pt-2 mt-2 border-t">
-                            <ul className="text-sm font-medium">
-                                {navsFooter.map((item, idx) => (
-                                    <li key={idx}>
-                                        <a
-                                            href={item.href}
-                                            className="flex items-center gap-x-2 text-gray-500 p-2 rounded-lg  hover:bg-gray-700 active:bg-gray-100 duration-150"
-                                        >
-                                            <div className="text-gray-500">
-                                                {item.icon}
-                                            </div>
-                                            {item.name}
-                                        </a>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
                     </div>
                 </div>
             </nav>
@@ -244,28 +227,19 @@ const ViewDetails = () => {
                             <div>
                                 <div className="mb-6 bg-white p-6 shadow-md sm:flex sm:justify-start flex-col">
                                     <div className="flex items-center justify-between my-2">
-                                        <img
-                                            src="/img/11.jpg"
-                                            alt="product-image"
-                                            className="w-full sm:w-20"
-                                        />
                                         <div className="sm:ml-4 sm:flex sm:w-full sm:justify-between">
                                             <div className="mt-5 sm:mt-0">
                                                 <h2 className="text-lg font-bold text-gray-900">
                                                     Generated Image:
                                                 </h2>
                                                 <p className="mt-1 text-xs text-gray-700">
-                                                    {details.prompt}                                                </p>
+                                                    {details.prompt}
+                                                </p>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div className="flex items-center justify-between my-1">
-                                        <img
-                                            src="../img/canvas.jpeg"
-                                            alt="product-image"
-                                            className="w-full sm:w-20"
-                                        />
                                         <div className="sm:ml-4 sm:flex sm:w-full sm:justify-between">
                                             <div className="mt-5 sm:mt-0">
                                                 <h2 className="text-lg font-bold text-gray-900">
@@ -300,23 +274,39 @@ const ViewDetails = () => {
                                     <p className="mb-4">1</p>
                                     <p className="mb-4">{details.variant}</p>
                                     <p className="mb-4">{details.datetime}</p>
-                                    <p className="mb-4">{details.orderStatus}</p>
-                                    <p className="mb-4">{details.name} {details.surname}</p>
+                                    <p className="mb-4">
+                                        {details.orderStatus}
+                                    </p>
+                                    <p className="mb-4">
+                                        {details.name} {details.surname}
+                                    </p>
                                 </div>
                             </div>
                             <hr className="my-4" />
                             <div className="flex justify-between">
-                                <p className="text-lg font-bold">Product price:</p>
-                                <p className="text-sm text-gray-700">{details.priceEach}€</p>
+                                <p className="text-lg font-bold">
+                                    Product price:
+                                </p>
+                                <p className="text-sm text-gray-700">
+                                    {details.priceEach}€
+                                </p>
                             </div>
                             <div className="flex justify-between">
-                                <p className="text-lg font-bold">Shipping price:</p>
-                                <p className="text-sm text-gray-700">{details.shippingPrice}€</p>
+                                <p className="text-lg font-bold">
+                                    Shipping price:
+                                </p>
+                                <p className="text-sm text-gray-700">
+                                    {details.shippingPrice}€
+                                </p>
                             </div>
                             <div className="flex justify-between">
-                                <p className="text-lg font-bold">Total price:</p>
+                                <p className="text-lg font-bold">
+                                    Total price:
+                                </p>
                                 <div className="">
-                                    <p className="flex justify-end mb-1 text-lg font-bold">{details.totalPrice}€</p>
+                                    <p className="flex justify-end mb-1 text-lg font-bold">
+                                        {details.totalPrice}€
+                                    </p>
                                     <p className="text-sm text-gray-700">
                                         including IVA
                                     </p>
@@ -334,6 +324,6 @@ export default ViewDetails;
 
 if (document.getElementById("viewDetails")) {
     const root = createRoot(document.getElementById("viewDetails")).render(
-        <ViewDetails />
+        <ViewDetails />,
     );
 }

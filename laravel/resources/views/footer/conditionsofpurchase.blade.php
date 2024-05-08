@@ -12,10 +12,14 @@
     <link rel="icon" type="image/png" href="../img/logocompleto.png">
 </head>
 
+
+
 <body>
-<div id="header"></div> 
-<body>
-<div class="container mx-auto py-10 px-5">
+@extends($layout)
+
+@section('content')
+
+    <div class="container mx-auto py-10 px-5">
         <div class="max-w-6xl mx-auto bg-white text-gray-800 rounded-lg shadow-md overflow-hidden">
             <div class="p-4 sm:p-6">
                 <div>
@@ -93,15 +97,15 @@
                     <p class="mb-4">However, it is informed of the existence of a system of exemption and reimbursement of payment of these compensations, which is regulated in the new art. 25, points 7 and 8 of the Intellectual Property Law, modified by the aforementioned Royal Decree-Law 12/2017, which regulates the manner and requirements to justify the right to reimbursement for those individuals and legal entities exempted by law and/or those who, without being exempt, have proven to use the acquired product exclusively for professional use or for its export or intra-Community delivery.</p>
                     <p class="mb-4">In this sense, those exempted companies, professionals, self-employed workers, and public bodies must obligatorily prove to PcComponentes, through the certificates established by the Royal Decree-Law, that they are within the exemption cases in order to apply them legally.</p>
                     <p class="mb-4">More information can be found at the following link: http://www.boe.es/boe/dias/2017/07/04/pdfs/BOE-A-2017-7718.pdf</p>
-                    <p class="text-1xl font-semibold leading-relaxed mt-12 mb-2">Updated: March 13, 2024</p>
+                        <p class="text-1xl font-semibold leading-relaxed mt-12 mb-2">Updated: March 13, 2024</p>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>        
+    </div> 
+    @endsection       
 </body>
-<html>
-<div id="footer"></div>
-</body>
+
+
 
 
 </html>
