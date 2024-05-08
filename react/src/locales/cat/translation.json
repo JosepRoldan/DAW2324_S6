@@ -187,5 +187,14 @@
   "The English description has been successfully updated.": "La descripció en anglès s'ha desat correctament.",
   "Products updated succesfully.": "Productes actualitzats correctament.",
   "No special characters are allowed in this field.": "No es permeten caràcters especials en aquest camp.",
-  "This field cannot be empty": "Aquest camp no pot estar buit"
+  "This field cannot be empty": "Aquest camp no pot estar buit",
+  "Customer Name": "Nom del Client",
+  "Order Date": "Data de Comanda",
+  "Total Price": "Preu Total",
+  "Order Status": "Estat de la Comanda",
+  "Details": "Detalls",
+  "Order Number": "Número de Comanda",
+  "Item": "Producte",
+  "Quantity": "Quantitat",
+  "Price": "Preu"
 }

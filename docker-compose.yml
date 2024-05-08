@@ -21,14 +21,14 @@ services:
       - "/app/node_modules"
 
   mysql:
-    image: 'mysql'
+    image: "mysql"
     environment:
       - MYSQL_ROOT_PASSWORD=rootpwd
       - MYSQL_DATABASE=customAIze
       - MYSQL_USER=user
       - MYSQL_PASSWORD=userpwd
     volumes:
-      - 'mysql_data:/var/lib/mysql'
+      - "mysql_data:/var/lib/mysql"
     ports:
       - "3306:3306"
 
@@ -76,5 +76,3 @@ volumes:
   mysql_data:
     driver: local
   grafana-data:
-
-
